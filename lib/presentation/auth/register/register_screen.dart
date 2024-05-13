@@ -32,7 +32,7 @@ class RegisterScreen extends CustomState {
           },
           borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
           child: Icon(
-              isArabic(context) ? Iconsax.arrow_left_24 : Iconsax.arrow_right_3,
+              isArabic(context) ? Iconsax.arrow_left_24 : Iconsax.arrow_left_24,
               color: darkLightColor(context)),
         ),
       ),

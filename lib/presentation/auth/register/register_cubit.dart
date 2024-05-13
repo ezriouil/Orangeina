@@ -17,6 +17,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   RegisterCubit({required this.authRepository, required this.storage, required this.connectivity}) : super(RegisterLoadingState()){ init(); }
 
+  // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async {
     emit(RegisterCurrentState(
         firstNameController: TextEditingController(),

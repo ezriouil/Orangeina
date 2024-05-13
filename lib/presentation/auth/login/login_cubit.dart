@@ -7,8 +7,18 @@ part 'login_state.dart';
 class LoginCubit extends Cubit<LoginState> {
 
   final AuthRepository authRepository;
-  LoginCubit({required this.authRepository}) : super(LoginCurrentState());
+  LoginCubit({required this.authRepository}) : super(LoginCurrentState()){  init(); }
 
+  // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
+  init() async {
+    emit(LoginCurrentState(
+        emailController: TextEditingController(),
+        passwordController: TextEditingController(),
+        passwordVisible: false,
+        formState: GlobalKey<FormState>()));
+  }
+
+  // - - - - - - - - - - - - - - - - - - LOGIN WITH EMAIL AND PASSWORD - - - - - - - - - - - - - - - - - -  //
   onLogin() async{
     try{
 
