@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "757489769264",
+    "project_id": "limounareworked",
+    "storage_bucket": "limounareworked.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757489769264:android:375024b9b9d104bb2806f5",
+        "android_client_info": {
+          "package_name": "ma.agri.berkania"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757489769264-9mo3pbf2koau79k65o44vb9e7ggsbg3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe2dAM9J-8yRz5gD1TDwVa6_meRZ4m12E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757489769264-9mo3pbf2koau79k65o44vb9e7ggsbg3q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "757489769264-t6cirii17sqp9b20cbvrg27bnh0518hg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ma.agri.limounareworked"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757489769264:android:32688a9c4cfca0cd2806f5",
+        "android_client_info": {
+          "package_name": "ma.agri.limounareworked"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757489769264-4jci58piujh9gbtjrbn0fnvq6cf8s2b9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ma.agri.limounareworked",
+            "certificate_hash": "be9117e1590ae00a6cb38e65323d237fb1c9b2bd"
+          }
+        },
+        {
+          "client_id": "757489769264-hei1kugc9tla127o5cdc8hhfof43lbgr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ma.agri.limounareworked",
+            "certificate_hash": "bd1d8ccc44db421810321883e3bcdeecbb384047"
+          }
+        },
+        {
+          "client_id": "757489769264-ngl6mup90qr7poohesk21me4dr83sja9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ma.agri.limounareworked",
+            "certificate_hash": "c8b551cada17464ba49fd717abb93aa6905b4311"
+          }
+        },
+        {
+          "client_id": "757489769264-9mo3pbf2koau79k65o44vb9e7ggsbg3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe2dAM9J-8yRz5gD1TDwVa6_meRZ4m12E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757489769264-9mo3pbf2koau79k65o44vb9e7ggsbg3q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "757489769264-t6cirii17sqp9b20cbvrg27bnh0518hg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ma.agri.limounareworked"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
