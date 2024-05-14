@@ -31,8 +31,7 @@ class RegisterScreen extends CustomState {
             context.pop();
           },
           borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-          child: Icon(
-              isArabic(context) ? Iconsax.arrow_left_24 : Iconsax.arrow_left_24,
+          child: Icon( Iconsax.arrow_right_3,
               color: darkLightColor(context)),
         ),
       ),
@@ -106,7 +105,7 @@ class RegisterScreen extends CustomState {
                             textInputType: TextInputType.visiblePassword,
                               obscureText: state.passwordVisible!,
                               trailingIcon: InkWell(
-                                  onTap: () => context.read<RegisterCubit>().onUpdatePasswordVisibility(state),
+                                  onTap: context.read<RegisterCubit>().onUpdatePasswordVisibility,
                                   borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
                                   child: Icon(state.passwordVisible! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context)))
                           ),
@@ -122,7 +121,7 @@ class RegisterScreen extends CustomState {
                             textInputType: TextInputType.visiblePassword,
                             obscureText: state.passwordVisible!,
                             trailingIcon: InkWell(
-                                onTap: () => context.read<RegisterCubit>().onUpdatePasswordVisibility(state),
+                                onTap: context.read<RegisterCubit>().onUpdatePasswordVisibility,
                                 borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
                                 child: Icon(state.passwordVisible! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context))),
                           ),
@@ -136,7 +135,7 @@ class RegisterScreen extends CustomState {
                             Checkbox(
                                 visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
                                 value: state.checkbox,
-                                onChanged: (value){ context.read<RegisterCubit>().onUpdateCheckbox(state, value); }),
+                                onChanged: (value){ context.read<RegisterCubit>().onUpdateCheckbox(value); }),
 
                             // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                             const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
@@ -161,7 +160,7 @@ class RegisterScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON REGISTER - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                            onClick: () { context.read<RegisterCubit>().onCreateNewAccount( state: state, callBack: context.pop); },
+                            onClick: () { context.read<RegisterCubit>().onCreateNewAccount(callBack: context.pop); },
                             width: getWidth(context),
                             withDefaultPadding: false,
                             child: Text(CustomLocale.REGISTER_CREATE_ACCOUNT.getString(context)),

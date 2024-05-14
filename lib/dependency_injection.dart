@@ -17,17 +17,17 @@ class DependencyInjection{
   static void setup(){
 
     // - - - - - - - - - - - - - - - - - - UTILS - - - - - - - - - - - - - - - - - -  //
-    getIt.registerSingleton<GetStorage>(GetStorage());
-    getIt.registerSingleton<Connectivity>(Connectivity());
+    getIt.registerLazySingleton<GetStorage>( () => GetStorage());
+    getIt.registerLazySingleton<Connectivity>( () => Connectivity());
 
     // - - - - - - - - - - - - - - - - - - REPOSITORIES - - - - - - - - - - - - - - - - - -  //
-    getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
-    getIt.registerSingleton<UserRepository>(UserRepositoryImpl());
+    getIt.registerLazySingleton<AuthRepository>( () => AuthRepositoryImpl());
+    getIt.registerLazySingleton<UserRepository>( () => UserRepositoryImpl());
 
     // - - - - - - - - - - - - - - - - - - CUBITS - - - - - - - - - - - - - - - - - -  //
-    getIt.registerSingleton<RegisterCubit>(RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
-    getIt.registerSingleton<LoginCubit>(LoginCubit(authRepository: getIt()));
-    getIt.registerSingleton<ForgetPasswordCubit>(ForgetPasswordCubit());
+    getIt.registerLazySingleton<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
+    getIt.registerLazySingleton<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
+    getIt.registerLazySingleton<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
 
   }
 

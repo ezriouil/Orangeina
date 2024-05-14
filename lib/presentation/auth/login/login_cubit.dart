@@ -2,11 +2,17 @@ import 'package:berkania/domain/repositories/auth_repository.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
+import 'package:berkania/utils/local/storage/local_storage.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get_storage/get_storage.dart';
 
+import '../../../domain/entities/userEntity.dart';
+import '../../../domain/repositories/user_repository.dart';
+import '../../../utils/helpers/network.dart';
 import '../../../utils/localisation/custom_locale.dart';
 
 part 'login_state.dart';
@@ -16,7 +22,11 @@ class LoginCubit extends Cubit<LoginState> {
   final FlutterLocalization localization = FlutterLocalization.instance;
 
   final AuthRepository authRepository;
-  LoginCubit({required this.authRepository}) : super(LoginCurrentState()){  init(); }
+  final UserRepository userRepository;
+  final GetStorage storage;
+  final Connectivity connectivity;
+
+  LoginCubit({required this.authRepository, required this.userRepository, required this.storage, required this.connectivity}) : super(LoginCurrentState()){  init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async {
@@ -26,22 +36,59 @@ class LoginCubit extends Cubit<LoginState> {
         passwordVisible: false,
         arabicLang:  false,
         frenchLang: false,
-        englishLang: true,
+        englishLang:  false,
         formState: GlobalKey<FormState>()));
+    final String lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.EN;
+    final LoginCurrentState currentState = (state as LoginCurrentState);
+    emit(currentState.copyWith(
+      frenchLang: lang == CustomLocale.FR ? true : false,
+      arabicLang: lang == CustomLocale.AR ? true : false,
+      englishLang: lang == CustomLocale.EN ? true : false,
+    ));
   }
 
   // - - - - - - - - - - - - - - - - - - LOGIN WITH EMAIL AND PASSWORD - - - - - - - - - - - - - - - - - -  //
-  onLogin() async{
+  onLogin({required Function callBack}) async{
     try{
 
-      // // REGISTER USER INFO INTO FIRESTORE
-      // final UserCredential userCredential = await authRepository.register(email: "MohamedEzriouil@gmail.com", password: "Mohamed2024");
-      //
-      // print("+++++++++");
-      // print(userCredential.user?.uid ?? "Doesn't work");
-      // print("+++++++++");
 
+      // CURRENT STATE
+      final LoginCurrentState currentState = (state as LoginCurrentState);
 
+      // CHECK THE FORM
+      if(!currentState.formState!.currentState!.validate()){
+        /*SHOW SNACK BAR*/
+        return;
+      }
+
+      // CHECK CONNECTION INTERNET
+      final hasConnection = await Network.hasConnection(connectivity);
+      if(!hasConnection){
+        /*SHOW SNACK BAR*/
+        return;
+      }
+
+      // EMIT LOADING STATE
+      emit(LoginLoadingState());
+
+      // CALL LOGIN METHODE
+      final UserCredential userCredential = await authRepository.login(
+          email: currentState.emailController!.text.trim(),
+          password: currentState.passwordController!.text.trim()
+      );
+
+      if(userCredential.user == null){
+        emit(LoginErrorState(message: "Invalid Login"));
+        return;
+      }
+
+      // CLEAR TEXT FIELDS
+      currentState.emailController!.clear();
+      currentState.passwordController!.clear();
+
+      // NAVIGATE TO HOME SCREEN
+      emit(currentState);
+      callBack.call();
 
     }catch(e){
 
@@ -51,8 +98,19 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  // - - - - - - - - - - - - - - - - - - TRANSLATION - - - - - - - - - - - - - - - - - -  //
-  onShowDialog({ required BuildContext context, required LoginCurrentState state }) async{
+  // - - - - - - - - - - - - - - - - - - UPDATE PASSWORD VISIBILITY - - - - - - - - - - - - - - - - - -  //
+  void onUpdatePasswordVisibility(){
+    bool newValue = (state as LoginCurrentState).passwordVisible!;
+    final LoginCurrentState updateState = (state as LoginCurrentState).copyWith(passwordVisible: newValue = !newValue);
+    emit(updateState);
+  }
+
+  // - - - - - - - - - - - - - - - - - - SHOW DIALOG LANGUAGES - - - - - - - - - - - - - - - - - -  //
+  onUpdateLanguage({ required BuildContext context, required Function callBack }) async{
+
+    final LoginCurrentState currentState = (state as LoginCurrentState);
+    String langSelected = "";
+
     await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -76,12 +134,13 @@ class LoginCubit extends Cubit<LoginState> {
                         // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
                         Checkbox(
                             visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
-                            value: state.arabicLang,
-                            onChanged: (value) {
-                              if(!state.arabicLang!){
+                            value: currentState.arabicLang,
+                            onChanged: (value) async{
+                              if(!currentState.arabicLang!){
+                                langSelected = CustomLocale.AR;
                                 localization.translate(CustomLocale.AR);
-                                emit(state.copyWith(arabicLang: true, frenchLang: false, englishLang: false));
-                                context.pop();
+                                emit(currentState.copyWith(arabicLang: true, frenchLang: false, englishLang: false));
+                                callBack.call();
                               }
                             }),
                       ]),
@@ -99,12 +158,13 @@ class LoginCubit extends Cubit<LoginState> {
                         // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
                         Checkbox(
                             visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
-                            value: state.frenchLang,
-                            onChanged: (value) {
-                              if(!state.frenchLang!){
+                            value: currentState.frenchLang,
+                            onChanged: (value) async{
+                              if(!currentState.frenchLang!){
+                                langSelected = CustomLocale.FR;
                                 localization.translate(CustomLocale.FR);
-                                emit(state.copyWith(frenchLang: true, arabicLang: false, englishLang: false));
-                                context.pop();
+                                emit(currentState.copyWith(frenchLang: true, arabicLang: false, englishLang: false));
+                                callBack.call();
                               }
                             }),
                       ]),
@@ -122,12 +182,13 @@ class LoginCubit extends Cubit<LoginState> {
                         // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
                         Checkbox(
                             visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
-                            value: state.englishLang,
-                            onChanged: (value) {
-                              if(!state.englishLang!){
+                            value: currentState.englishLang,
+                            onChanged: (value) async{
+                              if(!currentState.englishLang!){
+                                langSelected = CustomLocale.EN;
                                 localization.translate(CustomLocale.EN);
-                                emit(state.copyWith(englishLang: true, arabicLang: false, frenchLang: false));
-                                context.pop();
+                                emit(currentState.copyWith(englishLang: true, arabicLang: false, frenchLang: false));
+                                callBack.call();
                               }
                             }),
                       ]),
@@ -136,6 +197,54 @@ class LoginCubit extends Cubit<LoginState> {
             ),
           );
         });
+
+    if(langSelected == "") return;
+    await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: storage);
+  }
+
+  // - - - - - - - - - - - - - - - - - - LOGIN WITH GOOGLE - - - - - - - - - - - - - - - - - -  //
+  void loginWithGoogle({ required Function callBack }) async{
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection){
+      /*SHOW SNACK BAR*/
+      return;
+    }
+
+    // CALL LOGIN METHODE
+    final UserCredential userCredential = await authRepository.loginWithGoogle();
+
+    if(userCredential.user == null){
+      emit(LoginErrorState(message: "Invalid Login"));
+      return;
+    }
+
+    // CHECK THE USER HIS INFO ALREADY EXIST OR NOT
+    final bool result = await userRepository.isExist(userId: userCredential.user!.uid);
+    if(!result){
+      // SAVE USER DATA
+      final UserEntity userEntity = UserEntity(
+          id: userCredential.user?.uid,
+          firstName: userCredential.user?.displayName?.split(" ").first,
+          lastName: userCredential.user?.displayName?.split(" ").last,
+          avatar: userCredential.user?.photoURL,
+          email: userCredential.user?.email,
+          phoneNumber: userCredential.user?.phoneNumber,
+          type: "CLIENT",
+          createAt: DateTime.now().toString()
+      );
+      await userRepository.saveUserInfo(userEntity: userEntity);
+
+      // SAVE EMAIL + PASSWORD INTO LOCAL
+      await LocalStorage.upsert(key: "UID", value: userEntity.id, storage: storage);
+      await LocalStorage.upsert(key: "EMAIL", value: userEntity.email, storage: storage);
+    }
+
+    // NAVIGATE TO HOME SCREEN
+    emit((state as LoginCurrentState));
+    callBack.call();
+
   }
 
 }

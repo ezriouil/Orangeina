@@ -74,18 +74,15 @@ class LoginScreen extends CustomState {
                           // - - - - - - - - - - - - - - - - - - PASSWORD - - - - - - - - - - - - - - - - - -  //
                           CustomTextField(
                             leadingIcon: Iconsax.password_check,
-                            controller: TextEditingController() /*controller.passwordController*/,
+                            controller: state.passwordController!,
                             validator: (value) => Validator.validatePasswordField(CustomLocale.PASSWORD_VALIDATOR.getString(context), value),
                             hint: CustomLocale.PASSWORD.getString(context),
                             textInputType: TextInputType.visiblePassword,
-                            obscureText: false /*controller.passwordObscure.value*/ ,
-                            trailingIcon: Icon(Iconsax.eye, color: darkLightColor(context)) /*InkWell(
-                      onTap: () => {controller.passwordObscure.value = !controller.passwordObscure.value},
-                      borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-                      child: Icon(
-                          controller.passwordObscure.value ? Iconsax.eye_slash : Iconsax.eye,
-                          color: grayColor(context)),
-                    )*/ ,
+                            obscureText: state.passwordVisible!  ,
+                              trailingIcon: InkWell(
+                                  onTap: context.read<LoginCubit>().onUpdatePasswordVisibility,
+                                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                  child: Icon(state.passwordVisible! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context)))
                           ),
 
                           // - - - - - - - - - - - - - - - - - - FORGET THE PASSWORD - - - - - - - - - - - - - - - - - -  //
@@ -96,7 +93,9 @@ class LoginScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON LOGIN - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                            onClick: (){}/*controller.onLogin*/,
+                            onClick: (){ context.read<LoginCubit>().onLogin( callBack : (){
+                              context.pushReplacement(CustomRouter.HOME);
+                            }); },
                             width: getWidth(context),
                             withDefaultPadding: false,
                             child: Text(CustomLocale.LOGIN_LOGIN.getString(context)),
@@ -128,7 +127,7 @@ class LoginScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON GOOGLE - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                              onClick: () {},
+                              onClick: () {context.read<LoginCubit>().loginWithGoogle(callBack: (){ context.pushReplacement(CustomRouter.HOME); } );},
                               height: 74,
                               withDefaultPadding: false,
                               backgroundColor: darkLightColor(context),
@@ -143,7 +142,7 @@ class LoginScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON TRANSLATION - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                              onClick: () { context.read<LoginCubit>().onShowDialog(context: context, state: state); },
+                              onClick: () { context.read<LoginCubit>().onUpdateLanguage(context: context, callBack: (){ context.pop(); } ); },
                               height: 76,
                               withDefaultPadding: false,
                               backgroundColor: darkLightColor(context),

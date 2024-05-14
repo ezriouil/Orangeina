@@ -35,23 +35,27 @@ class RegisterCubit extends Cubit<RegisterState> {
   }
 
   // - - - - - - - - - - - - - - - - - - CREATE ACCOUNT WITH EMAIL AND PASSWORD - - - - - - - - - - - - - - - - - -  //
-  Future<void> onCreateNewAccount({required RegisterCurrentState state, required Function callBack}) async{
+  Future<void> onCreateNewAccount({required Function callBack}) async{
     try{
 
+
+      // CURRENT STATE
+      final RegisterCurrentState currentState = (state as RegisterCurrentState);
+
       // CHECK THE FORM
-      if(!state.formState!.currentState!.validate()){
+      if(!currentState.formState!.currentState!.validate()){
         /*SHOW SNACK BAR*/
         return;
       }
 
       // COMPARE PASSWORDS
-      if(state.passwordController!.text.trim().toLowerCase() != state.confirmPasswordController!.text.trim().toLowerCase()){
+      if(currentState.passwordController!.text.trim().toLowerCase() != currentState.confirmPasswordController!.text.trim().toLowerCase()){
         /*SHOW SNACK BAR*/
         return;
       }
 
       // CHECKBOX
-      if(!state.checkbox!){
+      if(!currentState.checkbox!){
         /*SHOW SNACK BAR*/
         return;
       }
@@ -68,8 +72,8 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       // REGISTER USER INFO INTO FIRESTORE
       final UserCredential userCredential = await authRepository.register(
-          email: state.emailController!.text.trim(),
-          password: state.passwordController!.text.trim()
+          email: currentState.emailController!.text.trim(),
+          password: currentState.passwordController!.text.trim()
       );
 
       if(userCredential.user == null){
@@ -80,10 +84,10 @@ class RegisterCubit extends Cubit<RegisterState> {
       // SAVE USER DATA
       final UserEntity userEntity = UserEntity(
         id: userCredential.user?.uid,
-        firstName: state.firstNameController?.text,
-        lastName: state.firstNameController?.text,
+        firstName: currentState.firstNameController?.text,
+        lastName: currentState.firstNameController?.text,
         avatar: "",
-        email: state.emailController?.text,
+        email: currentState.emailController?.text,
         phoneNumber: "",
         type: "CLIENT",
         createAt: DateTime.now().toString()
@@ -93,17 +97,17 @@ class RegisterCubit extends Cubit<RegisterState> {
       // SAVE EMAIL + PASSWORD INTO LOCAL
       await LocalStorage.upsert(key: "UID", value: userEntity.id, storage: storage);
       await LocalStorage.upsert(key: "EMAIL", value: userEntity.email, storage: storage);
-      await LocalStorage.upsert(key: "PASSWORD", value: state.passwordController?.text, storage: storage);
+      await LocalStorage.upsert(key: "PASSWORD", value: currentState.passwordController?.text, storage: storage);
 
       // CLEAR TEXT FIELDS
-      state.firstNameController!.clear();
-      state.lastNameController!.clear();
-      state.emailController!.clear();
-      state.passwordController!.clear();
-      state.confirmPasswordController!.clear();
+      currentState.firstNameController!.clear();
+      currentState.lastNameController!.clear();
+      currentState.emailController!.clear();
+      currentState.passwordController!.clear();
+      currentState.confirmPasswordController!.clear();
 
       // NAVIGATE TO HOME SCREEN
-      emit(state);
+      emit(currentState);
       callBack.call();
 
     }catch(e){
@@ -118,14 +122,16 @@ class RegisterCubit extends Cubit<RegisterState> {
   void onCreateNewAccountWithGoogle() {}
 
   // - - - - - - - - - - - - - - - - - - UPDATE CHECKBOX - - - - - - - - - - - - - - - - - -  //
-  void onUpdateCheckbox(RegisterCurrentState state, bool? value) {
-    emit(state.copyWith(checkbox: value));
+  void onUpdateCheckbox(bool? value) {
+    final RegisterCurrentState updateState = (state as RegisterCurrentState).copyWith(checkbox: value);
+      emit(updateState);
   }
 
   // - - - - - - - - - - - - - - - - - - UPDATE PASSWORD VISIBILITY - - - - - - - - - - - - - - - - - -  //
-  void onUpdatePasswordVisibility(RegisterCurrentState state){
-    bool newValue = state.passwordVisible ?? false;
-    emit(state.copyWith(passwordVisible: newValue = !newValue));
+  void onUpdatePasswordVisibility(){
+    bool newValue = (state as RegisterCurrentState).passwordVisible!;
+    final RegisterCurrentState updateState = (state as RegisterCurrentState).copyWith(passwordVisible: newValue = !newValue);
+    emit(updateState);
   }
 
 }

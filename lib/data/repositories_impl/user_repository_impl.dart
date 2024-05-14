@@ -13,4 +13,11 @@ class UserRepositoryImpl extends UserRepository {
     await _firestore.collection("USERS").doc(userEntity.id).set(userEntity.toJson());
   }
 
+  // - - - - - - - - - - - - - - - - - - OVERRIDE IS EXIST METHODE - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<bool> isExist({required String userId}) async{
+    final result = await _firestore.collection("USERS").doc(userId).get();
+    return result.exists;
+  }
+
 }

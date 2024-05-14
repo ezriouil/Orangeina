@@ -3,7 +3,7 @@ class Validator {
 
   static String? validateEmptyField(String fieldName, String? value) {
     if (value == null || value.isEmpty || value.length < 2) {
-      return fieldName;
+      return "fieldName";
     }
     return null;
   }

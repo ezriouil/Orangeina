@@ -1,5 +1,6 @@
 import 'package:berkania/domain/repositories/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   // - - - - - - - - - - - - - - - - - - CREATE INSTANCES - - - - - - - - - - - - - - - - - -  //
@@ -21,8 +22,22 @@ class AuthRepositoryImpl extends AuthRepository {
 
   // - - - - - - - - - - - - - - - - - - OVERRIDE FORGET PASSWORD METHODE - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<UserCredential> forgetPassword({required String email}) async {
-    // TODO: implement forgetPassword
-    throw UnimplementedError();
+  Future<void> forgetPassword({required String email}) async {
+    return await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  // - - - - - - - - - - - - - - - - - - OVERRIDE LOGIN WITH GOOGLE METHODE - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<UserCredential> loginWithGoogle() async{
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

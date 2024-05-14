@@ -2,6 +2,8 @@ import 'package:berkania/dependency_injection.dart';
 import 'package:berkania/presentation/auth/forget_password/forget_password_cubit.dart';
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
 import 'package:berkania/presentation/auth/register/register_cubit.dart';
+import 'package:berkania/presentation/home/home_cubit.dart';
+import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:berkania/utils/theme/theme_app.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -59,6 +61,7 @@ class _IndexState extends State<Index> {
           BlocProvider(create: (_) => DependencyInjection.getIt<RegisterCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<LoginCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<ForgetPasswordCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<HomeCubit>()),
         ],
         child: MaterialApp.router(
             themeMode: ThemeMode.system,
