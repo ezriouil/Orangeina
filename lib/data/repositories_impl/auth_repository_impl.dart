@@ -7,13 +7,7 @@ class AuthRepositoryImpl extends AuthRepository {
 
   // - - - - - - - - - - - - - - - - - - OVERRIDE REGISTER METHODE - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<UserCredential> register({
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String password,
-    required String confirmPassword,
-  }) async {
+  Future<UserCredential> register({ required String email, required String password }) async {
 
     return await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
 

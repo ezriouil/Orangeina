@@ -137,13 +137,13 @@ class LoginScreen extends CustomState {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Image.asset(CustomImageStrings.ICON_GOOGLE, width: 18, height: 18),
-                                  Text("   ${CustomLocale.LOGIN_LOGIN_WITH_GOOGLE.getString(context)}", style: Theme.of(context).textTheme.titleMedium?.copyWith(color: darkDarkLightLightColor(context), letterSpacing: 1))
+                                  Text("  ${CustomLocale.LOGIN_LOGIN_WITH_GOOGLE.getString(context)}", style: Theme.of(context).textTheme.titleMedium?.copyWith(color: darkDarkLightLightColor(context), letterSpacing: 1))
                                 ],
                               )),
 
                           // - - - - - - - - - - - - - - - - - - BUTTON TRANSLATION - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                              onClick: () {},
+                              onClick: () { context.read<LoginCubit>().onShowDialog(context: context, state: state); },
                               height: 76,
                               withDefaultPadding: false,
                               backgroundColor: darkLightColor(context),
@@ -151,10 +151,12 @@ class LoginScreen extends CustomState {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Image.asset(CustomImageStrings.FLAG_ENGLAND, width: 20, height: 20),
-                                  Text("   ${CustomLocale.LOGIN_CHANGE_THE_LANGUAGE.getString(context)}", style: Theme.of(context).textTheme.titleMedium?.copyWith(color: darkDarkLightLightColor(context), letterSpacing: 1))
+                                  Image.asset(state.englishLang! ? CustomImageStrings.FLAG_ENGLAND : state.frenchLang! ? CustomImageStrings.FLAG_FRANCE :CustomImageStrings.FLAG_MOROCCO , width: 20, height: 20),
+                                  Text("  ${CustomLocale.LOGIN_CHANGE_THE_LANGUAGE.getString(context)}", style: Theme.of(context).textTheme.titleMedium?.copyWith(color: darkDarkLightLightColor(context), letterSpacing: 1))
                                 ],
-                              ))
+                              )),
+                          // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
                         ],
                       )),
                 );

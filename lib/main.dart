@@ -18,10 +18,6 @@ void main() async {
   // - - - - - - - - - - - - - - - - - - INIT FIREBASE - - - - - - - - - - - - - - - - - -  //
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // - - - - - - - - - - - - - - - - - - FLUTTER LOCALISATION - - - - - - - - - - - - - - - - - -  //
-  final FlutterLocalization localization = FlutterLocalization.instance;
-  await localization.init(mapLocales: CustomLocale.LOCALS, initLanguageCode: CustomLocale.EN);
-
   // - - - - - - - - - - - - - - - - - - DI - - - - - - - - - - - - - - - - - -  //
   DependencyInjection.setup();
 
@@ -29,13 +25,32 @@ void main() async {
   await GetStorage.init();
 
   // - - - - - - - - - - - - - - - - - - RUN APP - - - - - - - - - - - - - - - - - -  //
-  runApp(Index(localization: localization));
+  runApp(const Index());
 }
 
-class Index extends StatelessWidget {
-  final FlutterLocalization localization;
+class Index extends StatefulWidget {
 
-  const Index({super.key, required this.localization});
+  const Index({super.key});
+
+  @override
+  State<Index> createState() => _IndexState();
+}
+
+class _IndexState extends State<Index> {
+
+  final FlutterLocalization localization = FlutterLocalization.instance;
+
+  @override
+  void initState() {
+    initLocalization();
+    super.initState();
+  }
+
+  // - - - - - - - - - - - - - - - - - - INIT LOCALISATION - - - - - - - - - - - - - - - - - -  //
+  initLocalization() async{
+    await localization.init(mapLocales: CustomLocale.LOCALS, initLanguageCode: CustomLocale.EN);
+    localization.onTranslatedLanguage = (Locale? locale) { setState(() {}); };
+  }
 
   @override
   Widget build(BuildContext context) {
