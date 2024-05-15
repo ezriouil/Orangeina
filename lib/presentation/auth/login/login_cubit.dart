@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/repositories/auth_repository.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
@@ -14,6 +15,7 @@ import '../../../domain/entities/userEntity.dart';
 import '../../../domain/repositories/user_repository.dart';
 import '../../../utils/helpers/network.dart';
 import '../../../utils/localisation/custom_locale.dart';
+import '../../widgets/custom_snackbars.dart';
 
 part 'login_state.dart';
 
@@ -48,9 +50,8 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   // - - - - - - - - - - - - - - - - - - LOGIN WITH EMAIL AND PASSWORD - - - - - - - - - - - - - - - - - -  //
-  onLogin({required Function callBack}) async{
+  onLogin({required BuildContext context, required Function callBack}) async{
     try{
-
 
       // CURRENT STATE
       final LoginCurrentState currentState = (state as LoginCurrentState);
@@ -64,7 +65,7 @@ class LoginCubit extends Cubit<LoginState> {
       // CHECK CONNECTION INTERNET
       final hasConnection = await Network.hasConnection(connectivity);
       if(!hasConnection){
-        /*SHOW SNACK BAR*/
+        CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
         return;
       }
 
@@ -95,6 +96,55 @@ class LoginCubit extends Cubit<LoginState> {
       // EMIT ERROR STATE
       emit(LoginErrorState(message: e.toString()));
 
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - LOGIN WITH GOOGLE - - - - - - - - - - - - - - - - - -  //
+  void loginWithGoogle({ required BuildContext context, required Function callBack }) async{
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
+    // CALL LOGIN METHODE
+    final UserCredential userCredential = await authRepository.loginWithGoogle();
+    try{
+      if(userCredential.user == null){
+        emit(LoginErrorState(message: "Invalid Login"));
+        return;
+      }
+
+      // CHECK THE USER HIS INFO ALREADY EXIST OR NOT
+      final bool result = await userRepository.isExist(userId: userCredential.user!.uid);
+      if(!result){
+        // SAVE USER DATA
+        final UserEntity userEntity = UserEntity(
+            id: userCredential.user?.uid,
+            firstName: userCredential.user?.displayName?.split(" ").first,
+            lastName: userCredential.user?.displayName?.split(" ").last,
+            avatar: userCredential.user?.photoURL,
+            email: userCredential.user?.email,
+            phoneNumber: userCredential.user?.phoneNumber,
+            type: "CLIENT",
+            createAt: DateTime.now().toString()
+        );
+        await userRepository.saveUserInfo(userEntity: userEntity);
+
+        // SAVE EMAIL + PASSWORD INTO LOCAL
+        await LocalStorage.upsert(key: "UID", value: userEntity.id, storage: storage);
+        await LocalStorage.upsert(key: "EMAIL", value: userEntity.email, storage: storage);
+      }
+
+      // NAVIGATE TO HOME SCREEN
+      emit((state as LoginCurrentState));
+      callBack.call();
+
+    }catch(e){
+      // EMIT ERROR STATE
+      emit(LoginErrorState(message: "Cannot login with this email"));
     }
   }
 
@@ -202,49 +252,11 @@ class LoginCubit extends Cubit<LoginState> {
     await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: storage);
   }
 
-  // - - - - - - - - - - - - - - - - - - LOGIN WITH GOOGLE - - - - - - - - - - - - - - - - - -  //
-  void loginWithGoogle({ required Function callBack }) async{
-
-    // CHECK CONNECTION INTERNET
-    final hasConnection = await Network.hasConnection(connectivity);
-    if(!hasConnection){
-      /*SHOW SNACK BAR*/
-      return;
-    }
-
-    // CALL LOGIN METHODE
-    final UserCredential userCredential = await authRepository.loginWithGoogle();
-
-    if(userCredential.user == null){
-      emit(LoginErrorState(message: "Invalid Login"));
-      return;
-    }
-
-    // CHECK THE USER HIS INFO ALREADY EXIST OR NOT
-    final bool result = await userRepository.isExist(userId: userCredential.user!.uid);
-    if(!result){
-      // SAVE USER DATA
-      final UserEntity userEntity = UserEntity(
-          id: userCredential.user?.uid,
-          firstName: userCredential.user?.displayName?.split(" ").first,
-          lastName: userCredential.user?.displayName?.split(" ").last,
-          avatar: userCredential.user?.photoURL,
-          email: userCredential.user?.email,
-          phoneNumber: userCredential.user?.phoneNumber,
-          type: "CLIENT",
-          createAt: DateTime.now().toString()
-      );
-      await userRepository.saveUserInfo(userEntity: userEntity);
-
-      // SAVE EMAIL + PASSWORD INTO LOCAL
-      await LocalStorage.upsert(key: "UID", value: userEntity.id, storage: storage);
-      await LocalStorage.upsert(key: "EMAIL", value: userEntity.email, storage: storage);
-    }
-
-    // NAVIGATE TO HOME SCREEN
-    emit((state as LoginCurrentState));
-    callBack.call();
-
+  // - - - - - - - - - - - - - - - - - - TRY AGAIN BUTTON IN ERROR STATE - - - - - - - - - - - - - - - - - -  //
+  void onTryAgain() async{
+    emit(LoginLoadingState());
+    await Future.delayed(const Duration(milliseconds: 1000));
+    init();
   }
 
 }

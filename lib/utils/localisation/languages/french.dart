@@ -11,6 +11,13 @@ class French{
     CustomLocale.EMAIL_VALIDATOR: "E-mail requis",
     CustomLocale.PASSWORD_VALIDATOR: "Mot de passe requis",
     CustomLocale.OR: "Ou",
+    CustomLocale.LOADING_TITLE: "S'il vous plaît, attendez",
+    CustomLocale.LOADING_SUB_TITLE: "Nous traitons vos informations et cela peut prendre quelques secondes, veuillez patienter.",
+    CustomLocale.ERROR_TITLE: "",
+    CustomLocale.ERROR_SUB_TITLE: "",
+    CustomLocale.ERROR_BUTTON_TITLE: "Essayer à nouveau",
+    CustomLocale.NETWORK_TITLE: "Pas de connexion réseau",
+    CustomLocale.NETWORK_SUB_TITLE: "Assurez-Vous Que Votre Appareil Est Connecté Au Réseau",
 
     // - - - - - - - - - - - - - - - - - - LOGIN SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.LOGIN_TITLE: "Bienvenu encore,",
@@ -31,11 +38,17 @@ class French{
     CustomLocale.REGISTER_PRIVACY_POLICY: "politique de confidentialité",
     CustomLocale.REGISTER_CREATE_ACCOUNT: "Créer un compte",
     CustomLocale.REGISTER_WITH_GOOGLE: "S'inscrire sur Google",
+    CustomLocale.REGISTER_CHECK_BOX_TITLE_ERROR: "Cochez La Case",
+    CustomLocale.REGISTER_PASSWORD_NOT_MATCHED_TITLE_ERROR: "Ne Correspondant Pas",
+    CustomLocale.REGISTER_CHECK_BOX_SUB_TITLE_ERROR: "Vous Devez Cocher La Case Pour Continuer",
+    CustomLocale.REGISTER_PASSWORD_NOT_MATCHED_SUB_TITLE_ERROR: "Les Mots De Passe Doivent Être Les Mêmes",
 
     // - - - - - - - - - - - - - - - - - - FORGET PASSWORD SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FORGET_PASSOWRD_TITLE: "Mot de passe oublié",
     CustomLocale.FORGET_PASSOWRD_SUB_TITLE: "Ne vous inquiétez pas, parfois les gens peuvent oublier de le faire, entrez votre adresse e-mail et nous vous enverrons un lien de réinitialisation du mot de passe.",
     CustomLocale.FORGET_PASSOWRD_SEND: "Envoyer",
+    CustomLocale.FORGET_PASSOWRD_EMAIL_TITLE_INVALID: "Email Invalide",
+    CustomLocale.FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID: "E-mail Doit Comporter Au Moins 6 Caractères Et @",
 
   };
 }

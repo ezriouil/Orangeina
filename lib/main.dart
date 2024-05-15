@@ -3,14 +3,15 @@ import 'package:berkania/presentation/auth/forget_password/forget_password_cubit
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
 import 'package:berkania/presentation/auth/register/register_cubit.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
-import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:berkania/utils/theme/theme_app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_storage/get_storage.dart';
+
 import 'firebase_options.dart';
 import 'utils/localisation/custom_locale.dart';
 
@@ -25,6 +26,9 @@ void main() async {
 
   // - - - - - - - - - - - - - - - - - - INIT LOCAL STORAGE - - - - - - - - - - - - - - - - - -  //
   await GetStorage.init();
+
+  // - - - - - - - - - - - - - - - - - - HIDE THE TOP STATUS BAR AND SYSTEM BOTTOM BAR - - - - - - - - - - - - - - - - - -  //
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   // - - - - - - - - - - - - - - - - - - RUN APP - - - - - - - - - - - - - - - - - -  //
   runApp(const Index());

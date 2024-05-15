@@ -5,6 +5,7 @@ import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/presentation/auth/forget_password/forget_password_cubit.dart';
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
 import 'package:berkania/presentation/auth/register/register_cubit.dart';
+import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
@@ -28,6 +29,7 @@ class DependencyInjection{
     getIt.registerLazySingleton<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
     getIt.registerLazySingleton<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
     getIt.registerLazySingleton<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
+    getIt.registerLazySingleton<HomeCubit>( () => HomeCubit());
 
   }
 

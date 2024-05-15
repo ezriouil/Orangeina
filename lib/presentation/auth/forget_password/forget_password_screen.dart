@@ -10,6 +10,8 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/localisation/custom_locale.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/custom_error_screen.dart';
+import '../../widgets/custom_loading_screen.dart';
 import '../../widgets/custom_text_field.dart';
 
 class ForgetPasswordScreen extends CustomState {
@@ -72,7 +74,7 @@ class ForgetPasswordScreen extends CustomState {
 
                         // - - - - - - - - - - - - - - - - - - BUTTON - - - - - - - - - - - - - - - - - -  //
                         CustomElevatedButton(
-                          onClick: () { context.read<ForgetPasswordCubit>().onSend(callBack: (){ context.pop(); }); },
+                          onClick: () { context.read<ForgetPasswordCubit>().onSend(context: context, callBack: (){ context.pop(); }); },
                           width: getWidth(context),
                           child: Text(CustomLocale.FORGET_PASSOWRD_SEND.getString(context)),
                         ),
@@ -84,11 +86,11 @@ class ForgetPasswordScreen extends CustomState {
               }
             case ForgetPasswordLoadingState():
               {
-                return Center(child: CircularProgressIndicator(color: primaryColor(context)));
+                return const CustomLoadingScreen();
               }
             case ForgetPasswordErrorState():
               {
-                return Center(child: Text(state.message, style: Theme.of(context).textTheme.bodyMedium, textAlign: TextAlign.center));
+                return CustomErrorScreen(onClick: context.read<ForgetPasswordCubit>().onTryAgain);
               }
           }
         },

@@ -14,4 +14,7 @@ abstract class AuthRepository {
   // - - - - - - - - - - - - - - - - - - FORGET PASSWORD - - - - - - - - - - - - - - - - - -  //
   Future<void> forgetPassword({required String email});
 
+  // - - - - - - - - - - - - - - - - - - SIGN OUT - - - - - - - - - - - - - - - - - -  //
+  Future<void> signOut();
+
 }

@@ -1,4 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
+import 'package:berkania/presentation/widgets/custom_error_screen.dart';
+import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
@@ -6,7 +9,6 @@ import 'package:berkania/utils/extensions/validator.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +16,7 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/state/custom_state.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/custom_snackbars.dart';
 import '../../widgets/custom_text_field.dart';
 
 class LoginScreen extends CustomState {
@@ -21,20 +24,17 @@ class LoginScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
-    // - - - - - - - - - - - - - - - - - - HIDE THE TOP STATUS BAR AND SYSTEM BOTTOM BAR - - - - - - - - - - - - - - - - - -  //
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
     return Scaffold(
       body: BlocBuilder<LoginCubit, LoginState>(
         builder: (context, state) {
           switch(state){
-
             case LoginCurrentState():
               {
                 return SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_DEFAULT),
                   child: Form(
-                    key: state.formState!,
+                      key: state.formState!,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -73,12 +73,12 @@ class LoginScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - PASSWORD - - - - - - - - - - - - - - - - - -  //
                           CustomTextField(
-                            leadingIcon: Iconsax.password_check,
-                            controller: state.passwordController!,
-                            validator: (value) => Validator.validatePasswordField(CustomLocale.PASSWORD_VALIDATOR.getString(context), value),
-                            hint: CustomLocale.PASSWORD.getString(context),
-                            textInputType: TextInputType.visiblePassword,
-                            obscureText: state.passwordVisible!  ,
+                              leadingIcon: Iconsax.password_check,
+                              controller: state.passwordController!,
+                              validator: (value) => Validator.validatePasswordField(CustomLocale.PASSWORD_VALIDATOR.getString(context), value),
+                              hint: CustomLocale.PASSWORD.getString(context),
+                              textInputType: TextInputType.visiblePassword,
+                              obscureText: state.passwordVisible!  ,
                               trailingIcon: InkWell(
                                   onTap: context.read<LoginCubit>().onUpdatePasswordVisibility,
                                   borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
@@ -93,9 +93,11 @@ class LoginScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON LOGIN - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                            onClick: (){ context.read<LoginCubit>().onLogin( callBack : (){
-                              context.pushReplacement(CustomRouter.HOME);
-                            }); },
+                            onClick: (){
+                              context.read<LoginCubit>().onLogin( context:context, callBack : (){
+                                CustomSnackBar.show(context: context, title: "New", subTitle: "New Sanck bar", type: ContentType.success);
+                                context.pushReplacement(CustomRouter.HOME);
+                              }); },
                             width: getWidth(context),
                             withDefaultPadding: false,
                             child: Text(CustomLocale.LOGIN_LOGIN.getString(context)),
@@ -127,7 +129,7 @@ class LoginScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON GOOGLE - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                              onClick: () {context.read<LoginCubit>().loginWithGoogle(callBack: (){ context.pushReplacement(CustomRouter.HOME); } );},
+                              onClick: () {context.read<LoginCubit>().loginWithGoogle(context: context, callBack: (){ context.pushReplacement(CustomRouter.HOME); } );},
                               height: 74,
                               withDefaultPadding: false,
                               backgroundColor: darkLightColor(context),
@@ -162,11 +164,11 @@ class LoginScreen extends CustomState {
               }
             case LoginLoadingState():
               {
-                return Center(child: CircularProgressIndicator(color: primaryColor(context)));
+                return const CustomLoadingScreen();
               }
             case LoginErrorState():
               {
-                return Center(child: Text(state.message, style: Theme.of(context).textTheme.bodyMedium));
+                return CustomErrorScreen(onClick: context.read<LoginCubit>().onTryAgain);
               }
           }
         },

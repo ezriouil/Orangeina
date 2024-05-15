@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
+
   // - - - - - - - - - - - - - - - - - - CREATE INSTANCES - - - - - - - - - - - - - - - - - -  //
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -20,12 +21,6 @@ class AuthRepositoryImpl extends AuthRepository {
     return await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  // - - - - - - - - - - - - - - - - - - OVERRIDE FORGET PASSWORD METHODE - - - - - - - - - - - - - - - - - -  //
-  @override
-  Future<void> forgetPassword({required String email}) async {
-    return await _firebaseAuth.sendPasswordResetEmail(email: email);
-  }
-
   // - - - - - - - - - - - - - - - - - - OVERRIDE LOGIN WITH GOOGLE METHODE - - - - - - - - - - - - - - - - - -  //
   @override
   Future<UserCredential> loginWithGoogle() async{
@@ -40,4 +35,17 @@ class AuthRepositoryImpl extends AuthRepository {
 
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
+
+  // - - - - - - - - - - - - - - - - - - OVERRIDE FORGET PASSWORD METHODE - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<void> forgetPassword({required String email}) async {
+    return await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  // - - - - - - - - - - - - - - - - - - SIGN OUT - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<void> signOut() async{
+    await _firebaseAuth.signOut();
+  }
+
 }

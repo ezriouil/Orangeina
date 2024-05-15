@@ -37,11 +37,17 @@ mixin CustomLocale{
   static const String REGISTER_PRIVACY_POLICY = "Privacy Policy";
   static const String REGISTER_CREATE_ACCOUNT = "Create account";
   static const String REGISTER_WITH_GOOGLE = "Register with Google";
+  static const String REGISTER_CHECK_BOX_TITLE_ERROR = "register check box title error";
+  static const String REGISTER_PASSWORD_NOT_MATCHED_TITLE_ERROR = "register password not matched title error";
+  static const String REGISTER_CHECK_BOX_SUB_TITLE_ERROR = "register check box sub title error";
+  static const String REGISTER_PASSWORD_NOT_MATCHED_SUB_TITLE_ERROR = "register password not matched sub title error";
 
   // - - - - - - - - - - - - - - - - - - FORGET PASSWORD SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String FORGET_PASSOWRD_TITLE = "Forget password";
   static const String FORGET_PASSOWRD_SUB_TITLE = "Don't worry sometimes people can forget too, entre your email and we will send you a password reset link.";
   static const String FORGET_PASSOWRD_EMAIL = "Email";
+  static const String FORGET_PASSOWRD_EMAIL_TITLE_INVALID = "Email invalid title";
+  static const String FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID = "Email invalid sub title";
   static const String FORGET_PASSOWRD_SEND = "Send";
 
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
@@ -50,5 +56,12 @@ mixin CustomLocale{
   static const String EMAIL_VALIDATOR = "Email Validator";
   static const String PASSWORD_VALIDATOR = "Password Validator";
   static const String OR = "Or";
+  static const String LOADING_TITLE = "loading_title";
+  static const String LOADING_SUB_TITLE = "loading_sub_title";
+  static const String ERROR_TITLE = "error_title";
+  static const String ERROR_SUB_TITLE = "error_sub_title";
+  static const String ERROR_BUTTON_TITLE = "error_button_title";
+  static const String NETWORK_TITLE = "title notwork";
+  static const String NETWORK_SUB_TITLE = "sub title notwork";
 
 }

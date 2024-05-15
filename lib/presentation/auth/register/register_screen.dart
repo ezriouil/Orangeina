@@ -11,8 +11,11 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/localisation/custom_locale.dart';
+import '../../../utils/router/custom_router.dart';
 import '../../../utils/state/custom_state.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/custom_error_screen.dart';
+import '../../widgets/custom_loading_screen.dart';
 import '../../widgets/custom_text_field.dart';
 
 class RegisterScreen extends CustomState {
@@ -160,7 +163,7 @@ class RegisterScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON REGISTER - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                            onClick: () { context.read<RegisterCubit>().onCreateNewAccount(callBack: context.pop); },
+                            onClick: () { context.read<RegisterCubit>().onCreateNewAccount(context: context, callBack: context.pop); },
                             width: getWidth(context),
                             withDefaultPadding: false,
                             child: Text(CustomLocale.REGISTER_CREATE_ACCOUNT.getString(context)),
@@ -183,7 +186,7 @@ class RegisterScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON GOOGLE - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                              onClick: context.read<RegisterCubit>().onCreateNewAccountWithGoogle,
+                              onClick: () {context.read<RegisterCubit>().onCreateNewAccountWithGoogle(context:context, callBack: (){ context.pushReplacement(CustomRouter.HOME); } );},
                               height: 74,
                               withDefaultPadding: false,
                               backgroundColor: darkLightColor(context),
@@ -204,11 +207,11 @@ class RegisterScreen extends CustomState {
               }
             case RegisterLoadingState():
               {
-                 return Center(child: CircularProgressIndicator(color: primaryColor(context)));
+                return const CustomLoadingScreen();
               }
             case RegisterErrorState():
               {
-                 return Center(child: Text(state.message, style: Theme.of(context).textTheme.bodyMedium, textAlign: TextAlign.center));
+                return CustomErrorScreen(onClick: context.read<RegisterCubit>().onTryAgain);
               }
           }
         },

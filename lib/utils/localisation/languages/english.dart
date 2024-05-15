@@ -11,6 +11,13 @@ class English {
     CustomLocale.EMAIL_VALIDATOR: "Email is required",
     CustomLocale.PASSWORD_VALIDATOR: "Password is required",
     CustomLocale.OR: "Or",
+    CustomLocale.LOADING_TITLE: "Please wait",
+    CustomLocale.LOADING_SUB_TITLE: "We are processing your information and it may take a few seconds, please wait.",
+    CustomLocale.ERROR_TITLE: "",
+    CustomLocale.ERROR_SUB_TITLE: "",
+    CustomLocale.ERROR_BUTTON_TITLE: "Try again",
+    CustomLocale.NETWORK_TITLE: "No Network Connection",
+    CustomLocale.NETWORK_SUB_TITLE: "Make Sure Your Device Is Connected To The Network",
 
     // - - - - - - - - - - - - - - - - - - LOGIN SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.LOGIN_TITLE: "Welcome back,",
@@ -34,11 +41,17 @@ class English {
     CustomLocale.REGISTER_PRIVACY_POLICY: "Privacy Policy",
     CustomLocale.REGISTER_CREATE_ACCOUNT: "Create account",
     CustomLocale.REGISTER_WITH_GOOGLE: "Register with Google",
+    CustomLocale.REGISTER_CHECK_BOX_TITLE_ERROR: "Check The Box",
+    CustomLocale.REGISTER_PASSWORD_NOT_MATCHED_TITLE_ERROR: "Password Not Matched",
+    CustomLocale.REGISTER_CHECK_BOX_SUB_TITLE_ERROR: "You Have Must Check The Box To Continue",
+    CustomLocale.REGISTER_PASSWORD_NOT_MATCHED_SUB_TITLE_ERROR: "The Passwords Must Be The Same",
 
     // - - - - - - - - - - - - - - - - - - FORGET PASSWORD SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FORGET_PASSOWRD_TITLE: "Forget password",
     CustomLocale.FORGET_PASSOWRD_SUB_TITLE: "Don't worry sometimes people can forget to, enter your email and we will send you a password reset link.",
     CustomLocale.FORGET_PASSOWRD_SEND: "Send",
+    CustomLocale.FORGET_PASSOWRD_EMAIL_TITLE_INVALID: "Invalid Email",
+    CustomLocale.FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID: "Email Must Be At Least 6 Characters And @",
 
   };
 }
