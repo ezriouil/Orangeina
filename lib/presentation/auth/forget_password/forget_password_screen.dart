@@ -57,7 +57,7 @@ class ForgetPasswordScreen extends CustomState {
                         const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS * 2),
 
                         // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
-                        SizedBox(width: getWidth(context), child: ClipRRect(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_SECTIONS), child: Image.asset(CustomImageStrings.SEND_EMAIL, height: 150, width: 150, color: primaryColor(context), colorBlendMode: BlendMode.color))),
+                        Center(child: ClipRRect(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS), child: Image.asset(CustomImageStrings.SEND_EMAIL, height: 150, width: 150, color: primaryColor(context), colorBlendMode: BlendMode.color))),
 
                         // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                         const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),

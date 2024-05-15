@@ -53,5 +53,10 @@ class English {
     CustomLocale.FORGET_PASSOWRD_EMAIL_TITLE_INVALID: "Invalid Email",
     CustomLocale.FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID: "Email Must Be At Least 6 Characters And @",
 
+    // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.INDEX_EXPLORE_TITLE: "Explore",
+    CustomLocale.INDEX_WISHLIST_TITLE: "Wishlist",
+    CustomLocale.INDEX_NOTIFICATION_TITLE: "Notification",
+    CustomLocale.INDEX_PROFILE_TITLE: "Profile",
   };
 }

@@ -50,5 +50,11 @@ class French{
     CustomLocale.FORGET_PASSOWRD_EMAIL_TITLE_INVALID: "Email Invalide",
     CustomLocale.FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID: "E-mail Doit Comporter Au Moins 6 Caractères Et @",
 
+    // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.INDEX_EXPLORE_TITLE: "Explorer",
+    CustomLocale.INDEX_WISHLIST_TITLE: "Souhaits",
+    CustomLocale.INDEX_NOTIFICATION_TITLE: "Notification",
+    CustomLocale.INDEX_PROFILE_TITLE: "Profil",
+
   };
 }

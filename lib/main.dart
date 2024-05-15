@@ -3,6 +3,10 @@ import 'package:berkania/presentation/auth/forget_password/forget_password_cubit
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
 import 'package:berkania/presentation/auth/register/register_cubit.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
+import 'package:berkania/presentation/index/index_cubit.dart';
+import 'package:berkania/presentation/notification/notification_cubit.dart';
+import 'package:berkania/presentation/profile/profile_cubit.dart';
+import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:berkania/utils/theme/theme_app.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,18 +35,18 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   // - - - - - - - - - - - - - - - - - - RUN APP - - - - - - - - - - - - - - - - - -  //
-  runApp(const Index());
+  runApp(const App());
 }
 
-class Index extends StatefulWidget {
+class App extends StatefulWidget {
 
-  const Index({super.key});
+  const App({super.key});
 
   @override
-  State<Index> createState() => _IndexState();
+  State<App> createState() => _IndexState();
 }
 
-class _IndexState extends State<Index> {
+class _IndexState extends State<App> {
 
   final FlutterLocalization localization = FlutterLocalization.instance;
 
@@ -65,7 +69,11 @@ class _IndexState extends State<Index> {
           BlocProvider(create: (_) => DependencyInjection.getIt<RegisterCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<LoginCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<ForgetPasswordCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<IndexCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<HomeCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<WishlistCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<NotificationCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<ProfileCubit>()),
         ],
         child: MaterialApp.router(
             themeMode: ThemeMode.system,

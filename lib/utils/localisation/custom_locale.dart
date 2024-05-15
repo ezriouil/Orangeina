@@ -50,6 +50,12 @@ mixin CustomLocale{
   static const String FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID = "Email invalid sub title";
   static const String FORGET_PASSOWRD_SEND = "Send";
 
+  // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
+  static const String INDEX_EXPLORE_TITLE = "Index Explore Title";
+  static const String INDEX_WISHLIST_TITLE= "Index Wishlist Title";
+  static const String INDEX_NOTIFICATION_TITLE = "Index Notification Title";
+  static const String INDEX_PROFILE_TITLE = "Index Profile Title";
+
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
   static const String EMAIL = "Email";
   static const String PASSWORD = "Password";

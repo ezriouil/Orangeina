@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../presentation/auth/register/register_screen.dart';
+import '../../presentation/index/index_screen.dart';
 
 class CustomRouter{
   CustomRouter._();
@@ -12,7 +13,7 @@ class CustomRouter{
 
   // - - - - - - - - - - - - - - - - - - CONFIG ROUTER - - - - - - - - - - - - - - - - - -  //
   static final GoRouter CONFIG_ROUTER = GoRouter(
-    initialLocation: LOGIN,
+    initialLocation: INDEX,
     routes: <RouteBase>[
 
       // - - -  LOGIN - - -  //
@@ -34,6 +35,13 @@ class CustomRouter{
           path: FORGET_PASSWORD,
           builder: (BuildContext context, GoRouterState state) => const ForgetPasswordScreen()),
 
+      // - - -  INDEX - - -  //
+      GoRoute(
+        name: INDEX,
+        path: INDEX,
+        builder: (BuildContext context, GoRouterState state) => const IndexScreen(),
+      ),
+
       // - - -  HOME - - -  //
       GoRoute(
           name: HOME,
@@ -48,6 +56,7 @@ class CustomRouter{
   static const String REGISTER = "/register";
   static const String LOGIN = "/login";
   static const String FORGET_PASSWORD = "/forget_password";
+  static const String INDEX = "/index";
   static const String HOME = "/home";
 
 }

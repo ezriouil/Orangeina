@@ -57,14 +57,11 @@ class LoginCubit extends Cubit<LoginState> {
       final LoginCurrentState currentState = (state as LoginCurrentState);
 
       // CHECK THE FORM
-      if(!currentState.formState!.currentState!.validate()){
-        /*SHOW SNACK BAR*/
-        return;
-      }
+      if(!currentState.formState!.currentState!.validate()) return;
 
       // CHECK CONNECTION INTERNET
       final hasConnection = await Network.hasConnection(connectivity);
-      if(!hasConnection){
+      if(!hasConnection && context.mounted){
         CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
         return;
       }

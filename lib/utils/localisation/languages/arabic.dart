@@ -53,5 +53,11 @@ class Arabic{
     CustomLocale.FORGET_PASSOWRD_EMAIL_TITLE_INVALID: "بريد إلكتروني خاطئ",
     CustomLocale.FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID: "يجب أن يتكون البريد الإلكتروني من 6 أحرف على الأقل و@",
 
+    // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.INDEX_EXPLORE_TITLE: "الرئيسي",
+    CustomLocale.INDEX_WISHLIST_TITLE: "الرغبات",
+    CustomLocale.INDEX_NOTIFICATION_TITLE: "الإشعارات",
+    CustomLocale.INDEX_PROFILE_TITLE: "الحساب",
+
   };
 }
