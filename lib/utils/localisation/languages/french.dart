@@ -56,5 +56,10 @@ class French{
     CustomLocale.INDEX_NOTIFICATION_TITLE: "Notification",
     CustomLocale.INDEX_PROFILE_TITLE: "Profil",
 
+    // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.HOME_PERMISSION_TITLE: "Autorisation Requise",
+    CustomLocale.HOME_PERMISSION_SUB_TITLE: "Pour Vous Offrir La Meilleure Expérience Utilisateur, Nous Avons Besoin De L'autorisation Des Services De Localisation",
+    CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "Activer",
+
   };
 }

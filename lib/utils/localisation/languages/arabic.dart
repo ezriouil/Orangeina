@@ -59,5 +59,10 @@ class Arabic{
     CustomLocale.INDEX_NOTIFICATION_TITLE: "الإشعارات",
     CustomLocale.INDEX_PROFILE_TITLE: "الحساب",
 
+    // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.HOME_PERMISSION_TITLE: "الإذن مطلوب",
+    CustomLocale.HOME_PERMISSION_SUB_TITLE: "لتزويدك بأفضل تجربة مستخدم، نحتاج إلى إذن من خدمات الموقع",
+    CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "سماح",
+
   };
 }

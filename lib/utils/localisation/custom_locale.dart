@@ -56,6 +56,12 @@ mixin CustomLocale{
   static const String INDEX_NOTIFICATION_TITLE = "Index Notification Title";
   static const String INDEX_PROFILE_TITLE = "Index Profile Title";
 
+  // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String HOME_PERMISSION_TITLE = "Home Permission Title";
+  static const String HOME_PERMISSION_SUB_TITLE = "Home Permission Sub Title";
+  static const String HOME_PERMISSION_BUTTON_ENABLE = "Home Permission Button Enable";
+
+
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
   static const String EMAIL = "Email";
   static const String PASSWORD = "Password";

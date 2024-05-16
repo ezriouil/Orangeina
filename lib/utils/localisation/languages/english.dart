@@ -58,5 +58,11 @@ class English {
     CustomLocale.INDEX_WISHLIST_TITLE: "Wishlist",
     CustomLocale.INDEX_NOTIFICATION_TITLE: "Notification",
     CustomLocale.INDEX_PROFILE_TITLE: "Profile",
+
+    // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.HOME_PERMISSION_TITLE: "Permission needed",
+    CustomLocale.HOME_PERMISSION_SUB_TITLE: "To serve you best user experience we need permission from location services",
+    CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "Enable",
+
   };
 }
