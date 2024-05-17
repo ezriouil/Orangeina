@@ -96,7 +96,7 @@ class LoginScreen extends CustomState {
                             onClick: (){
                               context.read<LoginCubit>().onLogin( context:context, callBack : (){
                                 CustomSnackBar.show(context: context, title: "New", subTitle: "New Sanck bar", type: ContentType.success);
-                                context.pushReplacement(CustomRouter.HOME);
+                                context.pushReplacement(CustomRouter.INDEX);
                               }); },
                             width: getWidth(context),
                             withDefaultPadding: false,
@@ -129,7 +129,7 @@ class LoginScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON GOOGLE - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                              onClick: () {context.read<LoginCubit>().loginWithGoogle(context: context, callBack: (){ context.pushReplacement(CustomRouter.HOME); } );},
+                              onClick: () {context.read<LoginCubit>().loginWithGoogle(context: context, callBack: (){ context.pushReplacement(CustomRouter.INDEX); } );},
                               height: 74,
                               withDefaultPadding: false,
                               backgroundColor: darkLightColor(context),

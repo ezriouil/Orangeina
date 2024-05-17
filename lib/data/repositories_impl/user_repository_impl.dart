@@ -1,4 +1,4 @@
-import 'package:berkania/domain/entities/userEntity.dart';
+import 'package:berkania/domain/entities/user_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../domain/repositories/user_repository.dart';

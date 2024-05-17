@@ -1,6 +1,5 @@
 import 'package:berkania/presentation/auth/forget_password/forget_password_screen.dart';
 import 'package:berkania/presentation/auth/login/login_screen.dart';
-import 'package:berkania/presentation/home/home_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,12 +41,6 @@ class CustomRouter{
         builder: (BuildContext context, GoRouterState state) => const IndexScreen(),
       ),
 
-      // - - -  HOME - - -  //
-      GoRoute(
-          name: HOME,
-          path: HOME,
-          builder: (BuildContext context, GoRouterState state) => const HomeScreen()),
-
     ],
   );
 
@@ -57,6 +50,5 @@ class CustomRouter{
   static const String LOGIN = "/login";
   static const String FORGET_PASSWORD = "/forget_password";
   static const String INDEX = "/index";
-  static const String HOME = "/home";
 
 }

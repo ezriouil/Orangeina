@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../../../domain/entities/userEntity.dart';
+import '../../../domain/entities/user_entity.dart';
 import '../../../domain/repositories/user_repository.dart';
 import '../../../utils/helpers/network.dart';
 import '../../../utils/localisation/custom_locale.dart';

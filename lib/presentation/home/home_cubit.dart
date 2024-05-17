@@ -1,14 +1,18 @@
 import 'dart:async';
 
+import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../domain/repositories/vendor_repository.dart';
+
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeLoadingState()){ init(); }
+  final VendorRepository vendorRepository;
+  HomeCubit({ required this.vendorRepository }) : super(HomeLoadingState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
@@ -29,6 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
   onMapCompleted(GoogleMapController mapController) {
     final HomeCurrentState updateState = state as HomeCurrentState;
+    if(updateState.mapController!.isCompleted) return;
     updateState.mapController!.complete(mapController);
     emit(updateState);
   }
@@ -36,21 +41,20 @@ class HomeCubit extends Cubit<HomeState> {
   // - - - - - - - - - - - - - - - - - - GO TO DESTINATION - - - - - - - - - - - - - - - - - -  //
   void animateTo({ required LatLng latLng}) async{
     final currentState = state as HomeCurrentState;
-    final mapController = await currentState.mapController!.future;
-    final newPosition = CameraPosition(target: LatLng(latLng.latitude, latLng.longitude), zoom: 15);
-    await mapController.animateCamera(CameraUpdate.newCameraPosition(newPosition));
+    final mapController = await currentState.mapController?.future;
+    final newPosition = CameraPosition(target: LatLng(latLng.latitude, latLng.longitude), zoom: 18);
+    await mapController?.animateCamera(CameraUpdate.newCameraPosition(newPosition));
   }
 
   // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
-  void myLocation() async{
-
+  void myLocation({required double lat, required double lng}) async{
     final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     final isLocationPermissionGranted = await Geolocator.isLocationServiceEnabled();
     if(!isLocationServiceEnabled || !isLocationPermissionGranted){
       emit(HomePermissionState());
       return;
     }
-    animateTo(latLng: (state as HomeCurrentState).myCurrentLocation!);
+    animateTo(latLng: LatLng(lat, lng));
   }
 
   // - - - - - - - - - - - - - - - - - - ADD MARKER TO MY POSITION - - - - - - - - - - - - - - - - - -  //
@@ -65,7 +69,6 @@ class HomeCubit extends Cubit<HomeState> {
       ),
     );
   }
-
 
   // - - - - - - - - - - - - - - - - - -  PERMISSION - - - - - - - - - - - - - - - - - -  //
   Future<void> onRequestPermission() async{
@@ -90,14 +93,26 @@ class HomeCubit extends Cubit<HomeState> {
       return;
     }
 
+    final vendors = await vendorRepository.getAllVendors();
+
     final Position currentPosition = await Geolocator.getCurrentPosition();
 
     emit(HomeCurrentState(
-        cameraPosition: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude), zoom: 0),
+        cameraPosition: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude), zoom: 12),
         mapController:  Completer(),
         myCurrentLocation: LatLng(currentPosition.latitude,currentPosition.longitude),
-        vendors:  const []
+        vendors:  vendors
     ));
   }
+
+  Future<void> onRefreshVendors() async {
+    final currentState = state as HomeCurrentState;
+    emit(HomeLoadingState());
+    await Future.delayed(const Duration(milliseconds: 1000));
+    final vendors = await vendorRepository.getAllVendors();
+    emit(currentState.copyWith(vendors: vendors));
+  }
+
+   filterVendors() {}
 
 }

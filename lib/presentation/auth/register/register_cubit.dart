@@ -1,5 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:berkania/domain/entities/userEntity.dart';
+import 'package:berkania/domain/entities/user_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/presentation/widgets/custom_snackbars.dart';
 import 'package:berkania/utils/helpers/network.dart';

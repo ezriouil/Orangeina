@@ -7,7 +7,7 @@ final class HomeCurrentState extends HomeState {
   final CameraPosition? cameraPosition;
   final Completer<GoogleMapController>? mapController;
   final LatLng? myCurrentLocation;
-  final  List<Marker>? vendors;
+  final  List<VendorEntity>? vendors;
 
   HomeCurrentState({this.cameraPosition, this.mapController, this.myCurrentLocation, this.vendors});
 
@@ -15,7 +15,7 @@ final class HomeCurrentState extends HomeState {
           {CameraPosition? cameraPosition,
           Completer<GoogleMapController>? mapController,
           LatLng? myCurrentLocation,
-          List<Marker>? vendors
+          List<VendorEntity>? vendors
           }) =>
       HomeCurrentState(
           cameraPosition: cameraPosition ?? this.cameraPosition,

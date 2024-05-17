@@ -57,7 +57,7 @@ class English {
     CustomLocale.INDEX_EXPLORE_TITLE: "Explore",
     CustomLocale.INDEX_WISHLIST_TITLE: "Wishlist",
     CustomLocale.INDEX_NOTIFICATION_TITLE: "Notification",
-    CustomLocale.INDEX_PROFILE_TITLE: "Profile",
+    CustomLocale.INDEX_SETTINGS_TITLE: "Settings",
 
     // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
     CustomLocale.HOME_PERMISSION_TITLE: "Permission needed",

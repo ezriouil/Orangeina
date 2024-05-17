@@ -186,7 +186,7 @@ class RegisterScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON GOOGLE - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                              onClick: () {context.read<RegisterCubit>().onCreateNewAccountWithGoogle(context:context, callBack: (){ context.pushReplacement(CustomRouter.HOME); } );},
+                              onClick: () {context.read<RegisterCubit>().onCreateNewAccountWithGoogle(context:context, callBack: (){ context.pushReplacement(CustomRouter.INDEX); } );},
                               height: 74,
                               withDefaultPadding: false,
                               backgroundColor: darkLightColor(context),

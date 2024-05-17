@@ -28,7 +28,7 @@ class IndexScreen extends CustomState {
                   NavigationDestination(icon: const Icon(Iconsax.map), label: CustomLocale.INDEX_EXPLORE_TITLE.getString(context)),
                   NavigationDestination(icon: const Icon(Iconsax.heart), label: CustomLocale.INDEX_WISHLIST_TITLE.getString(context)),
                   NavigationDestination(icon: const Icon(Iconsax.notification), label: CustomLocale.INDEX_NOTIFICATION_TITLE.getString(context)),
-                  NavigationDestination(icon: const Icon(Iconsax.user), label: CustomLocale.INDEX_PROFILE_TITLE.getString(context))
+                  NavigationDestination(icon: const Icon(Iconsax.setting), label: CustomLocale.INDEX_SETTINGS_TITLE.getString(context))
                 ],
               ),
             );

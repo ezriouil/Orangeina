@@ -54,7 +54,7 @@ class French{
     CustomLocale.INDEX_EXPLORE_TITLE: "Explorer",
     CustomLocale.INDEX_WISHLIST_TITLE: "Souhaits",
     CustomLocale.INDEX_NOTIFICATION_TITLE: "Notification",
-    CustomLocale.INDEX_PROFILE_TITLE: "Profil",
+    CustomLocale.INDEX_SETTINGS_TITLE: "Paramètres",
 
     // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.HOME_PERMISSION_TITLE: "Autorisation Requise",

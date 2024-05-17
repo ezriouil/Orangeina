@@ -1,7 +1,6 @@
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/utils/state/custom_state.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -29,14 +28,14 @@ class HomeScreen extends CustomState {
                   GoogleMap(
                     initialCameraPosition: state.cameraPosition!,
                     zoomControlsEnabled: false,
+                    myLocationButtonEnabled: false,
+                    myLocationEnabled: true,
                     mapToolbarEnabled:false,
                     markers:
                     {
                       context.read<HomeCubit>().marker(lat: state.myCurrentLocation!.latitude, lng: state.myCurrentLocation!.longitude)
                     },
-                    onMapCreated: (GoogleMapController mapController) async{
-                      context.read<HomeCubit>().onMapCompleted(mapController);
-                      },
+                    onMapCreated: context.read<HomeCubit>().onMapCompleted
                     ),
                   SizedBox(
                     width: getWidth(context),
@@ -49,22 +48,24 @@ class HomeScreen extends CustomState {
                         children: [
                           FloatingActionButton(
                                 child: Icon(Iconsax.shop, size: 20.0, color: darkLightColor(context)),
-                                onPressed: () {context.read<HomeCubit>().myLocation();},
+                                onPressed: () {/*context.read<HomeCubit>().showVendors();*/},
                           ),
                             const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           FloatingActionButton(
+                                onPressed: context.read<HomeCubit>().onRefreshVendors,
                                 child: Icon(Iconsax.refresh, size: 20.0, color: darkLightColor(context)),
-                                onPressed: () {context.read<HomeCubit>().myLocation();},
                           ),
                             const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           FloatingActionButton(
                               child: Icon(Iconsax.filter, size: 20.0, color: darkLightColor(context)),
-                              onPressed: () {context.read<HomeCubit>().myLocation();}
+                              onPressed: () {context.read<HomeCubit>().filterVendors();}
                           ),
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           FloatingActionButton(
                               child: Icon(Iconsax.gps, color: darkLightColor(context)),
-                              onPressed: () {context.read<HomeCubit>().myLocation();}
+                              onPressed: (){
+                                context.read<HomeCubit>().myLocation(lat: state.myCurrentLocation!.latitude, lng: state.myCurrentLocation!.longitude);
+                              }
                           ),
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                         ],

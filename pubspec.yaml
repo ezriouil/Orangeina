@@ -20,8 +20,7 @@ dependencies:
   flutter_localization: ^0.2.0
 
   # MAP
-  google_maps_flutter: ^2.5.1
-  geolocator: ^10.0.0
+  google_maps_flutter: ^2.6.0
 
   # DI
   get_it: ^7.7.0
@@ -29,7 +28,7 @@ dependencies:
   # FIREBASE
   firebase_core: ^2.24.2
   firebase_auth: ^4.17.3
-  firebase_storage: ^11.7.3
+  firebase_storage: ^11.6.0
   cloud_firestore: ^4.17.1
   google_sign_in: ^6.2.1
 

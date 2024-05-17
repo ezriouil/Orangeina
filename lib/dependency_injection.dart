@@ -1,7 +1,9 @@
 import 'package:berkania/data/repositories_impl/auth_repository_impl.dart';
 import 'package:berkania/data/repositories_impl/user_repository_impl.dart';
+import 'package:berkania/data/repositories_impl/vendor_repository_impl.dart';
 import 'package:berkania/domain/repositories/auth_repository.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
+import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/auth/forget_password/forget_password_cubit.dart';
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
 import 'package:berkania/presentation/auth/register/register_cubit.dart';
@@ -9,6 +11,7 @@ import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
 import 'package:berkania/presentation/profile/profile_cubit.dart';
+import 'package:berkania/presentation/settings/settings_cubit.dart';
 import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
@@ -28,15 +31,17 @@ class DependencyInjection{
     // - - - - - - - - - - - - - - - - - - REPOSITORIES - - - - - - - - - - - - - - - - - -  //
     getIt.registerLazySingleton<AuthRepository>( () => AuthRepositoryImpl());
     getIt.registerLazySingleton<UserRepository>( () => UserRepositoryImpl());
+    getIt.registerLazySingleton<VendorRepository>( () => VendorRepositoryImpl());
 
     // - - - - - - - - - - - - - - - - - - CUBITS - - - - - - - - - - - - - - - - - -  //
     getIt.registerLazySingleton<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
     getIt.registerLazySingleton<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
     getIt.registerLazySingleton<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
     getIt.registerLazySingleton<IndexCubit>( () => IndexCubit());
-    getIt.registerLazySingleton<HomeCubit>( () => HomeCubit());
+    getIt.registerLazySingleton<HomeCubit>( () => HomeCubit(vendorRepository: getIt()));
     getIt.registerLazySingleton<WishlistCubit>( () => WishlistCubit());
     getIt.registerLazySingleton<NotificationCubit>( () => NotificationCubit());
+    getIt.registerLazySingleton<SettingsCubit>( () => SettingsCubit());
     getIt.registerLazySingleton<ProfileCubit>( () => ProfileCubit());
 
   }

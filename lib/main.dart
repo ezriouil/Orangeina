@@ -6,6 +6,7 @@ import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
 import 'package:berkania/presentation/profile/profile_cubit.dart';
+import 'package:berkania/presentation/settings/settings_cubit.dart';
 import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:berkania/utils/theme/theme_app.dart';
@@ -73,6 +74,7 @@ class _IndexState extends State<App> {
           BlocProvider(create: (_) => DependencyInjection.getIt<HomeCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<WishlistCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<NotificationCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<SettingsCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<ProfileCubit>()),
         ],
         child: MaterialApp.router(

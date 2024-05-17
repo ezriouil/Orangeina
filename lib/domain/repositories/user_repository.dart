@@ -1,4 +1,4 @@
-import 'package:berkania/domain/entities/userEntity.dart';
+import 'package:berkania/domain/entities/user_entity.dart';
 
 abstract class UserRepository {
 

@@ -57,7 +57,7 @@ class Arabic{
     CustomLocale.INDEX_EXPLORE_TITLE: "الرئيسي",
     CustomLocale.INDEX_WISHLIST_TITLE: "الرغبات",
     CustomLocale.INDEX_NOTIFICATION_TITLE: "الإشعارات",
-    CustomLocale.INDEX_PROFILE_TITLE: "الحساب",
+    CustomLocale.INDEX_SETTINGS_TITLE: "الإعدادات",
 
     // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.HOME_PERMISSION_TITLE: "الإذن مطلوب",

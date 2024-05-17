@@ -54,7 +54,7 @@ mixin CustomLocale{
   static const String INDEX_EXPLORE_TITLE = "Index Explore Title";
   static const String INDEX_WISHLIST_TITLE= "Index Wishlist Title";
   static const String INDEX_NOTIFICATION_TITLE = "Index Notification Title";
-  static const String INDEX_PROFILE_TITLE = "Index Profile Title";
+  static const String INDEX_SETTINGS_TITLE = "Index Settings Title";
 
   // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String HOME_PERMISSION_TITLE = "Home Permission Title";

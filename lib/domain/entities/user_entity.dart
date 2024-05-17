@@ -1,4 +1,5 @@
 class UserEntity {
+
   // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
   late final String? id,
       firstName,
