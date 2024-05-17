@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:berkania/domain/entities/vendor_entity.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';

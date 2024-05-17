@@ -19,7 +19,7 @@ class CustomSettingTile extends CustomState {
   Widget run(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size:32, color: primaryColor(context)),
+        Icon(icon, size:32, color: grayColor(context)),
         const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS),
         Expanded(
           flex: 10,
