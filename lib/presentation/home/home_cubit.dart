@@ -12,22 +12,25 @@ import '../../domain/repositories/vendor_repository.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
+
+  // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
   final VendorRepository vendorRepository;
+
+  // - - - - - - - - - - - - - - - - - - CONTRACTURE - - - - - - - - - - - - - - - - - -  //
   HomeCubit({ required this.vendorRepository }) : super(HomeLoadingState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
 
-    await Future.delayed(const Duration(milliseconds: 1000));
-
-    final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    final isLocationPermissionGranted = await Geolocator.isLocationServiceEnabled();
-    if(!isLocationServiceEnabled || !isLocationPermissionGranted){
-      emit(HomePermissionState());
-      return;
-    }
-
-    await onRequestPermission();
+    final vendors = await vendorRepository.getAllVendors();
+    final Position currentPosition = await Geolocator.getCurrentPosition();
+    emit(HomeCurrentState(
+        mapController:  Completer<GoogleMapController>(),
+        cameraCurrentLocation:  null,
+        myCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude,currentPosition.longitude), zoom: 19.0),
+        vendors:  vendors,
+        markers: const {}
+    ));
 
   }
 
@@ -39,81 +42,50 @@ class HomeCubit extends Cubit<HomeState> {
     emit(updateState);
   }
 
-  // - - - - - - - - - - - - - - - - - - GO TO DESTINATION - - - - - - - - - - - - - - - - - -  //
-  void animateTo({ required LatLng latLng}) async{
+  // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
+  void myLocation() async{
     final currentState = state as HomeCurrentState;
-    final mapController = await currentState.mapController?.future;
-    final newPosition = CameraPosition(target: LatLng(latLng.latitude, latLng.longitude), zoom: 18);
-    await mapController?.animateCamera(CameraUpdate.newCameraPosition(newPosition));
+    emit(HomeLoadingState());
+    await Future.delayed(const Duration(milliseconds: 1000));
+    emit(currentState.copyWith(cameraCurrentLocation: currentState.myCurrentLocation));
   }
 
-  // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
-  void myLocation({required double lat, required double lng}) async{
-    final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    final isLocationPermissionGranted = await Geolocator.isLocationServiceEnabled();
-    if(!isLocationServiceEnabled || !isLocationPermissionGranted){
-      emit(HomePermissionState());
-      return;
-    }
-    animateTo(latLng: LatLng(lat, lng));
+  // - - - - - - - - - - - - - - - - - - CAMERA POSITION - - - - - - - - - - - - - - - - - -  //
+  void onCameraMoved(CameraPosition newPosition){
+    emit((state as HomeCurrentState).copyWith(cameraCurrentLocation: CameraPosition(target: newPosition.target, zoom: newPosition.zoom)));
   }
 
   // - - - - - - - - - - - - - - - - - - ADD MARKER TO MY POSITION - - - - - - - - - - - - - - - - - -  //
-  Marker marker({required double lat, required double lng, BitmapDescriptor? icon}){
+  Marker customMarker({required double lat, required double lng, required String title,  required String snippet, BitmapDescriptor? icon}){
     return Marker(
       markerId: const MarkerId('place_name'),
       position: LatLng(lat, lng),
        icon: icon ?? BitmapDescriptor.defaultMarker,
-      infoWindow: const InfoWindow(
-        title: 'title',
-        snippet: 'address',
+      infoWindow: InfoWindow(
+        title: title,
+        snippet: snippet,
       ),
     );
   }
 
-  // - - - - - - - - - - - - - - - - - -  PERMISSION - - - - - - - - - - - - - - - - - -  //
-  Future<void> onRequestPermission() async{
-    LocationPermission permission;
-
-    final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      Geolocator.openLocationSettings();
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      Geolocator.openAppSettings();
-      return;
-    }
-
-    final vendors = await vendorRepository.getAllVendors();
-
-    final Position currentPosition = await Geolocator.getCurrentPosition();
-
-    emit(HomeCurrentState(
-        cameraPosition: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude), zoom: 12),
-        mapController:  Completer(),
-        myCurrentLocation: LatLng(currentPosition.latitude,currentPosition.longitude),
-        vendors:  vendors
-    ));
-  }
-
+  // - - - - - - - - - - - - - - - - - -  UPDATE VENDORS LIST  - - - - - - - - - - - - - - - - - -  //
   Future<void> onRefreshVendors() async {
     final currentState = state as HomeCurrentState;
+    final getVendors = await vendorRepository.getAllVendors();
+    final markers = <Marker>{};
+    final vendors = <VendorEntity>[];
+
     emit(HomeLoadingState());
     await Future.delayed(const Duration(milliseconds: 1000));
-    final vendors = await vendorRepository.getAllVendors();
-    emit(currentState.copyWith(vendors: vendors));
+
+    for (VendorEntity vendor in getVendors) {
+      vendors.add(vendor);
+      markers.add(customMarker(lat: vendor.shopLat!, lng: vendor.shopLng!, title: "${vendor.firstName} ${vendor.lastName}", snippet: vendor.email!));
+    }
+    emit(currentState.copyWith(vendors: vendors, markers: markers));
   }
 
-   filterVendors() {}
+  // - - - - - - - - - - - - - - - - - -  FILTER VENDORS ON MAP  - - - - - - - - - - - - - - - - - -  //
+  filterVendors() {}
 
 }

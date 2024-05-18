@@ -4,24 +4,26 @@ part of 'home_cubit.dart';
 sealed class HomeState {}
 
 final class HomeCurrentState extends HomeState {
-  final CameraPosition? cameraPosition;
   final Completer<GoogleMapController>? mapController;
-  final LatLng? myCurrentLocation;
+  final CameraPosition? myCurrentLocation, cameraCurrentLocation;
   final  List<VendorEntity>? vendors;
+  final  Set<Marker>? markers;
 
-  HomeCurrentState({this.cameraPosition, this.mapController, this.myCurrentLocation, this.vendors});
+  HomeCurrentState({this.mapController, this.myCurrentLocation, this.cameraCurrentLocation, this.markers, this.vendors});
 
   HomeCurrentState copyWith(
-          {CameraPosition? cameraPosition,
-          Completer<GoogleMapController>? mapController,
-          LatLng? myCurrentLocation,
-          List<VendorEntity>? vendors
+          {Completer<GoogleMapController>? mapController,
+          CameraPosition? myCurrentLocation,
+          CameraPosition? cameraCurrentLocation,
+          List<VendorEntity>? vendors,
+          Set<Marker>? markers
           }) =>
       HomeCurrentState(
-          cameraPosition: cameraPosition ?? this.cameraPosition,
           mapController: mapController ?? this.mapController,
           myCurrentLocation: myCurrentLocation ?? this.myCurrentLocation,
-          vendors: vendors ?? this.vendors
+          cameraCurrentLocation: cameraCurrentLocation ?? this.cameraCurrentLocation,
+          vendors: vendors ?? this.vendors,
+           markers: markers ?? this.markers
       );
 }
 
@@ -32,4 +34,4 @@ final class HomeErrorState extends HomeState {
   HomeErrorState({required this.message});
 }
 
-final class HomePermissionState extends HomeState {}
+

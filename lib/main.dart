@@ -78,17 +78,16 @@ class _IndexState extends State<App> {
           BlocProvider(create: (_) => DependencyInjection.getIt<ProfileCubit>()),
         ],
         child: BlocBuilder<SettingsCubit, SettingsState>(
-  builder: (context, state) {
-    return MaterialApp.router(
-            themeMode: (state as SettingsCurrentState).enableDarkMode! ? ThemeMode.dark : ThemeMode.light,
-            theme: ThemeApp.lightTheme,
-            darkTheme: ThemeApp.darkTheme,
-            debugShowCheckedModeBanner: false,
-            supportedLocales: localization.supportedLocales,
-            localizationsDelegates: localization.localizationsDelegates,
-            routerConfig: CustomRouter.CONFIG_ROUTER);
-  },
-)
-    );
+          builder: (context, state) {
+            return MaterialApp.router(
+                themeMode: (state as SettingsCurrentState).enableDarkMode! ? ThemeMode.dark : ThemeMode.light,
+                theme: ThemeApp.lightTheme,
+                darkTheme: ThemeApp.darkTheme,
+                debugShowCheckedModeBanner: false,
+                supportedLocales: localization.supportedLocales,
+                localizationsDelegates: localization.localizationsDelegates,
+                routerConfig: CustomRouter.CONFIG_ROUTER);
+          },
+        ));
   }
 }
