@@ -21,6 +21,7 @@ import 'firebase_options.dart';
 import 'utils/localisation/custom_locale.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
 
   // - - - - - - - - - - - - - - - - - - INIT FIREBASE - - - - - - - - - - - - - - - - - -  //
@@ -37,6 +38,7 @@ void main() async {
 
   // - - - - - - - - - - - - - - - - - - RUN APP - - - - - - - - - - - - - - - - - -  //
   runApp(const App());
+
 }
 
 class App extends StatefulWidget {

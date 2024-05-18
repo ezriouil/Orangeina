@@ -38,8 +38,7 @@ class IndexScreen extends CustomState {
           },
           body: switch (state) {
             IndexCurrentState() => context.read<IndexCubit>().screens()[state.currentPageIndex!],
-            IndexPermissionState() =>
-                SingleChildScrollView(
+            IndexPermissionState() => SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                   child: SizedBox(

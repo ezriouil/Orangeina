@@ -8,6 +8,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../domain/repositories/vendor_repository.dart';
+import '../../utils/constants/custom_colors.dart';
+import '../../utils/constants/custom_image_strings.dart';
+import '../../utils/constants/custom_sizes.dart';
 
 part 'home_state.dart';
 
@@ -27,6 +30,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeCurrentState(
         mapController:  Completer<GoogleMapController>(),
         cameraCurrentLocation:  null,
+        mapType: MapType.normal,
         myCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude,currentPosition.longitude), zoom: 19.0),
         vendors:  vendors,
         markers: const {}
@@ -83,6 +87,82 @@ class HomeCubit extends Cubit<HomeState> {
       markers.add(customMarker(lat: vendor.shopLat!, lng: vendor.shopLng!, title: "${vendor.firstName} ${vendor.lastName}", snippet: vendor.email!));
     }
     emit(currentState.copyWith(vendors: vendors, markers: markers));
+  }
+
+  // - - - - - - - - - - - - - - - - - -  UPDATE MAP STYLE  - - - - - - - - - - - - - - - - - -  //
+  void onUpdateMapType({ required BuildContext context}) async{
+    final currentState = state as HomeCurrentState;
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SizedBox(
+              height: 200,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
+                        ClipRRect(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Image.asset(CustomImageStrings.FLAG_MOROCCO, height: 30, width: 40, fit: BoxFit.cover,)),
+
+                        // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
+                        Text("العربية", style: Theme.of(context).textTheme.headlineSmall),
+
+                        // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
+                        Checkbox(
+                            visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
+                            value: true,
+                            onChanged: (value) {}),
+                      ]),
+                  const Divider(color: CustomColors.GRAY_LIGHT),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
+                        ClipRRect(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Image.asset(CustomImageStrings.FLAG_FRANCE, height: 30, width: 40, fit: BoxFit.cover,)),
+
+                        // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
+                        Text("Francais", style: Theme.of(context).textTheme.headlineSmall),
+
+                        // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
+                        Checkbox(
+                            visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
+                            value: true,
+                            onChanged: (value) async{
+                            }),
+                      ]),
+                  const Divider(color: CustomColors.GRAY_LIGHT),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
+                        ClipRRect(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Image.asset(CustomImageStrings.FLAG_ENGLAND, height: 30, width: 40, fit: BoxFit.cover,)),
+
+                        // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
+                        Text("English", style: Theme.of(context).textTheme.headlineSmall),
+
+                        // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
+                        Checkbox(
+                            visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
+                            value: true,
+                            onChanged: (value) async{
+
+                            }),
+                      ]),
+                ],
+              ),
+            ),
+          );
+        });
+    emit(HomeLoadingState());
+    await Future.delayed(const Duration(milliseconds: 1000));
+    emit(currentState.copyWith(mapType: MapType.normal));
   }
 
   // - - - - - - - - - - - - - - - - - -  FILTER VENDORS ON MAP  - - - - - - - - - - - - - - - - - -  //

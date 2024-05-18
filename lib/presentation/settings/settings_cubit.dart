@@ -2,21 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 
 part 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
+
   SettingsCubit() : super(SettingsCurrentState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
+    GetStorage.init();
     emit(SettingsCurrentState(enableDarkMode: false, enableMapSatellite: false, showMyLocationOnMap: false, hideAuthentication: false));
   }
 
   void onUpdateEnableDarkMode(bool value){
     final currentState = state as SettingsCurrentState;
     emit(currentState.copyWith(enableDarkMode: value));
-
   }
 
   void onUpdateEnableFullScreen(bool value){
@@ -24,7 +26,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(currentState.copyWith(showMyLocationOnMap: value));
   }
 
-  void onUpdateEnableMapSatellite(bool value){
+  void onUpdateEnableMapSatellite(bool value) async{
     final currentState = state as SettingsCurrentState;
     emit(currentState.copyWith(enableMapSatellite: value));
   }
