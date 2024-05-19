@@ -6,17 +6,27 @@ sealed class HomeState {}
 final class HomeCurrentState extends HomeState {
   final Completer<GoogleMapController>? mapController;
   final CameraPosition? myCurrentLocation, cameraCurrentLocation;
-  final MapType? mapType;
+ final bool? mapMyLocationEnabled, mapTrafficEnabled, mapRefreshEnabled, mapSatelliteEnabled, mapVendorsEnabled, mapFilterEnabled;
   final  List<VendorEntity>? vendors;
   final  Set<Marker>? markers;
 
-  HomeCurrentState({this.mapController, this.myCurrentLocation, this.mapType, this.cameraCurrentLocation, this.markers, this.vendors});
+  HomeCurrentState(
+      {this.mapController,
+      this.myCurrentLocation,
+      this.mapMyLocationEnabled,
+      this.mapTrafficEnabled,
+      this.mapSatelliteEnabled,
+      this.mapRefreshEnabled,
+      this.mapVendorsEnabled,
+      this.mapFilterEnabled,
+      this.cameraCurrentLocation,
+      this.markers,
+      this.vendors});
 
   HomeCurrentState copyWith(
           {Completer<GoogleMapController>? mapController,
           CameraPosition? myCurrentLocation,
-          CameraPosition? cameraCurrentLocation,
-          MapType? mapType,
+          CameraPosition? cameraCurrentLocation, bool? mapMyLocationEnabled, bool? mapTrafficEnabled, bool? mapRefreshEnabled, bool? mapFilterEnabled, bool? mapVendorsEnabled, bool? mapSatelliteEnabled,
           List<VendorEntity>? vendors,
           Set<Marker>? markers
           }) =>
@@ -24,7 +34,12 @@ final class HomeCurrentState extends HomeState {
           mapController: mapController ?? this.mapController,
           myCurrentLocation: myCurrentLocation ?? this.myCurrentLocation,
           cameraCurrentLocation: cameraCurrentLocation ?? this.cameraCurrentLocation,
-          mapType: mapType ?? this.mapType,
+          mapMyLocationEnabled: mapMyLocationEnabled ?? this.mapMyLocationEnabled,
+          mapTrafficEnabled: mapTrafficEnabled ?? this.mapTrafficEnabled,
+          mapRefreshEnabled: mapRefreshEnabled ?? this.mapRefreshEnabled,
+          mapFilterEnabled: mapFilterEnabled ?? this.mapFilterEnabled,
+          mapVendorsEnabled: mapVendorsEnabled ?? this.mapVendorsEnabled,
+          mapSatelliteEnabled: mapSatelliteEnabled ?? this.mapSatelliteEnabled,
           vendors: vendors ?? this.vendors,
            markers: markers ?? this.markers
       );

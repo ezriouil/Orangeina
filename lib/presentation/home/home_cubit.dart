@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:berkania/domain/entities/vendor_entity.dart';
+import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../domain/repositories/vendor_repository.dart';
-import '../../utils/constants/custom_colors.dart';
-import '../../utils/constants/custom_image_strings.dart';
-import '../../utils/constants/custom_sizes.dart';
+import '../settings/widgets/custom_settings_tile.dart';
 
 part 'home_state.dart';
 
@@ -30,8 +31,13 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeCurrentState(
         mapController:  Completer<GoogleMapController>(),
         cameraCurrentLocation:  null,
-        mapType: MapType.normal,
-        myCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude,currentPosition.longitude), zoom: 19.0),
+        mapMyLocationEnabled: true,
+        mapRefreshEnabled: true,
+        mapFilterEnabled: true,
+        mapTrafficEnabled: false,
+        mapSatelliteEnabled: false,
+        mapVendorsEnabled: true,
+        myCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude,currentPosition.longitude), zoom: 18.0),
         vendors:  vendors,
         markers: const {}
     ));
@@ -47,14 +53,14 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
-  void myLocation() async{
+  void onGetMyLocation() async{
     final currentState = state as HomeCurrentState;
     emit(HomeLoadingState());
     await Future.delayed(const Duration(milliseconds: 1000));
     emit(currentState.copyWith(cameraCurrentLocation: currentState.myCurrentLocation));
   }
 
-  // - - - - - - - - - - - - - - - - - - CAMERA POSITION - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - CAMERA MOVED - - - - - - - - - - - - - - - - - -  //
   void onCameraMoved(CameraPosition newPosition){
     emit((state as HomeCurrentState).copyWith(cameraCurrentLocation: CameraPosition(target: newPosition.target, zoom: newPosition.zoom)));
   }
@@ -62,13 +68,10 @@ class HomeCubit extends Cubit<HomeState> {
   // - - - - - - - - - - - - - - - - - - ADD MARKER TO MY POSITION - - - - - - - - - - - - - - - - - -  //
   Marker customMarker({required double lat, required double lng, required String title,  required String snippet, BitmapDescriptor? icon}){
     return Marker(
-      markerId: const MarkerId('place_name'),
+      markerId: MarkerId("$lat $lng"),
       position: LatLng(lat, lng),
-       icon: icon ?? BitmapDescriptor.defaultMarker,
-      infoWindow: InfoWindow(
-        title: title,
-        snippet: snippet,
-      ),
+      icon: icon ?? BitmapDescriptor.defaultMarker,
+      infoWindow: InfoWindow( title: title, snippet: snippet ),
     );
   }
 
@@ -89,80 +92,126 @@ class HomeCubit extends Cubit<HomeState> {
     emit(currentState.copyWith(vendors: vendors, markers: markers));
   }
 
-  // - - - - - - - - - - - - - - - - - -  UPDATE MAP STYLE  - - - - - - - - - - - - - - - - - -  //
-  void onUpdateMapType({ required BuildContext context}) async{
+  // - - - - - - - - - - - - - - - - - -  MAP SETTINGS  - - - - - - - - - - - - - - - - - -  //
+  void onMapSettings({ required BuildContext context}) async{
     final currentState = state as HomeCurrentState;
     await showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             content: SizedBox(
-              height: 200,
+              height: 300,
+              width: double.infinity,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
-                        ClipRRect(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Image.asset(CustomImageStrings.FLAG_MOROCCO, height: 30, width: 40, fit: BoxFit.cover,)),
-
-                        // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
-                        Text("العربية", style: Theme.of(context).textTheme.headlineSmall),
-
-                        // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
-                        Checkbox(
-                            visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
-                            value: true,
-                            onChanged: (value) {}),
-                      ]),
-                  const Divider(color: CustomColors.GRAY_LIGHT),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
-                        ClipRRect(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Image.asset(CustomImageStrings.FLAG_FRANCE, height: 30, width: 40, fit: BoxFit.cover,)),
-
-                        // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
-                        Text("Francais", style: Theme.of(context).textTheme.headlineSmall),
-
-                        // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
-                        Checkbox(
-                            visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
-                            value: true,
-                            onChanged: (value) async{
-                            }),
-                      ]),
-                  const Divider(color: CustomColors.GRAY_LIGHT),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
-                        ClipRRect(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Image.asset(CustomImageStrings.FLAG_ENGLAND, height: 30, width: 40, fit: BoxFit.cover,)),
-
-                        // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
-                        Text("English", style: Theme.of(context).textTheme.headlineSmall),
-
-                        // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
-                        Checkbox(
-                            visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
-                            value: true,
-                            onChanged: (value) async{
-
-                            }),
-                      ]),
+                children: <Widget>[
+                  CustomSettingTile(
+                    title: "Show My Location",
+                    subTitle: "Enjoy the new theme design for you ...",
+                    icon: Iconsax.location,
+                    iconSize: 24.0,
+                    titleSize: 12.0,
+                    subTitleSize: 10.0,
+                    trailing: Transform.scale(
+                        scale: 0.8,
+                        child: Switch(
+                            value: currentState.mapMyLocationEnabled!,
+                            onChanged: (value) {
+                              emit(currentState.copyWith(mapMyLocationEnabled: value));
+                              context.pop();
+                            })),
+                  ),
+                  CustomSettingTile(
+                    title: "Enable Map Satellite",
+                    subTitle: "Enjoy the new theme design for you ...",
+                    icon: Iconsax.map_1,
+                    iconSize: 24.0,
+                    titleSize: 12.0,
+                    subTitleSize: 10.0,
+                    trailing: Transform.scale(
+                        scale: 0.8,
+                        child: Switch(
+                            value: currentState.mapSatelliteEnabled!,
+                            onChanged: (value) {
+                              emit(currentState.copyWith(mapSatelliteEnabled: value));
+                              context.pop();
+                            })
+                    ),
+                  ),
+                  CustomSettingTile(
+                    title: "Enable Map Traffic",
+                    subTitle: "Enjoy the new theme design for you ...",
+                    icon: Iconsax.route_square,
+                    iconSize: 24.0,
+                    titleSize: 12.0,
+                    subTitleSize: 10.0,
+                    trailing: Transform.scale(
+                        scale: 0.8,
+                        child: Switch(
+                            value: currentState.mapTrafficEnabled!,
+                            onChanged: (value) {
+                              emit(currentState.copyWith(mapTrafficEnabled: value));
+                              context.pop();
+                            })
+                    ),
+                  ),
+                  CustomSettingTile(
+                    title: "Enable Map Filter",
+                    subTitle: "Enjoy the new theme design for you ...",
+                    icon: Iconsax.filter,
+                    iconSize: 24.0,
+                    titleSize: 12.0,
+                    subTitleSize: 10.0,
+                    trailing: Transform.scale(
+                        scale: 0.8,
+                        child: Switch(
+                            value: currentState.mapFilterEnabled!,
+                            onChanged: (value) {
+                              emit(currentState.copyWith(mapFilterEnabled: value));
+                              context.pop();
+                            })
+                    ),
+                  ),
+                  CustomSettingTile(
+                    title: "Enable Map Refresh",
+                    subTitle: "Enjoy the new theme design for you ...",
+                    icon: Iconsax.refresh,
+                    iconSize: 24.0,
+                    titleSize: 12.0,
+                    subTitleSize: 10.0,
+                    trailing: Transform.scale(
+                        scale: 0.8,
+                        child: Switch(
+                            value: currentState.mapRefreshEnabled!,
+                            onChanged: (value) {
+                              emit(currentState.copyWith(mapRefreshEnabled: value));
+                              context.pop();
+                            })
+                    ),
+                  ),
+                  CustomSettingTile(
+                    title: "Enable Map Vendors",
+                    subTitle: "Enjoy the new theme design for you ...",
+                    icon: Iconsax.shop,
+                    iconSize: 24.0,
+                    titleSize: 12.0,
+                    subTitleSize: 10.0,
+                    trailing: Transform.scale(
+                        scale: 0.8,
+                        child: Switch(
+                            value: currentState.mapVendorsEnabled!,
+                            onChanged: (value) {
+                              emit(currentState.copyWith(mapVendorsEnabled: value));
+                              context.pop();
+                            })
+                    ),
+                  ),
                 ],
               ),
             ),
           );
         });
-    emit(HomeLoadingState());
-    await Future.delayed(const Duration(milliseconds: 1000));
-    emit(currentState.copyWith(mapType: MapType.normal));
   }
 
   // - - - - - - - - - - - - - - - - - -  FILTER VENDORS ON MAP  - - - - - - - - - - - - - - - - - -  //

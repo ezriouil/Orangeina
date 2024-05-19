@@ -24,12 +24,13 @@ class HomeScreen extends CustomState {
                     initialCameraPosition: state.cameraCurrentLocation == null ? state.myCurrentLocation! : state.cameraCurrentLocation!,
                     zoomControlsEnabled: false,
                     myLocationButtonEnabled: false,
+                    mapToolbarEnabled: false,
+                    mapType: state.mapSatelliteEnabled! ? MapType.satellite : MapType.normal,
+                    myLocationEnabled: state.mapMyLocationEnabled!,
+                    trafficEnabled: state.mapTrafficEnabled!,
                     onCameraMove: context.read<HomeCubit>().onCameraMoved,
-                    mapType: MapType.terrain,
-                    myLocationEnabled: true,
-                    mapToolbarEnabled:false,
+                    onMapCreated: context.read<HomeCubit>().onMapCompleted,
                     markers : state.markers!,
-                    onMapCreated: context.read<HomeCubit>().onMapCompleted
                     ),
                   SizedBox(
                     width: getWidth(context),
@@ -37,34 +38,34 @@ class HomeScreen extends CustomState {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal:CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
                           FloatingActionButton(
+                            onPressed: (){ context.read<HomeCubit>().onMapSettings(context: context); },
+                            child: Icon(Iconsax.setting, size: 20.0, color: darkLightColor(context)),
+                          ),
+                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                          if(state.mapVendorsEnabled!) FloatingActionButton(
                                 child: Icon(Iconsax.shop, size: 20.0, color: darkLightColor(context)),
                                 onPressed: () {/*context.read<HomeCubit>().showVendors();*/},
                           ),
-                            const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                          FloatingActionButton(
+                          if(state.mapVendorsEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                          if(state.mapRefreshEnabled!)  FloatingActionButton(
                                 onPressed: context.read<HomeCubit>().onRefreshVendors,
                                 child: Icon(Iconsax.refresh, size: 20.0, color: darkLightColor(context)),
                           ),
-                            const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                          FloatingActionButton(
-                                onPressed: (){ context.read<HomeCubit>().onUpdateMapType(context: context); },
-                                child: Icon(Iconsax.colorfilter, size: 20.0, color: darkLightColor(context)),
-                          ),
-                            Spacer(),
-                          FloatingActionButton(
+                          if(state.mapRefreshEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                          if(state.mapFilterEnabled!) FloatingActionButton(
                               onPressed: context.read<HomeCubit>().filterVendors,
                               child: Icon(Iconsax.filter, size: 20.0, color: darkLightColor(context))
                           ),
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                          FloatingActionButton(
-                              onPressed: context.read<HomeCubit>().myLocation,
+                          if(state.mapFilterEnabled!)  const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                          if(state.mapMyLocationEnabled!) FloatingActionButton(
+                              onPressed: context.read<HomeCubit>().onGetMyLocation,
                               child: Icon(Iconsax.gps, color: darkLightColor(context))
                           ),
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                          if(state.mapMyLocationEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                         ],
                       ),
                     ),
