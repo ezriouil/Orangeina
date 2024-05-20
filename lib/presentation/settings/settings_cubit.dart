@@ -1,3 +1,5 @@
+import 'package:berkania/data/repositories_impl/user_repository_impl.dart';
+import 'package:berkania/data/repositories_impl/vendor_repository_impl.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/custom_image_strings.dart';
 import '../../utils/constants/custom_sizes.dart';
+import '../../utils/local/storage/local_storage.dart';
 import '../../utils/localisation/custom_locale.dart';
 
 part 'settings_state.dart';
@@ -16,12 +19,14 @@ part 'settings_state.dart';
 class SettingsCubit extends Cubit<SettingsState> {
 
   final FlutterLocalization localization = FlutterLocalization.instance;
+  final _storage = GetStorage();
+  final UserRepositoryImpl _userRepository = UserRepositoryImpl();
+  final VendorRepositoryImpl _vendorRepository = VendorRepositoryImpl();
 
   SettingsCubit() : super(SettingsCurrentState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
-    GetStorage.init();
     emit(SettingsCurrentState(
       enableDarkMode: false,
       hideAuthentication: false,
@@ -55,9 +60,15 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
   onUpdateFullName({required BuildContext context}) async{
+
+    final String firstName = await LocalStorage.read(key: "FIRST_NAME", storage: _storage) ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
+    final String lastName = await LocalStorage.read(key: "LAST_NAME", storage: _storage) ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
+    final String uid = await LocalStorage.read(key: "UID", storage: _storage) ?? "";
+
     final currentState = state as SettingsCurrentState;
+
     await showDialog(
-        context: context,
+        context: context.mounted ? context : context,
         builder: (BuildContext context) {
           return AlertDialog(
               content: SizedBox(
@@ -70,22 +81,38 @@ class SettingsCubit extends Cubit<SettingsState> {
                       // - - - - - - - - - - - - - - - - - - FIRST NAME - - - - - - - - - - - - - - - - - -  //
                       CustomTextField(
                           leadingIcon: Iconsax.user,
-                          hint: "First Name",
+                          hint: firstName,
                           controller: currentState.updateFirstNameController!),
 
                       // - - - - - - - - - - - - - - - - - - LAST NAME - - - - - - - - - - - - - - - - - -  //
                       CustomTextField(
                           leadingIcon: Iconsax.user,
-                          hint: "Last Name",
+                          hint: lastName,
                           controller: currentState.updateLastNameController!),
 
                       // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(onClick: () {
+                      CustomElevatedButton(onClick: () async{
 
-                        currentState.updateFirstNameController!.clear();
-                        currentState.updateLastNameController!.clear();
+                        // final isUserExist = await _userRepository.existUser(userId: uid);
+                        // if(isUserExist){
+                        //   await _userRepository.updateUserFullName(userId: uid, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
+                        //   currentState.updateFirstNameController!.clear();
+                        //   currentState.updateLastNameController!.clear();
+                        //   return;
+                        // }
+                        // final isVendorExist = await _vendorRepository.existVendor(vendorId: uid);
+                        // if(isVendorExist){
+                        //   await _vendorRepository.updateVendorFullName(vendorId: uid, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
+                        //   currentState.updateFirstNameController!.clear();
+                        //   currentState.updateLastNameController!.clear();
+                        //   return;
+                        // }else{
+                        //   currentState.updateFirstNameController!.clear();
+                        //   currentState.updateLastNameController!.clear();
+                        // }
 
-                      }, child: const Text("Update"),)
+
+                      }, child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
                     ],
                   )));
         });
@@ -93,9 +120,12 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE EMAIL - - - - - - - - - - - - - - - - - -  //
   onUpdateEmail({required BuildContext context})async{
+
+    final String email = await LocalStorage.read(key: "EMAIL", storage: _storage) ?? CustomLocale.EMAIL.getString(context.mounted ? context : context);
+
     final currentState = state as SettingsCurrentState;
     await showDialog(
-        context: context,
+        context: context.mounted ? context : context,
         builder: (BuildContext context) {
           return AlertDialog(
               content: SizedBox(
@@ -108,13 +138,13 @@ class SettingsCubit extends Cubit<SettingsState> {
                       // - - - - - - - - - - - - - - - - - - EMAIL - - - - - - - - - - - - - - - - - -  //
                       CustomTextField(
                           leadingIcon: Iconsax.direct_right,
-                          hint: "Email",
+                          hint: email,
                           controller: currentState.updateEmailNameController!,
                         textInputType: TextInputType.emailAddress,
                       ),
 
                       // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(onClick: () { currentState.updateEmailNameController!.clear(); }, child: const Text("Update"),)
+                      CustomElevatedButton(onClick: () { currentState.updateEmailNameController!.clear(); }, child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
                     ],
                   )));
         });
@@ -122,9 +152,12 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE PASSWORD - - - - - - - - - - - - - - - - - -  //
   onUpdatePassword({required BuildContext context})async{
+
+    final String password = await LocalStorage.read(key: "PASSWORD", storage: _storage) ?? CustomLocale.PASSWORD.getString(context.mounted ? context : context);
+
     final currentState = state as SettingsCurrentState;
     await showDialog(
-        context: context,
+        context: context.mounted ? context : context,
         builder: (BuildContext context) {
           return AlertDialog(
               content: SizedBox(
@@ -137,12 +170,12 @@ class SettingsCubit extends Cubit<SettingsState> {
                       // - - - - - - - - - - - - - - - - - - EMAIL - - - - - - - - - - - - - - - - - -  //
                       CustomTextField(
                         leadingIcon: Iconsax.password_check,
-                        hint: "Password",
+                        hint: password,
                         controller: currentState.updatePasswordController!
                       ),
 
                       // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(onClick: () { currentState.updatePasswordController!.clear(); }, child: const Text("Update"),)
+                      CustomElevatedButton(onClick: () { currentState.updatePasswordController!.clear(); }, child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
                     ],
                   )));
         });
@@ -150,9 +183,12 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
   onUpdatePhone({required BuildContext context})async{
+
+    final String phone = await LocalStorage.read(key: "PHONE", storage: _storage) ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
+
     final currentState = state as SettingsCurrentState;
     await showDialog(
-        context: context,
+        context: context.mounted ? context : context,
         builder: (BuildContext context) {
           return AlertDialog(
               content: SizedBox(
@@ -165,13 +201,13 @@ class SettingsCubit extends Cubit<SettingsState> {
                       // - - - - - - - - - - - - - - - - - - EMAIL - - - - - - - - - - - - - - - - - -  //
                       CustomTextField(
                         leadingIcon: Iconsax.call,
-                        hint: "Phone",
+                        hint: phone,
                         controller: currentState.updatePhoneController!,
                         textInputType: TextInputType.phone,
                       ),
 
                       // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(onClick: () { currentState.updatePhoneController!.clear(); }, child: const Text("Update"),)
+                      CustomElevatedButton(onClick: () { currentState.updatePhoneController!.clear(); }, child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
                     ],
                   )));
         });
@@ -181,7 +217,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   onUpdateLanguage({ required BuildContext context, required Function callBack }) async{
 
     final SettingsCurrentState currentState = state as SettingsCurrentState;
-    //String langSelected = "";
+    String langSelected = "";
 
     await showDialog(
         context: context,
@@ -270,8 +306,8 @@ class SettingsCubit extends Cubit<SettingsState> {
           );
         });
 
-    //if(langSelected == "") return;
-    //await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: storage);
+    if(langSelected == "") return;
+    await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: _storage);
   }
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO PRIVACY AND SECURITY - - - - - - - - - - - - - - - - - -  //

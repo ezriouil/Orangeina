@@ -86,6 +86,8 @@ class French{
     CustomLocale.SETTINGS_ABOUT_TITLE : "À propos nous",
     CustomLocale.SETTINGS_ABOUT_SUB_TITLE : "Informations sur la candidature.",
     CustomLocale.SETTINGS_APP_VERSION_TITLE : "version 1.0.0",
+    CustomLocale.SETTINGS_PHONE : "Téléphone",
+    CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "Mettre à jour",
 
   };
 }

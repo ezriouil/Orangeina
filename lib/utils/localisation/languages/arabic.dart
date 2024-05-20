@@ -6,7 +6,7 @@ class Arabic{
   static const Map<String, dynamic> AR = {
 
     // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
-    CustomLocale.EMAIL: "بريد إلكتروني",
+    CustomLocale.EMAIL: "البريد إلكتروني",
     CustomLocale.PASSWORD: "كلمة المرور",
     CustomLocale.EMAIL_VALIDATOR: "البريد الالكتروني مطلوب",
     CustomLocale.PASSWORD_VALIDATOR: "كلمة المرور مطلوب",
@@ -89,6 +89,8 @@ class Arabic{
     CustomLocale.SETTINGS_ABOUT_TITLE : "عنا",
     CustomLocale.SETTINGS_ABOUT_SUB_TITLE : "معلومات التطبيق.",
     CustomLocale.SETTINGS_APP_VERSION_TITLE : "الإصدار 1.0.0",
+    CustomLocale.SETTINGS_PHONE : "الهاتف",
+    CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "تحديث",
 
   };
 }

@@ -89,6 +89,8 @@ class English {
   CustomLocale.SETTINGS_ABOUT_TITLE : "About us",
   CustomLocale.SETTINGS_ABOUT_SUB_TITLE : "Information about application.",
   CustomLocale.SETTINGS_APP_VERSION_TITLE : "version 1.0.0",
+  CustomLocale.SETTINGS_PHONE : "Phone",
+  CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "Update",
 
   };
 }

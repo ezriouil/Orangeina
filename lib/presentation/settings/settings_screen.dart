@@ -1,5 +1,7 @@
 import 'package:berkania/presentation/settings/settings_cubit.dart';
 import 'package:berkania/presentation/settings/widgets/custom_settings_tile.dart';
+import 'package:berkania/presentation/widgets/custom_error_screen.dart';
+import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,9 +55,9 @@ class SettingsScreen extends CustomState {
                                           height: getHeight(context),
                                           width: getWidth(context),
                                           fit: BoxFit.cover,
-                                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) => loadingProgress == null ? child : Center(child: CircularProgressIndicator(color: primaryColor(context)),),
-                                          errorBuilder: (context, url, error) => Center(child: Icon(Iconsax.gallery_remove, size: 30.0, color: grayColor(context)))),
-                                    ),
+                                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) => loadingProgress == null ? child : Container(alignment: Alignment.center, decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT), border: Border.all(color: darkLightColor(context))), child: CircularProgressIndicator(color: primaryColor(context))),
+                                        errorBuilder: (context, url, error) => Container(alignment: Alignment.center, decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT), border: Border.all(color: darkLightColor(context))), child: Icon(Iconsax.gallery_remove, size: 30.0, color: grayColor(context)))),
+                                  ),
                                   ),
                                 Positioned(
                                     right: 0,
@@ -203,14 +205,8 @@ class SettingsScreen extends CustomState {
                     ),
                   )
               );
-            case SettingsLoadingState():
-              return Center(
-                  child: Text("Loading ...",
-                      style: Theme.of(context).textTheme.bodyLarge));
-            case SettingsErrorState():
-              return Center(
-                  child: Text(state.message,
-                      style: Theme.of(context).textTheme.bodyLarge));
+            case SettingsLoadingState(): return const CustomLoadingScreen();
+            case SettingsErrorState(): return CustomErrorScreen(onClick: (){});
           }
         },
       ),
