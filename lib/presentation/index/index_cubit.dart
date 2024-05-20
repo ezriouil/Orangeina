@@ -13,52 +13,51 @@ class IndexCubit extends Cubit<IndexState> {
 
   init() async{
 
-    final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    final isLocationPermissionGranted = await Geolocator.isLocationServiceEnabled();
-    if(!isLocationServiceEnabled || !isLocationPermissionGranted){
-      emit(IndexPermissionState());
-      return;
-    }
-
-    emit(IndexCurrentState(currentPageIndex: 0));
+    final hasPermission = await onRequestPermission();
+    if(!hasPermission) emit(IndexPermissionState());
+    
   }
 
   // - - - - - - - - - - - - - - - - - -  UPDATE CURRENT INDEX - - - - - - - - - - - - - - - - - -  //
   void onUpdateCurrentIndex(int value) async{
 
     final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    final isLocationPermissionGranted = await Geolocator.isLocationServiceEnabled();
-    if(!isLocationServiceEnabled || !isLocationPermissionGranted){
+    final permission = await Geolocator.checkPermission();
+    print(1);
+    if(!isLocationServiceEnabled || permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
       emit(IndexPermissionState());
+      print(2);
       return;
     }
+    print(3);
     emit(IndexCurrentState(currentPageIndex: value));
   }
 
   // - - - - - - - - - - - - - - - - - -  PERMISSION - - - - - - - - - - - - - - - - - -  //
-  Future<void> onRequestPermission() async{
+  Future<bool> onRequestPermission() async{
     LocationPermission permission;
 
     final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       Geolocator.openLocationSettings();
-      return;
+      return false;
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return;
+        return false;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       Geolocator.openAppSettings();
-      return;
+      return false;
     }
 
     emit(IndexCurrentState(currentPageIndex: 0));
+    return true;
   }
 
   // - - - - - - - - - - - - - - - - - -  SCREENS - - - - - - - - - - - - - - - - - -  //

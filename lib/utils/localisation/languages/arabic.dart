@@ -64,5 +64,31 @@ class Arabic{
     CustomLocale.HOME_PERMISSION_SUB_TITLE: "لتزويدك بأفضل تجربة مستخدم، نحتاج إلى إذن من خدمات الموقع",
     CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "سماح",
 
+    // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.SETTINGS_PROFILE_TITLE : "الحساب",
+    CustomLocale.SETTINGS_UPDATE_FULL_NAME_TITLE : "تحديث الاسم الكامل",
+    CustomLocale.SETTINGS_UPDATE_FULL_NAME_SUB_TITLE : "قم بتغيير اسمك الأول والأخير في أي وقت.",
+    CustomLocale.SETTINGS_UPDATE_EMAIL_TITLE : "تحديث البريد الإلكتروني",
+    CustomLocale.SETTINGS_UPDATE_EMAIL_SUB_TITLE : "قم بتغيير بريدك الإلكتروني في أي وقت.",
+    CustomLocale.SETTINGS_UPDATE_PASSWORD_TITLE : "تحديث كلمة السر",
+    CustomLocale.SETTINGS_UPDATE_PASSOWRD_SUB_TITLE : "قم بتغيير كلمة المرور الخاصة بك في أي وقت.",
+    CustomLocale.SETTINGS_UPDATE_PHONE_TITLE : "تحديث الهاتف",
+    CustomLocale.SETTINGS_UPDATE_PHONE_SUB_TITLE : "قم بتغيير رقم هاتفك في أي وقت.",
+    CustomLocale.SETTINGS_DISPLAY_TITLE : "العرض",
+    CustomLocale.SETTINGS_UPDATE_DARK_MODE_TITLE : "تمكين الوضع المظلم",
+    CustomLocale.SETTINGS_UPDATE_DARK_MODE_SUB_TITLE : "استمتع بالموضوع الجديد المصمم لك.",
+    CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_TITLE : "تمكين إخفاء المصادقة",
+    CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_SUB_TITLE : "يمكنك إخفاء صفحة تسجيل الدخول.",
+    CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "تحديث اللغة",
+    CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "العربية والإنجليزية والفرنسية",
+    CustomLocale.SETTINGS_OTHERS_TITLE : "آخرى",
+    CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_TITLE : "الخصوصية والأمن",
+    CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_SUB_TITLE : "أعرض الخصوصية والأمان لدينا",
+    CustomLocale.SETTINGS_HELP_AND_SUPPOR_TITLE : "المساعدة و الدعم",
+    CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE : "يمكنك الاتصال بنا لمساعدتك.",
+    CustomLocale.SETTINGS_ABOUT_TITLE : "عنا",
+    CustomLocale.SETTINGS_ABOUT_SUB_TITLE : "معلومات التطبيق.",
+    CustomLocale.SETTINGS_APP_VERSION_TITLE : "الإصدار 1.0.0",
+
   };
 }

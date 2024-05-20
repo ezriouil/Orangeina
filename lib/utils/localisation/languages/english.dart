@@ -64,5 +64,31 @@ class English {
     CustomLocale.HOME_PERMISSION_SUB_TITLE: "To serve you best user experience we need permission from location services",
     CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "Enable",
 
+  // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
+  CustomLocale.SETTINGS_PROFILE_TITLE : "Profile",
+  CustomLocale.SETTINGS_UPDATE_FULL_NAME_TITLE : "Update Full Name",
+  CustomLocale.SETTINGS_UPDATE_FULL_NAME_SUB_TITLE : "Change your first name and last name any time.",
+  CustomLocale.SETTINGS_UPDATE_EMAIL_TITLE : "Update Email",
+  CustomLocale.SETTINGS_UPDATE_EMAIL_SUB_TITLE : "Change your email any time.",
+  CustomLocale.SETTINGS_UPDATE_PASSWORD_TITLE : "Update Password",
+  CustomLocale.SETTINGS_UPDATE_PASSOWRD_SUB_TITLE : "Change your password any time.",
+  CustomLocale.SETTINGS_UPDATE_PHONE_TITLE : "Update Phone",
+  CustomLocale.SETTINGS_UPDATE_PHONE_SUB_TITLE : "Change your phone number any time.",
+  CustomLocale.SETTINGS_DISPLAY_TITLE : "Display",
+  CustomLocale.SETTINGS_UPDATE_DARK_MODE_TITLE : "Enable Dark Mode",
+  CustomLocale.SETTINGS_UPDATE_DARK_MODE_SUB_TITLE : "Enjoy the new theme designed for you.",
+  CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_TITLE : "Enable Hide Auth",
+  CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_SUB_TITLE : "You can hide login page.",
+  CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "Update Language",
+  CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "Arabic & English & French",
+  CustomLocale.SETTINGS_OTHERS_TITLE : "Others",
+  CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_TITLE : "Privacy And Security",
+  CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_SUB_TITLE : "See our privacy and security",
+  CustomLocale.SETTINGS_HELP_AND_SUPPOR_TITLE : "Help And Support",
+  CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE : "You can contact us to help you.",
+  CustomLocale.SETTINGS_ABOUT_TITLE : "About us",
+  CustomLocale.SETTINGS_ABOUT_SUB_TITLE : "Information about application.",
+  CustomLocale.SETTINGS_APP_VERSION_TITLE : "version 1.0.0",
+
   };
 }

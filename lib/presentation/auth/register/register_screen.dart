@@ -66,8 +66,7 @@ class RegisterScreen extends CustomState {
                                     leadingIcon: Iconsax.user,
                                     hint: CustomLocale.REGISTER_FIRST_NAME.getString(context),
                                     controller: state.firstNameController!,
-                                    validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_FIRST_NAME_VALIDATOR.getString(context), value),
-                                    textInputType: TextInputType.emailAddress),
+                                    validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_FIRST_NAME_VALIDATOR.getString(context), value)),
                               ),
 
                               // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
@@ -79,8 +78,7 @@ class RegisterScreen extends CustomState {
                                     leadingIcon: Iconsax.user,
                                     hint: CustomLocale.REGISTER_LAST_NAME.getString(context),
                                     controller: state.lastNameController!,
-                                    validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_LAST_NAME_VALIDATOR.getString(context), value),
-                                    textInputType: TextInputType.emailAddress),
+                                    validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_LAST_NAME_VALIDATOR.getString(context), value)),
                               ),
                             ],
                           ),

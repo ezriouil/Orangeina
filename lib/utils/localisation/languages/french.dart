@@ -61,5 +61,31 @@ class French{
     CustomLocale.HOME_PERMISSION_SUB_TITLE: "Pour Vous Offrir La Meilleure Expérience Utilisateur, Nous Avons Besoin De L'autorisation Des Services De Localisation",
     CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "Activer",
 
+    // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.SETTINGS_PROFILE_TITLE : "Profil",
+    CustomLocale.SETTINGS_UPDATE_FULL_NAME_TITLE : "Mettre à jour le nom complet",
+    CustomLocale.SETTINGS_UPDATE_FULL_NAME_SUB_TITLE : "Changez votre prénom et votre nom à tout moment.",
+    CustomLocale.SETTINGS_UPDATE_EMAIL_TITLE : "Mettre à jour e-mail",
+    CustomLocale.SETTINGS_UPDATE_EMAIL_SUB_TITLE : "Changez votre email à tout moment.",
+    CustomLocale.SETTINGS_UPDATE_PASSWORD_TITLE : "Mettre à jour mot de passe",
+    CustomLocale.SETTINGS_UPDATE_PASSOWRD_SUB_TITLE : "Changez votre mot de passe à tout moment.",
+    CustomLocale.SETTINGS_UPDATE_PHONE_TITLE : "Mettre à jour le téléphone",
+    CustomLocale.SETTINGS_UPDATE_PHONE_SUB_TITLE : "Changez votre numéro de téléphone à tout moment.",
+    CustomLocale.SETTINGS_DISPLAY_TITLE : "Afficher",
+    CustomLocale.SETTINGS_UPDATE_DARK_MODE_TITLE : "Activer le mode sombre",
+    CustomLocale.SETTINGS_UPDATE_DARK_MODE_SUB_TITLE : "Profitez du nouveau thème conçu pour vous.",
+    CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_TITLE : "Activer Masquer l'authentification",
+    CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_SUB_TITLE : "Vous pouvez masquer la page de connexion.",
+    CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "Mettre à jour la langue",
+    CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "Arabe & Anglais & Français",
+    CustomLocale.SETTINGS_OTHERS_TITLE : "Autres",
+    CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_TITLE : "Confidentialité et sécurité",
+    CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_SUB_TITLE : "Voir notre confidentialité et sécurité",
+    CustomLocale.SETTINGS_HELP_AND_SUPPOR_TITLE : "Aide et soutien",
+    CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE : "Vous pouvez nous contacter pour vous aider.",
+    CustomLocale.SETTINGS_ABOUT_TITLE : "À propos nous",
+    CustomLocale.SETTINGS_ABOUT_SUB_TITLE : "Informations sur la candidature.",
+    CustomLocale.SETTINGS_APP_VERSION_TITLE : "version 1.0.0",
+
   };
 }

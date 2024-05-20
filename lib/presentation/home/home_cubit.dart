@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:berkania/domain/entities/vendor_entity.dart';
-import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -26,8 +24,17 @@ class HomeCubit extends Cubit<HomeState> {
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
 
+    /// GET ALL VENDORS
     final vendors = await vendorRepository.getAllVendors();
-    final Position currentPosition = await Geolocator.getCurrentPosition();
+
+    /// CHECK PERMISSION IS GRANTED OR NOT TO GET CURRENT LOCATION
+    final Position? currentPosition;
+    final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    final permission = await Geolocator.checkPermission();
+    if (!isLocationServiceEnabled || permission == LocationPermission.denied || permission == LocationPermission.deniedForever) { currentPosition = null; }
+    else { currentPosition =  await Geolocator.getCurrentPosition(); }
+
+    /// EMIT STATE
     emit(HomeCurrentState(
         mapController:  Completer<GoogleMapController>(),
         cameraCurrentLocation:  null,
@@ -37,11 +44,13 @@ class HomeCubit extends Cubit<HomeState> {
         mapTrafficEnabled: false,
         mapSatelliteEnabled: false,
         mapVendorsEnabled: true,
-        myCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude,currentPosition.longitude), zoom: 18.0),
+        myCurrentLocation: CameraPosition(target: LatLng(currentPosition?.latitude ?? 31.6538843,currentPosition?.longitude ?? -7.4565771), zoom: currentPosition == null ? 6.0 : 18.0),
         vendors:  vendors,
         markers: const {}
     ));
 
+    /// PERIODIC TIMER TO REFRESH VENDORS ON MAP
+    Timer.periodic(const Duration(minutes: 1), (time) async{ await onRefreshVendors(); });
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
@@ -56,8 +65,9 @@ class HomeCubit extends Cubit<HomeState> {
   void onGetMyLocation() async{
     final currentState = state as HomeCurrentState;
     emit(HomeLoadingState());
-    await Future.delayed(const Duration(milliseconds: 1000));
-    emit(currentState.copyWith(cameraCurrentLocation: currentState.myCurrentLocation));
+    final currentPosition = await Geolocator.getCurrentPosition();
+    await Future.delayed(const Duration(milliseconds: 500));
+    emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude),zoom: 18.0 )));
   }
 
   // - - - - - - - - - - - - - - - - - - CAMERA MOVED - - - - - - - - - - - - - - - - - -  //
@@ -65,7 +75,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit((state as HomeCurrentState).copyWith(cameraCurrentLocation: CameraPosition(target: newPosition.target, zoom: newPosition.zoom)));
   }
 
-  // - - - - - - - - - - - - - - - - - - ADD MARKER TO MY POSITION - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - MARKER - - - - - - - - - - - - - - - - - -  //
   Marker customMarker({required double lat, required double lng, required String title,  required String snippet, BitmapDescriptor? icon}){
     return Marker(
       markerId: MarkerId("$lat $lng"),
@@ -82,8 +92,8 @@ class HomeCubit extends Cubit<HomeState> {
     final markers = <Marker>{};
     final vendors = <VendorEntity>[];
 
-    emit(HomeLoadingState());
-    await Future.delayed(const Duration(milliseconds: 1000));
+    //emit(HomeLoadingState());
+    //await Future.delayed(const Duration(milliseconds: 1000));
 
     for (VendorEntity vendor in getVendors) {
       vendors.add(vendor);

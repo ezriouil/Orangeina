@@ -19,12 +19,16 @@ abstract class CustomState extends StatelessWidget {
 
     isMobile(context);
     isTablet(context);
+    isArabic(context);
 
     return Directionality(textDirection: getDirection(localization), child: run(context));
   }
 
   /// BUILD METHODE
   Widget run(BuildContext context);
+
+  /// IS ARABIC
+  bool isArabic(BuildContext context) => Directionality.of(context) == TextDirection.rtl;
 
   /// LOCALIZATION
   TextDirection getDirection(FlutterLocalization localization) => localization.currentLocale?.languageCode == CustomLocale.AR ? TextDirection.rtl : TextDirection.ltr;

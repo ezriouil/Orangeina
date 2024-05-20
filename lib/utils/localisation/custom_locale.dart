@@ -61,6 +61,32 @@ mixin CustomLocale{
   static const String HOME_PERMISSION_SUB_TITLE = "Home Permission Sub Title";
   static const String HOME_PERMISSION_BUTTON_ENABLE = "Home Permission Button Enable";
 
+  // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String SETTINGS_PROFILE_TITLE = "Settings Profile Title";
+  static const String SETTINGS_UPDATE_FULL_NAME_TITLE = "Settings Update Full Name Title";
+  static const String SETTINGS_UPDATE_FULL_NAME_SUB_TITLE = "Settings Update Full Name Sub Title";
+  static const String SETTINGS_UPDATE_EMAIL_TITLE = "Settings Update Email Title";
+  static const String SETTINGS_UPDATE_EMAIL_SUB_TITLE = "Settings Update Email Sub Title";
+  static const String SETTINGS_UPDATE_PASSWORD_TITLE = "Settings Update Password Title";
+  static const String SETTINGS_UPDATE_PASSOWRD_SUB_TITLE = "Settings Update Password Sub Title";
+  static const String SETTINGS_UPDATE_PHONE_TITLE = "Settings Update Phone Title";
+  static const String SETTINGS_UPDATE_PHONE_SUB_TITLE = "Settings Update Phone Sub Title";
+  static const String SETTINGS_DISPLAY_TITLE = "Settings Display Title";
+  static const String SETTINGS_UPDATE_DARK_MODE_TITLE = "Settings Update Dark Mode Title";
+  static const String SETTINGS_UPDATE_DARK_MODE_SUB_TITLE = "Settings Update Dark Mode Sub Title";
+  static const String SETTINGS_UPDATE_HIDE_AUTH_TITLE = "Settings Update Hide Auth Title";
+  static const String SETTINGS_UPDATE_HIDE_AUTH_SUB_TITLE = "Settings Update Hide Auth Sub Title";
+  static const String SETTINGS_UPDATE_LANGUAGE_TITLE = "Settings Update Language Title";
+  static const String SETTINGS_UPDATE_LANGUAGE_SUB_TITLE = "Settings Update Language Sub Title";
+  static const String SETTINGS_OTHERS_TITLE = "Settings Others Title";
+  static const String SETTINGS_PRIVACY_AND_SECURITY_TITLE = "Settings Privacy And Security Title";
+  static const String SETTINGS_PRIVACY_AND_SECURITY_SUB_TITLE = "Settings Privacy And Security Sub Title";
+  static const String SETTINGS_HELP_AND_SUPPOR_TITLE = "Settings Help And Support Title";
+  static const String SETTINGS_HELP_AND_SUPPOR_SUB_TITLE = "Settings Help And Support Sub Title";
+  static const String SETTINGS_ABOUT_TITLE = "Settings About Title";
+  static const String SETTINGS_ABOUT_SUB_TITLE = "Settings About Sub Title";
+  static const String SETTINGS_APP_VERSION_TITLE = "Settings App Version Title";
+
 
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
   static const String EMAIL = "Email";
