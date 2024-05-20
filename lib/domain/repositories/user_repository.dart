@@ -1,4 +1,9 @@
+import 'package:berkania/domain/entities/user_entity.dart';
+
 abstract class UserRepository {
+
+  // - - - - - - - - - - - - - - - - - - SAVE USER INFO - - - - - - - - - - - - - - - - - -  //
+  Future<void> saveUserInfo({required UserEntity userEntity});
 
   // - - - - - - - - - - - - - - - - - - CHECK THE USER IS EXIST - - - - - - - - - - - - - - - - - -  //
   Future<bool> existUser({required String userId});

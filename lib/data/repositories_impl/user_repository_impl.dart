@@ -1,64 +1,59 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:berkania/data/data_source/remote.dart';
+import 'package:berkania/data/mappers/user_mapper.dart';
+import 'package:berkania/domain/entities/user_entity.dart';
 
 import '../../domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl extends UserRepository {
 
-  // - - - - - - - - - - - - - - - - - - CREATE INSTANCES - - - - - - - - - - - - - - - - - -  //
-  static final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  static final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-  static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
   // - - - - - - - - - - - - - - - - - - OVERRIDE IS EXIST METHODE - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<bool> existUser({required String userId}) async{
-    final result = await _firebaseFirestore.collection("USERS").doc(userId).get();
-    return result.exists;
-  }
+  Future<bool> existUser({required String userId}) async => await Remote.exist(collection: "USERS", doc: userId);
 
+  // - - - - - - - - - - - - - - - - - - UPDATE USER EMAIL - - - - - - - - - - - - - - - - - -  //
   @override
   Future<void> updateUserEmail({required String userId, required String newEmail}) async{
-    final User user =  _firebaseAuth.currentUser!;
-    await user.verifyBeforeUpdateEmail(newEmail);
-    await _firebaseFirestore.collection("USERS").doc(userId).update({'email' : newEmail});
+    await Remote.updateEmail(collection: "USERS", doc: userId, newEmail: newEmail);
   }
 
+  // - - - - - - - - - - - - - - - - - - UPDATE USER FULL NAME - - - - - - - - - - - - - - - - - -  //
   @override
   Future<void> updateUserFullName({required String userId, required String newFirstName, required String newLastName}) async{
-    await _firebaseFirestore.collection("USERS").doc(userId).update({'firstName' : newFirstName, 'lastName' : newLastName, });
+    await Remote.updateFullName(collection: "USERS", doc: userId, newFirstName: newFirstName, newLastName: newLastName);
   }
 
+  // - - - - - - - - - - - - - - - - - - UPDATE USER IMAGE - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<void> updateUserImage({required String userId, required String newImage}) async{
-    await _firebaseFirestore.collection("USERS").doc(userId).update({'avatar' : newImage});
-  }
+  Future<String> updateUserImage({required String userId, required String newImage}) async =>
+      await Remote.updateImage(path: "USERS", imgName: userId, imgPath: newImage);
 
+  // - - - - - - - - - - - - - - - - - - UPDATE USER PASSWORD - - - - - - - - - - - - - - - - - -  //
   @override
   Future<void> updateUserPassword({required String userId, required String newPassword}) async{
-    final User user =  _firebaseAuth.currentUser!;
-    await user.updatePassword(newPassword);
+    await Remote.updatePassword(newPassword: newPassword);
   }
 
+  // - - - - - - - - - - - - - - - - - - UPDATE USER PHONE - - - - - - - - - - - - - - - - - -  //
   @override
   Future<void> updateUserPhone({required String userId, required String newPhone}) async{
-    await _firebaseFirestore.collection("USERS").doc(userId).update({'phone' : newPhone});
+    await Remote.updatePhone(collection: "USERS", doc: userId, newPhone: newPhone);
   }
 
+  // - - - - - - - - - - - - - - - - - - SAVE USER IMAGE - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<String> saveUserImage({required String imgName, required String imgPath}) async{
-    final saveImg =  await _firebaseStorage.ref("USERS").child(imgName).putFile(File(imgPath));
-    final imgUrl = await saveImg.ref.getDownloadURL();
-    return imgUrl;
-  }
+  Future<String> saveUserImage({required String imgName, required String imgPath}) async =>
+      await Remote.saveImage(path: "USERS", imgName: imgName, imgPath: imgPath);
 
-
+  // - - - - - - - - - - - - - - - - - - DELETE USER IMAGE - - - - - - - - - - - - - - - - - -  //
   @override
   Future<void> deleteUserImage({required String imgName}) async{
-    await _firebaseStorage.ref("USERS").child(imgName).delete();
+    await Remote.deleteUserImage(path: "USERS", imgName: imgName);
+
+  }
+
+  @override
+  Future<void> saveUserInfo({required UserEntity userEntity}) async{
+    Remote.saveUserData(userDto: userEntity.toUserDto());
   }
 
 }

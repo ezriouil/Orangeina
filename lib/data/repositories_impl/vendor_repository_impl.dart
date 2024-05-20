@@ -1,73 +1,56 @@
-import 'dart:io';
-
+import 'package:berkania/data/mappers/vendor_mapper.dart';
+import 'package:berkania/data/models/vendor_dto.dart';
 import 'package:berkania/domain/entities/vendor_entity.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../domain/repositories/vendor_repository.dart';
+import '../data_source/remote.dart';
 
 class VendorRepositoryImpl extends VendorRepository {
-
-  // - - - - - - - - - - - - - - - - - - CREATE INSTANCES - - - - - - - - - - - - - - - - - -  //
-  static final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  static final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-  static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   // - - - - - - - - - - - - - - - - - - OVERRIDE GET ALL VENDORS FROM METHODE - - - - - - - - - - - - - - - - - -  //
   @override
   Future<List<VendorEntity>> getAllVendors() async{
-    final List<VendorEntity> vendors = [];
-    final QuerySnapshot<Map<String, dynamic>> vendorsCollection = await _firebaseFirestore.collection("VENDORS").get();
 
-    for (QueryDocumentSnapshot<Map<String, dynamic>> vendorJson in vendorsCollection.docs) {
-      VendorEntity vendor = VendorEntity.fromJson(vendorJson.data());
-      vendors.add(vendor);
+    final List<VendorEntity> vendorsEntity = [];
+    final List<VendorDto> vendorsDto = await Remote.getAllVendors();
+
+    for(VendorDto vendorDto in vendorsDto){
+      vendorsEntity.add(vendorDto.toVendorEntity());
     }
-    return vendors;
+    return vendorsEntity;
   }
 
   @override
-  Future<bool> existVendor({required String vendorId}) async{
-    final result = await _firebaseFirestore.collection("VENDOR").doc(vendorId).get();
-    return result.exists;
-  }
+  Future<bool> existVendor({required String vendorId}) async => Remote.exist(collection: "VENDORS", doc: vendorId);
 
   @override
   Future<void> updateVendorEmail({required String vendorId, required String newEmail}) async{
-    final User user =  _firebaseAuth.currentUser!;
-    user.verifyBeforeUpdateEmail(newEmail);
-    await _firebaseFirestore.collection("VENDOR").doc(vendorId).update({'email' : newEmail});
+    await Remote.updateEmail(collection: "VENDORS", doc: vendorId, newEmail: newEmail);
   }
 
   @override
   Future<void> updateVendorFullName({required String vendorId, required String newFirstName, required String newLastName}) async{
-    await _firebaseFirestore.collection("VENDOR").doc(vendorId).update({'firstName' : newFirstName, 'lastName' : newLastName, });
+    await Remote.updateFullName(collection: "VENDORS", doc: vendorId, newFirstName: newFirstName, newLastName: newLastName);
   }
 
 
   @override
-  Future<void> updateVendorPassword({required String vendorId, required String newPassword}) async{
-    final User user =  _firebaseAuth.currentUser!;
-    await user.updatePassword(newPassword);
-  }
+  Future<void> updateVendorPassword({required String vendorId, required String newPassword}) async =>
+  await Remote.updateImage(path: "VENDORS", imgName: "VENDORS", imgPath: newPassword);
 
   @override
   Future<void> updateVendorPhone({required String vendorId, required String newPhone}) async{
-    await _firebaseFirestore.collection("VENDOR").doc(vendorId).update({'phone' : newPhone});
+    await Remote.updatePhone(collection: "VENDORS", doc: vendorId, newPhone: newPhone);
   }
 
   @override
-  Future<String> saveVendorImage({required String imgName, required String imgPath}) async{
-    final saveImg =  await _firebaseStorage.ref("VENDOR").child(imgName).putFile(File(imgPath));
-    final imgUrl = await saveImg.ref.getDownloadURL();
-    return imgUrl;
-  }
+  Future<String> saveVendorImage({required String imgName, required String imgPath})  async =>
+      await Remote.saveImage(path: "VENDORS", imgName: imgName, imgPath: imgPath);
 
 
   @override
   Future<void> deleteVendorImage({required String imgName}) async{
-    await _firebaseStorage.ref("VENDOR").child(imgName).delete();
+    await Remote.deleteUserImage(path: "VENDORS", imgName: imgName);
   }
 
 }
