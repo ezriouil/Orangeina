@@ -115,7 +115,7 @@ class LoginCubit extends Cubit<LoginState> {
       }
 
       // CHECK THE USER HIS INFO ALREADY EXIST OR NOT
-      final bool result = await userRepository.isExist(userId: userCredential.user!.uid);
+      final bool result = await userRepository.existUser(userId: userCredential.user!.uid);
       if(!result){
         // SAVE USER DATA
         final UserEntity userEntity = UserEntity(

@@ -23,13 +23,10 @@ class IndexCubit extends Cubit<IndexState> {
 
     final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     final permission = await Geolocator.checkPermission();
-    print(1);
     if(!isLocationServiceEnabled || permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
       emit(IndexPermissionState());
-      print(2);
       return;
     }
-    print(3);
     emit(IndexCurrentState(currentPageIndex: value));
   }
 

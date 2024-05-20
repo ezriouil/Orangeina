@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../domain/repositories/vendor_repository.dart';
@@ -11,6 +12,7 @@ class VendorRepositoryImpl extends VendorRepository {
   // - - - - - - - - - - - - - - - - - - CREATE INSTANCES - - - - - - - - - - - - - - - - - -  //
   static final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   static final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   // - - - - - - - - - - - - - - - - - - OVERRIDE GET ALL VENDORS FROM METHODE - - - - - - - - - - - - - - - - - -  //
   @override
@@ -25,31 +27,47 @@ class VendorRepositoryImpl extends VendorRepository {
     return vendors;
   }
 
-  // - - - - - - - - - - - - - - - - - - UPDATE VENDOR INDO - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<void> updateVendorInfo({required VendorEntity vendorEntity}) async{
-    await _firebaseFirestore.collection("VENDOR").doc(vendorEntity.id).update(vendorEntity.toJson());
-  }
-
-  // - - - - - - - - - - - - - - - - - - OVERRIDE IS EXIST METHODE - - - - - - - - - - - - - - - - - -  //
-  @override
-  Future<bool> isExist({required String vendorId}) async{
-    final result = await _firebaseFirestore.collection("VENDORS").doc(vendorId).get();
+  Future<bool> existVendor({required String vendorId}) async{
+    final result = await _firebaseFirestore.collection("VENDOR").doc(vendorId).get();
     return result.exists;
   }
 
-  // - - - - - - - - - - - - - - - - - - DELETE IMAGE FROM VENDOR FOLDER - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<void> deleteImage({required String imgName}) async{
-    await _firebaseStorage.ref("VENDOR").child(imgName).delete();
+  Future<void> updateVendorEmail({required String vendorId, required String newEmail}) async{
+    final User user =  _firebaseAuth.currentUser!;
+    user.verifyBeforeUpdateEmail(newEmail);
+    await _firebaseFirestore.collection("VENDOR").doc(vendorId).update({'email' : newEmail});
   }
 
-  // - - - - - - - - - - - - - - - - - - SAVE IMAGE INTO VENDOR FOLDER - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<String> saveImage({required String imgName, required String imgPath}) async{
+  Future<void> updateVendorFullName({required String vendorId, required String newFirstName, required String newLastName}) async{
+    await _firebaseFirestore.collection("VENDOR").doc(vendorId).update({'firstName' : newFirstName, 'lastName' : newLastName, });
+  }
+
+
+  @override
+  Future<void> updateVendorPassword({required String vendorId, required String newPassword}) async{
+    final User user =  _firebaseAuth.currentUser!;
+    await user.updatePassword(newPassword);
+  }
+
+  @override
+  Future<void> updateVendorPhone({required String vendorId, required String newPhone}) async{
+    await _firebaseFirestore.collection("VENDOR").doc(vendorId).update({'phone' : newPhone});
+  }
+
+  @override
+  Future<String> saveVendorImage({required String imgName, required String imgPath}) async{
     final saveImg =  await _firebaseStorage.ref("VENDOR").child(imgName).putFile(File(imgPath));
     final imgUrl = await saveImg.ref.getDownloadURL();
     return imgUrl;
+  }
+
+
+  @override
+  Future<void> deleteVendorImage({required String imgName}) async{
+    await _firebaseStorage.ref("VENDOR").child(imgName).delete();
   }
 
 }
