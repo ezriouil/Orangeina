@@ -3,6 +3,9 @@
 <plist version="1.0">
 <dict>
 
+   <key>NSPhotoLibraryUsageDescription</key>
+   <string>Allow access to photo library</string>
+
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>This app needs access to location in the background.</string>
     <key>NSLocationAlwaysUsageDescription</key>

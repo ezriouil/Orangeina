@@ -12,10 +12,10 @@ abstract class VendorRepository {
   Future<void> updateVendorFullName({required String vendorId, required String newFirstName, required String newLastName});
 
   // - - - - - - - - - - - - - - - - - - UPDATE VENDOR EMAIL - - - - - - - - - - - - - - - - - -  //
-  Future<void> updateVendorEmail({required String vendorId, required String newEmail});
+  //Future<void> updateVendorEmail({required String vendorId, required String newEmail});
 
   // - - - - - - - - - - - - - - - - - - UPDATE VENDOR PASSWORD - - - - - - - - - - - - - - - - - -  //
-  Future<void> updateVendorPassword({required String vendorId, required String newPassword});
+  //Future<void> updateVendorPassword({required String vendorId, required String newPassword});
 
   // - - - - - - - - - - - - - - - - - - UPDATE VENDOR PHONE - - - - - - - - - - - - - - - - - -  //
   Future<void> updateVendorPhone({required String vendorId, required String newPhone});

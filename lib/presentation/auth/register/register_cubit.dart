@@ -34,7 +34,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         passwordController: TextEditingController(),
         confirmPasswordController: TextEditingController(),
         checkbox: false,
-        passwordVisible: false,
+        obscureText: false,
         formState: GlobalKey<FormState>()));
   }
 
@@ -98,12 +98,12 @@ class RegisterCubit extends Cubit<RegisterState> {
       await userRepository.saveUserInfo(userEntity: userEntity);
 
       // SAVE EMAIL + PASSWORD INTO LOCAL
-      await LocalStorage.upsert(key: "UID", value: userEntity.id, storage: storage);
-      await LocalStorage.upsert(key: "EMAIL", value: userEntity.email, storage: storage);
-      await LocalStorage.upsert(key: "FIRST_NAME", value: userEntity.firstName, storage: storage);
-      await LocalStorage.upsert(key: "LAST_NAME", value: userEntity.lastName, storage: storage);
-      await LocalStorage.upsert(key: "EMAIL", value: userEntity.email, storage: storage);
-      await LocalStorage.upsert(key: "PASSWORD", value: currentState.passwordController?.text, storage: storage);
+      await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
+      await LocalStorage.upsert(key: "FIRST_NAME", value: currentState.firstNameController!.text, storage: storage);
+      await LocalStorage.upsert(key: "LAST_NAME", value: currentState.lastNameController!.text, storage: storage);
+      await LocalStorage.upsert(key: "EMAIL", value: currentState.emailController!.text, storage: storage);
+      await LocalStorage.upsert(key: "PASSWORD", value: currentState.passwordController!.text, storage: storage);
+
 
       // CLEAR TEXT FIELDS
       currentState.firstNameController!.clear();
@@ -132,8 +132,8 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   // - - - - - - - - - - - - - - - - - - UPDATE PASSWORD VISIBILITY - - - - - - - - - - - - - - - - - -  //
   void onUpdatePasswordVisibility(){
-    bool newValue = (state as RegisterCurrentState).passwordVisible!;
-    final RegisterCurrentState updateState = (state as RegisterCurrentState).copyWith(passwordVisible: newValue = !newValue);
+    bool newValue = (state as RegisterCurrentState).obscureText!;
+    final RegisterCurrentState updateState = (state as RegisterCurrentState).copyWith(obscureText: newValue = !newValue);
     emit(updateState);
   }
 
@@ -172,8 +172,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         await userRepository.saveUserInfo(userEntity: userEntity);
 
         // SAVE EMAIL + PASSWORD INTO LOCAL
-        await LocalStorage.upsert(key: "UID", value: userEntity.id, storage: storage);
-        await LocalStorage.upsert(key: "EMAIL", value: userEntity.email, storage: storage);
+        await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
       }
 
       // NAVIGATE TO HOME SCREEN

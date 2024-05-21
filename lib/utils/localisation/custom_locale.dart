@@ -60,6 +60,18 @@ mixin CustomLocale{
   static const String HOME_PERMISSION_TITLE = "Home Permission Title";
   static const String HOME_PERMISSION_SUB_TITLE = "Home Permission Sub Title";
   static const String HOME_PERMISSION_BUTTON_ENABLE = "Home Permission Button Enable";
+  static const String HOME_SHOW_MY_LOCATION_TITLE = "Home Show My Location Title";
+  static const String HOME_SHOW_MY_LOCATION_SUB_TITLE = "Home Show My Location Sub Title";
+  static const String HOME_ENABLE_MAP_SATELLITE_TITLE = "Home Enable Map Satellite Title";
+  static const String HOME_ENABLE_MAP_SATELLITE_SUB_TITLE = "Home Enable Map Satellite Sub Title";
+  static const String HOME_ENABLE_MAP_TRAFFIC_TITLE = "Home Enable Map Traffic Title";
+  static const String HOME_ENABLE_MAP_TRAFFIC_SUB_TITLE = "Home Enable Map Traffic Sub Title";
+  static const String HOME_ENABLE_MAP_FILTER_TITLE = "Home Enable Map Filter Title";
+  static const String HOME_ENABLE_MAP_FILTER_SUB_TITLE = "Home Enable Map Filter Sub Title";
+  static const String HOME_ENABLE_MAP_REFRESH_TITLE = "Home Enable Map Refresh Title";
+  static const String HOME_ENABLE_MAP_REFRESH_SUB_TITLE = "Home Enable Map Refresh Sub Title";
+  static const String HOME_ENABLE_MAP_VENDORS_TITLE = "Home Enable Map Vendors Title";
+  static const String HOME_ENABLE_MAP_VENDORS_SUB_TITLE = "Home Enable Map Vendors Sub Title";
 
   // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String SETTINGS_PROFILE_TITLE = "Settings Profile Title";
@@ -71,11 +83,9 @@ mixin CustomLocale{
   static const String SETTINGS_UPDATE_PASSOWRD_SUB_TITLE = "Settings Update Password Sub Title";
   static const String SETTINGS_UPDATE_PHONE_TITLE = "Settings Update Phone Title";
   static const String SETTINGS_UPDATE_PHONE_SUB_TITLE = "Settings Update Phone Sub Title";
-  static const String SETTINGS_DISPLAY_TITLE = "Settings Display Title";
-  static const String SETTINGS_UPDATE_DARK_MODE_TITLE = "Settings Update Dark Mode Title";
-  static const String SETTINGS_UPDATE_DARK_MODE_SUB_TITLE = "Settings Update Dark Mode Sub Title";
-  static const String SETTINGS_UPDATE_HIDE_AUTH_TITLE = "Settings Update Hide Auth Title";
-  static const String SETTINGS_UPDATE_HIDE_AUTH_SUB_TITLE = "Settings Update Hide Auth Sub Title";
+  static const String SETTINGS_JOB_TITLE = "Settings Job Title";
+  static const String SETTINGS_BE_VENDOR_TITLE = "Settings Be Vendor Title";
+  static const String SETTINGS_BE_VENDOR_SUB_TITLE = "Settings Be Vendor Sub Title";
   static const String SETTINGS_UPDATE_LANGUAGE_TITLE = "Settings Update Language Title";
   static const String SETTINGS_UPDATE_LANGUAGE_SUB_TITLE = "Settings Update Language Sub Title";
   static const String SETTINGS_OTHERS_TITLE = "Settings Others Title";

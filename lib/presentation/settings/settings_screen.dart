@@ -41,7 +41,7 @@ class SettingsScreen extends CustomState {
                           // - - - - - - - - - - - - - - - - - - IMAGE FROM NETWORK - - - - - - - - - - - - - - - - - -  //
                           Center(
                             child: InkWell(
-                              onTap: context.read<SettingsCubit>().onUpdateImageProfile,
+                              onTap: (){ context.read<SettingsCubit>().onUpdateImageProfile(context: context); },
                               borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                               child: Stack(
                                children: [
@@ -90,26 +90,6 @@ class SettingsScreen extends CustomState {
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
-                          // - - - - - - - - - - - - - - - - - - CHANGE EMAIL - - - - - - - - - - - - - - - - - -  //
-                          CustomSettingTile(
-                              title: CustomLocale.SETTINGS_UPDATE_EMAIL_TITLE.getString(context),
-                              subTitle: CustomLocale.SETTINGS_UPDATE_EMAIL_SUB_TITLE.getString(context),
-                              icon: Iconsax.direct_right,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: () { context.read<SettingsCubit>().onUpdateEmail(context: context); }),
-
-                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-
-                          // - - - - - - - - - - - - - - - - - - CHANGE PASSWORD - - - - - - - - - - - - - - - - - -  //
-                          CustomSettingTile(
-                              title: CustomLocale.SETTINGS_UPDATE_PASSWORD_TITLE.getString(context),
-                              subTitle: CustomLocale.SETTINGS_UPDATE_PASSOWRD_SUB_TITLE.getString(context),
-                              icon: Iconsax.password_check,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: () { context.read<SettingsCubit>().onUpdatePassword(context: context); }),
-
-                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-
                           // - - - - - - - - - - - - - - - - - - CHANGE PHONE - - - - - - - - - - - - - - - - - -  //
                           CustomSettingTile(
                               title: CustomLocale.SETTINGS_UPDATE_PHONE_TITLE.getString(context),
@@ -119,33 +99,26 @@ class SettingsScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
-                    
-                          // - - - - - - - - - - - - - - - - - -  Display - - - - - - - - - - - - - - - - - -  //
-                          Text(CustomLocale.SETTINGS_DISPLAY_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(color: grayColor(context), letterSpacing: 0.6)),
-                    
-                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-                    
-                          // - - - - - - - - - - - - - - - - - - DARK MODE - - - - - - - - - - - - - - - - - -  //
-                          CustomSettingTile(
-                            title: CustomLocale.SETTINGS_UPDATE_DARK_MODE_TITLE.getString(context),
-                            subTitle: CustomLocale.SETTINGS_UPDATE_DARK_MODE_SUB_TITLE.getString(context),
-                            icon: Iconsax.colorfilter,
-                            trailing: Switch(
-                                value: state.enableDarkMode!,
-                                onChanged: (value) { context.read<SettingsCubit>().onUpdateEnableDarkMode(value); }), onClick: () {  },
-                          ),
+
+                          // - - - - - - - - - - - - - - - - - -  OTHERS - - - - - - - - - - - - - - - - - -  //
+                          Text(CustomLocale.SETTINGS_JOB_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(color: grayColor(context), letterSpacing: 0.6)),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-                    
-                          // - - - - - - - - - - - - - - - - - - HIDE AUTHENTICATION - - - - - - - - - - - - - - - - - -  //
-                          CustomSettingTile(
-                            title: CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_TITLE.getString(context),
-                            subTitle: CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_SUB_TITLE.getString(context),
-                            icon: Iconsax.security_safe,
-                            trailing: Switch(value: state.hideAuthentication!, onChanged: context.read<SettingsCubit>().onUpdateHideAuth ), onClick: (){},
+
+                          // - - - - - - - - - - - - - - - - - - BE VENDOR - - - - - - - - - - - - - - - - - -  //
+                           CustomSettingTile(
+                             title: CustomLocale.SETTINGS_BE_VENDOR_TITLE.getString(context),
+                             subTitle: CustomLocale.SETTINGS_BE_VENDOR_SUB_TITLE.getString(context),
+                            icon: Iconsax.shop, onClick: () {  },
+                            trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24 : Iconsax.arrow_right_3, color: darkLightColor(context)),
                           ),
+
+                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
+
+                          // - - - - - - - - - - - - - - - - - -  OTHERS - - - - - - - - - - - - - - - - - -  //
+                          Text(CustomLocale.SETTINGS_OTHERS_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(color: grayColor(context), letterSpacing: 0.6)),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -155,17 +128,12 @@ class SettingsScreen extends CustomState {
                              title: CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE.getString(context),
                              subTitle: CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE.getString(context),
                             icon: Iconsax.language_square, onClick: () { context.read<SettingsCubit>().onUpdateLanguage(context: context, callBack: context.pop); },
+                            trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24 : Iconsax.arrow_right_3, color: darkLightColor(context)),
                           ),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
-                    
-                          // - - - - - - - - - - - - - - - - - -  OTHERS - - - - - - - - - - - - - - - - - -  //
-                          Text(CustomLocale.SETTINGS_OTHERS_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(color: grayColor(context), letterSpacing: 0.6)),
-                    
-                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-                    
+
                           // - - - - - - - - - - - - - - - - - - PRIVACY AND SECURITY - - - - - - - - - - - - - - - - - -  //
                           CustomSettingTile(
                             title: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_TITLE.getString(context),

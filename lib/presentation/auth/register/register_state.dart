@@ -9,7 +9,7 @@ final class RegisterCurrentState extends RegisterState {
       emailController,
       passwordController,
       confirmPasswordController;
-  final bool? checkbox, passwordVisible;
+  final bool? checkbox, obscureText;
   final GlobalKey<FormState>? formState;
 
   RegisterCurrentState(
@@ -19,7 +19,7 @@ final class RegisterCurrentState extends RegisterState {
       this.passwordController,
       this.confirmPasswordController,
       this.checkbox,
-      this.passwordVisible,
+      this.obscureText,
       this.formState});
 
   RegisterCurrentState copyWith({
@@ -29,7 +29,7 @@ final class RegisterCurrentState extends RegisterState {
     TextEditingController? passwordController,
     TextEditingController? confirmPasswordController,
     bool? checkbox,
-    bool? passwordVisible,
+    bool? obscureText,
     GlobalKey<FormState>? formState,
   }) {
     return RegisterCurrentState(
@@ -39,7 +39,7 @@ final class RegisterCurrentState extends RegisterState {
       passwordController: passwordController ?? this.passwordController,
       confirmPasswordController: confirmPasswordController ?? this.confirmPasswordController,
       checkbox: checkbox ?? this.checkbox,
-      passwordVisible: passwordVisible ?? this.passwordVisible,
+      obscureText: obscureText ?? this.obscureText,
       formState: formState ?? this.formState,
     );
   }

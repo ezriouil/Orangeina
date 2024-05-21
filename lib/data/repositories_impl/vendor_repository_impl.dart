@@ -23,10 +23,10 @@ class VendorRepositoryImpl extends VendorRepository {
   @override
   Future<bool> existVendor({required String vendorId}) async => Remote.exist(collection: "VENDORS", doc: vendorId);
 
-  @override
-  Future<void> updateVendorEmail({required String vendorId, required String newEmail}) async{
-    await Remote.updateEmail(collection: "VENDORS", doc: vendorId, newEmail: newEmail);
-  }
+  // @override
+  // Future<void> updateVendorEmail({required String vendorId, required String newEmail}) async{
+  //   await Remote.updateEmail(collection: "VENDORS", doc: vendorId, newEmail: newEmail);
+  // }
 
   @override
   Future<void> updateVendorFullName({required String vendorId, required String newFirstName, required String newLastName}) async{
@@ -34,9 +34,9 @@ class VendorRepositoryImpl extends VendorRepository {
   }
 
 
-  @override
-  Future<void> updateVendorPassword({required String vendorId, required String newPassword}) async =>
-  await Remote.updateImage(path: "VENDORS", imgName: "VENDORS", imgPath: newPassword);
+  //@override
+  //Future<void> updateVendorPassword({required String vendorId, required String newPassword}) async =>
+  //await Remote.updateImage(path: "VENDORS", imgName: "VENDORS", imgPath: newPassword);
 
   @override
   Future<void> updateVendorPhone({required String vendorId, required String newPhone}) async{

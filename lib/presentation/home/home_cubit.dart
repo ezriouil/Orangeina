@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../domain/repositories/vendor_repository.dart';
+import '../../utils/localisation/custom_locale.dart';
 import '../settings/widgets/custom_settings_tile.dart';
 
 part 'home_state.dart';
@@ -117,8 +119,8 @@ class HomeCubit extends Cubit<HomeState> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   CustomSettingTile(
-                    title: "Show My Location",
-                    subTitle: "Enjoy the new theme design for you ...",
+                    title: CustomLocale.HOME_SHOW_MY_LOCATION_TITLE.getString(context),
+                    subTitle: CustomLocale.HOME_SHOW_MY_LOCATION_SUB_TITLE.getString(context),
                     icon: Iconsax.location,
                     iconSize: 24.0,
                     titleSize: 12.0,
@@ -133,8 +135,8 @@ class HomeCubit extends Cubit<HomeState> {
                             })),
                   ),
                   CustomSettingTile(
-                    title: "Enable Map Satellite",
-                    subTitle: "Enjoy the new theme design for you ...",
+                    title: CustomLocale.HOME_ENABLE_MAP_SATELLITE_TITLE.getString(context),
+                    subTitle: CustomLocale.HOME_ENABLE_MAP_SATELLITE_SUB_TITLE.getString(context),
                     icon: Iconsax.map_1,
                     iconSize: 24.0,
                     titleSize: 12.0,
@@ -150,8 +152,8 @@ class HomeCubit extends Cubit<HomeState> {
                     ),
                   ),
                   CustomSettingTile(
-                    title: "Enable Map Traffic",
-                    subTitle: "Enjoy the new theme design for you ...",
+                    title: CustomLocale.HOME_ENABLE_MAP_TRAFFIC_TITLE.getString(context),
+                    subTitle: CustomLocale.HOME_ENABLE_MAP_TRAFFIC_SUB_TITLE.getString(context),
                     icon: Iconsax.route_square,
                     iconSize: 24.0,
                     titleSize: 12.0,
@@ -167,8 +169,8 @@ class HomeCubit extends Cubit<HomeState> {
                     ),
                   ),
                   CustomSettingTile(
-                    title: "Enable Map Filter",
-                    subTitle: "Enjoy the new theme design for you ...",
+                    title: CustomLocale.HOME_ENABLE_MAP_FILTER_TITLE.getString(context),
+                    subTitle: CustomLocale.HOME_ENABLE_MAP_FILTER_SUB_TITLE.getString(context),
                     icon: Iconsax.filter,
                     iconSize: 24.0,
                     titleSize: 12.0,
@@ -184,8 +186,8 @@ class HomeCubit extends Cubit<HomeState> {
                     ),
                   ),
                   CustomSettingTile(
-                    title: "Enable Map Refresh",
-                    subTitle: "Enjoy the new theme design for you ...",
+                    title: CustomLocale.HOME_ENABLE_MAP_REFRESH_TITLE.getString(context),
+                    subTitle: CustomLocale.HOME_ENABLE_MAP_REFRESH_SUB_TITLE.getString(context),
                     icon: Iconsax.refresh,
                     iconSize: 24.0,
                     titleSize: 12.0,
@@ -201,8 +203,8 @@ class HomeCubit extends Cubit<HomeState> {
                     ),
                   ),
                   CustomSettingTile(
-                    title: "Enable Map Vendors",
-                    subTitle: "Enjoy the new theme design for you ...",
+                    title: CustomLocale.HOME_ENABLE_MAP_VENDORS_TITLE.getString(context),
+                    subTitle: CustomLocale.HOME_ENABLE_MAP_VENDORS_SUB_TITLE.getString(context),
                     icon: Iconsax.shop,
                     iconSize: 24.0,
                     titleSize: 12.0,

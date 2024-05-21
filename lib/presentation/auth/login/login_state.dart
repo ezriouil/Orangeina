@@ -5,13 +5,13 @@ sealed class LoginState {}
 
 final class LoginCurrentState extends LoginState {
   final TextEditingController?emailController, passwordController;
-  final bool?  passwordVisible, arabicLang, frenchLang, englishLang;
+  final bool?  obscureText, arabicLang, frenchLang, englishLang;
   final GlobalKey<FormState>? formState;
 
   LoginCurrentState({
         this.emailController,
         this.passwordController,
-        this.passwordVisible,
+        this.obscureText,
         this.arabicLang,
         this.frenchLang,
         this.englishLang,
@@ -20,7 +20,7 @@ final class LoginCurrentState extends LoginState {
   LoginCurrentState copyWith({
     TextEditingController? emailController,
     TextEditingController? passwordController,
-    bool? passwordVisible,
+    bool? obscureText,
     bool? arabicLang,
     bool? frenchLang,
     bool? englishLang,
@@ -29,7 +29,7 @@ final class LoginCurrentState extends LoginState {
     return LoginCurrentState(
       emailController: emailController ?? this.emailController,
       passwordController: passwordController ?? this.passwordController,
-      passwordVisible: passwordVisible ?? this.passwordVisible,
+      obscureText: obscureText ?? this.obscureText,
       arabicLang: arabicLang ?? this.arabicLang,
       frenchLang: frenchLang ?? this.frenchLang,
       englishLang: englishLang ?? this.englishLang,

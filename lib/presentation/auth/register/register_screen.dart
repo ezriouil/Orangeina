@@ -104,11 +104,11 @@ class RegisterScreen extends CustomState {
                             validator: (value) => Validator.validatePasswordField(CustomLocale.PASSWORD_VALIDATOR.getString(context), value),
                             hint: CustomLocale.PASSWORD.getString(context),
                             textInputType: TextInputType.visiblePassword,
-                              obscureText: state.passwordVisible!,
+                              obscureText: state.obscureText!,
                               trailingIcon: InkWell(
                                   onTap: context.read<RegisterCubit>().onUpdatePasswordVisibility,
                                   borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-                                  child: Icon(state.passwordVisible! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context)))
+                                  child: Icon(state.obscureText! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context)))
                           ),
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 4),
@@ -120,11 +120,11 @@ class RegisterScreen extends CustomState {
                             validator: (value) => Validator.validatePasswordField(CustomLocale.REGISTER_CONFIRM_PASSWORD_VALIDATOR.getString(context), value),
                             hint: CustomLocale.REGISTER_CONFIRM_PASSWORD.getString(context),
                             textInputType: TextInputType.visiblePassword,
-                            obscureText: state.passwordVisible!,
+                            obscureText: state.obscureText!,
                             trailingIcon: InkWell(
                                 onTap: context.read<RegisterCubit>().onUpdatePasswordVisibility,
                                 borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-                                child: Icon(state.passwordVisible! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context))),
+                                child: Icon(state.obscureText! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context))),
                           ),
 
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //

@@ -5,44 +5,39 @@ sealed class SettingsState {}
 
 final class SettingsCurrentState extends SettingsState {
 
-  final bool? enableDarkMode, hideAuthentication, arabicLang, frenchLang, englishLang;
+  final bool? arabicLang, frenchLang, englishLang;
+  final String? updateImageProfilePath;
   final TextEditingController? updateFirstNameController,
       updateLastNameController,
-      updateEmailNameController,
-      updatePasswordController,
       updatePhoneController;
 
   SettingsCurrentState(
-      {this.enableDarkMode, this.hideAuthentication,
-      this.arabicLang, this.frenchLang, this.englishLang,
+      {
+      this.arabicLang,
+      this.frenchLang,
+      this.englishLang,
+      this.updateImageProfilePath,
       this.updateFirstNameController,
       this.updateLastNameController,
-      this.updateEmailNameController,
-      this.updatePasswordController,
       this.updatePhoneController});
 
   SettingsCurrentState copyWith(
-          {bool? enableDarkMode,
-          bool? hideAuthentication,
+          {
           bool? arabicLang,
           bool? frenchLang,
           bool? englishLang,
-          TextEditingController? updateFirstNameController,
+          String? updateImageProfilePath,
+            TextEditingController? updateFirstNameController,
           TextEditingController? updateLastNameController,
-          TextEditingController? updateEmailNameController,
-          TextEditingController? updatePasswordController,
           TextEditingController? updatePhoneController}) =>
 
       SettingsCurrentState(
-        enableDarkMode: enableDarkMode ?? this.enableDarkMode,
-        hideAuthentication: hideAuthentication ?? this.hideAuthentication,
         arabicLang: arabicLang ?? this.arabicLang,
         frenchLang: frenchLang ?? this.frenchLang,
         englishLang: englishLang ?? this.englishLang,
+        updateImageProfilePath: updateImageProfilePath ?? this.updateImageProfilePath,
         updateFirstNameController: updateFirstNameController ?? this.updateFirstNameController,
         updateLastNameController: updateLastNameController ?? this.updateLastNameController,
-        updateEmailNameController: updateEmailNameController ?? this.updateEmailNameController,
-        updatePasswordController: updatePasswordController ?? this.updatePasswordController,
         updatePhoneController: updatePhoneController ?? this.updatePhoneController,
       );
 

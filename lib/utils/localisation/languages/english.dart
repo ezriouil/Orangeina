@@ -59,10 +59,23 @@ class English {
     CustomLocale.INDEX_NOTIFICATION_TITLE: "Notification",
     CustomLocale.INDEX_SETTINGS_TITLE: "Settings",
 
-    // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
+    // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.HOME_PERMISSION_TITLE: "Permission needed",
     CustomLocale.HOME_PERMISSION_SUB_TITLE: "To serve you best user experience we need permission from location services",
     CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "Enable",
+
+  CustomLocale.HOME_SHOW_MY_LOCATION_TITLE : "My Location",
+  CustomLocale.HOME_SHOW_MY_LOCATION_SUB_TITLE : "Show your position on map",
+  CustomLocale.HOME_ENABLE_MAP_SATELLITE_TITLE : "Map Satellite",
+  CustomLocale.HOME_ENABLE_MAP_SATELLITE_SUB_TITLE : "Enjoy with to new theme designed for you",
+  CustomLocale.HOME_ENABLE_MAP_TRAFFIC_TITLE : "Traffic",
+  CustomLocale.HOME_ENABLE_MAP_TRAFFIC_SUB_TITLE : "Show traffic and roads",
+  CustomLocale.HOME_ENABLE_MAP_FILTER_TITLE : "Filter",
+  CustomLocale.HOME_ENABLE_MAP_FILTER_SUB_TITLE : "You can filter on map by rating",
+  CustomLocale.HOME_ENABLE_MAP_REFRESH_TITLE : "Refresh",
+  CustomLocale.HOME_ENABLE_MAP_REFRESH_SUB_TITLE : "Refresh vendors automatically",
+  CustomLocale.HOME_ENABLE_MAP_VENDORS_TITLE : "Vendors",
+  CustomLocale.HOME_ENABLE_MAP_VENDORS_SUB_TITLE : "You can show and hide vendors on map",
 
   // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
   CustomLocale.SETTINGS_PROFILE_TITLE : "Profile",
@@ -74,11 +87,9 @@ class English {
   CustomLocale.SETTINGS_UPDATE_PASSOWRD_SUB_TITLE : "Change your password any time.",
   CustomLocale.SETTINGS_UPDATE_PHONE_TITLE : "Update Phone",
   CustomLocale.SETTINGS_UPDATE_PHONE_SUB_TITLE : "Change your phone number any time.",
-  CustomLocale.SETTINGS_DISPLAY_TITLE : "Display",
-  CustomLocale.SETTINGS_UPDATE_DARK_MODE_TITLE : "Enable Dark Mode",
-  CustomLocale.SETTINGS_UPDATE_DARK_MODE_SUB_TITLE : "Enjoy the new theme designed for you.",
-  CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_TITLE : "Enable Hide Auth",
-  CustomLocale.SETTINGS_UPDATE_HIDE_AUTH_SUB_TITLE : "You can hide login page.",
+  CustomLocale.SETTINGS_JOB_TITLE : "Job",
+  CustomLocale.SETTINGS_BE_VENDOR_TITLE : "Be Vendor",
+  CustomLocale.SETTINGS_BE_VENDOR_SUB_TITLE : "Apply now to become a seller.",
   CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "Update Language",
   CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "Arabic & English & French",
   CustomLocale.SETTINGS_OTHERS_TITLE : "Others",

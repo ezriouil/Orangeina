@@ -1,4 +1,3 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
 import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
@@ -16,7 +15,6 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/state/custom_state.dart';
 import '../../widgets/custom_elevated_button.dart';
-import '../../widgets/custom_snackbars.dart';
 import '../../widgets/custom_text_field.dart';
 
 class LoginScreen extends CustomState {
@@ -78,15 +76,24 @@ class LoginScreen extends CustomState {
                               validator: (value) => Validator.validatePasswordField(CustomLocale.PASSWORD_VALIDATOR.getString(context), value),
                               hint: CustomLocale.PASSWORD.getString(context),
                               textInputType: TextInputType.visiblePassword,
-                              obscureText: state.passwordVisible!  ,
+                              obscureText: state.obscureText!  ,
                               trailingIcon: InkWell(
                                   onTap: context.read<LoginCubit>().onUpdatePasswordVisibility,
                                   borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-                                  child: Icon(state.passwordVisible! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context)))
+                                  child: Icon(state.obscureText! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context)))
                           ),
 
                           // - - - - - - - - - - - - - - - - - - FORGET THE PASSWORD - - - - - - - - - - - - - - - - - -  //
-                          SizedBox(width: getWidth(context), child: InkWell(onTap: (){ context.pushNamed(CustomRouter.FORGET_PASSWORD); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS), overlayColor: MaterialStateProperty.all(CustomColors.TRANSPARENT), child: Text(CustomLocale.LOGIN_FORGET_THE_PASSWORD.getString(context), style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.end))),
+                          SizedBox(
+                              width: getWidth(context),
+                              child: InkWell(
+                                  onTap: () {
+                                    context.pushNamed(
+                                        CustomRouter.FORGET_PASSWORD);
+                                  },
+                                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                  overlayColor: MaterialStateProperty.all(CustomColors.TRANSPARENT),
+                                  child: Text(CustomLocale.LOGIN_FORGET_THE_PASSWORD.getString(context), style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.end))),
 
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
@@ -95,8 +102,7 @@ class LoginScreen extends CustomState {
                           CustomElevatedButton(
                             onClick: (){
                               context.read<LoginCubit>().onLogin( context:context, callBack : (){
-                                CustomSnackBar.show(context: context, title: "New", subTitle: "New Sanck bar", type: ContentType.success);
-                                context.pushReplacement(CustomRouter.INDEX);
+                                context.pushReplacementNamed(CustomRouter.INDEX);
                               }); },
                             width: getWidth(context),
                             withDefaultPadding: false,

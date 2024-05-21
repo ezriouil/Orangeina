@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/custom_image_strings.dart';
@@ -22,40 +24,76 @@ class SettingsCubit extends Cubit<SettingsState> {
   final _storage = GetStorage();
   final UserRepositoryImpl _userRepository = UserRepositoryImpl();
   final VendorRepositoryImpl _vendorRepository = VendorRepositoryImpl();
+  final ImagePicker _imagePicker = ImagePicker();
 
   SettingsCubit() : super(SettingsCurrentState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
+
     emit(SettingsCurrentState(
-      enableDarkMode: false,
-      hideAuthentication: false,
       arabicLang: false,
+      englishLang: false,
       frenchLang: false,
-      englishLang: true,
+      updateImageProfilePath : "",
       updateFirstNameController: TextEditingController(),
       updateLastNameController: TextEditingController(),
-      updateEmailNameController: TextEditingController(),
-      updatePasswordController: TextEditingController(),
       updatePhoneController: TextEditingController(),
     ));
-  }
 
-  // - - - - - - - - - - - - - - - - - - UPDATE SWITCH BUTTON ( DARK MODE ) - - - - - - - - - - - - - - - - - -  //
-  void onUpdateEnableDarkMode(bool value){
-    final currentState = state as SettingsCurrentState;
-    emit(currentState.copyWith(enableDarkMode: value));
-  }
+    final String lang = await LocalStorage.read(key: "LANGUAGE", storage: _storage) ?? CustomLocale.EN;
 
-  // - - - - - - - - - - - - - - - - - - UPDATE SWITCH BUTTON ( HIDE AUTHENTICATION ) - - - - - - - - - - - - - - - - - -  //
-  void onUpdateHideAuth(bool value){
-    final currentState = state as SettingsCurrentState;
-    emit(currentState.copyWith(hideAuthentication: value));
+
+    emit((state as SettingsCurrentState).copyWith(
+      frenchLang: lang == CustomLocale.FR ? true : false,
+      arabicLang: lang == CustomLocale.AR ? true : false,
+      englishLang: lang == CustomLocale.EN ? true : false,
+    ));
+
   }
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE IMAGE PROFILE - - - - - - - - - - - - - - - - - -  //
-  onUpdateImageProfile()async{
+  onUpdateImageProfile({ required BuildContext context })async{
+    final String img = await LocalStorage.read(key: "IMAGE_PROFILE", storage: _storage);
+    print("++++++++++");
+    print(img);
+    print("++++++++++");
+    try{
 
+      final String uid = await LocalStorage.read(key: "UID", storage: _storage) ?? "";
+
+      final currentState = state as SettingsCurrentState;
+
+      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+      if(img == null) {
+        //SNACK BAR
+        return;
+      }
+
+      final isUserExist = await _userRepository.existUser(userId: uid);
+      if(isUserExist){
+        await _userRepository.updateUserImage(userId: uid, newImage: img.path);
+        await LocalStorage.upsert(key: "IMAGE_PROFILE", value: currentState.updateImageProfilePath, storage: _storage);
+        //SNACK BAR
+        return;
+      }
+
+      final isVendorExist = await _vendorRepository.existVendor(vendorId: uid);
+      if(isVendorExist){
+        await _userRepository.updateUserImage(userId: uid, newImage: img.path);
+        await LocalStorage.upsert(key: "IMAGE_PROFILE", value: currentState.updateImageProfilePath, storage: _storage);
+        //SNACK BAR
+        return;
+      }
+
+      currentState.updateFirstNameController!.clear();
+      currentState.updateLastNameController!.clear();
+      context.mounted ? context.pop() : null;
+
+
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
@@ -93,89 +131,48 @@ class SettingsCubit extends Cubit<SettingsState> {
                       // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
                       CustomElevatedButton(onClick: () async{
 
-                        // final isUserExist = await _userRepository.existUser(userId: uid);
-                        // if(isUserExist){
-                        //   await _userRepository.updateUserFullName(userId: uid, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
-                        //   currentState.updateFirstNameController!.clear();
-                        //   currentState.updateLastNameController!.clear();
-                        //   return;
-                        // }
-                        // final isVendorExist = await _vendorRepository.existVendor(vendorId: uid);
-                        // if(isVendorExist){
-                        //   await _vendorRepository.updateVendorFullName(vendorId: uid, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
-                        //   currentState.updateFirstNameController!.clear();
-                        //   currentState.updateLastNameController!.clear();
-                        //   return;
-                        // }else{
-                        //   currentState.updateFirstNameController!.clear();
-                        //   currentState.updateLastNameController!.clear();
-                        // }
+                        try{
 
+                          if(currentState.updateFirstNameController!.text.trim().length < 3 || currentState.updateFirstNameController!.text.trim().length < 3){
+                            context.mounted ? context.pop() : null;
+                            return;
+                          }
+
+                          final isUserExist = await _userRepository.existUser(userId: uid);
+                          if(isUserExist){
+                            await _userRepository.updateUserFullName(userId: uid, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
+                            await LocalStorage.upsert(key: "FIRST_NAME", value: currentState.updateFirstNameController!.text, storage: _storage);
+                            await LocalStorage.upsert(key: "LAST_NAME", value: currentState.updateLastNameController!.text, storage: _storage);
+                            currentState.updateFirstNameController!.clear();
+                            currentState.updateLastNameController!.clear();
+                            context.mounted ? context.pop() : null;
+                            //SNACK BAR
+                            return;
+                          }
+
+                          final isVendorExist = await _vendorRepository.existVendor(vendorId: uid);
+                          if(isVendorExist){
+                            await _vendorRepository.updateVendorFullName(vendorId: uid, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
+                            await LocalStorage.upsert(key: "FIRST_NAME", value: currentState.updateFirstNameController!.text, storage: _storage);
+                            await LocalStorage.upsert(key: "LAST_NAME", value: currentState.updateLastNameController!.text, storage: _storage);
+                            currentState.updateFirstNameController!.clear();
+                            currentState.updateLastNameController!.clear();
+                            context.mounted ? context.pop() : null;
+                            //SNACK BAR
+                            return;
+                          }
+
+                          currentState.updateFirstNameController!.clear();
+                          currentState.updateLastNameController!.clear();
+                          context.mounted ? context.pop() : null;
+
+                        }catch(e){
+                          print("+++++++++");
+                          print(e.toString());
+                          print("+++++++++");
+                        }
 
                       }, child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
-                    ],
-                  )));
-        });
-  }
-
-  // - - - - - - - - - - - - - - - - - - ON UPDATE EMAIL - - - - - - - - - - - - - - - - - -  //
-  onUpdateEmail({required BuildContext context})async{
-
-    final String email = await LocalStorage.read(key: "EMAIL", storage: _storage) ?? CustomLocale.EMAIL.getString(context.mounted ? context : context);
-
-    final currentState = state as SettingsCurrentState;
-    await showDialog(
-        context: context.mounted ? context : context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              content: SizedBox(
-                  height: 180.0,
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-
-                      // - - - - - - - - - - - - - - - - - - EMAIL - - - - - - - - - - - - - - - - - -  //
-                      CustomTextField(
-                          leadingIcon: Iconsax.direct_right,
-                          hint: email,
-                          controller: currentState.updateEmailNameController!,
-                        textInputType: TextInputType.emailAddress,
-                      ),
-
-                      // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(onClick: () { currentState.updateEmailNameController!.clear(); }, child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
-                    ],
-                  )));
-        });
-  }
-
-  // - - - - - - - - - - - - - - - - - - ON UPDATE PASSWORD - - - - - - - - - - - - - - - - - -  //
-  onUpdatePassword({required BuildContext context})async{
-
-    final String password = await LocalStorage.read(key: "PASSWORD", storage: _storage) ?? CustomLocale.PASSWORD.getString(context.mounted ? context : context);
-
-    final currentState = state as SettingsCurrentState;
-    await showDialog(
-        context: context.mounted ? context : context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              content: SizedBox(
-                  height: 180.0,
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-
-                      // - - - - - - - - - - - - - - - - - - EMAIL - - - - - - - - - - - - - - - - - -  //
-                      CustomTextField(
-                        leadingIcon: Iconsax.password_check,
-                        hint: password,
-                        controller: currentState.updatePasswordController!
-                      ),
-
-                      // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(onClick: () { currentState.updatePasswordController!.clear(); }, child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
                     ],
                   )));
         });
@@ -320,3 +317,147 @@ class SettingsCubit extends Cubit<SettingsState> {
   onNavigateToAbout(){}
 
 }
+
+/*
+  // - - - - - - - - - - - - - - - - - - ON UPDATE EMAIL - - - - - - - - - - - - - - - - - -  //
+  onUpdateEmail({required BuildContext context})async{
+
+    final String uid = await LocalStorage.read(key: "UID", storage: _storage) ?? "";
+    final String email = await LocalStorage.read(key: "EMAIL", storage: _storage) ?? CustomLocale.EMAIL.getString(context.mounted ? context : context);
+
+    final currentState = state as SettingsCurrentState;
+    await showDialog(
+        context: context.mounted ? context : context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              content: SizedBox(
+                  height: 180.0,
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+
+                      // - - - - - - - - - - - - - - - - - - EMAIL - - - - - - - - - - - - - - - - - -  //
+                      CustomTextField(
+                          leadingIcon: Iconsax.direct_right,
+                          hint: email,
+                          controller: currentState.updateEmailNameController!,
+                        textInputType: TextInputType.emailAddress,
+                      ),
+
+                      // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
+                      CustomElevatedButton(onClick: () async{
+                        try{
+
+                          if(currentState.updateEmailNameController!.text.trim().length < 6 || !(currentState.updateEmailNameController!.text.contains("@"))){
+                            context.mounted ? context.pop() : null;
+                            return;
+                          }
+
+                          final isUserExist = await _userRepository.existUser(userId: uid);
+                          if(isUserExist){
+                            await _userRepository.updateUserEmail(userId: uid, newEmail: currentState.updateEmailNameController!.text);
+                            await LocalStorage.upsert(key: "EMAIL", value: currentState.updateEmailNameController!.text, storage: _storage);
+                            currentState.updateEmailNameController!.clear();
+                            context.mounted ? context.pop() : null;
+                            //SNACK BAR
+                            return;
+                          }
+
+                          final isVendorExist = await _vendorRepository.existVendor(vendorId: uid);
+                          if(isVendorExist){
+                            await _vendorRepository.updateVendorEmail(vendorId: uid, newEmail: currentState.updateEmailNameController!.text);
+                            await LocalStorage.upsert(key: "EMAIL", value: currentState.updateEmailNameController!.text, storage: _storage);
+                            currentState.updateEmailNameController!.clear();
+                            context.mounted ? context.pop() : null;
+                            //SNACK BAR
+                            return;
+                          }
+
+                          currentState.updateEmailNameController!.clear();
+                          context.mounted ? context.pop() : null;
+
+                        }catch(e){
+                          print("+++++++++");
+                          print(e.toString());
+                          print("+++++++++");
+                        }
+                      }, child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
+                    ],
+                  )));
+        });
+  }
+ */
+
+/*
+ // - - - - - - - - - - - - - - - - - - ON UPDATE PASSWORD - - - - - - - - - - - - - - - - - -  //
+  onUpdatePassword({required BuildContext context})async{
+
+    final String uid = await LocalStorage.read(key: "UID", storage: _storage) ?? "";
+    final String password = await LocalStorage.read(key: "PASSWORD", storage: _storage) ?? CustomLocale.PASSWORD.getString(context.mounted ? context : context);
+
+    final currentState = state as SettingsCurrentState;
+    await showDialog(
+        context: context.mounted ? context : context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              content: SizedBox(
+                  height: 180.0,
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+
+                      // - - - - - - - - - - - - - - - - - - EMAIL - - - - - - - - - - - - - - - - - -  //
+                      CustomTextField(
+                        leadingIcon: Iconsax.password_check,
+                        hint: password,
+                        controller: currentState.updatePasswordController!
+                      ),
+
+                      // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
+                      CustomElevatedButton(onClick: () async{
+
+                        try{
+
+                          if(currentState.updatePasswordController!.text.trim().length < 6){
+                            context.mounted ? context.pop() : null;
+                            //SNACK BAR
+                            return;
+                          }
+
+                          final isUserExist = await _userRepository.existUser(userId: uid);
+                          if(isUserExist){
+                            await _userRepository.updateUserPassword(userId: uid, newPassword: currentState.updatePasswordController!.text);
+                            await LocalStorage.upsert(key: "PASSOWRD", value: currentState.updatePasswordController!.text, storage: _storage);
+                            currentState.updatePasswordController!.clear();
+                            context.mounted ? context.pop() : null;
+                            //SNACK BAR
+                            return;
+                          }
+
+                          final isVendorExist = await _vendorRepository.existVendor(vendorId: uid);
+                          if(isVendorExist){
+                            await _vendorRepository.updateVendorPassword(vendorId: uid, newPassword: currentState.updatePasswordController!.text);
+                            await LocalStorage.upsert(key: "PASSOWRD", value: currentState.updatePasswordController!.text, storage: _storage);
+                            currentState.updatePasswordController!.clear();
+                            context.mounted ? context.pop() : null;
+                            //SNACK BAR
+                            return;
+                          }
+
+                          currentState.updatePasswordController!.clear();
+                          context.mounted ? context.pop() : null;
+
+                        }catch(e){
+                          print("+++++++++");
+                          print(e.toString());
+                          print("+++++++++");
+                        }
+
+                      }, child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
+                    ],
+                  )));
+        });
+  }
+ */

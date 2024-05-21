@@ -10,12 +10,6 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<bool> existUser({required String userId}) async => await Remote.exist(collection: "USERS", doc: userId);
 
-  // - - - - - - - - - - - - - - - - - - UPDATE USER EMAIL - - - - - - - - - - - - - - - - - -  //
-  @override
-  Future<void> updateUserEmail({required String userId, required String newEmail}) async{
-    await Remote.updateEmail(collection: "USERS", doc: userId, newEmail: newEmail);
-  }
-
   // - - - - - - - - - - - - - - - - - - UPDATE USER FULL NAME - - - - - - - - - - - - - - - - - -  //
   @override
   Future<void> updateUserFullName({required String userId, required String newFirstName, required String newLastName}) async{
@@ -28,10 +22,10 @@ class UserRepositoryImpl extends UserRepository {
       await Remote.updateImage(path: "USERS", imgName: userId, imgPath: newImage);
 
   // - - - - - - - - - - - - - - - - - - UPDATE USER PASSWORD - - - - - - - - - - - - - - - - - -  //
-  @override
-  Future<void> updateUserPassword({required String userId, required String newPassword}) async{
-    await Remote.updatePassword(newPassword: newPassword);
-  }
+  //@override
+  //Future<void> updateUserPassword({required String userId, required String newPassword}) async{
+  // await Remote.updatePassword(newPassword: newPassword);
+  //}
 
   // - - - - - - - - - - - - - - - - - - UPDATE USER PHONE - - - - - - - - - - - - - - - - - -  //
   @override

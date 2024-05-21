@@ -28,25 +28,28 @@ class LoginCubit extends Cubit<LoginState> {
   final GetStorage storage;
   final Connectivity connectivity;
 
-  LoginCubit({required this.authRepository, required this.userRepository, required this.storage, required this.connectivity}) : super(LoginCurrentState()){  init(); }
+  LoginCubit(
+      {required this.authRepository,
+      required this.userRepository,
+      required this.storage,
+      required this.connectivity})
+      : super(LoginLoadingState()) {
+    init();
+  }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async {
-    emit(LoginCurrentState(
-        emailController: TextEditingController(),
-        passwordController: TextEditingController(),
-        passwordVisible: false,
-        arabicLang:  false,
-        frenchLang: false,
-        englishLang:  false,
-        formState: GlobalKey<FormState>()));
     final String lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.EN;
-    final LoginCurrentState currentState = (state as LoginCurrentState);
-    emit(currentState.copyWith(
-      frenchLang: lang == CustomLocale.FR ? true : false,
-      arabicLang: lang == CustomLocale.AR ? true : false,
-      englishLang: lang == CustomLocale.EN ? true : false,
-    ));
+    final String email = await LocalStorage.read(key: "EMAIL", storage: storage) ?? "";
+    final String password = await LocalStorage.read(key: "PASSWORD", storage: storage) ?? "";
+    emit(LoginCurrentState(
+        emailController: TextEditingController(text: email),
+        passwordController: TextEditingController(text: password),
+        obscureText: true,
+        frenchLang: lang == CustomLocale.FR ? true : false,
+        arabicLang: lang == CustomLocale.AR ? true : false,
+        englishLang: lang == CustomLocale.EN ? true : false,
+        formState: GlobalKey<FormState>()));
   }
 
   // - - - - - - - - - - - - - - - - - - LOGIN WITH EMAIL AND PASSWORD - - - - - - - - - - - - - - - - - -  //
@@ -80,9 +83,10 @@ class LoginCubit extends Cubit<LoginState> {
         return;
       }
 
-      // CLEAR TEXT FIELDS
-      currentState.emailController!.clear();
-      currentState.passwordController!.clear();
+      // SAVE EMAIL + PASSWORD INTO LOCAL STORAGE
+      await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
+      await LocalStorage.upsert(key: "EMAIL", value: currentState.emailController!.text, storage: storage);
+      await LocalStorage.upsert(key: "PASSWORD", value: currentState.passwordController!.text, storage: storage);
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
@@ -131,8 +135,8 @@ class LoginCubit extends Cubit<LoginState> {
         await userRepository.saveUserInfo(userEntity: userEntity);
 
         // SAVE EMAIL + PASSWORD INTO LOCAL
-        await LocalStorage.upsert(key: "UID", value: userEntity.id, storage: storage);
-        await LocalStorage.upsert(key: "EMAIL", value: userEntity.email, storage: storage);
+        await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
+
       }
 
       // NAVIGATE TO HOME SCREEN
@@ -147,8 +151,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   // - - - - - - - - - - - - - - - - - - UPDATE PASSWORD VISIBILITY - - - - - - - - - - - - - - - - - -  //
   void onUpdatePasswordVisibility(){
-    bool newValue = (state as LoginCurrentState).passwordVisible!;
-    final LoginCurrentState updateState = (state as LoginCurrentState).copyWith(passwordVisible: newValue = !newValue);
+    bool newValue = (state as LoginCurrentState).obscureText!;
+    final LoginCurrentState updateState = (state as LoginCurrentState).copyWith(obscureText: newValue = !newValue);
     emit(updateState);
   }
 
