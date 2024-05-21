@@ -126,10 +126,9 @@ class LoginCubit extends Cubit<LoginState> {
             id: userCredential.user?.uid,
             firstName: userCredential.user?.displayName?.split(" ").first,
             lastName: userCredential.user?.displayName?.split(" ").last,
-            avatar: userCredential.user?.photoURL,
+            avatar: userCredential.user?.photoURL ?? CustomImageStrings.DEFAULT_IMAGE_PROFILE,
             email: userCredential.user?.email,
-            phoneNumber: userCredential.user?.phoneNumber,
-            type: "CLIENT",
+            phoneNumber: userCredential.user?.phoneNumber ?? "",
             createAt: DateTime.now().toString()
         );
         await userRepository.saveUserInfo(userEntity: userEntity);

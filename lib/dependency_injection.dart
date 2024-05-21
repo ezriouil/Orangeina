@@ -10,8 +10,10 @@ import 'package:berkania/presentation/auth/register/register_cubit.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
-import 'package:berkania/presentation/profile/profile_cubit.dart';
 import 'package:berkania/presentation/settings/settings_cubit.dart';
+import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
+import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
+import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
 import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
@@ -42,8 +44,9 @@ class DependencyInjection{
     getIt.registerLazySingleton<WishlistCubit>( () => WishlistCubit());
     getIt.registerLazySingleton<NotificationCubit>( () => NotificationCubit());
     getIt.registerLazySingleton<SettingsCubit>( () => SettingsCubit());
-    getIt.registerLazySingleton<ProfileCubit>( () => ProfileCubit());
-
+    getIt.registerLazySingleton<VendorDetailsCubit>( () => VendorDetailsCubit());
+    getIt.registerLazySingleton<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));
+    getIt.registerLazySingleton<VendorOrdersCubit>( () => VendorOrdersCubit());
   }
 
 }

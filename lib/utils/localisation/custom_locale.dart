@@ -83,9 +83,14 @@ mixin CustomLocale{
   static const String SETTINGS_UPDATE_PASSOWRD_SUB_TITLE = "Settings Update Password Sub Title";
   static const String SETTINGS_UPDATE_PHONE_TITLE = "Settings Update Phone Title";
   static const String SETTINGS_UPDATE_PHONE_SUB_TITLE = "Settings Update Phone Sub Title";
-  static const String SETTINGS_JOB_TITLE = "Settings Job Title";
   static const String SETTINGS_BE_VENDOR_TITLE = "Settings Be Vendor Title";
   static const String SETTINGS_BE_VENDOR_SUB_TITLE = "Settings Be Vendor Sub Title";
+  static const String SETTINGS_VENDOR_SECTION_TITLE = "Settings Vendor Section Title";
+  static const String SETTINGS_JOB_TITLE = "Settings Job Title";
+  static const String SETTINGS_VENDOR_NEW_ORDER_TITLE = "Settings Vendor New Order Title";
+  static const String SETTINGS_VENDOR_NEW_ORDER_SUB_TITLE = "Settings Vendor New Order Sub Title";
+  static const String SETTINGS_VENDOR_ORDERS_TITLE = "Settings Vendor Orders Title";
+  static const String SETTINGS_VENDOR_ORDES_SUB_TITLE = "Settings Vendor Orders Sub Title";
   static const String SETTINGS_UPDATE_LANGUAGE_TITLE = "Settings Update Language Title";
   static const String SETTINGS_UPDATE_LANGUAGE_SUB_TITLE = "Settings Update Language Sub Title";
   static const String SETTINGS_OTHERS_TITLE = "Settings Others Title";
@@ -98,6 +103,8 @@ mixin CustomLocale{
   static const String SETTINGS_APP_VERSION_TITLE = "Settings App Version Title";
   static const String SETTINGS_PHONE = "Settings Phone";
   static const String SETTINGS_BUTTON_UPDATE_TITLE = "Settings Button Update Title";
+  static const String SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE = "Settings Update Image Button Gallery Title";
+  static const String SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE = "Settings Update Image Button Dismiss Title";
 
 
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //

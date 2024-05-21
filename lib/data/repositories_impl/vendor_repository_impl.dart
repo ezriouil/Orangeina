@@ -1,5 +1,8 @@
+import 'package:berkania/data/mappers/order_mapper.dart';
 import 'package:berkania/data/mappers/vendor_mapper.dart';
+import 'package:berkania/data/models/order_dto.dart';
 import 'package:berkania/data/models/vendor_dto.dart';
+import 'package:berkania/domain/entities/order_entity.dart';
 import 'package:berkania/domain/entities/vendor_entity.dart';
 
 import '../../domain/repositories/vendor_repository.dart';
@@ -14,9 +17,12 @@ class VendorRepositoryImpl extends VendorRepository {
     final List<VendorEntity> vendorsEntity = [];
     final List<VendorDto> vendorsDto = await Remote.getAllVendors();
 
-    for(VendorDto vendorDto in vendorsDto){
-      vendorsEntity.add(vendorDto.toVendorEntity());
+    if(vendorsDto.isNotEmpty){
+      for(VendorDto vendorDto in vendorsDto){
+        vendorsEntity.add(vendorDto.toVendorEntity());
+      }
     }
+
     return vendorsEntity;
   }
 
@@ -52,5 +58,37 @@ class VendorRepositoryImpl extends VendorRepository {
   Future<void> deleteVendorImage({required String imgName}) async{
     await Remote.deleteUserImage(path: "VENDORS", imgName: imgName);
   }
+
+  @override
+  Future<void> offline({ required String vendorId }) async{
+    await Remote.vendorOffline(vendorId: vendorId);
+  }
+
+  @override
+  Future<void> online({ required String vendorId }) async{
+    await Remote.vendorOnline(vendorId: vendorId);
+  }
+
+  @override
+  Future<List<OrderEntity>> getAllOrders({required String vendorId}) async {
+    final List<OrderEntity> ordersEntity = [];
+    final List<OrderDto> ordersDto = await Remote.getAllOrdersByVendorId(vendorId: vendorId);
+
+    if(ordersDto.isNotEmpty){
+      for(OrderDto ordersDto in ordersDto){
+        ordersEntity.add(ordersDto.toOrderEntity());
+      }
+    }
+
+    return ordersEntity;
+  }
+
+  @override
+  Future<void> newOrder({required OrderEntity orderEntity}) async{
+    await Remote.newOrder(orderDto: orderEntity.toOrderDto());
+  }
+
+  @override
+  Future<double> getProductCurrentPrice() async => await Remote.productCurrentPrice();
 
 }

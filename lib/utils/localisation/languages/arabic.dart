@@ -86,9 +86,14 @@ class Arabic{
     CustomLocale.SETTINGS_UPDATE_PASSOWRD_SUB_TITLE : "قم بتغيير كلمة المرور الخاصة بك في أي وقت.",
     CustomLocale.SETTINGS_UPDATE_PHONE_TITLE : "تحديث الهاتف",
     CustomLocale.SETTINGS_UPDATE_PHONE_SUB_TITLE : "قم بتغيير رقم هاتفك في أي وقت.",
-    CustomLocale.SETTINGS_JOB_TITLE : "العمل",
+    CustomLocale.SETTINGS_VENDOR_SECTION_TITLE : "قسم البائع",
     CustomLocale.SETTINGS_BE_VENDOR_TITLE : "كن بائعًا",
     CustomLocale.SETTINGS_BE_VENDOR_SUB_TITLE : "قدم طلبك الأن لتكن بائعا.",
+    CustomLocale.SETTINGS_JOB_TITLE : "وظيفة",
+    CustomLocale.SETTINGS_VENDOR_NEW_ORDER_TITLE : "طلب جديد",
+    CustomLocale.SETTINGS_VENDOR_NEW_ORDER_SUB_TITLE : "إضافة طلب جديد من بركانيا.",
+    CustomLocale.SETTINGS_VENDOR_ORDERS_TITLE : "طلبات",
+    CustomLocale.SETTINGS_VENDOR_ORDES_SUB_TITLE : "رؤية جميع طلباتي.",
     CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "تحديث اللغة",
     CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "العربية والإنجليزية والفرنسية",
     CustomLocale.SETTINGS_OTHERS_TITLE : "آخرى",
@@ -101,6 +106,8 @@ class Arabic{
     CustomLocale.SETTINGS_APP_VERSION_TITLE : "الإصدار 1.0.0",
     CustomLocale.SETTINGS_PHONE : "الهاتف",
     CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "تحديث",
+    CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "الصور",
+    CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "عودة",
 
   };
 }

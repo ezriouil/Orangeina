@@ -83,9 +83,14 @@ class French{
     CustomLocale.SETTINGS_UPDATE_PASSOWRD_SUB_TITLE : "Changez votre mot de passe à tout moment.",
     CustomLocale.SETTINGS_UPDATE_PHONE_TITLE : "Mettre à jour le téléphone",
     CustomLocale.SETTINGS_UPDATE_PHONE_SUB_TITLE : "Changez votre numéro de téléphone à tout moment.",
-    CustomLocale.SETTINGS_JOB_TITLE : "Emploi",
+    CustomLocale.SETTINGS_VENDOR_SECTION_TITLE : "Section Vendeur",
     CustomLocale.SETTINGS_BE_VENDOR_TITLE : "Soyez vendeur",
     CustomLocale.SETTINGS_BE_VENDOR_SUB_TITLE : "Postulez maintenant pour devenir vendeur.",
+    CustomLocale.SETTINGS_JOB_TITLE : "Emploi",
+    CustomLocale.SETTINGS_VENDOR_NEW_ORDER_TITLE : "Nouvel ordre",
+    CustomLocale.SETTINGS_VENDOR_NEW_ORDER_SUB_TITLE : "Ajouter une nouvelle commande de Berkania.",
+    CustomLocale.SETTINGS_VENDOR_ORDERS_TITLE : "Commandes",
+    CustomLocale.SETTINGS_VENDOR_ORDES_SUB_TITLE : "Voir tous mes commandes.",
     CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "Mettre à jour la langue",
     CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "Arabe & Anglais & Français",
     CustomLocale.SETTINGS_OTHERS_TITLE : "Autres",
@@ -98,6 +103,8 @@ class French{
     CustomLocale.SETTINGS_APP_VERSION_TITLE : "version 1.0.0",
     CustomLocale.SETTINGS_PHONE : "Téléphone",
     CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "Mettre à jour",
+    CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "Galerie",
+    CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "Rejeter",
 
   };
 }

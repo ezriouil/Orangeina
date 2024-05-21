@@ -87,9 +87,14 @@ class English {
   CustomLocale.SETTINGS_UPDATE_PASSOWRD_SUB_TITLE : "Change your password any time.",
   CustomLocale.SETTINGS_UPDATE_PHONE_TITLE : "Update Phone",
   CustomLocale.SETTINGS_UPDATE_PHONE_SUB_TITLE : "Change your phone number any time.",
-  CustomLocale.SETTINGS_JOB_TITLE : "Job",
+  CustomLocale.SETTINGS_VENDOR_SECTION_TITLE : "Vendor Section",
   CustomLocale.SETTINGS_BE_VENDOR_TITLE : "Be Vendor",
   CustomLocale.SETTINGS_BE_VENDOR_SUB_TITLE : "Apply now to become a seller.",
+  CustomLocale.SETTINGS_JOB_TITLE : "Job",
+  CustomLocale.SETTINGS_VENDOR_NEW_ORDER_TITLE : "New Order",
+  CustomLocale.SETTINGS_VENDOR_NEW_ORDER_SUB_TITLE : "Demand new order from Berkania.",
+  CustomLocale.SETTINGS_VENDOR_ORDERS_TITLE : "Orders",
+  CustomLocale.SETTINGS_VENDOR_ORDES_SUB_TITLE : "Show my orders.",
   CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "Update Language",
   CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "Arabic & English & French",
   CustomLocale.SETTINGS_OTHERS_TITLE : "Others",
@@ -102,6 +107,8 @@ class English {
   CustomLocale.SETTINGS_APP_VERSION_TITLE : "version 1.0.0",
   CustomLocale.SETTINGS_PHONE : "Phone",
   CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "Update",
+  CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "Gallery",
+    CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "Dismiss",
 
   };
 }

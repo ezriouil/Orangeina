@@ -5,7 +5,7 @@ sealed class SettingsState {}
 
 final class SettingsCurrentState extends SettingsState {
 
-  final bool? arabicLang, frenchLang, englishLang;
+  final bool? arabicLang, frenchLang, englishLang, isVendor, vendorOnlineOffline;
   final String? updateImageProfilePath;
   final TextEditingController? updateFirstNameController,
       updateLastNameController,
@@ -16,6 +16,8 @@ final class SettingsCurrentState extends SettingsState {
       this.arabicLang,
       this.frenchLang,
       this.englishLang,
+      this.isVendor = false,
+      this.vendorOnlineOffline,
       this.updateImageProfilePath,
       this.updateFirstNameController,
       this.updateLastNameController,
@@ -26,6 +28,8 @@ final class SettingsCurrentState extends SettingsState {
           bool? arabicLang,
           bool? frenchLang,
           bool? englishLang,
+          bool? isVendor,
+          bool? vendorOnlineOffline,
           String? updateImageProfilePath,
             TextEditingController? updateFirstNameController,
           TextEditingController? updateLastNameController,
@@ -35,6 +39,8 @@ final class SettingsCurrentState extends SettingsState {
         arabicLang: arabicLang ?? this.arabicLang,
         frenchLang: frenchLang ?? this.frenchLang,
         englishLang: englishLang ?? this.englishLang,
+        isVendor: isVendor ?? this.isVendor,
+        vendorOnlineOffline: vendorOnlineOffline ?? this.vendorOnlineOffline,
         updateImageProfilePath: updateImageProfilePath ?? this.updateImageProfilePath,
         updateFirstNameController: updateFirstNameController ?? this.updateFirstNameController,
         updateLastNameController: updateLastNameController ?? this.updateLastNameController,

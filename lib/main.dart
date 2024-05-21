@@ -5,8 +5,10 @@ import 'package:berkania/presentation/auth/register/register_cubit.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
-import 'package:berkania/presentation/profile/profile_cubit.dart';
 import 'package:berkania/presentation/settings/settings_cubit.dart';
+import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
+import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
+import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
 import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:berkania/utils/theme/theme_app.dart';
@@ -77,7 +79,9 @@ class _IndexState extends State<App> {
           BlocProvider(create: (_) => DependencyInjection.getIt<WishlistCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<NotificationCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<SettingsCubit>()),
-          BlocProvider(create: (_) => DependencyInjection.getIt<ProfileCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<VendorDetailsCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<VendorNewOrderCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<VendorOrdersCubit>()),
         ],
         child: MaterialApp.router(
             themeMode: ThemeMode.system,

@@ -16,7 +16,7 @@ class CustomColors{
   static const GRAY_LIGHT = Color(0xFFB8B8C2);
   static const GRAY_DARK = Color(0xFF64717C);
 
-  static const RED_LIGHT = Color(0xFFFF2120);
+  static const RED_LIGHT = Color(0xFFFF0200);
   static const RED_DARK = Color(0xFFAB0100);
 
   static const PURPLE_LIGHT= Color(0xFF7460C5);
@@ -25,7 +25,7 @@ class CustomColors{
   static const BLUE_LIGHT = Color(0xFF0087E5);
   static const BLUE_DARK = Color(0xFF121481);
 
-  static const YELLOW_LIGHT = Color(0xFFE6FF00);
+  static const YELLOW_LIGHT = Color(0xFFFFDD00);
   static const YELLOW_DARK = Color(0xFFBEBE00);
 
   static const GREEN_LIGHT = Color(0xFF00FF0D);

@@ -1,3 +1,5 @@
+import 'package:berkania/domain/entities/order_entity.dart';
+
 import '../entities/vendor_entity.dart';
 
 abstract class VendorRepository {
@@ -7,6 +9,12 @@ abstract class VendorRepository {
 
   // - - - - - - - - - - - - - - - - - - CHECK THE VENDOR IS EXIST - - - - - - - - - - - - - - - - - -  //
   Future<bool> existVendor({required String vendorId});
+
+  // - - - - - - - - - - - - - - - - - - MAKE VENDOR ONLINE - - - - - - - - - - - - - - - - - -  //
+  Future<void> online({ required String vendorId });
+
+  // - - - - - - - - - - - - - - - - - - MAKE VENDOR OFFLINE - - - - - - - - - - - - - - - - - -  //
+  Future<void> offline({ required String vendorId });
 
   // - - - - - - - - - - - - - - - - - - UPDATE VENDOR FULL NAME - - - - - - - - - - - - - - - - - -  //
   Future<void> updateVendorFullName({required String vendorId, required String newFirstName, required String newLastName});
@@ -25,5 +33,14 @@ abstract class VendorRepository {
 
   // - - - - - - - - - - - - - - - - - - DELETE VENDOR IMAGE - - - - - - - - - - - - - - - - - -  //
   Future<void> deleteVendorImage({required String imgName});
+
+  // - - - - - - - - - - - - - - - - - - VENDOR MAKE NEW ORDER - - - - - - - - - - - - - - - - - -  //
+  Future<void> newOrder({ required OrderEntity orderEntity });
+
+  // - - - - - - - - - - - - - - - - - - VENDOR GET ALL ORDERS - - - - - - - - - - - - - - - - - -  //
+  Future<List<OrderEntity>> getAllOrders({ required String vendorId });
+
+  // - - - - - - - - - - - - - - - - - - PRODUCT CURRENT PRICE - - - - - - - - - - - - - - - - - -  //
+  Future<double> getProductCurrentPrice();
 
 }

@@ -2,6 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/presentation/widgets/custom_snackbars.dart';
+import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
@@ -89,10 +90,9 @@ class RegisterCubit extends Cubit<RegisterState> {
         id: userCredential.user?.uid,
         firstName: currentState.firstNameController?.text,
         lastName: currentState.firstNameController?.text,
-        avatar: "",
+        avatar: CustomImageStrings.DEFAULT_IMAGE_PROFILE,
         email: currentState.emailController?.text,
         phoneNumber: "",
-        type: "CLIENT",
         createAt: DateTime.now().toString()
       );
       await userRepository.saveUserInfo(userEntity: userEntity);
@@ -163,10 +163,9 @@ class RegisterCubit extends Cubit<RegisterState> {
             id: userCredential.user?.uid,
             firstName: userCredential.user?.displayName?.split(" ").first,
             lastName: userCredential.user?.displayName?.split(" ").last,
-            avatar: userCredential.user?.photoURL,
+            avatar: userCredential.user?.photoURL ??  CustomImageStrings.DEFAULT_IMAGE_PROFILE,
             email: userCredential.user?.email,
-            phoneNumber: userCredential.user?.phoneNumber,
-            type: "CLIENT",
+            phoneNumber: userCredential.user?.phoneNumber ?? "",
             createAt: DateTime.now().toString()
         );
         await userRepository.saveUserInfo(userEntity: userEntity);

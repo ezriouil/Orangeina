@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:berkania/data/models/order_dto.dart';
 import 'package:berkania/data/models/user_dto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -90,8 +91,12 @@ class Remote{
 
   // - - - - - - - - - - - - - - - - - - UPDATE IMAGE - - - - - - - - - - - - - - - - - -  //
   static Future<String> updateImage({required String path, required String imgName, required String imgPath}) async{
-    await deleteUserImage(path: path, imgName: imgName);
-    return saveImage(path: path, imgName: imgName, imgPath: imgPath);
+    try{
+      await deleteUserImage(path: path, imgName: imgName);
+      return saveImage(path: path, imgName: imgName, imgPath: imgPath);
+    }catch(_){
+      return saveImage(path: path, imgName: imgName, imgPath: imgPath);
+  }
   }
 
   // - - - - - - - - - - - - - - - - - - DELETE IMAGE - - - - - - - - - - - - - - - - - -  //
@@ -107,16 +112,64 @@ class Remote{
     final List<VendorDto> vendors = [];
     final QuerySnapshot<Map<String, dynamic>> vendorsCollection = await _firebaseFirestore.collection("VENDORS").get();
 
-    for (QueryDocumentSnapshot<Map<String, dynamic>> vendorJson in vendorsCollection.docs) {
-      VendorDto vendor = VendorDto.fromJson(vendorJson.data());
-      vendors.add(vendor);
+    if(vendorsCollection.size > 0){
+      for (QueryDocumentSnapshot<Map<String, dynamic>> vendorJson in vendorsCollection.docs) {
+        VendorDto vendor = VendorDto.fromJson(vendorJson.data());
+        vendors.add(vendor);
+      }
     }
     return vendors;
   }
 
-  // - - - - - - - - - - - - - - - - - - GET ALL VENDORS - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - SAVE USER DATA - - - - - - - - - - - - - - - - - -  //
   static Future<void> saveUserData({ required UserDto userDto }) async{
     await _firebaseFirestore.collection("USERS").doc(userDto.id).set(userDto.toJson());
+  }
+
+  // - - - - - - - - - - - - - - - - - - MAKE VENDOR ONLINE - - - - - - - - - - - - - - - - - -  //
+  static Future<void> vendorOnline({ required String vendorId }) async{
+    await _firebaseFirestore.collection("VENDORS").doc(vendorId).update({'isOnline' : true});
+  }
+
+  // - - - - - - - - - - - - - - - - - - MAKE VENDOR OFFLINE - - - - - - - - - - - - - - - - - -  //
+  static Future<void> vendorOffline({ required String vendorId }) async{
+    await _firebaseFirestore.collection("VENDORS").doc(vendorId).update({'isOnline' : false});
+  }
+
+  // - - - - - - - - - - - - - - - - - - GET ALL ORDERS - - - - - - - - - - - - - - - - - -  //
+  static Future<List<OrderDto>> getAllOrdersByVendorId({ required String vendorId }) async{
+    final List<OrderDto> orders = [];
+    final QuerySnapshot<Map<String, dynamic>> ordersCollection = await _firebaseFirestore.collection("ORDERS").where('vendorId', isEqualTo: vendorId).get();
+
+    if(ordersCollection.size > 0){
+      for (QueryDocumentSnapshot<Map<String, dynamic>> orderJson in ordersCollection.docs) {
+        OrderDto order = OrderDto.fromJson(orderJson.data());
+        orders.add(order);
+      }
+    }
+    return orders;
+  }
+
+  // - - - - - - - - - - - - - - - - - - VENDOR MAKE NEW ORDER - - - - - - - - - - - - - - - - - -  //
+  static Future<void> newOrder({required OrderDto orderDto}) async{
+    final newDoc = _firebaseFirestore.collection("ORDERS").doc();
+    await newDoc.set({
+      "id" : newDoc.id,
+      "vendorId" : orderDto.vendorId,
+      "vendorFullName" : orderDto.vendorFullName,
+      "priceEachKg" : orderDto.priceEachKg,
+      "total" : orderDto.total,
+      "quantity" : orderDto.quantity,
+      "selectedDate" : orderDto.selectedDate,
+      "status" : orderDto.status,
+      "createAt" : orderDto.createAt,
+    });
+  }
+
+  // - - - - - - - - - - - - - - - - - - GET CURRENT PRICE OF PRODUCT - - - - - - - - - - - - - - - - - -  //
+  static Future<double> productCurrentPrice() async{
+    final price =  await _firebaseFirestore.collection("SETTINGS").doc("PRICES").get();
+    return (price["currentPrice"] as num).toDouble();
   }
 
 }

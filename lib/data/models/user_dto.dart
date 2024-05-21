@@ -7,7 +7,6 @@ class UserDto {
       avatar,
       email,
       phoneNumber,
-      type,
       createAt;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR- - - - - - - - - - - - - - - - - -  //
@@ -18,7 +17,6 @@ class UserDto {
       this.avatar = "",
       this.email = "",
       this.phoneNumber = "",
-      this.type = "",
       this.createAt = ""});
 
   // - - - - - - - - - - - - - - - - - - TO JSON - - - - - - - - - - - - - - - - - -  //
@@ -29,7 +27,6 @@ class UserDto {
         'avatar': avatar,
         'email': email,
         'phoneNumber': phoneNumber,
-        'type': type,
         'createAt': createAt
       };
 
@@ -42,7 +39,6 @@ class UserDto {
         avatar: json['avatar'] as String,
         email: json['email'] as String,
         phoneNumber: json['phoneNumber'] as String,
-        type: json['type'] as String,
         createAt: json['createAt'] as String);
   }
 }

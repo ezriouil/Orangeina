@@ -2,6 +2,7 @@ import 'package:berkania/presentation/settings/settings_cubit.dart';
 import 'package:berkania/presentation/settings/widgets/custom_settings_tile.dart';
 import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
+import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,8 +51,7 @@ class SettingsScreen extends CustomState {
                                     child: SizedBox(
                                       width: 140,
                                       height: 140.0,
-                                      child: Image.network(
-                                          "https://photo980x880.mnstatic.com/f02904f2ad5f1f1dd6626e427b2eaefb/playa-de-agadir-7323419.jpg",
+                                      child: Image.network(state.updateImageProfilePath ?? CustomImageStrings.DEFAULT_IMAGE_PROFILE,
                                           height: getHeight(context),
                                           width: getWidth(context),
                                           fit: BoxFit.cover,
@@ -100,18 +100,54 @@ class SettingsScreen extends CustomState {
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
 
-                          // - - - - - - - - - - - - - - - - - -  OTHERS - - - - - - - - - - - - - - - - - -  //
-                          Text(CustomLocale.SETTINGS_JOB_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(color: grayColor(context), letterSpacing: 0.6)),
+                          // - - - - - - - - - - - - - - - - - -  SECTION TITLE ( JOB || VENDOR SECTION ) - - - - - - - - - - - - - - - - - -  //
+                          Text(
+                              state.isVendor!
+                                  ? CustomLocale.SETTINGS_VENDOR_SECTION_TITLE.getString(context)
+                                  : CustomLocale.SETTINGS_JOB_TITLE.getString(context),
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: grayColor(context), letterSpacing: 0.6)),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
-                          // - - - - - - - - - - - - - - - - - - BE VENDOR - - - - - - - - - - - - - - - - - -  //
-                           CustomSettingTile(
+                          // - - - - - - - - - - - - - - - - - - IS USER SHOW JOB WIDGET - - - - - - - - - - - - - - - - - -  //
+                          if(!(state.isVendor!)) CustomSettingTile(
                              title: CustomLocale.SETTINGS_BE_VENDOR_TITLE.getString(context),
                              subTitle: CustomLocale.SETTINGS_BE_VENDOR_SUB_TITLE.getString(context),
                             icon: Iconsax.shop, onClick: () {  },
                             trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24 : Iconsax.arrow_right_3, color: darkLightColor(context)),
+                          ) ,
+
+                          // - - - - - - - - - - - - - - - - - -  IS VENDOR SHOW NEW ORDER WIDGET - - - - - - - - - - - - - - - - - -  //
+                          if(state.isVendor!) CustomSettingTile(
+                            title: CustomLocale.SETTINGS_VENDOR_NEW_ORDER_TITLE.getString(context),
+                            subTitle: CustomLocale.SETTINGS_VENDOR_NEW_ORDER_SUB_TITLE.getString(context),
+                            icon: Iconsax.add_circle, onClick: (){ context.read<SettingsCubit>().onNavigateToNewOrderScreen(context: context); },
+                            trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24 : Iconsax.arrow_right_3, color: darkLightColor(context)),
+                          ),
+
+                          // - - - - - - - - - - - - - - - - - -  IS VENDOR SHOW SPACER - - - - - - - - - - - - - - - - - -  //
+                          if(state.isVendor!)const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                          // - - - - - - - - - - - - - - - - - -  IS VENDOR SHOW ORDERS WIDGET - - - - - - - - - - - - - - - - - -  //
+                          if(state.isVendor!) CustomSettingTile(
+                            title: CustomLocale.SETTINGS_VENDOR_ORDERS_TITLE.getString(context),
+                            subTitle: CustomLocale.SETTINGS_VENDOR_ORDES_SUB_TITLE.getString(context),
+                            icon: Iconsax.box, onClick: () { context.read<SettingsCubit>().onNavigateToOrdersScreen(context: context); },
+                            trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24 : Iconsax.arrow_right_3, color: darkLightColor(context)),
+                          ),
+
+                          // - - - - - - - - - - - - - - - - - -  IS VENDOR SHOW SPACER - - - - - - - - - - - - - - - - - -  //
+                          if(state.isVendor!)const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                          // - - - - - - - - - - - - - - - - - -  IS VENDOR SHOW (ONLINE / OFFLINE) WIDGET - - - - - - - - - - - - - - - - - -  //
+                          if(state.isVendor!) CustomSettingTile(
+                              title: "CustomLocale",
+                              subTitle: "CustomLocale.SETTINGS_VENDOR_ORDES_SUB_TITLE",
+                              icon: Iconsax.activity, onClick: () {  },
+                              trailing: Switch(
+                                  value: state.vendorOnlineOffline!,
+                                  onChanged: context.read<SettingsCubit>().updateVendorStatus)
                           ),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
