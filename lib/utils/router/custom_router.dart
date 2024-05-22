@@ -16,7 +16,7 @@ class CustomRouter{
   // - - - - - - - - - - - - - - - - - - CONFIG ROUTER - - - - - - - - - - - - - - - - - -  //
   static final GoRouter CONFIG_ROUTER = GoRouter(
 
-    initialLocation: INDEX,
+    initialLocation: LOGIN,
     routes: <RouteBase>[
 
       // - - -  LOGIN - - -  //
