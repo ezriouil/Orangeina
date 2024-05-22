@@ -94,6 +94,8 @@ class English {
   CustomLocale.SETTINGS_VENDOR_NEW_ORDER_TITLE : "New Order",
   CustomLocale.SETTINGS_VENDOR_NEW_ORDER_SUB_TITLE : "Demand new order from Berkania.",
   CustomLocale.SETTINGS_VENDOR_ORDERS_TITLE : "Orders",
+  CustomLocale.SETTINGS_VENDOR_ONLINE_OFFLINE_TITLE : "Online / Offline",
+  CustomLocale.SETTINGS_VENDOR_ONLINE_OFFLINE_SUB_TITLE : "Automatically show or hide on map.",
   CustomLocale.SETTINGS_VENDOR_ORDES_SUB_TITLE : "Show my orders.",
   CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "Update Language",
   CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "Arabic & English & French",
@@ -108,7 +110,22 @@ class English {
   CustomLocale.SETTINGS_PHONE : "Phone",
   CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "Update",
   CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "Gallery",
-    CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "Dismiss",
+  CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "Dismiss",
+
+
+    // - - - - - - - - - - - - - - - - - - VENDOR NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.NEW_ORDER_TITLE: "New Order",
+    CustomLocale.NEW_ORDER_SUB_TITLE: "Fill how much KG you want and don't forget set date to you receive your command.",
+    CustomLocale.NEW_ORDER_HINT: "We will notify you with more details about your orders in orders screen.",
+    CustomLocale.NEW_ORDER_DELIVERY_TIME: "Delivered Time",
+    CustomLocale.NEW_ORDER_BAG_PRICE: "Bag Price",
+    CustomLocale.NEW_ORDER_TOTAL_PRICE: "Total Price",
+    CustomLocale.NEW_ORDER_CONFIRM_BUTTON: "Confirm",
+    CustomLocale.NEW_ORDER_MAD: "MAD",
+
+    // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+
+
 
   };
 }

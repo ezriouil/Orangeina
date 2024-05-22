@@ -36,17 +36,17 @@ class DependencyInjection{
     getIt.registerLazySingleton<VendorRepository>( () => VendorRepositoryImpl());
 
     // - - - - - - - - - - - - - - - - - - CUBITS - - - - - - - - - - - - - - - - - -  //
-    getIt.registerLazySingleton<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
-    getIt.registerLazySingleton<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
-    getIt.registerLazySingleton<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
-    getIt.registerLazySingleton<IndexCubit>( () => IndexCubit());
-    getIt.registerLazySingleton<HomeCubit>( () => HomeCubit(vendorRepository: getIt()));
-    getIt.registerLazySingleton<WishlistCubit>( () => WishlistCubit());
-    getIt.registerLazySingleton<NotificationCubit>( () => NotificationCubit());
-    getIt.registerLazySingleton<SettingsCubit>( () => SettingsCubit());
-    getIt.registerLazySingleton<VendorDetailsCubit>( () => VendorDetailsCubit());
-    getIt.registerLazySingleton<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));
-    getIt.registerLazySingleton<VendorOrdersCubit>( () => VendorOrdersCubit());
+    getIt.registerFactory<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
+    getIt.registerFactory<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
+    getIt.registerFactory<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
+    getIt.registerFactory<IndexCubit>( () => IndexCubit());
+    getIt.registerFactory<HomeCubit>( () => HomeCubit(vendorRepository: getIt()));
+    getIt.registerFactory<WishlistCubit>( () => WishlistCubit());
+    getIt.registerFactory<NotificationCubit>( () => NotificationCubit());
+    getIt.registerFactory<SettingsCubit>( () => SettingsCubit());
+    getIt.registerFactory<VendorDetailsCubit>( () => VendorDetailsCubit());
+    getIt.registerFactory<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));
+    getIt.registerFactory<VendorOrdersCubit>( () => VendorOrdersCubit(storage: getIt(), vendorRepository: getIt()));
   }
 
 }

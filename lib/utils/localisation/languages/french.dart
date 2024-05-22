@@ -91,6 +91,8 @@ class French{
     CustomLocale.SETTINGS_VENDOR_NEW_ORDER_SUB_TITLE : "Ajouter une nouvelle commande de Berkania.",
     CustomLocale.SETTINGS_VENDOR_ORDERS_TITLE : "Commandes",
     CustomLocale.SETTINGS_VENDOR_ORDES_SUB_TITLE : "Voir tous mes commandes.",
+    CustomLocale.SETTINGS_VENDOR_ONLINE_OFFLINE_TITLE : "Connecté / Déconnecté",
+    CustomLocale.SETTINGS_VENDOR_ONLINE_OFFLINE_SUB_TITLE : "Vous afficherez ou masquerez automatiquement sur la carte.",
     CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "Mettre à jour la langue",
     CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "Arabe & Anglais & Français",
     CustomLocale.SETTINGS_OTHERS_TITLE : "Autres",
@@ -105,6 +107,20 @@ class French{
     CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "Mettre à jour",
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "Galerie",
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "Rejeter",
+
+
+    // - - - - - - - - - - - - - - - - - - VENDOR NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.NEW_ORDER_TITLE: "Nouvel ordre",
+    CustomLocale.NEW_ORDER_SUB_TITLE: "Remplissez la quantité de KG que vous souhaitez et n'oubliez pas de fixer la date à laquelle vous recevrez votre commande.",
+    CustomLocale.NEW_ORDER_HINT: "Nous vous informerons avec plus de détails sur vos commandes dans l'écran des commandes.",
+    CustomLocale.NEW_ORDER_DELIVERY_TIME: "Délai De Livraison",
+    CustomLocale.NEW_ORDER_BAG_PRICE: "Prix Du Sac",
+    CustomLocale.NEW_ORDER_TOTAL_PRICE: "Prix Total",
+    CustomLocale.NEW_ORDER_CONFIRM_BUTTON: "Confirmer",
+    CustomLocale.NEW_ORDER_MAD: "MAD",
+
+    // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+
 
   };
 }

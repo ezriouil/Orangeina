@@ -91,6 +91,8 @@ mixin CustomLocale{
   static const String SETTINGS_VENDOR_NEW_ORDER_SUB_TITLE = "Settings Vendor New Order Sub Title";
   static const String SETTINGS_VENDOR_ORDERS_TITLE = "Settings Vendor Orders Title";
   static const String SETTINGS_VENDOR_ORDES_SUB_TITLE = "Settings Vendor Orders Sub Title";
+  static const String SETTINGS_VENDOR_ONLINE_OFFLINE_TITLE = "Settings Vendor Online Offline Title";
+  static const String SETTINGS_VENDOR_ONLINE_OFFLINE_SUB_TITLE = "Settings Vendor Online Offline Sub Title";
   static const String SETTINGS_UPDATE_LANGUAGE_TITLE = "Settings Update Language Title";
   static const String SETTINGS_UPDATE_LANGUAGE_SUB_TITLE = "Settings Update Language Sub Title";
   static const String SETTINGS_OTHERS_TITLE = "Settings Others Title";
@@ -105,6 +107,18 @@ mixin CustomLocale{
   static const String SETTINGS_BUTTON_UPDATE_TITLE = "Settings Button Update Title";
   static const String SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE = "Settings Update Image Button Gallery Title";
   static const String SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE = "Settings Update Image Button Dismiss Title";
+
+  // - - - - - - - - - - - - - - - - - - VENDOR NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String NEW_ORDER_TITLE = "New Order Title";
+  static const String NEW_ORDER_SUB_TITLE = "New Order Sub Title";
+  static const String NEW_ORDER_HINT = "New Order Hint";
+  static const String NEW_ORDER_DELIVERY_TIME = "New Order Delivery Time";
+  static const String NEW_ORDER_BAG_PRICE = "New Order Bag Price";
+  static const String NEW_ORDER_TOTAL_PRICE = "New Order Total Price";
+  static const String NEW_ORDER_CONFIRM_BUTTON = "New Order Confirm Button";
+  static const String NEW_ORDER_MAD = "New Order MAD";
+
+  // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
 
 
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //

@@ -94,6 +94,8 @@ class Arabic{
     CustomLocale.SETTINGS_VENDOR_NEW_ORDER_SUB_TITLE : "إضافة طلب جديد من بركانيا.",
     CustomLocale.SETTINGS_VENDOR_ORDERS_TITLE : "طلبات",
     CustomLocale.SETTINGS_VENDOR_ORDES_SUB_TITLE : "رؤية جميع طلباتي.",
+    CustomLocale.SETTINGS_VENDOR_ONLINE_OFFLINE_TITLE : "متصل  / غير متصل",
+    CustomLocale.SETTINGS_VENDOR_ONLINE_OFFLINE_SUB_TITLE : "سوف تظهر أو تخفي تلقائيًا على الخريطة.",
     CustomLocale.SETTINGS_UPDATE_LANGUAGE_TITLE : "تحديث اللغة",
     CustomLocale.SETTINGS_UPDATE_LANGUAGE_SUB_TITLE : "العربية والإنجليزية والفرنسية",
     CustomLocale.SETTINGS_OTHERS_TITLE : "آخرى",
@@ -108,6 +110,21 @@ class Arabic{
     CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "تحديث",
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "الصور",
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "عودة",
+
+
+    // - - - - - - - - - - - - - - - - - - VENDOR NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.NEW_ORDER_TITLE: "طلب جديد",
+    CustomLocale.NEW_ORDER_SUB_TITLE: "املأ كمية الكيلو التي تريدها ولا تنس تحديد التاريخ الذي ستتلقى فيه طلبك.",
+    CustomLocale.NEW_ORDER_HINT: "سنخبرك بمزيد من التفاصيل حول طلباتك في شاشة الطلبات.",
+    CustomLocale.NEW_ORDER_DELIVERY_TIME: "أجل التسليم",
+    CustomLocale.NEW_ORDER_BAG_PRICE: " سعر الحقيبة",
+    CustomLocale.NEW_ORDER_TOTAL_PRICE: "الثمن الإجمالي",
+    CustomLocale.NEW_ORDER_CONFIRM_BUTTON: "طلب",
+    CustomLocale.NEW_ORDER_MAD: "درهم",
+
+    // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+
+
 
   };
 }

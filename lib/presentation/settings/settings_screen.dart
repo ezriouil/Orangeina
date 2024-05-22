@@ -142,8 +142,8 @@ class SettingsScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - -  IS VENDOR SHOW (ONLINE / OFFLINE) WIDGET - - - - - - - - - - - - - - - - - -  //
                           if(state.isVendor!) CustomSettingTile(
-                              title: "CustomLocale",
-                              subTitle: "CustomLocale.SETTINGS_VENDOR_ORDES_SUB_TITLE",
+                              title: CustomLocale.SETTINGS_VENDOR_ONLINE_OFFLINE_TITLE.getString(context),
+                              subTitle: CustomLocale.SETTINGS_VENDOR_ONLINE_OFFLINE_SUB_TITLE.getString(context),
                               icon: Iconsax.activity, onClick: () {  },
                               trailing: Switch(
                                   value: state.vendorOnlineOffline!,

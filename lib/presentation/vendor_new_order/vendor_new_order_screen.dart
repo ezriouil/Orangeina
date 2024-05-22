@@ -4,10 +4,12 @@ import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
+import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -21,7 +23,7 @@ class VendorNewOrderScreen extends CustomState {
         leading: InkWell(
           onTap: context.pop,
           borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-          child: Icon( Iconsax.arrow_left_24, color: darkLightColor(context)),
+          child: Icon( isArabic(context) ? Iconsax.arrow_right_3 : Iconsax.arrow_left_24, color: darkLightColor(context)),
         ),
       ),
       body: BlocBuilder<VendorNewOrderCubit, VendorNewOrderState>(
@@ -40,13 +42,13 @@ class VendorNewOrderScreen extends CustomState {
                       const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
                       // - - - - - - - - - - - - - - - - - - TITLE - - - - - - - - - - - - - - - - - -  //
-                      Text("New Order", style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, letterSpacing: 1)),
+                      Text(CustomLocale.NEW_ORDER_TITLE.getString(context), style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, letterSpacing: 1)),
 
                       // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                       const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
                       // - - - - - - - - - - - - - - - - - - SUBTITLE - - - - - - - - - - - - - - - - - -  //
-                      Text("Fill how much kg you want and don't forget set date to your order.", style: Theme.of(context).textTheme.bodyMedium),
+                      Text(CustomLocale.NEW_ORDER_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodyMedium),
 
                       // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                       const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
@@ -79,7 +81,7 @@ class VendorNewOrderScreen extends CustomState {
                         monthTextStyle: Theme.of(context).textTheme.bodyMedium!,
                         dayTextStyle: Theme.of(context).textTheme.bodyMedium!,
                         daysCount: 60,
-                        locale: "EN",
+                        locale: state.dateTimeLocalization ?? "EN",
                         onDateChange: context.read<VendorNewOrderCubit>().onPickDate,
                       ),
 
@@ -87,16 +89,16 @@ class VendorNewOrderScreen extends CustomState {
                       const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
                       // - - - - - - - - - - - - - - - - - - HINT - - - - - - - - - - - - - - - - - -  //
-                      Text("We will notify you with more details on the pick up time.", style: Theme.of(context).textTheme.bodySmall),
+                      Text(CustomLocale.NEW_ORDER_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
 
                       // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                       const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS * 2),
 
-                      // - - - - - - - - - - - - - - - - - - TOTAL PRICE - - - - - - - - - - - - - - - - - -  //
+                      // - - - - - - - - - - - - - - - - - - DELIVERED DATE - - - - - - - - - - - - - - - - - -  //
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Delivery Time", style: Theme.of(context).textTheme.bodyLarge),
+                          Text("${CustomLocale.NEW_ORDER_DELIVERY_TIME.getString(context)} :", style: Theme.of(context).textTheme.bodyLarge),
                           Text(
                               "${state.date!.day < 10 ? "0${state.date!.day}" : state.date!.day}/${state.date!.month < 10 ? "0${state.date!.month}" : state.date!.month}/${state.date!.year}",
                               style: Theme.of(context).textTheme.bodyLarge),
@@ -110,8 +112,8 @@ class VendorNewOrderScreen extends CustomState {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("x 1 Bag Price :", style: Theme.of(context).textTheme.bodyLarge),
-                          Text("${state.priceKg} MAD", style: Theme.of(context).textTheme.bodyLarge),
+                          Text("x1 ${CustomLocale.NEW_ORDER_BAG_PRICE.getString(context)} :", style: Theme.of(context).textTheme.bodyLarge),
+                          Text("${state.priceKg} ${CustomLocale.NEW_ORDER_MAD.getString(context)}", style: Theme.of(context).textTheme.bodyLarge),
                         ],
                       ),
 
@@ -122,8 +124,8 @@ class VendorNewOrderScreen extends CustomState {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Total Price ( ${state.counter! < 10 ? "0${state.counter}" : state.counter.toString()} x ${state.priceKg} MAD):", style: Theme.of(context).textTheme.bodyLarge),
-                          Text("${state.total} MAD", style: Theme.of(context).textTheme.bodyLarge),
+                          Text("${CustomLocale.NEW_ORDER_BAG_PRICE.getString(context)}( ${state.counter! < 10 ? "0${state.counter}" : state.counter.toString()} x ${state.priceKg} ${CustomLocale.NEW_ORDER_MAD.getString(context)}) :", style: Theme.of(context).textTheme.bodyLarge),
+                          Text("${state.total} ${CustomLocale.NEW_ORDER_MAD.getString(context)}", style: Theme.of(context).textTheme.bodyLarge),
                         ],
                       ),
 
@@ -131,7 +133,7 @@ class VendorNewOrderScreen extends CustomState {
                       const SizedBox(height: CustomSizes.SPACE_DEFAULT),
                       
                       // - - - - - - - - - - - - - - - - - - CONFIRM BUTTON - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(onClick: (){ context.read<VendorNewOrderCubit>().onConfirm(callback: (){  }, context: context); }, withDefaultPadding: false, child: const Text("Confirm"))
+                      CustomElevatedButton(onClick: (){ context.read<VendorNewOrderCubit>().onConfirm(callback: (){  }, context: context); }, withDefaultPadding: false, child: Text(CustomLocale.NEW_ORDER_CONFIRM_BUTTON.getString(context)))
                       
                     ],
                   ),
