@@ -16,6 +16,9 @@ abstract class VendorRepository {
   // - - - - - - - - - - - - - - - - - - MAKE VENDOR OFFLINE - - - - - - - - - - - - - - - - - -  //
   Future<void> offline({ required String vendorId });
 
+  // - - - - - - - - - - - - - - - - - - GET VENDOR INFO - - - - - - - - - - - - - - - - - -  //
+  Future<VendorEntity?> getVendorById({required String vendorId});
+
   // - - - - - - - - - - - - - - - - - - UPDATE VENDOR FULL NAME - - - - - - - - - - - - - - - - - -  //
   Future<void> updateVendorFullName({required String vendorId, required String newFirstName, required String newLastName});
 

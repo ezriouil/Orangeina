@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../domain/entities/vendor_entity.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/custom_image_strings.dart';
 import '../../utils/constants/custom_sizes.dart';
@@ -20,42 +21,47 @@ import '../../utils/localisation/custom_locale.dart';
 part 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
+
   final FlutterLocalization localization = FlutterLocalization.instance;
   final _storage = GetStorage();
   final UserRepositoryImpl _userRepository = UserRepositoryImpl();
   final VendorRepositoryImpl _vendorRepository = VendorRepositoryImpl();
   final ImagePicker _imagePicker = ImagePicker();
 
+  VendorEntity? vendor;
+  String? uid, lang;
   SettingsCubit() : super(SettingsCurrentState()) { init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async {
-    final String img = await LocalStorage.read(key: "IMAGE_PROFILE", storage: _storage);
-    final String uid = await LocalStorage.read(key: "UID", storage: _storage);
 
     emit(SettingsCurrentState(
       arabicLang: false,
       englishLang: false,
       frenchLang: false,
       vendorOnlineOffline: false,
-      updateImageProfilePath: img,
+      updateImageProfilePath: "",
       updateFirstNameController: TextEditingController(),
       updateLastNameController: TextEditingController(),
       updatePhoneController: TextEditingController(),
     ));
 
-    final bool vendorOnlineOffline = await LocalStorage.read(key: "VENDOR_ONLINE_OFFLINE", storage: _storage) ?? false;
-    final String? lang = await LocalStorage.read(key: "LANGUAGE", storage: _storage) ?? CustomLocale.EN;
-    final bool isVendor = await _vendorRepository.existVendor(vendorId: uid);
+    uid = await LocalStorage.read(key: "UID", storage: _storage);
+    lang = await LocalStorage.read(key: "LANGUAGE", storage: _storage) ?? CustomLocale.EN;
+
+    if(uid == null) return;
+    final bool isVendor = await _vendorRepository.existVendor(vendorId: uid!);
+    if(isVendor) vendor = await _vendorRepository.getVendorById(vendorId: uid!);
 
     emit((state as SettingsCurrentState).copyWith(
       frenchLang: lang == CustomLocale.FR ? true : false,
       arabicLang: lang == CustomLocale.AR ? true : false,
       englishLang: lang == CustomLocale.EN ? true : false,
-      //isVendor: isVendor,
-      isVendor: true,
-      vendorOnlineOffline: vendorOnlineOffline,
+      updateImageProfilePath: vendor?.avatar ?? "",
+      isVendor: isVendor,
+      vendorOnlineOffline: vendor?.isOnline ?? false,
     ));
+
   }
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE IMAGE PROFILE - - - - - - - - - - - - - - - - - -  //
@@ -88,7 +94,6 @@ class SettingsCubit extends Cubit<SettingsState> {
                           final isUserExist = await _userRepository.existUser(userId: uid);
                           if (isUserExist) {
                             final String newImageLink = await _userRepository.updateUserImage(userId: uid, newImage: img.path);
-                            await LocalStorage.upsert(key: "IMAGE_PROFILE", value: newImageLink, storage: _storage);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
                             //SNACK BAR
                             return;
@@ -97,7 +102,6 @@ class SettingsCubit extends Cubit<SettingsState> {
                           final isVendorExist = await _vendorRepository.existVendor(vendorId: uid);
                           if (isVendorExist) {
                             final String newImageLink = await _userRepository.updateUserImage(userId: uid, newImage: img.path);
-                            await LocalStorage.upsert(key: "IMAGE_PROFILE", value: newImageLink, storage: _storage);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
                             //SNACK BAR
                             return;
@@ -124,9 +128,8 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
   onUpdateFullName({required BuildContext context}) async {
-    final String firstName = await LocalStorage.read(key: "FIRST_NAME", storage: _storage) ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
-    final String lastName = await LocalStorage.read(key: "LAST_NAME", storage: _storage) ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
-    final String uid = await LocalStorage.read(key: "UID", storage: _storage) ?? "";
+    final String firstName = vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
+    final String lastName = vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
 
     final currentState = state as SettingsCurrentState;
 
@@ -156,14 +159,20 @@ class SettingsCubit extends Cubit<SettingsState> {
                       CustomElevatedButton(
                           onClick: () async {
                             try {
+
+                              if (uid == null) {
+                                context.mounted ? context.pop() : null;
+                                return;
+                              }
+
                               if (currentState.updateFirstNameController!.text.trim().length < 3 || currentState.updateFirstNameController!.text.trim().length < 3) {
                                 context.mounted ? context.pop() : null;
                                 return;
                               }
 
-                              final isUserExist = await _userRepository.existUser(userId: uid);
+                              final isUserExist = await _userRepository.existUser(userId: uid!);
                               if (isUserExist) {
-                                await _userRepository.updateUserFullName(userId: uid, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
+                                await _userRepository.updateUserFullName(userId: uid!, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
                                 await LocalStorage.upsert(
                                     key: "FIRST_NAME",
                                     value: currentState.updateFirstNameController!.text,
@@ -179,10 +188,10 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 return;
                               }
 
-                              final isVendorExist = await _vendorRepository.existVendor(vendorId: uid);
+                              final isVendorExist = await _vendorRepository.existVendor(vendorId: uid!);
                               if (isVendorExist) {
                                 await _vendorRepository.updateVendorFullName(
-                                    vendorId: uid,
+                                    vendorId: uid!,
                                     newFirstName: currentState.updateFirstNameController!.text,
                                     newLastName: currentState.updateLastNameController!.text);
                                 await LocalStorage.upsert(
@@ -220,8 +229,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
   onUpdatePhone({required BuildContext context}) async {
-    final String phone = await LocalStorage.read(key: "PHONE", storage: _storage) ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
-    final String uid = await LocalStorage.read(key: "UID", storage: _storage);
+    final String phone = vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
 
     final currentState = state as SettingsCurrentState;
     await showDialog(
@@ -246,21 +254,21 @@ class SettingsCubit extends Cubit<SettingsState> {
                       CustomElevatedButton(
                           onClick: () async {
                             try {
-                              if (currentState.updatePhoneController!.text
-                                      .trim()
-                                      .length <
-                                  10) {
+
+                              if (uid == null) {
+                                context.mounted ? context.pop() : null;
+                                return;
+                              }
+
+                              if (currentState.updatePhoneController!.text.trim().length < 10) {
                                 //snack bar
                                 context.mounted ? context.pop() : null;
                                 return;
                               }
 
-                              final isUserExist =
-                                  await _userRepository.existUser(userId: uid);
+                              final isUserExist = await _userRepository.existUser(userId: uid!);
                               if (isUserExist) {
-                                await _userRepository.updateUserPhone(
-                                    userId: uid,
-                                    newPhone: currentState.updatePhoneController!.text);
+                                await _userRepository.updateUserPhone(userId: uid!, newPhone: currentState.updatePhoneController!.text);
                                 await LocalStorage.upsert(
                                     key: "PHONE",
                                     value: currentState.updatePhoneController!.text,
@@ -272,10 +280,10 @@ class SettingsCubit extends Cubit<SettingsState> {
                               }
 
                               final isVendorExist = await _vendorRepository
-                                  .existVendor(vendorId: uid);
+                                  .existVendor(vendorId: uid!);
                               if (isVendorExist) {
                                 await _vendorRepository.updateVendorPhone(
-                                    vendorId: uid,
+                                    vendorId: uid!,
                                     newPhone: currentState
                                         .updatePhoneController!.text);
                                 await LocalStorage.upsert(
@@ -313,14 +321,17 @@ class SettingsCubit extends Cubit<SettingsState> {
   // - - - - - - - - - - - - - - - - - - VENDOR => (ONLINE / OFFLINE) - - - - - - - - - - - - - - - - - -  //
   updateVendorStatus(bool value) async{
     try{
+
+      if (uid == null) return;
+
       final currentState = state as SettingsCurrentState;
       emit(SettingsLoadingState());
-      final String uid = await LocalStorage.read(key: "UID", storage: _storage);
+
       if(value) {
-        await _vendorRepository.online(vendorId: uid);
+        await _vendorRepository.online(vendorId: uid!);
         await LocalStorage.upsert(key: "VENDOR_ONLINE_OFFLINE", value: value, storage: _storage);
       }else{
-        await _vendorRepository.offline(vendorId: uid);
+        await _vendorRepository.offline(vendorId: uid!);
         await LocalStorage.upsert(key: "VENDOR_ONLINE_OFFLINE", value: value, storage: _storage);
       }
       emit(currentState.copyWith(vendorOnlineOffline: value));
@@ -372,12 +383,11 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                         // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
                         Checkbox(
-                            visualDensity: const VisualDensity(
-                                horizontal: -4, vertical: -2),
+                            visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
                             value: currentState.arabicLang,
                             onChanged: (value) async {
                               if (!currentState.arabicLang!) {
-                                //langSelected = CustomLocale.AR;
+                                langSelected = CustomLocale.AR;
                                 localization.translate(CustomLocale.AR);
                                 emit(currentState.copyWith(
                                     arabicLang: true,
@@ -393,10 +403,8 @@ class SettingsCubit extends Cubit<SettingsState> {
                       children: [
                         // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
                         ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                            child: Image.asset(
-                              CustomImageStrings.FLAG_FRANCE,
+                            borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                            child: Image.asset(CustomImageStrings.FLAG_FRANCE,
                               height: 30,
                               width: 40,
                               fit: BoxFit.cover,
@@ -408,12 +416,11 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                         // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
                         Checkbox(
-                            visualDensity: const VisualDensity(
-                                horizontal: -4, vertical: -2),
+                            visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
                             value: currentState.frenchLang,
                             onChanged: (value) async {
                               if (!currentState.frenchLang!) {
-                                //langSelected = CustomLocale.FR;
+                                langSelected = CustomLocale.FR;
                                 localization.translate(CustomLocale.FR);
                                 emit(currentState.copyWith(
                                     frenchLang: true,
@@ -429,27 +436,23 @@ class SettingsCubit extends Cubit<SettingsState> {
                       children: [
                         // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
                         ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                            child: Image.asset(
-                              CustomImageStrings.FLAG_ENGLAND,
+                            borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                            child: Image.asset(CustomImageStrings.FLAG_ENGLAND,
                               height: 30,
                               width: 40,
                               fit: BoxFit.cover,
                             )),
 
                         // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
-                        Text("English",
-                            style: Theme.of(context).textTheme.headlineSmall),
+                        Text("English", style: Theme.of(context).textTheme.headlineSmall),
 
                         // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
                         Checkbox(
-                            visualDensity: const VisualDensity(
-                                horizontal: -4, vertical: -2),
+                            visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
                             value: currentState.englishLang,
                             onChanged: (value) async {
                               if (!currentState.englishLang!) {
-                                //langSelected = CustomLocale.EN;
+                                langSelected = CustomLocale.EN;
                                 localization.translate(CustomLocale.EN);
                                 emit(currentState.copyWith(
                                     englishLang: true,

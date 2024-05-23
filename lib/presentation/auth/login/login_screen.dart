@@ -67,7 +67,7 @@ class LoginScreen extends CustomState {
                               textInputType: TextInputType.emailAddress),
 
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 4),
+                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 8),
 
                           // - - - - - - - - - - - - - - - - - - PASSWORD - - - - - - - - - - - - - - - - - -  //
                           CustomTextField(
@@ -119,7 +119,7 @@ class LoginScreen extends CustomState {
                           ),
 
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS /2),
 
                           // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
                           Row(
@@ -131,7 +131,7 @@ class LoginScreen extends CustomState {
                           ),
 
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
                           // - - - - - - - - - - - - - - - - - - BUTTON GOOGLE - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(

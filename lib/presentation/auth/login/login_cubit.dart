@@ -57,7 +57,7 @@ class LoginCubit extends Cubit<LoginState> {
     try{
 
       // CURRENT STATE
-      final LoginCurrentState currentState = (state as LoginCurrentState);
+      final LoginCurrentState currentState = state as LoginCurrentState;
 
       // CHECK THE FORM
       if(!currentState.formState!.currentState!.validate()) return;

@@ -136,6 +136,13 @@ class Remote{
     await _firebaseFirestore.collection("VENDORS").doc(vendorId).update({'isOnline' : false});
   }
 
+  // - - - - - - - - - - - - - - - - - - GET VENDOR INFO BY ID - - - - - - - - - - - - - - - - - -  //
+  static Future<VendorDto?> getVendorById({ required String vendorId }) async{
+    final vendor = await _firebaseFirestore.collection("VENDORS").doc(vendorId).get();
+    if(!vendor.exists) return null;
+    return VendorDto.fromJson(vendor.data()!);
+  }
+
   // - - - - - - - - - - - - - - - - - - GET ALL ORDERS - - - - - - - - - - - - - - - - - -  //
   static Future<List<OrderDto>> getAllOrdersByVendorId({ required String vendorId }) async{
     final List<OrderDto> orders = [];

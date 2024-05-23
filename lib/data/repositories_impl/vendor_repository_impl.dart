@@ -91,4 +91,11 @@ class VendorRepositoryImpl extends VendorRepository {
   @override
   Future<double> getProductCurrentPrice() async => await Remote.productCurrentPrice();
 
+  @override
+  Future<VendorEntity?> getVendorById({required String vendorId}) async{
+    final vendorDto = await Remote.getVendorById(vendorId: vendorId);
+    if(vendorDto == null) return null;
+    return vendorDto.toVendorEntity();
+  }
+
 }
