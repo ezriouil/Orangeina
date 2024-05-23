@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:berkania/data/models/order_dto.dart';
 import 'package:berkania/data/models/user_dto.dart';
+import 'package:berkania/data/models/wishList_dto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -177,6 +178,19 @@ class Remote{
   static Future<double> productCurrentPrice() async{
     final price =  await _firebaseFirestore.collection("SETTINGS").doc("PRICES").get();
     return (price["currentPrice"] as num).toDouble();
+  }
+
+  // - - - - - - - - - - - - - - - - - - GET CURRENT PRICE OF PRODUCT - - - - - - - - - - - - - - - - - -  //
+  static Future<List<WishListDto>> getAllWishListsById({ required String id }) async{
+    final List<WishListDto> wishLists = [];
+    final QuerySnapshot<Map<String, dynamic>> wishListsCollection =  await _firebaseFirestore.collection("WISHLISTS").where('userId', isEqualTo: id).get();
+    if(wishListsCollection.size > 0){
+      for (QueryDocumentSnapshot<Map<String, dynamic>> wishListJson in wishListsCollection.docs) {
+        WishListDto wishList = WishListDto.fromJson(wishListJson.data());
+        wishLists.add(wishList);
+      }
+    }
+    return wishLists.reversed.toList();
   }
 
 }

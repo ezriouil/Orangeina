@@ -19,6 +19,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'data/repositories_impl/wishList_repository_impl.dart';
+import 'domain/repositories/wishList_repository.dart';
+
 class DependencyInjection{
   DependencyInjection._();
 
@@ -34,6 +37,7 @@ class DependencyInjection{
     getIt.registerLazySingleton<AuthRepository>( () => AuthRepositoryImpl());
     getIt.registerLazySingleton<UserRepository>( () => UserRepositoryImpl());
     getIt.registerLazySingleton<VendorRepository>( () => VendorRepositoryImpl());
+    getIt.registerLazySingleton<WishListRepository>( () => WishListRepositoryImpl());
 
     // - - - - - - - - - - - - - - - - - - CUBITS - - - - - - - - - - - - - - - - - -  //
     getIt.registerFactory<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
@@ -41,7 +45,7 @@ class DependencyInjection{
     getIt.registerFactory<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
     getIt.registerFactory<IndexCubit>( () => IndexCubit());
     getIt.registerFactory<HomeCubit>( () => HomeCubit(vendorRepository: getIt()));
-    getIt.registerFactory<WishlistCubit>( () => WishlistCubit());
+    getIt.registerFactory<WishlistCubit>( () => WishlistCubit(storage: getIt(), wishListRepository: getIt()));
     getIt.registerFactory<NotificationCubit>( () => NotificationCubit());
     getIt.registerFactory<SettingsCubit>( () => SettingsCubit());
     getIt.registerFactory<VendorDetailsCubit>( () => VendorDetailsCubit());

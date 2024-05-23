@@ -43,7 +43,6 @@ class VendorOrdersScreen extends CustomState {
             case VendorOrdersLoadingState(): return const CustomLoadingScreen();
             case VendorOrdersErrorState(): return CustomErrorScreen(onClick: (){});
             case VendorOrdersEmptyState(): return const Center(child: Text("Empty List"));
-              // TODO: Handle this case.
           }
         },
       ),
