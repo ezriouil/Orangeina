@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:berkania/data/models/notification_dto.dart';
 import 'package:berkania/data/models/order_dto.dart';
 import 'package:berkania/data/models/user_dto.dart';
 import 'package:berkania/data/models/wishList_dto.dart';
@@ -180,8 +181,8 @@ class Remote{
     return (price["currentPrice"] as num).toDouble();
   }
 
-  // - - - - - - - - - - - - - - - - - - GET CURRENT PRICE OF PRODUCT - - - - - - - - - - - - - - - - - -  //
-  static Future<List<WishListDto>> getAllWishListsById({ required String id }) async{
+  // - - - - - - - - - - - - - - - - - - GET ALL WISHLISTS - - - - - - - - - - - - - - - - - -  //
+  static Future<List<WishListDto>> getAllWishLists({ required String id }) async{
     final List<WishListDto> wishLists = [];
     final QuerySnapshot<Map<String, dynamic>> wishListsCollection =  await _firebaseFirestore.collection("WISHLISTS").where('userId', isEqualTo: id).get();
     if(wishListsCollection.size > 0){
@@ -191,6 +192,30 @@ class Remote{
       }
     }
     return wishLists.reversed.toList();
+  }
+
+  // - - - - - - - - - - - - - - - - - - DELETE WISHLIST BY ID - - - - - - - - - - - - - - - - - -  //
+  static Future<void> deleteWishListById({ required String id }) async{
+    await _firebaseFirestore.collection("WISHLISTS").doc(id).delete();
+  }
+
+  // - - - - - - - - - - - - - - - - - - DELETE WISHLIST BY ID - - - - - - - - - - - - - - - - - -  //
+  static Future<List<NotificationDto>> getAllNotification({ required String userId }) async{
+    final List<NotificationDto> notifications = [];
+    final QuerySnapshot<Map<String, dynamic>> notificationsCollection = await _firebaseFirestore.collection("NOTIFICATIONS").where(userId, isEqualTo: userId).get();
+    if(notificationsCollection.size > 0){
+      for (QueryDocumentSnapshot<Map<String, dynamic>> notificationJson in notificationsCollection.docs) {
+        NotificationDto notificationDto = NotificationDto.fromJson(notificationJson.data());
+        notifications.add(notificationDto);
+      }
+    }
+    return notifications.reversed.toList();
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - DELETE NOTIFICATION BY ID - - - - - - - - - - - - - - - - - -  //
+  static Future<void> deleteNotificationById({ required String id }) async{
+    await _firebaseFirestore.collection("NOTIFICATIONS").doc(id).delete();
   }
 
 }

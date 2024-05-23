@@ -34,13 +34,23 @@ class WishlistCubit extends Cubit<WishlistState> {
         emit(WishListEmptyState());
         return;
       }
-      final List<WishListEntity> wishLists = await wishListRepository.getAllWishListsById(id: uid);
+      final List<WishListEntity> wishLists = await wishListRepository.getAllWishLists(id: uid);
 
       if(wishLists.isEmpty) {
         emit(WishListEmptyState());
         return;
       }
       emit(WishlistMainState(wishLists: wishLists));
+    }catch(e){
+      emit(WishlistErrorState());
+    }
+  }
+
+  void onDeleteWishList({required String id, required Null Function() callBack}) async{
+    try{
+      await wishListRepository.deleteWishListById(id: id);
+      callBack.call();
+      onRefresh();
     }catch(e){
       emit(WishlistErrorState());
     }

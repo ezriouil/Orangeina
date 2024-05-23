@@ -1,7 +1,9 @@
 import 'package:berkania/data/repositories_impl/auth_repository_impl.dart';
+import 'package:berkania/data/repositories_impl/notification_repository_impl.dart';
 import 'package:berkania/data/repositories_impl/user_repository_impl.dart';
 import 'package:berkania/data/repositories_impl/vendor_repository_impl.dart';
 import 'package:berkania/domain/repositories/auth_repository.dart';
+import 'package:berkania/domain/repositories/notification_repository.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/auth/forget_password/forget_password_cubit.dart';
@@ -38,6 +40,7 @@ class DependencyInjection{
     getIt.registerLazySingleton<UserRepository>( () => UserRepositoryImpl());
     getIt.registerLazySingleton<VendorRepository>( () => VendorRepositoryImpl());
     getIt.registerLazySingleton<WishListRepository>( () => WishListRepositoryImpl());
+    getIt.registerLazySingleton<NotificationRepository>( () => NotificationRepositoryImpl());
 
     // - - - - - - - - - - - - - - - - - - CUBITS - - - - - - - - - - - - - - - - - -  //
     getIt.registerFactory<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
@@ -46,7 +49,7 @@ class DependencyInjection{
     getIt.registerFactory<IndexCubit>( () => IndexCubit());
     getIt.registerFactory<HomeCubit>( () => HomeCubit(vendorRepository: getIt()));
     getIt.registerFactory<WishlistCubit>( () => WishlistCubit(storage: getIt(), wishListRepository: getIt()));
-    getIt.registerFactory<NotificationCubit>( () => NotificationCubit());
+    getIt.registerFactory<NotificationCubit>( () => NotificationCubit(notificationRepository: getIt(), storage: getIt()));
     getIt.registerFactory<SettingsCubit>( () => SettingsCubit());
     getIt.registerFactory<VendorDetailsCubit>( () => VendorDetailsCubit());
     getIt.registerFactory<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));

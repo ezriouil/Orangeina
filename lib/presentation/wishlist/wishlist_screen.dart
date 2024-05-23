@@ -1,3 +1,4 @@
+import 'package:berkania/presentation/widgets/custom_empty_screen.dart';
 import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/presentation/wishlist/widgets/custom_wishList.dart';
@@ -32,10 +33,10 @@ class WishlistScreen extends CustomState {
           switch(state){
              case WishlistMainState(): return ListView.builder(
                  itemCount: state.wishLists!.length,
-                  itemBuilder: (context, index) => CustomWishList(wishListEntity: state.wishLists![index]));
+                  itemBuilder: (context, index) => CustomWishList(wishListEntity: state.wishLists![index], onDelete: (String id){ context.read<WishlistCubit>().onDeleteWishList( id : id, callBack : (){ /*SHOW SNACK BAR*/} ); }));
             case WishlistLoadingState(): return const CustomLoadingScreen();
             case WishlistErrorState(): return CustomErrorScreen(onClick: (){});
-            case WishListEmptyState(): return const Center(child: Text("Empty List"));
+            case WishListEmptyState(): return const CustomEmptyScreen(text: "No WishList Found");
           }
         },
       ),

@@ -7,11 +7,11 @@ import '../data_source/remote.dart';
 
 class WishListRepositoryImpl extends WishListRepository {
 
-  // - - - - - - - - - - - - - - - - - - OVERRIDE REGISTER METHODE - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - OVERRIDE GEL ALL WISHLISTS METHODE - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<List<WishListEntity>> getAllWishListsById({required String id}) async{
+  Future<List<WishListEntity>> getAllWishLists({required String id}) async{
     final List<WishListEntity> wishListsEntity = [];
-    final List<WishListDto> wishListsDto = await Remote.getAllWishListsById(id: id);
+    final List<WishListDto> wishListsDto = await Remote.getAllWishLists(id: id);
 
     if(wishListsDto.isNotEmpty){
       for(WishListDto wishListsDto in wishListsDto){
@@ -20,6 +20,12 @@ class WishListRepositoryImpl extends WishListRepository {
     }
 
     return wishListsEntity;
+  }
+
+  // - - - - - - - - - - - - - - - - - - OVERRIDE DELETE WISHLIST BY ID - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<void> deleteWishListById({required String id}) async{
+    await Remote.deleteWishListById(id: id);
   }
 
 

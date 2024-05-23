@@ -1,3 +1,4 @@
+import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/domain/entities/wishList_entity.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
@@ -7,10 +8,10 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/state/custom_state.dart';
 
-class CustomWishList extends CustomState {
-  final WishListEntity wishListEntity;
+class CustomNotification extends CustomState {
+  final NotificationEntity notificationEntity;
   final void Function(String id) onDelete;
-  const CustomWishList({super.key, required this.wishListEntity, required this.onDelete});
+  const CustomNotification({super.key, required this.notificationEntity, required this.onDelete});
 
   @override
   Widget run(BuildContext context) {
@@ -23,23 +24,6 @@ class CustomWishList extends CustomState {
       height: 120,
       child: Row(
         children: [
-          Expanded(
-            flex: 3,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-              child: SizedBox(
-                width: getWidth(context),
-                height: getHeight(context),
-                child: Image.network( wishListEntity.avatar ?? "",
-                    height: getHeight(context),
-                    width: getWidth(context),
-                    fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) => loadingProgress == null ? child : Container(alignment: Alignment.center, decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS  / 2), border: Border.all(color: darkLightColor(context))), child: CircularProgressIndicator(color: primaryColor(context))),
-                    errorBuilder: (context, url, error) => Container(alignment: Alignment.center, decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), border: Border.all(color: darkLightColor(context))), child: Icon(Iconsax.gallery_remove, size: 30.0, color: grayColor(context)))),
-              ),
-            ),
-          ),
-          const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS),
           Expanded(
             flex: 6,
             child: Column(
