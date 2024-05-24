@@ -1,10 +1,16 @@
 import 'package:berkania/domain/entities/wishList_entity.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../domain/repositories/wishList_repository.dart';
+import '../../utils/constants/custom_colors.dart';
 import '../../utils/local/storage/local_storage.dart';
+import '../../utils/localisation/custom_locale.dart';
+import '../widgets/custom_elevated_button.dart';
 
 part 'wishlist_state.dart';
 
@@ -48,12 +54,49 @@ class WishlistCubit extends Cubit<WishlistState> {
 
   void onDeleteWishList({required String id, required Null Function() callBack}) async{
     try{
-      await wishListRepository.deleteWishListById(id: id);
-      callBack.call();
-      onRefresh();
+
     }catch(e){
       emit(WishlistErrorState());
     }
   }
 
+
+  // - - - - - - - - - - - - - - - - - - DELETE - - - - - - - - - - - - - - - - - -  //
+  void onDelete({ required BuildContext context, required String id })async{
+    try{
+      await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: SizedBox(
+                width: double.infinity,
+                height: 150,
+                child: Column(
+                  children: [
+
+                    CustomElevatedButton(
+                        child: Text(CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)),
+                        onClick: () async{
+
+                          context.pop();
+                          await wishListRepository.deleteWishListById(id: id);
+                          onRefresh();
+
+                        }
+                    ),
+
+                    CustomElevatedButton(
+                        onClick: context.pop,
+                        child: Text(CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE))),
+
+                  ],
+                ),
+              ),
+            );
+          });
+
+    }catch(e){
+      emit(WishlistErrorState());
+    }
+  }
 }

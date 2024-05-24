@@ -201,8 +201,9 @@ class Remote{
 
   // - - - - - - - - - - - - - - - - - - DELETE WISHLIST BY ID - - - - - - - - - - - - - - - - - -  //
   static Future<List<NotificationDto>> getAllNotification({ required String userId }) async{
+
     final List<NotificationDto> notifications = [];
-    final QuerySnapshot<Map<String, dynamic>> notificationsCollection = await _firebaseFirestore.collection("NOTIFICATIONS").where(userId, isEqualTo: userId).get();
+    final QuerySnapshot<Map<String, dynamic>> notificationsCollection = await _firebaseFirestore.collection("NOTIFICATIONS").where("userId", isEqualTo: userId).get();
     if(notificationsCollection.size > 0){
       for (QueryDocumentSnapshot<Map<String, dynamic>> notificationJson in notificationsCollection.docs) {
         NotificationDto notificationDto = NotificationDto.fromJson(notificationJson.data());
@@ -210,7 +211,11 @@ class Remote{
       }
     }
     return notifications.reversed.toList();
+  }
 
+  // - - - - - - - - - - - - - - - - - - READ NOTIFICATION BY ID - - - - - - - - - - - - - - - - - -  //
+  static Future<void> readNotification({ required String id }) async{
+    await _firebaseFirestore.collection("NOTIFICATIONS").doc(id).update({ 'isRead' : true});
   }
 
   // - - - - - - - - - - - - - - - - - - DELETE NOTIFICATION BY ID - - - - - - - - - - - - - - - - - -  //

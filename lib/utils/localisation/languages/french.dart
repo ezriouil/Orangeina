@@ -108,7 +108,6 @@ class French{
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "Galerie",
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "Rejeter",
 
-
     // - - - - - - - - - - - - - - - - - - VENDOR NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.NEW_ORDER_TITLE: "Nouvel ordre",
     CustomLocale.NEW_ORDER_SUB_TITLE: "Remplissez la quantité de KG que vous souhaitez et n'oubliez pas de fixer la date à laquelle vous recevrez votre commande.",
@@ -117,10 +116,32 @@ class French{
     CustomLocale.NEW_ORDER_BAG_PRICE: "Prix Du Sac",
     CustomLocale.NEW_ORDER_TOTAL_PRICE: "Prix Total",
     CustomLocale.NEW_ORDER_CONFIRM_BUTTON: "Confirmer",
-    CustomLocale.NEW_ORDER_MAD: "MAD",
+    CustomLocale.NEW_ORDER_MAD: "DH",
 
     // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.ORDERS_TITLE : "Commandes",
+    CustomLocale.ORDERS_BAG_PRICE_TITLE : "Prix Du Sac",
+    CustomLocale.ORDERS_Quantity_TITLE : "Quantité",
+    CustomLocale.ORDERS_CREATE_AT_TITLE : "Créé À",
+    CustomLocale.ORDERS_SELECTED_AT_TITLE : "Choisi À",
+    CustomLocale.ORDERS_TOTAL_TITLE : "Total",
+    CustomLocale.ORDERS_MAD_TITLE : "DH",
+    CustomLocale.ORDERS_KG_TITLE : "kg",
+    CustomLocale.ORDERS_STATUS_TITLE : "Statut",
+    CustomLocale.ORDERS_EMPTY_LIST_TITLE : "Aucune Commande Trouvée !",
 
+    // - - - - - - - - - - - - - - - - - - NOTIFICATIONS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.NOTIFICATIONS_TITLE : "Notifications",
+    CustomLocale.NOTIFICATION_TITLE : "Notification",
+    CustomLocale.NOTIFICATION_DIALOG_DELETE_TITLE : "Supprimer",
+    CustomLocale.NOTIFICATION_DIALOG_DISMISS_TITLE : "Rejeter",
+    CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE : "Aucune Notification Trouvée !",
+
+    // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.WISHLISTS_TITLE : "Souhaits",
+    CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE : "Supprimer",
+    CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "Rejeter",
+    CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "Aucune Souhait Trouvée !",
 
   };
 }

@@ -123,7 +123,30 @@ class English {
     CustomLocale.NEW_ORDER_CONFIRM_BUTTON: "Confirm",
     CustomLocale.NEW_ORDER_MAD: "MAD",
 
-    // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+  CustomLocale.ORDERS_TITLE : "Orders",
+  CustomLocale.ORDERS_BAG_PRICE_TITLE : "Bag Price",
+  CustomLocale.ORDERS_Quantity_TITLE : "Quantity",
+  CustomLocale.ORDERS_CREATE_AT_TITLE : "Created At",
+  CustomLocale.ORDERS_SELECTED_AT_TITLE : "Selected At",
+  CustomLocale.ORDERS_TOTAL_TITLE : "Total",
+  CustomLocale.ORDERS_MAD_TITLE : "MAD",
+  CustomLocale.ORDERS_KG_TITLE : "kg",
+  CustomLocale.ORDERS_STATUS_TITLE : "Status",
+  CustomLocale.ORDERS_EMPTY_LIST_TITLE : "No Orders Found !",
+
+  // - - - - - - - - - - - - - - - - - - NOTIFICATIONS SCREEN - - - - - - - - - - - - - - - - - -  //
+  CustomLocale.NOTIFICATIONS_TITLE : "Notifications",
+  CustomLocale.NOTIFICATION_TITLE : "Notification",
+  CustomLocale.NOTIFICATION_DIALOG_DELETE_TITLE : "Delete",
+  CustomLocale.NOTIFICATION_DIALOG_DISMISS_TITLE : "Dismiss",
+  CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE : "No Notification Found !",
+
+  // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
+  CustomLocale.WISHLISTS_TITLE : "WishLists",
+  CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE : "Delete",
+  CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "Dismiss",
+  CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "No WishLists Found !",
 
 
 

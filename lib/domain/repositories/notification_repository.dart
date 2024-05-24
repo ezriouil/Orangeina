@@ -8,4 +8,7 @@ abstract class NotificationRepository {
   // - - - - - - - - - - - - - - - - - - DELETE NOTIFICATION BY ID - - - - - - - - - - - - - - - - - -  //
   Future<void> deleteNotificationById({ required String id });
 
+  // - - - - - - - - - - - - - - - - - - READ NOTIFICATION BY ID - - - - - - - - - - - - - - - - - -  //
+  Future<void> readNotification({ required String id });
+
 }

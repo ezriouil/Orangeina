@@ -123,8 +123,29 @@ class Arabic{
     CustomLocale.NEW_ORDER_MAD: "درهم",
 
     // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.ORDERS_TITLE : "طلبات",
+    CustomLocale.ORDERS_BAG_PRICE_TITLE : "سعر الحقيبة",
+    CustomLocale.ORDERS_Quantity_TITLE : "الكمية",
+    CustomLocale.ORDERS_CREATE_AT_TITLE : "أنشئت في",
+    CustomLocale.ORDERS_SELECTED_AT_TITLE : "تم اختياره في",
+    CustomLocale.ORDERS_TOTAL_TITLE : "المجموع",
+    CustomLocale.ORDERS_KG_TITLE : "كيلو",
+    CustomLocale.ORDERS_MAD_TITLE : "درهم",
+    CustomLocale.ORDERS_STATUS_TITLE : "الحالة",
+    CustomLocale.ORDERS_EMPTY_LIST_TITLE : "لم يتم العثور على أية طلبات !",
 
+    // - - - - - - - - - - - - - - - - - - NOTIFICATIONS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.NOTIFICATIONS_TITLE : "الإشعارات",
+    CustomLocale.NOTIFICATION_TITLE : "إشعار",
+    CustomLocale.NOTIFICATION_DIALOG_DELETE_TITLE : "مسح",
+    CustomLocale.NOTIFICATION_DIALOG_DISMISS_TITLE : "عودة",
+    CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE : "لم يتم العثور على أية إشعارات !",
 
+    // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.WISHLISTS_TITLE : "الرغبات",
+    CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE : "مسح",
+    CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "عودة",
+    CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "لم يتم العثور على أية رغبات !",
 
   };
 }

@@ -1,10 +1,18 @@
 import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/domain/repositories/notification_repository.dart';
-import 'package:flutter/widgets.dart';
+import 'package:berkania/utils/constants/custom_sizes.dart';
+import 'package:berkania/utils/router/custom_router.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 
+import '../../utils/constants/custom_colors.dart';
 import '../../utils/local/storage/local_storage.dart';
+import '../../utils/localisation/custom_locale.dart';
+import '../widgets/custom_elevated_button.dart';
 
 part 'notification_state.dart';
 
@@ -12,12 +20,13 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   final NotificationRepository notificationRepository;
   final GetStorage storage;
+  String? uid;
   NotificationCubit({ required this.notificationRepository, required this.storage}) : super(NotificationLoadingState()){  init();  }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{
-    emit(NotificationMainState(notifications: [NotificationEntity()]));
-    //await getNotifications();
+     uid = await LocalStorage.read(key: "UID", storage: storage);
+    await getNotifications();
   }
 
   // - - - - - - - - - - - - - - - - - - REFRESH - - - - - - - - - - - - - - - - - -  //
@@ -27,16 +36,120 @@ class NotificationCubit extends Cubit<NotificationState> {
     await getNotifications();
   }
 
+  // - - - - - - - - - - - - - - - - - - ON CLICK - - - - - - - - - - - - - - - - - -  //
+  void onClick({ required BuildContext context, required NotificationEntity notification })async{
+    try{
+
+      if(notification.type! == "ORDER_STATUS"){
+
+        // MAKE THE NOTIFICATION READ
+        if(!notification.isRead!) await notificationRepository.readNotification(id: notification.id!);
+
+        // NAVIGATE TO ORDERS SCREEN
+        if(context.mounted) context.pushNamed(CustomRouter.VENDOR_ORDERS);
+
+        return;
+      }
+
+      // MAKE THE NOTIFICATION READ
+      if(!notification.isRead!) await notificationRepository.readNotification(id: notification.id!);
+
+
+      // SHOW ALERT DIALOG OD NOTIFICATION BODY
+      await showDialog(
+          context: context.mounted ? context : context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: SizedBox(
+                width: double.infinity,
+                height: 250,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Row(
+                      children: [
+                        const Icon(Iconsax.notification, size: 22.0, color: CustomColors.GRAY_LIGHT),
+                        Text(" ${CustomLocale.NOTIFICATION_TITLE.getString(context)}", style: Theme.of(context).textTheme.bodySmall),
+                        const Spacer(),
+                        InkWell(onTap: context.pop , borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT), child: Transform.rotate(angle: 0.8, child: const Icon(Iconsax.add_circle, size: 22.0, color: CustomColors.GRAY_LIGHT))),
+                      ],
+                    ),
+
+                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                    Text(notification.title!, style: Theme.of(context).textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
+
+                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+
+                    Text(notification.body!, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12.0), overflow: TextOverflow.ellipsis,maxLines: 10),
+                  ],
+                ),
+              ),
+            );
+          });
+
+      if(!notification.isRead!) await getNotifications();
+
+    }catch(e){
+      print("Error => ${e.toString()}");
+      emit(NotificationErrorState(message: e.toString()));
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - DELETE - - - - - - - - - - - - - - - - - -  //
+  void onDelete({ required BuildContext context, required String id })async{
+    try{
+      await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: SizedBox(
+                width: double.infinity,
+                height: 150,
+                child: Column(
+                  children: [
+
+                    CustomElevatedButton(
+                        child: Text(CustomLocale.NOTIFICATION_DIALOG_DELETE_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)),
+                        onClick: () async{
+
+                          context.pop();
+                          await Future.delayed(const Duration(milliseconds: 300));
+                          emit(NotificationLoadingState());
+                          await notificationRepository.deleteNotificationById(id: id);
+                          await Future.delayed(const Duration(milliseconds:  300));
+                          await getNotifications();
+
+                        }
+                    ),
+
+                    CustomElevatedButton(
+                        onClick: context.pop,
+                        child: Text(CustomLocale.NOTIFICATION_DIALOG_DISMISS_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE))),
+
+                  ],
+                ),
+              ),
+            );
+          });
+
+    }catch(e){
+      emit(NotificationErrorState(message: e.toString()));
+    }
+  }
+
+
   // - - - - - - - - - - - - - - - - - - GET / REFRESH NOTIFICATIONS - - - - - - - - - - - - - - - - - -  //
   Future<void> getNotifications()async {
     try{
-      final String? uid = await LocalStorage.read(key: "UID", storage: storage);
       if(uid == null) {
         emit(NotificationEmptyState());
         return;
       }
-      final List<NotificationEntity> notifications = await notificationRepository.getAllNotifications(id: uid);
 
+      final List<NotificationEntity> notifications = await notificationRepository.getAllNotifications(id: uid!);
       if(notifications.isEmpty) {
         emit(NotificationEmptyState());
         return;
@@ -46,6 +159,4 @@ class NotificationCubit extends Cubit<NotificationState> {
       emit(NotificationErrorState(message: e.toString()));
     }
   }
-
-
 }

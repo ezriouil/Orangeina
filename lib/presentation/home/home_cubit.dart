@@ -94,14 +94,12 @@ class HomeCubit extends Cubit<HomeState> {
     final markers = <Marker>{};
     final vendors = <VendorEntity>[];
 
-    //emit(HomeLoadingState());
-    //await Future.delayed(const Duration(milliseconds: 1000));
-
     for (VendorEntity vendor in getVendors) {
       vendors.add(vendor);
       markers.add(customMarker(lat: vendor.shopLat!, lng: vendor.shopLng!, title: "${vendor.firstName} ${vendor.lastName}", snippet: vendor.email!));
     }
     emit(currentState.copyWith(vendors: vendors, markers: markers));
+
   }
 
   // - - - - - - - - - - - - - - - - - -  MAP SETTINGS  - - - - - - - - - - - - - - - - - -  //

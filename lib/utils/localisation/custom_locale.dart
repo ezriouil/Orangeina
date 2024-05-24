@@ -119,7 +119,29 @@ mixin CustomLocale{
   static const String NEW_ORDER_MAD = "New Order MAD";
 
   // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String ORDERS_TITLE = "Orders Title";
+  static const String ORDERS_BAG_PRICE_TITLE = "Orders Bag Price Title";
+  static const String ORDERS_Quantity_TITLE = "Orders Quantity Title";
+  static const String ORDERS_CREATE_AT_TITLE = "Orders Create At Title";
+  static const String ORDERS_SELECTED_AT_TITLE = "Orders Selected At Title";
+  static const String ORDERS_MAD_TITLE = "Orders MAD Title";
+  static const String ORDERS_KG_TITLE = "Orders KG Title";
+  static const String ORDERS_TOTAL_TITLE = "Orders Total Title";
+  static const String ORDERS_STATUS_TITLE = "Orders Status Title";
+  static const String ORDERS_EMPTY_LIST_TITLE = "Orders Empty List Title";
 
+  // - - - - - - - - - - - - - - - - - - NOTIFICATIONS SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String NOTIFICATIONS_TITLE = "Notifications Title";
+  static const String NOTIFICATION_TITLE = "Notification Title";
+  static const String NOTIFICATION_DIALOG_DELETE_TITLE = "Notification Dialog Delete Title";
+  static const String NOTIFICATION_DIALOG_DISMISS_TITLE = "Notification Dialog Dismiss Title";
+  static const String NOTIFICATION_EMPTY_LIST_TITLE = "Notification Empty List Title";
+
+  // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String WISHLISTS_TITLE = "WishLists Title";
+  static const String WSIHLIST_DIALOG_DELETE_TITLE = "Wishlist Dialog Delete Title";
+  static const String WSIHLIST_DIALOG_DISMISS_TITLE = "Wishlist Dialog Dismiss Title";
+  static const String WISHLIST_EMPTY_LIST_TITLE = "WishList Empty List Title";
 
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
   static const String EMAIL = "Email";

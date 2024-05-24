@@ -28,5 +28,11 @@ class NotificationRepositoryImpl extends NotificationRepository {
     await Remote.deleteNotificationById(id: id);
   }
 
+  // - - - - - - - - - - - - - - - - - - OVERRIDE READ NOTIFICATION BY ID- - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<void> readNotification({required String id}) async{
+    await Remote.readNotification(id: id);
+  }
+
 
 }
