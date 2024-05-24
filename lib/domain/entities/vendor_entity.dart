@@ -1,7 +1,8 @@
 class VendorEntity{
 
   // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
-  late final int? averageRating, birthdayYear, totalOrders;
+  late final int? totalOrders, birthdayYear;
+  late final num? averageRating;
 
   late final double? shopLat, shopLng;
 
@@ -39,7 +40,7 @@ class VendorEntity{
       this.carRegistration = "",
       this.carType = "",
       this.isOnline = false,
-      this.averageRating = 0,
+      this.averageRating = 0.0,
       this.birthdayYear = 0,
       this.totalOrders = 0,
       this.shopLat = 0.0,
@@ -89,7 +90,7 @@ class VendorEntity{
         carRegistration: json['carRegistration'] as String,
         carType: json['carType'] as String,
         isOnline: json['isOnline'] as bool,
-        averageRating: json['averageRating'] as int,
+        averageRating: json['averageRating'] as double,
         birthdayYear: json['birthdayYear'] as int,
         totalOrders: json['totalOrders'] as int,
         shopLat: json['shopLat'] as double,

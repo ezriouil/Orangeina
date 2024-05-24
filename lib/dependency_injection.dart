@@ -47,7 +47,7 @@ class DependencyInjection{
     getIt.registerFactory<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
     getIt.registerFactory<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
     getIt.registerFactory<IndexCubit>( () => IndexCubit());
-    getIt.registerFactory<HomeCubit>( () => HomeCubit(vendorRepository: getIt()));
+    getIt.registerFactory<HomeCubit>( () => HomeCubit(vendorRepository: getIt(), storage: getIt()));
     getIt.registerFactory<WishlistCubit>( () => WishlistCubit(storage: getIt(), wishListRepository: getIt()));
     getIt.registerFactory<NotificationCubit>( () => NotificationCubit(notificationRepository: getIt(), storage: getIt()));
     getIt.registerFactory<SettingsCubit>( () => SettingsCubit());

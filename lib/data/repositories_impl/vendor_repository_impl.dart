@@ -23,6 +23,11 @@ class VendorRepositoryImpl extends VendorRepository {
       }
     }
 
+    print("+++++sss+++++");
+    print(vendorsEntity.first.shopLat);
+    print(vendorsEntity.first.shopLng);
+    print("++++++++++");
+
     return vendorsEntity;
   }
 

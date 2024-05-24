@@ -3,19 +3,21 @@ part of 'home_cubit.dart';
 @immutable
 sealed class HomeState {}
 
-final class HomeCurrentState extends HomeState {
+final class HomeMainState extends HomeState {
   final Completer<GoogleMapController>? mapController;
   final CameraPosition? myCurrentLocation, cameraCurrentLocation;
+  final CustomInfoWindowController? customInfoWindowController;
  final bool? mapMyLocationEnabled, mapTrafficEnabled, mapRefreshEnabled, mapSatelliteEnabled, mapVendorsEnabled, mapFilterEnabled;
   final  List<VendorEntity>? vendors;
   final  Set<Marker>? markers;
 
-  HomeCurrentState(
+  HomeMainState(
       {this.mapController,
       this.myCurrentLocation,
       this.mapMyLocationEnabled,
       this.mapTrafficEnabled,
       this.mapSatelliteEnabled,
+      this.customInfoWindowController,
       this.mapRefreshEnabled,
       this.mapVendorsEnabled,
       this.mapFilterEnabled,
@@ -23,14 +25,15 @@ final class HomeCurrentState extends HomeState {
       this.markers,
       this.vendors});
 
-  HomeCurrentState copyWith(
+  HomeMainState copyWith(
           {Completer<GoogleMapController>? mapController,
           CameraPosition? myCurrentLocation,
+          CustomInfoWindowController? customInfoWindowController,
           CameraPosition? cameraCurrentLocation, bool? mapMyLocationEnabled, bool? mapTrafficEnabled, bool? mapRefreshEnabled, bool? mapFilterEnabled, bool? mapVendorsEnabled, bool? mapSatelliteEnabled,
           List<VendorEntity>? vendors,
           Set<Marker>? markers
           }) =>
-      HomeCurrentState(
+      HomeMainState(
           mapController: mapController ?? this.mapController,
           myCurrentLocation: myCurrentLocation ?? this.myCurrentLocation,
           cameraCurrentLocation: cameraCurrentLocation ?? this.cameraCurrentLocation,
@@ -38,6 +41,7 @@ final class HomeCurrentState extends HomeState {
           mapTrafficEnabled: mapTrafficEnabled ?? this.mapTrafficEnabled,
           mapRefreshEnabled: mapRefreshEnabled ?? this.mapRefreshEnabled,
           mapFilterEnabled: mapFilterEnabled ?? this.mapFilterEnabled,
+          customInfoWindowController: customInfoWindowController ?? this.customInfoWindowController,
           mapVendorsEnabled: mapVendorsEnabled ?? this.mapVendorsEnabled,
           mapSatelliteEnabled: mapSatelliteEnabled ?? this.mapSatelliteEnabled,
           vendors: vendors ?? this.vendors,

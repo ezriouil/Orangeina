@@ -1,5 +1,6 @@
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/utils/state/custom_state.dart';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,7 +18,8 @@ class HomeScreen extends CustomState {
       body: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           switch(state){
-            case HomeCurrentState() : {
+
+            case HomeMainState() : {
               return Stack(
                 children: [
                   GoogleMap(
@@ -28,6 +30,7 @@ class HomeScreen extends CustomState {
                     mapType: state.mapSatelliteEnabled! ? MapType.satellite : MapType.normal,
                     myLocationEnabled: state.mapMyLocationEnabled!,
                     trafficEnabled: state.mapTrafficEnabled!,
+                    onTap: (latLng){ state.customInfoWindowController!.hideInfoWindow!(); },
                     onCameraMove: context.read<HomeCubit>().onCameraMoved,
                     onMapCreated: context.read<HomeCubit>().onMapCompleted,
                     markers : state.markers!,
@@ -48,7 +51,7 @@ class HomeScreen extends CustomState {
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapVendorsEnabled!) FloatingActionButton(
                                 child: Icon(Iconsax.shop, size: 20.0, color: darkLightColor(context)),
-                                onPressed: () {/*context.read<HomeCubit>().showVendors();*/},
+                                onPressed: () { /*context.read<HomeCubit>().showVendors();*/ },
                           ),
                           if(state.mapVendorsEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapRefreshEnabled!)  FloatingActionButton(
@@ -69,6 +72,12 @@ class HomeScreen extends CustomState {
                         ],
                       ),
                     ),
+                  ),
+                  CustomInfoWindow(
+                    controller: state.customInfoWindowController!,
+                    height: 90,
+                    width: 250,
+                    offset: 40,
                   )
                 ],
               );
