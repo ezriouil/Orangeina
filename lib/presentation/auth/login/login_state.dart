@@ -3,12 +3,12 @@ part of 'login_cubit.dart';
 @immutable
 sealed class LoginState {}
 
-final class LoginCurrentState extends LoginState {
+final class LoginMainState extends LoginState {
   final TextEditingController?emailController, passwordController;
   final bool?  obscureText, arabicLang, frenchLang, englishLang;
   final GlobalKey<FormState>? formState;
 
-  LoginCurrentState({
+  LoginMainState({
         this.emailController,
         this.passwordController,
         this.obscureText,
@@ -17,7 +17,7 @@ final class LoginCurrentState extends LoginState {
         this.englishLang,
         this.formState});
 
-  LoginCurrentState copyWith({
+  LoginMainState copyWith({
     TextEditingController? emailController,
     TextEditingController? passwordController,
     bool? obscureText,
@@ -26,7 +26,7 @@ final class LoginCurrentState extends LoginState {
     bool? englishLang,
     GlobalKey<FormState>? formState,
   }) {
-    return LoginCurrentState(
+    return LoginMainState(
       emailController: emailController ?? this.emailController,
       passwordController: passwordController ?? this.passwordController,
       obscureText: obscureText ?? this.obscureText,

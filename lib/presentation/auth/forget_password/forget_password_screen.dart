@@ -32,7 +32,7 @@ class ForgetPasswordScreen extends CustomState {
       body: BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
         builder: (context, state) {
           switch (state) {
-            case ForgetPasswordCurrentState():
+            case ForgetPasswordMainState():
               {
                 return SingleChildScrollView(
                   child: Padding(

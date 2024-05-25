@@ -16,11 +16,11 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
   final AuthRepository authRepository;
   final Connectivity connectivity;
 
-  ForgetPasswordCubit({required this.authRepository, required this.connectivity}) : super(ForgetPasswordCurrentState()){ init(); }
+  ForgetPasswordCubit({required this.authRepository, required this.connectivity}) : super(ForgetPasswordMainState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init(){
-    emit(ForgetPasswordCurrentState(emailController: TextEditingController()));
+    emit(ForgetPasswordMainState(emailController: TextEditingController()));
   }
 
   // - - - - - - - - - - - - - - - - - - SEND EMAIL LINK RESET THE PASSWORD - - - - - - - - - - - - - - - - - -  //
@@ -29,7 +29,7 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
 
 
       // CURRENT STATE
-      final ForgetPasswordCurrentState currentState = (state as ForgetPasswordCurrentState);
+      final ForgetPasswordMainState currentState = state as ForgetPasswordMainState;
 
       // CHECK CONNECTION INTERNET
       final hasConnection = await Network.hasConnection(connectivity);

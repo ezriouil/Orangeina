@@ -28,7 +28,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async {
-    emit(RegisterCurrentState(
+    emit(RegisterMainState(
         firstNameController: TextEditingController(),
         lastNameController: TextEditingController(),
         emailController: TextEditingController(),
@@ -45,7 +45,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
 
       // CURRENT STATE
-      final RegisterCurrentState currentState = (state as RegisterCurrentState);
+      final RegisterMainState currentState = (state as RegisterMainState);
 
       // CHECK THE FORM
       if(!currentState.formState!.currentState!.validate()){
@@ -124,14 +124,14 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   // - - - - - - - - - - - - - - - - - - UPDATE CHECKBOX - - - - - - - - - - - - - - - - - -  //
   void onUpdateCheckbox(bool? value) {
-    final RegisterCurrentState updateState = (state as RegisterCurrentState).copyWith(checkbox: value);
+    final RegisterMainState updateState = (state as RegisterMainState).copyWith(checkbox: value);
       emit(updateState);
   }
 
   // - - - - - - - - - - - - - - - - - - UPDATE PASSWORD VISIBILITY - - - - - - - - - - - - - - - - - -  //
   void onUpdatePasswordVisibility(){
-    bool newValue = (state as RegisterCurrentState).obscureText!;
-    final RegisterCurrentState updateState = (state as RegisterCurrentState).copyWith(obscureText: newValue = !newValue);
+    bool newValue = (state as RegisterMainState).obscureText!;
+    final RegisterMainState updateState = (state as RegisterMainState).copyWith(obscureText: newValue = !newValue);
     emit(updateState);
   }
 
@@ -173,7 +173,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       }
 
       // NAVIGATE TO HOME SCREEN
-      emit((state as RegisterCurrentState));
+      emit((state as RegisterMainState));
       callBack.call();
 
     }catch(e){

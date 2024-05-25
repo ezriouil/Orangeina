@@ -3,10 +3,10 @@ part of 'forget_password_cubit.dart';
 @immutable
 sealed class ForgetPasswordState {}
 
-final class ForgetPasswordCurrentState extends ForgetPasswordState {
+final class ForgetPasswordMainState extends ForgetPasswordState {
   final TextEditingController? emailController;
 
-  ForgetPasswordCurrentState({ this.emailController });
+  ForgetPasswordMainState({ this.emailController });
 }
 
 final class ForgetPasswordLoadingState extends ForgetPasswordState {}

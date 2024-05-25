@@ -41,7 +41,7 @@ class RegisterScreen extends CustomState {
       body: BlocBuilder<RegisterCubit, RegisterState>(
         builder: (context, state) {
           switch(state){
-            case RegisterCurrentState():
+            case RegisterMainState():
             {
                  return SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_DEFAULT),

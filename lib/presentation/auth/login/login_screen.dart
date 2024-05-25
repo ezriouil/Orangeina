@@ -27,7 +27,7 @@ class LoginScreen extends CustomState {
       body: BlocBuilder<LoginCubit, LoginState>(
         builder: (context, state) {
           switch(state){
-            case LoginCurrentState():
+            case LoginMainState():
               {
                 return SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_DEFAULT),

@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 part 'index_state.dart';
 
 class IndexCubit extends Cubit<IndexState> {
-  IndexCubit() : super(IndexCurrentState()){ init(); }
+  IndexCubit() : super(IndexMainState()){ init(); }
 
   init() async{
 
@@ -27,7 +27,7 @@ class IndexCubit extends Cubit<IndexState> {
       emit(IndexPermissionState());
       return;
     }
-    emit(IndexCurrentState(currentPageIndex: value));
+    emit(IndexMainState(currentPageIndex: value));
   }
 
   // - - - - - - - - - - - - - - - - - -  PERMISSION - - - - - - - - - - - - - - - - - -  //
@@ -53,7 +53,7 @@ class IndexCubit extends Cubit<IndexState> {
       return false;
     }
 
-    emit(IndexCurrentState(currentPageIndex: 0));
+    emit(IndexMainState(currentPageIndex: 0));
     return true;
   }
 

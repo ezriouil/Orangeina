@@ -22,7 +22,7 @@ class SettingsScreen extends CustomState {
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
           switch (state) {
-            case SettingsCurrentState():
+            case SettingsMainState():
               return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS),
                   child: SingleChildScrollView(

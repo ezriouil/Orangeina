@@ -3,7 +3,7 @@ part of 'register_cubit.dart';
 @immutable
 sealed class RegisterState {}
 
-final class RegisterCurrentState extends RegisterState {
+final class RegisterMainState extends RegisterState {
   final TextEditingController? firstNameController,
       lastNameController,
       emailController,
@@ -12,7 +12,7 @@ final class RegisterCurrentState extends RegisterState {
   final bool? checkbox, obscureText;
   final GlobalKey<FormState>? formState;
 
-  RegisterCurrentState(
+  RegisterMainState(
       {this.firstNameController,
       this.lastNameController,
       this.emailController,
@@ -22,7 +22,7 @@ final class RegisterCurrentState extends RegisterState {
       this.obscureText,
       this.formState});
 
-  RegisterCurrentState copyWith({
+  RegisterMainState copyWith({
     TextEditingController? firstNameController,
     TextEditingController? lastNameController,
     TextEditingController? emailController,
@@ -32,7 +32,7 @@ final class RegisterCurrentState extends RegisterState {
     bool? obscureText,
     GlobalKey<FormState>? formState,
   }) {
-    return RegisterCurrentState(
+    return RegisterMainState(
       firstNameController: firstNameController ?? this.firstNameController,
       lastNameController: lastNameController ?? this.lastNameController,
       emailController: emailController ?? this.emailController,

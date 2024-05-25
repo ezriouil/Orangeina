@@ -30,12 +30,12 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   VendorEntity? vendor;
   String? uid, lang;
-  SettingsCubit() : super(SettingsCurrentState()) { init(); }
+  SettingsCubit() : super(SettingsMainState()) { init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async {
 
-    emit(SettingsCurrentState(
+    emit(SettingsMainState(
       arabicLang: false,
       englishLang: false,
       frenchLang: false,
@@ -53,7 +53,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     final bool isVendor = await _vendorRepository.existVendor(vendorId: uid!);
     if(isVendor) vendor = await _vendorRepository.getVendorById(vendorId: uid!);
 
-    emit((state as SettingsCurrentState).copyWith(
+    emit((state as SettingsMainState).copyWith(
       frenchLang: lang == CustomLocale.FR ? true : false,
       arabicLang: lang == CustomLocale.AR ? true : false,
       englishLang: lang == CustomLocale.EN ? true : false,
@@ -83,7 +83,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                           context.pop();
                           final String uid = await LocalStorage.read(key: "UID", storage: _storage);
 
-                          final currentState = state as SettingsCurrentState;
+                          final currentState = state as SettingsMainState;
 
                           final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
                           if (img == null) {
@@ -131,7 +131,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     final String firstName = vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
     final String lastName = vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
 
-    final currentState = state as SettingsCurrentState;
+    final currentState = state as SettingsMainState;
 
     await showDialog(
         context: context.mounted ? context : context,
@@ -231,7 +231,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   onUpdatePhone({required BuildContext context}) async {
     final String phone = vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
 
-    final currentState = state as SettingsCurrentState;
+    final currentState = state as SettingsMainState;
     await showDialog(
         context: context.mounted ? context : context,
         builder: (BuildContext context) {
@@ -324,7 +324,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
       if (uid == null) return;
 
-      final currentState = state as SettingsCurrentState;
+      final currentState = state as SettingsMainState;
       emit(SettingsLoadingState());
 
       if(value) {
@@ -350,7 +350,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - SHOW DIALOG LANGUAGES - - - - - - - - - - - - - - - - - -  //
   onUpdateLanguage({required BuildContext context, required Function callBack}) async {
-    final SettingsCurrentState currentState = state as SettingsCurrentState;
+    final SettingsMainState currentState = state as SettingsMainState;
     String langSelected = "";
 
     await showDialog(
@@ -489,7 +489,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     final String uid = await LocalStorage.read(key: "UID", storage: _storage) ?? "";
     final String email = await LocalStorage.read(key: "EMAIL", storage: _storage) ?? CustomLocale.EMAIL.getString(context.mounted ? context : context);
 
-    final currentState = state as SettingsCurrentState;
+    final currentState = state as SettingsMainState;
     await showDialog(
         context: context.mounted ? context : context,
         builder: (BuildContext context) {
@@ -560,7 +560,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     final String uid = await LocalStorage.read(key: "UID", storage: _storage) ?? "";
     final String password = await LocalStorage.read(key: "PASSWORD", storage: _storage) ?? CustomLocale.PASSWORD.getString(context.mounted ? context : context);
 
-    final currentState = state as SettingsCurrentState;
+    final currentState = state as SettingsMainState;
     await showDialog(
         context: context.mounted ? context : context,
         builder: (BuildContext context) {

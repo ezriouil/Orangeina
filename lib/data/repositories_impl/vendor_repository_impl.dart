@@ -22,32 +22,16 @@ class VendorRepositoryImpl extends VendorRepository {
         vendorsEntity.add(vendorDto.toVendorEntity());
       }
     }
-
-    print("+++++sss+++++");
-    print(vendorsEntity.first.shopLat);
-    print(vendorsEntity.first.shopLng);
-    print("++++++++++");
-
     return vendorsEntity;
   }
 
   @override
   Future<bool> existVendor({required String vendorId}) async => Remote.exist(collection: "VENDORS", doc: vendorId);
 
-  // @override
-  // Future<void> updateVendorEmail({required String vendorId, required String newEmail}) async{
-  //   await Remote.updateEmail(collection: "VENDORS", doc: vendorId, newEmail: newEmail);
-  // }
-
   @override
   Future<void> updateVendorFullName({required String vendorId, required String newFirstName, required String newLastName}) async{
     await Remote.updateFullName(collection: "VENDORS", doc: vendorId, newFirstName: newFirstName, newLastName: newLastName);
   }
-
-
-  //@override
-  //Future<void> updateVendorPassword({required String vendorId, required String newPassword}) async =>
-  //await Remote.updateImage(path: "VENDORS", imgName: "VENDORS", imgPath: newPassword);
 
   @override
   Future<void> updateVendorPhone({required String vendorId, required String newPhone}) async{

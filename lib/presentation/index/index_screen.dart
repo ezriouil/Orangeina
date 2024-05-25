@@ -20,7 +20,7 @@ class IndexScreen extends CustomState {
       builder: (context, state) {
         return Scaffold(
           bottomNavigationBar: switch (state) {
-            IndexCurrentState() => NavigationBar(
+            IndexMainState() => NavigationBar(
                 height: 70.0,
                 elevation: 0.0,
                 animationDuration: const Duration(seconds: 3),
@@ -37,7 +37,7 @@ class IndexScreen extends CustomState {
             IndexPermissionState() => null
           },
           body: switch (state) {
-            IndexCurrentState() => context.read<IndexCubit>().screens()[state.currentPageIndex!],
+            IndexMainState() => context.read<IndexCubit>().screens()[state.currentPageIndex!],
             IndexPermissionState() => SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 2),

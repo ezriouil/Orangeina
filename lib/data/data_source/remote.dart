@@ -61,19 +61,6 @@ class Remote{
     return result.exists;
   }
 
-  // - - - - - - - - - - - - - - - - - - UPDATE EMAIL - - - - - - - - - - - - - - - - - -  //
-  // static Future<void> updateEmail({required String collection, required String doc, required String newEmail}) async{
-  //  final User user =  _firebaseAuth.currentUser!;
-  //  await user.updateEmail(newEmail);
-  //  await _firebaseFirestore.collection(collection).doc(doc).update({'email' : newEmail});
-  //}
-
-  // - - - - - - - - - - - - - - - - - - UPDATE PASSWORD - - - - - - - - - - - - - - - - - -  //
-  // static Future<void> updatePassword({required String newPassword}) async{
-  //   final User user =  _firebaseAuth.currentUser!;
-  //   await user.updatePassword(newPassword);
-  // }
-
   // - - - - - - - - - - - - - - - - - - UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
   static Future<void> updatePhone({required String collection, required String doc, required String newPhone}) async{
     await _firebaseFirestore.collection(collection).doc(doc).update({'phone' : newPhone});

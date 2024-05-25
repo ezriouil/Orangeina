@@ -39,10 +39,12 @@ class LoginCubit extends Cubit<LoginState> {
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async {
+
     final String lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.EN;
     final String email = await LocalStorage.read(key: "EMAIL", storage: storage) ?? "";
     final String password = await LocalStorage.read(key: "PASSWORD", storage: storage) ?? "";
-    emit(LoginCurrentState(
+
+    emit(LoginMainState(
         emailController: TextEditingController(text: email),
         passwordController: TextEditingController(text: password),
         obscureText: true,
@@ -57,7 +59,7 @@ class LoginCubit extends Cubit<LoginState> {
     try{
 
       // CURRENT STATE
-      final LoginCurrentState currentState = state as LoginCurrentState;
+      final LoginMainState currentState = state as LoginMainState;
 
       // CHECK THE FORM
       if(!currentState.formState!.currentState!.validate()) return;
@@ -139,7 +141,7 @@ class LoginCubit extends Cubit<LoginState> {
       }
 
       // NAVIGATE TO HOME SCREEN
-      emit((state as LoginCurrentState));
+      emit((state as LoginMainState));
       callBack.call();
 
     }catch(e){
@@ -150,15 +152,15 @@ class LoginCubit extends Cubit<LoginState> {
 
   // - - - - - - - - - - - - - - - - - - UPDATE PASSWORD VISIBILITY - - - - - - - - - - - - - - - - - -  //
   void onUpdatePasswordVisibility(){
-    bool newValue = (state as LoginCurrentState).obscureText!;
-    final LoginCurrentState updateState = (state as LoginCurrentState).copyWith(obscureText: newValue = !newValue);
+    bool newValue = (state as LoginMainState).obscureText!;
+    final LoginMainState updateState = (state as LoginMainState).copyWith(obscureText: newValue = !newValue);
     emit(updateState);
   }
 
   // - - - - - - - - - - - - - - - - - - SHOW DIALOG LANGUAGES - - - - - - - - - - - - - - - - - -  //
   onUpdateLanguage({ required BuildContext context, required Function callBack }) async{
 
-    final LoginCurrentState currentState = (state as LoginCurrentState);
+    final LoginMainState currentState = (state as LoginMainState);
     String langSelected = "";
 
     await showDialog(

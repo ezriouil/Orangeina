@@ -3,7 +3,7 @@ part of 'settings_cubit.dart';
 @immutable
 sealed class SettingsState {}
 
-final class SettingsCurrentState extends SettingsState {
+final class SettingsMainState extends SettingsState {
 
   final bool? arabicLang, frenchLang, englishLang, isVendor, vendorOnlineOffline;
   final String? updateImageProfilePath;
@@ -11,7 +11,7 @@ final class SettingsCurrentState extends SettingsState {
       updateLastNameController,
       updatePhoneController;
 
-  SettingsCurrentState(
+  SettingsMainState(
       {
       this.arabicLang,
       this.frenchLang,
@@ -23,7 +23,7 @@ final class SettingsCurrentState extends SettingsState {
       this.updateLastNameController,
       this.updatePhoneController});
 
-  SettingsCurrentState copyWith(
+  SettingsMainState copyWith(
           {
           bool? arabicLang,
           bool? frenchLang,
@@ -35,7 +35,7 @@ final class SettingsCurrentState extends SettingsState {
           TextEditingController? updateLastNameController,
           TextEditingController? updatePhoneController}) =>
 
-      SettingsCurrentState(
+      SettingsMainState(
         arabicLang: arabicLang ?? this.arabicLang,
         frenchLang: frenchLang ?? this.frenchLang,
         englishLang: englishLang ?? this.englishLang,

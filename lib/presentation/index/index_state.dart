@@ -3,12 +3,12 @@ part of 'index_cubit.dart';
 @immutable
 sealed class IndexState {}
 
- final class IndexCurrentState extends IndexState {
+ final class IndexMainState extends IndexState {
   final int? currentPageIndex;
-  IndexCurrentState({ this.currentPageIndex = 0 });
+  IndexMainState({ this.currentPageIndex = 0 });
 
-  IndexCurrentState copyWith({final int? currentPageIndex}) {
-    return IndexCurrentState(
+  IndexMainState copyWith({final int? currentPageIndex}) {
+    return IndexMainState(
       currentPageIndex: currentPageIndex ?? this.currentPageIndex,
     );
   }
