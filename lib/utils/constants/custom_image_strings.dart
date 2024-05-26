@@ -4,9 +4,9 @@ class CustomImageStrings{
   //! Vehicles
   static const String DEFAULT_IMAGE_PROFILE = "https://firebasestorage.googleapis.com/v0/b/limounareworked.appspot.com/o/default-avatar.jpg?alt=media&token=b1080418-c54f-4301-8273-d0c33d284094";
   //! Vehicles
-  static const String HONDS = 'assets/imgs/honda.jpg';
-  static const String TRIPORTEUR = 'assets/imgs/triporteur.png';
-  static const String CAR = 'assets/imgs/kango.jpg';
+  static const String HONDS = 'assets/images/honda.jpg';
+  static const String TRIPORTEUR = 'assets/images/triporteur.png';
+  static const String CAR = 'assets/images/kango.jpg';
 
   //! Flags
   static const String FLAG_MOROCCO = 'assets/icons/flag_ma.png';

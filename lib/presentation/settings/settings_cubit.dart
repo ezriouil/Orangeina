@@ -1,5 +1,5 @@
-import 'package:berkania/data/repositories_impl/user_repository_impl.dart';
-import 'package:berkania/data/repositories_impl/vendor_repository_impl.dart';
+import 'package:berkania/domain/repositories/user_repository.dart';
+import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
 import 'package:berkania/utils/router/custom_router.dart';
@@ -22,15 +22,18 @@ part 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
 
+  // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
   final FlutterLocalization localization = FlutterLocalization.instance;
-  final _storage = GetStorage();
-  final UserRepositoryImpl _userRepository = UserRepositoryImpl();
-  final VendorRepositoryImpl _vendorRepository = VendorRepositoryImpl();
   final ImagePicker _imagePicker = ImagePicker();
-
-  VendorEntity? vendor;
+  VendorEntity? _vendor;
   String? uid, lang;
-  SettingsCubit() : super(SettingsMainState()) { init(); }
+  
+  final GetStorage storage;
+  final UserRepository userRepository;
+  final VendorRepository vendorRepository;
+
+  // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
+  SettingsCubit({ required this.storage, required this.userRepository, required this.vendorRepository }) : super(SettingsMainState()) { init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async {
@@ -46,20 +49,20 @@ class SettingsCubit extends Cubit<SettingsState> {
       updatePhoneController: TextEditingController(),
     ));
 
-    uid = await LocalStorage.read(key: "UID", storage: _storage);
-    lang = await LocalStorage.read(key: "LANGUAGE", storage: _storage) ?? CustomLocale.EN;
+    uid = await LocalStorage.read(key: "UID", storage: storage);
+    lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.EN;
 
     if(uid == null) return;
-    final bool isVendor = await _vendorRepository.existVendor(vendorId: uid!);
-    if(isVendor) vendor = await _vendorRepository.getVendorById(vendorId: uid!);
+    final bool isVendor = await vendorRepository.existVendor(vendorId: uid!);
+    if(isVendor) _vendor = await vendorRepository.getVendorById(vendorId: uid!);
 
     emit((state as SettingsMainState).copyWith(
       frenchLang: lang == CustomLocale.FR ? true : false,
       arabicLang: lang == CustomLocale.AR ? true : false,
       englishLang: lang == CustomLocale.EN ? true : false,
-      updateImageProfilePath: vendor?.avatar ?? "",
+      updateImageProfilePath: _vendor?.avatar ?? "",
       isVendor: isVendor,
-      vendorOnlineOffline: vendor?.isOnline ?? false,
+      vendorOnlineOffline: _vendor?.isOnline ?? false,
     ));
 
   }
@@ -81,7 +84,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                       onClick: () async {
                         try {
                           context.pop();
-                          final String uid = await LocalStorage.read(key: "UID", storage: _storage);
+                          final String uid = await LocalStorage.read(key: "UID", storage: storage);
 
                           final currentState = state as SettingsMainState;
 
@@ -91,28 +94,24 @@ class SettingsCubit extends Cubit<SettingsState> {
                             return;
                           }
 
-                          final isUserExist = await _userRepository.existUser(userId: uid);
+                          final isUserExist = await userRepository.existUser(userId: uid);
                           if (isUserExist) {
-                            final String newImageLink = await _userRepository.updateUserImage(userId: uid, newImage: img.path);
+                            final String newImageLink = await userRepository.updateUserImage(userId: uid, newImage: img.path);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
                             //SNACK BAR
                             return;
                           }
 
-                          final isVendorExist = await _vendorRepository.existVendor(vendorId: uid);
+                          final isVendorExist = await vendorRepository.existVendor(vendorId: uid);
                           if (isVendorExist) {
-                            final String newImageLink = await _userRepository.updateUserImage(userId: uid, newImage: img.path);
+                            await vendorRepository.deleteVendorImage(imgName: uid);
+                            final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid, imgPath: img.path);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
                             //SNACK BAR
                             return;
                           }
-
-                          currentState.updateFirstNameController!.clear();
-                          currentState.updateLastNameController!.clear();
                           context.mounted ? context.pop() : null;
-                        } catch (e) {
-                          print(e.toString());
-                        }
+                        } catch (_) {}
                       }),
 
                   CustomElevatedButton(
@@ -128,8 +127,8 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
   void onUpdateFullName({required BuildContext context}) async {
-    final String firstName = vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
-    final String lastName = vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
+    final String firstName = _vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
+    final String lastName = _vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
 
     final currentState = state as SettingsMainState;
 
@@ -170,17 +169,17 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 return;
                               }
 
-                              final isUserExist = await _userRepository.existUser(userId: uid!);
+                              final isUserExist = await userRepository.existUser(userId: uid!);
                               if (isUserExist) {
-                                await _userRepository.updateUserFullName(userId: uid!, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
+                                await userRepository.updateUserFullName(userId: uid!, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
                                 await LocalStorage.upsert(
                                     key: "FIRST_NAME",
                                     value: currentState.updateFirstNameController!.text,
-                                    storage: _storage);
+                                    storage: storage);
                                 await LocalStorage.upsert(
                                     key: "LAST_NAME",
                                     value: currentState.updateLastNameController!.text,
-                                    storage: _storage);
+                                    storage: storage);
                                 currentState.updateFirstNameController!.clear();
                                 currentState.updateLastNameController!.clear();
                                 context.mounted ? context.pop() : null;
@@ -188,20 +187,20 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 return;
                               }
 
-                              final isVendorExist = await _vendorRepository.existVendor(vendorId: uid!);
+                              final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                               if (isVendorExist) {
-                                await _vendorRepository.updateVendorFullName(
+                                await vendorRepository.updateVendorFullName(
                                     vendorId: uid!,
                                     newFirstName: currentState.updateFirstNameController!.text,
                                     newLastName: currentState.updateLastNameController!.text);
                                 await LocalStorage.upsert(
                                     key: "FIRST_NAME",
                                     value: currentState.updateFirstNameController!.text,
-                                    storage: _storage);
+                                    storage: storage);
                                 await LocalStorage.upsert(
                                     key: "LAST_NAME",
                                     value: currentState.updateLastNameController!.text,
-                                    storage: _storage);
+                                    storage: storage);
                                 currentState.updateFirstNameController!.clear();
                                 currentState.updateLastNameController!.clear();
                                 context.mounted ? context.pop() : null;
@@ -219,6 +218,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                           child: Text(
                               CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context),
                               style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
+
                     ],
                   )));
         });
@@ -226,7 +226,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
   void onUpdatePhone({required BuildContext context}) async {
-    final String phone = vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
+    final String phone = _vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
 
     final currentState = state as SettingsMainState;
     await showDialog(
@@ -263,31 +263,29 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 return;
                               }
 
-                              final isUserExist = await _userRepository.existUser(userId: uid!);
+                              final isUserExist = await userRepository.existUser(userId: uid!);
                               if (isUserExist) {
-                                await _userRepository.updateUserPhone(userId: uid!, newPhone: currentState.updatePhoneController!.text);
+                                await userRepository.updateUserPhone(userId: uid!, newPhone: currentState.updatePhoneController!.text);
                                 await LocalStorage.upsert(
                                     key: "PHONE",
                                     value: currentState.updatePhoneController!.text,
-                                    storage: _storage);
+                                    storage: storage);
                                 currentState.updatePhoneController!.clear();
                                 context.mounted ? context.pop() : null;
                                 //SNACK BAR
                                 return;
                               }
 
-                              final isVendorExist = await _vendorRepository
+                              final isVendorExist = await vendorRepository
                                   .existVendor(vendorId: uid!);
                               if (isVendorExist) {
-                                await _vendorRepository.updateVendorPhone(
+                                await vendorRepository.updateVendorPhone(
                                     vendorId: uid!,
-                                    newPhone: currentState
-                                        .updatePhoneController!.text);
+                                    newPhone: currentState.updatePhoneController!.text);
                                 await LocalStorage.upsert(
                                     key: "PHONE",
-                                    value: currentState
-                                        .updatePhoneController!.text,
-                                    storage: _storage);
+                                    value: currentState.updatePhoneController!.text,
+                                    storage: storage);
                                 currentState.updatePhoneController!.clear();
                                 context.mounted ? context.pop() : null;
                                 //SNACK BAR
@@ -297,9 +295,6 @@ class SettingsCubit extends Cubit<SettingsState> {
                               currentState.updatePhoneController!.clear();
                               context.mounted ? context.pop() : null;
                             } catch (e) {
-                              print("+++++++++");
-                              print(e.toString());
-                              print("+++++++++");
                               context.mounted ? context.pop() : null;
                             }
                           },
@@ -325,18 +320,14 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(SettingsLoadingState());
 
       if(value) {
-        await _vendorRepository.online(vendorId: uid!);
-        await LocalStorage.upsert(key: "VENDOR_ONLINE_OFFLINE", value: value, storage: _storage);
+        await vendorRepository.online(vendorId: uid!);
+        await LocalStorage.upsert(key: "VENDOR_ONLINE_OFFLINE", value: value, storage: storage);
       }else{
-        await _vendorRepository.offline(vendorId: uid!);
-        await LocalStorage.upsert(key: "VENDOR_ONLINE_OFFLINE", value: value, storage: _storage);
+        await vendorRepository.offline(vendorId: uid!);
+        await LocalStorage.upsert(key: "VENDOR_ONLINE_OFFLINE", value: value, storage: storage);
       }
       emit(currentState.copyWith(vendorOnlineOffline: value));
-    }catch(e){
-      print("+++++++++");
-      print(e.toString());
-      print("+++++++++");
-    }
+    }catch(_) {}
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR => ON NAVIGATE TO NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
@@ -469,7 +460,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         });
 
     if (langSelected == "") return;
-    await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: _storage);
+    await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: storage);
   }
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO PRIVACY AND SECURITY - - - - - - - - - - - - - - - - - -  //

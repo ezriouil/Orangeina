@@ -143,25 +143,52 @@ class English {
   CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE : "No Notification Found !",
 
   // - - - - - - - - - - - - - - - - - - BE SELLER SCREEN - - - - - - - - - - - - - - - - - -  //
+  CustomLocale.BE_VENDOR_STEP_1_TITLE : "Personal Information",
+  CustomLocale.BE_VENDOR_TITLE_1 : "Fill The Blanks With Your Information ..",
   CustomLocale.BE_VENDOR_TITLE : "Become Vendor",
   CustomLocale.BE_VENDOR_CIN : "CIN",
   CustomLocale.BE_VENDOR_PHONE : "Phone Number",
   CustomLocale.BE_VENDOR_BIRTHDAY : "Birthday Date",
-  CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE : "Continue",
-  CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE : "Back",
-  CustomLocale.BE_VENDOR_STEP_1_TITLE : "Personal Information",
-  CustomLocale.BE_VENDOR_TITLE_1 : "Fill The Blanks With Your Information ..",
   CustomLocale.BE_VENDOR_GENDER_TITLE : "Gender",
   CustomLocale.BE_VENDOR_GENDER_MAN_TITLE : "Man",
   CustomLocale.BE_VENDOR_GENDER_WOMAN_TITLE : "Woman",
 
-  // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.BE_VENDOR_STEP_2_TITLE: "Vehicle Information",
+    CustomLocale.BE_VENDOR_TITLE_2: "Please Insert The Valid Information Of Your Vehicle ..",
+    CustomLocale.BE_VENDOR_PICK_CAR_TYPE_TITLE: "Choose Your Vehicle Type.",
+    CustomLocale.BE_VENDOR_CAR_TRICYCLE_TYPE_TITLE: "Tricycle",
+    CustomLocale.BE_VENDOR_CAR_PICK_UP_TYPE_TITLE: "Pick Up",
+    CustomLocale.BE_VENDOR_CAR_CAR_TYPE_TITLE: "Car",
+    CustomLocale.BE_VENDOR_CAR_THUMBNAIL_TITLE: "Your Vehicle Image.",
+    CustomLocale.BE_VENDOR_CAR_INFO_TITLE: "Complete Vehicle Info.",
+    CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_TITLE: "Assurance Number",
+    CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_TITLE: "Registration Number",
+
+    CustomLocale.BE_VENDOR_STEP_3_TITLE: "Documents Information",
+    CustomLocale.BE_VENDOR_TITLE_3: "Add Images Of Your Paper ..",
+    CustomLocale.BE_VENDOR_CIN_FRONT_THUMBNAIL_TITLE: "CIN (Front) Image.",
+    CustomLocale.BE_VENDOR_CIN_BACK_THUMBNAIL_TITLE: "CIN (Back) Image.",
+    CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_THUMBNAIL_TITLE: "Registration Number Image.",
+    CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_THUMBNAIL_TITLE: "Assurance Number Image",
+
+    CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE: "Continue",
+    CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE: "Back",
+
+    CustomLocale.BE_VENDOR_SUCCESS_STATE_TITLE: "La demande est en cours de révisé !",
+    CustomLocale.BE_VENDOR_SUCCESS_STATE_SUB_TITLE: "Vous avez déjà soumis une candidature pour devenir vendeur pour notre équipe, veuillez patienter.",
+    CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE: "Ok",
+
+    // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
+  CustomLocale.VENDOR_DETAILS_REPORT_REASON_1 : "Bad quality and taste",
+  CustomLocale.VENDOR_DETAILS_REPORT_REASON_2 : "Unsanitary conditions",
+  CustomLocale.VENDOR_DETAILS_REPORT_REASON_3 : "Lack of hygiene",
+  CustomLocale.VENDOR_DETAILS_REPORT_REASON_4 : "Serious verbal abuse",
+  CustomLocale.VENDOR_DETAILS_REPORT_REASON_5 : "High prices",
+
+    // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
   CustomLocale.WISHLISTS_TITLE : "WishLists",
   CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE : "Delete",
   CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "Dismiss",
   CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "No WishLists Found !",
-
-
-
   };
 }

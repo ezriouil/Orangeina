@@ -22,7 +22,7 @@ class WishlistScreen extends CustomState {
         centerTitle: false,
         title: Text(CustomLocale.WISHLISTS_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
         actions: [Padding(
-          padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+          padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 1.5),
           child: InkWell(
             onTap: context.read<WishlistCubit>().onRefresh,
             borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),

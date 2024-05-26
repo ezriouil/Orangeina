@@ -6,7 +6,7 @@ sealed class BeVendorState {}
 final class BeVendorMainState extends BeVendorState {
   final ScrollPhysics? scrollPhysics;
   final int? currentStep;
-  final String? gender, carType, shopThumbnail, cinImage, carAssuranceImage, carRegistrationImage;
+  final String? gender, carType, shopThumbnail, cinFrontImage, cinBackImage, carAssuranceImage, carRegistrationImage;
   final TextEditingController? cinController, phoneController, birthdayController, carAssuranceController, carRegistrationController;
 
   BeVendorMainState(
@@ -15,7 +15,8 @@ final class BeVendorMainState extends BeVendorState {
       this.gender,
       this.carType,
       this.shopThumbnail,
-      this.cinImage,
+      this.cinFrontImage,
+      this.cinBackImage,
       this.carAssuranceImage,
       this.carRegistrationImage,
       this.cinController,
@@ -30,7 +31,8 @@ final class BeVendorMainState extends BeVendorState {
           String? gender,
           String? carType,
           String? shopThumbnail,
-          String? cinImage,
+          String? cinFrontImage,
+          String? cinBackImage,
           String? carAssuranceImage,
           String? carRegistrationImage,
           TextEditingController? cinController,
@@ -44,7 +46,8 @@ final class BeVendorMainState extends BeVendorState {
         gender: gender ?? this.gender,
         carType: carType ?? this.carType,
         shopThumbnail: shopThumbnail ?? this.shopThumbnail,
-        cinImage: cinImage ?? this.cinImage,
+        cinFrontImage: cinFrontImage ?? this.cinFrontImage,
+        cinBackImage: cinBackImage ?? this.cinBackImage,
         carAssuranceImage: carAssuranceImage ?? this.carAssuranceImage,
         carRegistrationImage: carRegistrationImage ?? this.carRegistrationImage,
         cinController: cinController ?? this.cinController,
@@ -58,4 +61,4 @@ final class BeVendorMainState extends BeVendorState {
 
 final class BeVendorLoadingState extends BeVendorState {}
 
-final class BeVendorErrorState extends BeVendorState {}
+final class BeVendorSuccessState extends BeVendorState {}

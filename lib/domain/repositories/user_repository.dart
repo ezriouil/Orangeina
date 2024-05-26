@@ -9,7 +9,7 @@ abstract class UserRepository {
   Future<bool> existUser({required String userId});
 
   // - - - - - - - - - - - - - - - - - - UPDATE USER IMAGE PROFILE - - - - - - - - - - - - - - - - - -  //
-  Future<void> updateUserImage({required String userId, required String newImage});
+  Future<String> updateUserImage({required String userId, required String newImage});
 
   // - - - - - - - - - - - - - - - - - - UPDATE USER FULL NAME - - - - - - - - - - - - - - - - - -  //
   Future<void> updateUserFullName({required String userId, required String newFirstName, required String newLastName});

@@ -26,7 +26,6 @@ class CustomLoadingScreen extends CustomState {
               height: 120.0,
               repeat: true,
             ),
-
             const SizedBox(height: CustomSizes.SPACE_DEFAULT ),
             Text(CustomLocale.LOADING_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
             const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),

@@ -142,13 +142,43 @@ class French{
     CustomLocale.BE_VENDOR_CIN : "CIN",
     CustomLocale.BE_VENDOR_PHONE : "Téléphone",
     CustomLocale.BE_VENDOR_BIRTHDAY : "Date D'anniversaire",
-    CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE : "Continuer",
-    CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE : "retour",
     CustomLocale.BE_VENDOR_STEP_1_TITLE : "Informations personnelles",
     CustomLocale.BE_VENDOR_TITLE_1 : "Remplissez Les Blancs Avec Vos Informations ..",
     CustomLocale.BE_VENDOR_GENDER_TITLE : "Genre",
     CustomLocale.BE_VENDOR_GENDER_MAN_TITLE : "Homme",
     CustomLocale.BE_VENDOR_GENDER_WOMAN_TITLE : "Femme",
+
+    CustomLocale.BE_VENDOR_STEP_2_TITLE: "Informations De Véhicule",
+    CustomLocale.BE_VENDOR_TITLE_2: "Veuillez insérer les informations valides de votre véhicule ..",
+    CustomLocale.BE_VENDOR_PICK_CAR_TYPE_TITLE: "Choisissez votre type de véhicule.",
+    CustomLocale.BE_VENDOR_CAR_TRICYCLE_TYPE_TITLE: "Triporteur",
+    CustomLocale.BE_VENDOR_CAR_PICK_UP_TYPE_TITLE: "Pick Up",
+    CustomLocale.BE_VENDOR_CAR_CAR_TYPE_TITLE: "Voiture",
+    CustomLocale.BE_VENDOR_CAR_THUMBNAIL_TITLE: "Image De Votre Véhicule.",
+    CustomLocale.BE_VENDOR_CAR_INFO_TITLE: "Complète Véhicule Info.",
+    CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_TITLE: "Numéro D'assurance",
+    CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_TITLE: "Numéro D'enregistrement",
+
+    CustomLocale.BE_VENDOR_STEP_3_TITLE: "Information Du Documents",
+    CustomLocale.BE_VENDOR_TITLE_3: "Ajoutez Des Images De Votre Papier..",
+    CustomLocale.BE_VENDOR_CIN_FRONT_THUMBNAIL_TITLE: "Image De CIN (Devant).",
+    CustomLocale.BE_VENDOR_CIN_BACK_THUMBNAIL_TITLE: "Image De CIN (Arrière).",
+    CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_THUMBNAIL_TITLE: "Image Du Numéro D’enregistrement.",
+    CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_THUMBNAIL_TITLE: " Image du numéro D'assurance.",
+
+    CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE : "Continuer",
+    CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE : "retour",
+
+    CustomLocale.BE_VENDOR_SUCCESS_STATE_TITLE: "Continue",
+    CustomLocale.BE_VENDOR_SUCCESS_STATE_SUB_TITLE: "Vous avez déjà soumis une candidature pour devenir vendeur pour notre équipe, veuillez patienter.",
+    CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE: "Ok",
+
+    // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_1 : "Mauvaise qualité / goût",
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_2 : "Conditions insalubres",
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_3 : "Manque d'hygiène",
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_4 : "Graves violences verbales",
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_5 : "Prix élevés",
 
     // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.WISHLISTS_TITLE : "Souhaits",

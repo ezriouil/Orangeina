@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
+import 'package:berkania/presentation/be_vendor/widgets/step_personal_info.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
-import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
+import 'package:berkania/presentation/widgets/custom_success_screen.dart';
+import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,77 +43,411 @@ class BeVendorScreen extends CustomState {
                     onStepTapped: context.read<BeVendorCubit>().onStepTapped,
                     onStepContinue: context.read<BeVendorCubit>().continued,
                     onStepCancel: context.read<BeVendorCubit>().cancel,
-                    controlsBuilder: (BuildContext context, ControlsDetails details){
-                      return Row(
-                        children: [
-                          Expanded(child: CustomElevatedButton(onClick: details.onStepContinue, height: 76, child: Text(CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE.getString(context)))),
+                    controlsBuilder: (BuildContext context, ControlsDetails details) => Row( children: [
                           Expanded(child: CustomElevatedButton(onClick: details.onStepCancel, height: 76, child: Text(CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE.getString(context)))),
-                        ],
-                      );
-                    },
+                          Expanded(child: CustomElevatedButton(onClick: details.onStepContinue, height: 76, child: Text(CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE.getString(context)))),
+                        ] ),
                     steps: [
                       Step(
+                          isActive: state.currentStep! >= 0,
+                          state: state.currentStep! > 0 ? StepState.complete : StepState.disabled,
                           title: Text(CustomLocale.BE_VENDOR_STEP_1_TITLE.getString(context)),
+                          content: StepPersonalInfo(
+                              cinController: state.cinController,
+                              phoneController: state.phoneController,
+                              birthdayController: state.birthdayController,
+                              gender: state.gender,
+                              onChangeGender: context.read<BeVendorCubit>().onChangeGender)),
+                      Step(
+                          title: Text(CustomLocale.BE_VENDOR_STEP_2_TITLE.getString(context)),
                           content: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
 
-                              // - - - - - - - - - - - - - - - - - - CIN - - - - - - - - - - - - - - - - - -  //
-                              Text(CustomLocale.BE_VENDOR_TITLE_1.getString(context), style: Theme.of(context).textTheme.titleLarge),
+                              // - - - - - - - - - - - - - - - - - - TITLE - - - - - - - - - - - - - - - - - -  //
+                              Text(CustomLocale.BE_VENDOR_TITLE_2.getString(context), style: Theme.of(context).textTheme.titleLarge),
 
                               // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
-                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
+                              const SizedBox(height: CustomSizes.SPACE_DEFAULT),
 
-                              // - - - - - - - - - - - - - - - - - - CIN - - - - - - - - - - - - - - - - - -  //
-                              CustomTextField(
-                                  leadingIcon: Iconsax.card,
-                                  controller: state.cinController!,
-                                  hint: CustomLocale.BE_VENDOR_CIN.getString(context),
-                                  textInputType: TextInputType.emailAddress,
-                              ),
-
-                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
-                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 8),
-
-                              // - - - - - - - - - - - - - - - - - - CALL - - - - - - - - - - - - - - - - - -  //
-                              CustomTextField(
-                                  leadingIcon: Iconsax.call,
-                                  controller: state.phoneController!,
-                                  hint: CustomLocale.BE_VENDOR_PHONE.getString(context),
-                                  textInputType: TextInputType.emailAddress),
-
-                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
-                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 8),
-
-                              // - - - - - - - - - - - - - - - - - - BIRTHDAY - - - - - - - - - - - - - - - - - -  //
-                              CustomTextField(
-                                  leadingIcon: Iconsax.cake,
-                                  controller: state.birthdayController!,
-                                  hint: CustomLocale.BE_VENDOR_BIRTHDAY.getString(context),
-                                  textInputType: TextInputType.emailAddress),
+                              // - - - - - - - - - - - - - - - - - - TITLE - - - - - - - - - - - - - - - - - -  //
+                              Text(CustomLocale.BE_VENDOR_PICK_CAR_TYPE_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
 
                               // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                               const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
-                              // - - - - - - - - - - - - - - - - - - GENDER - - - - - - - - - - - - - - - - - -  //
+                              // - - - - - - - - - - - - - - - - - - RADIO BUTTONS VEHICLE TYPES - - - - - - - - - - - - - - - - - -  //
                               Row(
                                 children: [
-                                  Text(CustomLocale.BE_VENDOR_GENDER_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge),
-                                  const Spacer(),
-                                  Row(
+                                  Expanded(child: Column(
                                     children: [
-                                      Radio(value: "Man", groupValue: state.gender, onChanged: context.read<BeVendorCubit>().onChangeGender, visualDensity: const VisualDensity(vertical: 0, horizontal: -2), activeColor: primaryColor(context)),
-                                      Text(CustomLocale.BE_VENDOR_GENDER_MAN_TITLE.getString(context), style: Theme.of(context).textTheme.bodyMedium)
+                                      Container(
+                                          height: 70,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                                              border: Border.all(color: darkLightColor(context))),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                                            child: Image.asset(CustomImageStrings.CAR,
+                                              height: getHeight(context),
+                                              width: getWidth(context),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )),
+                                      Radio(
+                                          value: "Car",
+                                          groupValue: state.carType,
+                                          onChanged: context.read<BeVendorCubit>().onChangeCarType,
+                                          visualDensity: const VisualDensity(vertical: -2, horizontal: 0),
+                                          activeColor: primaryColor(context)),
                                     ],
-                                  ),
+                                  )),
                                   const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                                  Row(
+                                  Expanded(child: Column(
                                     children: [
-                                      Radio(value: "Woman", groupValue: state.gender, onChanged: context.read<BeVendorCubit>().onChangeGender, visualDensity: const VisualDensity(vertical: 0, horizontal: -2), activeColor: primaryColor(context)),
-                                      Text(CustomLocale.BE_VENDOR_GENDER_WOMAN_TITLE.getString(context), style: Theme.of(context).textTheme.bodyMedium)
+                                      Container(
+                                          height: 70,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                                              border: Border.all(color: darkLightColor(context))),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                                            child: Image.asset(CustomImageStrings.TRIPORTEUR,
+                                              height: getHeight(context),
+                                              width: getWidth(context),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )),
+                                      Radio(
+                                          value: "Triporteur",
+                                          groupValue: state.carType,
+                                          onChanged: context.read<BeVendorCubit>().onChangeCarType,
+                                          visualDensity: const VisualDensity(vertical: -2, horizontal: 0),
+                                          activeColor: primaryColor(context)),
                                     ],
-                                  )
+                                  )),
+                                  const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                                  Expanded(child: Column(
+                                    children: [
+                                      Container(
+                                          height: 70,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS /2 ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                                            child: Image.asset(CustomImageStrings.HONDS,
+                                              height: getHeight(context),
+                                              width: getWidth(context),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )),
+                                      Radio(
+                                          value: "Pick Up",
+                                          groupValue: state.carType,
+                                          onChanged: context.read<BeVendorCubit>().onChangeCarType,
+                                          visualDensity: const VisualDensity(vertical: -2, horizontal: 0),
+                                          activeColor: primaryColor(context)),
+                                    ],
+                                  )),
                                 ],
+                              ),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
+
+                              // - - - - - - - - - - - - - - - - - - TITLE - - - - - - - - - - - - - - - - - -  //
+                              Text(CustomLocale.BE_VENDOR_CAR_THUMBNAIL_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                              // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
+                              InkWell(
+                                onTap: context.read<BeVendorCubit>().onPickCarImage,
+                                borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                        child: SizedBox(
+                                          width: getWidth(context),
+                                          height: 180.0,
+                                          child: Image.file(File(state.shopThumbnail!),
+                                              height: getHeight(context),
+                                              width: getWidth(context),
+                                              fit: BoxFit.cover,
+                                          errorBuilder: (context, url, error) =>
+                                              Container(
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                      border: Border.all(color: darkLightColor(context))),
+                                                  child: Icon(Iconsax.car, size: 30.0, color: grayColor(context)))),
+                                    ),
+                                      ),
+                                      Positioned(
+                                          right: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
+                                              decoration: BoxDecoration(
+                                                  color: darkDarkLightLightColor(context),
+                                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2))),
+                                              child: Icon(
+                                                Iconsax.gallery_edit,
+                                                color: darkLightColor(context),
+                                                size: 20.0,
+                                              ))),
+                                    ]
+                                ),
+                              ),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
+
+                              // - - - - - - - - - - - - - - - - - - TITLE - - - - - - - - - - - - - - - - - -  //
+                              Text(CustomLocale.BE_VENDOR_CAR_INFO_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                              // - - - - - - - - - - - - - - - - - - ASSURANCE NUMBER - - - - - - - - - - - - - - - - - -  //
+                              CustomTextField(
+                                leadingIcon: Iconsax.bookmark,
+                                controller: state.carAssuranceController!,
+                                hint: CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_TITLE.getString(context),
+                                textInputType: TextInputType.number,
+                              ),
+
+                              // - - - - - - - - - - - - - - - - - - REGISTRATION NUMBER - - - - - - - - - - - - - - - - - -  //
+                              CustomTextField(
+                                  leadingIcon: Iconsax.bookmark,
+                                  controller: state.carRegistrationController!,
+                                  hint: CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_TITLE.getString(context),
+                                  textInputType: TextInputType.number),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+                            ],
+                          ),
+                          isActive: state.currentStep! >= 1,
+                          state: state.currentStep! > 1 ? StepState.complete : StepState.disabled),
+                      Step(
+                          title: Text(CustomLocale.BE_VENDOR_STEP_3_TITLE.getString(context)),
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              // - - - - - - - - - - - - - - - - - - TITLE - - - - - - - - - - - - - - - - - -  //
+                              Text(CustomLocale.BE_VENDOR_TITLE_3.getString(context), style: Theme.of(context).textTheme.titleLarge),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
+
+                              // - - - - - - - - - - - - - - - - - - TITLE CIN FRONT - - - - - - - - - - - - - - - - - -  //
+                              Text(CustomLocale.BE_VENDOR_CIN_FRONT_THUMBNAIL_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                              // - - - - - - - - - - - - - - - - - - IMAGE CIN ( FRONT ) - - - - - - - - - - - - - - - - - -  //
+                              InkWell(
+                                onTap: context.read<BeVendorCubit>().onPickCinFrontImage,
+                                borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                        child: SizedBox(
+                                          width: getWidth(context),
+                                          height: 180,
+                                          child: Image.file(File(state.cinFrontImage!),
+                                              height: getHeight(context),
+                                              width: getWidth(context),
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, url, error) =>
+                                                  Container(
+                                                      alignment: Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                          border: Border.all(color: darkLightColor(context))),
+                                                      child: Icon(Iconsax.card, size: 30.0, color: grayColor(context)))),
+                                        ),
+                                      ),
+                                      Positioned(
+                                          right: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
+                                              decoration: BoxDecoration(
+                                                  color: darkDarkLightLightColor(context),
+                                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2))),
+                                              child: Icon(
+                                                Iconsax.gallery_edit,
+                                                color: darkLightColor(context),
+                                                size: 20.0,
+                                              ))),
+                                    ]
+                                ),
+                              ),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_DEFAULT),
+
+                              // - - - - - - - - - - - - - - - - - - TITLE CIN BACK- - - - - - - - - - - - - - - - - -  //
+                              Text(CustomLocale.BE_VENDOR_CIN_BACK_THUMBNAIL_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                              // - - - - - - - - - - - - - - - - - - IMAGE CIN ( BACK ) - - - - - - - - - - - - - - - - - -  //
+                              InkWell(
+                                onTap: context.read<BeVendorCubit>().onPickCinBackImage,
+                                borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                        child: SizedBox(
+                                          width: getWidth(context),
+                                          height: 180,
+                                          child: Image.file(File(state.cinBackImage!),
+                                              height: getHeight(context),
+                                              width: getWidth(context),
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, url, error) =>
+                                                  Container(
+                                                      alignment: Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                          border: Border.all(color: darkLightColor(context))),
+                                                      child: Icon(Iconsax.card, size: 30.0, color: grayColor(context)))),
+                                        ),
+                                      ),
+                                      Positioned(
+                                          right: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
+                                              decoration: BoxDecoration(
+                                                  color: darkDarkLightLightColor(context),
+                                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2))),
+                                              child: Icon(
+                                                Iconsax.gallery_edit,
+                                                color: darkLightColor(context),
+                                                size: 20.0,
+                                              ))),
+                                    ]
+                                ),
+                              ),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_DEFAULT),
+
+                              // - - - - - - - - - - - - - - - - - - TITLE CAR ASSURANCE - - - - - - - - - - - - - - - - - -  //
+                              Text(CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_THUMBNAIL_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                              // - - - - - - - - - - - - - - - - - - IMAGE CAR ASSURANCE - - - - - - - - - - - - - - - - - -  //
+                              InkWell(
+                                onTap: context.read<BeVendorCubit>().onPickAssuranceCarImage,
+                                borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                        child: SizedBox(
+                                          width: getWidth(context),
+                                          height: 180,
+                                          child: Image.file(File(state.carAssuranceImage!),
+                                              height: getHeight(context),
+                                              width: getWidth(context),
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, url, error) =>
+                                                  Container(
+                                                      alignment: Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                          border: Border.all(color: darkLightColor(context))),
+                                                      child: Icon(Iconsax.bookmark, size: 30.0, color: grayColor(context)))),
+                                        ),
+                                      ),
+                                      Positioned(
+                                          right: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
+                                              decoration: BoxDecoration(
+                                                  color: darkDarkLightLightColor(context),
+                                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2))),
+                                              child: Icon(
+                                                Iconsax.gallery_edit,
+                                                color: darkLightColor(context),
+                                                size: 20.0,
+                                              ))),
+                                    ]
+                                ),
+                              ),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_DEFAULT),
+
+                              // - - - - - - - - - - - - - - - - - - TITLE CAR REGISTRATION - - - - - - - - - - - - - - - - - -  //
+                              Text(CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_THUMBNAIL_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+
+                              // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
+                              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                              // - - - - - - - - - - - - - - - - - - IMAGE CAR REGISTRATION - - - - - - - - - - - - - - - - - -  //
+                              InkWell(
+                                onTap: context.read<BeVendorCubit>().onPickRegistrationCarImage,
+                                borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                                        child: SizedBox(
+                                          width: getWidth(context),
+                                          height: 180,
+                                          child: Image.file(File(state.carRegistrationImage!),
+                                              height: getHeight(context),
+                                              width: getWidth(context),
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, url, error) =>
+                                                  Container(
+                                                      alignment: Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                          border: Border.all(color: darkLightColor(context))),
+                                                      child: Icon(Iconsax.archive_book, size: 30.0, color: grayColor(context)))),
+                                        ),
+                                      ),
+                                      Positioned(
+                                          right: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
+                                              decoration: BoxDecoration(
+                                                  color: darkDarkLightLightColor(context),
+                                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2))),
+                                              child: Icon(
+                                                Iconsax.gallery_edit,
+                                                color: darkLightColor(context),
+                                                size: 20.0,
+                                              ))),
+                                    ]
+                                ),
                               ),
 
                               // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
@@ -117,23 +455,19 @@ class BeVendorScreen extends CustomState {
 
                             ],
                           ),
-                          isActive: state.currentStep! >= 0,
-                          state: state.currentStep! > 0 ? StepState.complete : StepState.disabled),
-                      Step(
-                          title: const Text("Step 2"),
-                          content: const Text("Content 2"),
-                          isActive: state.currentStep! >= 1,
-                          state: state.currentStep! > 1 ? StepState.complete : StepState.disabled),
-                      Step(
-                          title: const Text("Step 3"),
-                          content: const Text("Content 3"),
                           isActive: state.currentStep! >= 2,
                           state: state.currentStep! > 2 ? StepState.complete : StepState.disabled),
                     ]
                 );
               }
             case BeVendorLoadingState(): return const CustomLoadingScreen();
-            case BeVendorErrorState(): return CustomErrorScreen(onClick: (){});
+            case BeVendorSuccessState():
+              return CustomSuccessScreen(
+                title: CustomLocale.BE_VENDOR_SUCCESS_STATE_TITLE.getString(context),
+                subTitle: CustomLocale.BE_VENDOR_SUCCESS_STATE_SUB_TITLE.getString(context),
+                buttonTitle: CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE.getString(context),
+                onClick: context.pop,
+              );
           }
         },
       ),

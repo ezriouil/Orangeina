@@ -146,13 +146,43 @@ class Arabic{
     CustomLocale.BE_VENDOR_CIN : "رقم البطاقة الوطنية",
     CustomLocale.BE_VENDOR_PHONE : "الهاتف",
     CustomLocale.BE_VENDOR_BIRTHDAY : "تاريخ الميلاد",
-    CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE : "التالي",
-    CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE : "عودة",
     CustomLocale.BE_VENDOR_STEP_1_TITLE : "المعلومات الشخصية",
     CustomLocale.BE_VENDOR_TITLE_1 : "إملأ الفراغات بمعلوماتك ..",
     CustomLocale.BE_VENDOR_GENDER_TITLE : "الجنس",
     CustomLocale.BE_VENDOR_GENDER_MAN_TITLE : "رجل",
     CustomLocale.BE_VENDOR_GENDER_WOMAN_TITLE : "مرأة",
+
+    CustomLocale.BE_VENDOR_STEP_2_TITLE: "معلومات السيارة",
+    CustomLocale.BE_VENDOR_TITLE_2: "الرجاء إدخال معلومات سيارتك الصحيحة ..",
+    CustomLocale.BE_VENDOR_PICK_CAR_TYPE_TITLE: "اختر نوع سيارتك.",
+    CustomLocale.BE_VENDOR_CAR_TRICYCLE_TYPE_TITLE: "دراجة ثلاثية",
+    CustomLocale.BE_VENDOR_CAR_PICK_UP_TYPE_TITLE: "شاحنة صغيرة",
+    CustomLocale.BE_VENDOR_CAR_CAR_TYPE_TITLE: "سيارة",
+    CustomLocale.BE_VENDOR_CAR_THUMBNAIL_TITLE: "صورة لسيارتك.",
+    CustomLocale.BE_VENDOR_CAR_INFO_TITLE: "املأ معلومات السيارة.",
+    CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_TITLE: "رقم التأمين",
+    CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_TITLE: "رقم التسجيل",
+
+    CustomLocale.BE_VENDOR_STEP_3_TITLE: "معلومات المستند",
+    CustomLocale.BE_VENDOR_TITLE_3: "أضف صور اوراقك..",
+    CustomLocale.BE_VENDOR_CIN_FRONT_THUMBNAIL_TITLE: "صور البطاقة الوطنية (الامام).",
+    CustomLocale.BE_VENDOR_CIN_BACK_THUMBNAIL_TITLE: "صور البطاقة الوطنية (الخلف).",
+    CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_THUMBNAIL_TITLE: "صورة رقم التسجيل السيارة.",
+    CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_THUMBNAIL_TITLE: " صورة رقم التأمين السيارة.",
+
+    CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE : "التالي",
+    CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE : "عودة",
+
+    CustomLocale.BE_VENDOR_SUCCESS_STATE_TITLE: "جار مراجعة الطلب!",
+    CustomLocale.BE_VENDOR_SUCCESS_STATE_SUB_TITLE: "لقد قمت بالفعل بإرسال طلب لتصبح بائعا لفريقنا، يرجى الانتظار.",
+    CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE: "حسنا",
+
+    // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_1 : "نوعية / طعم سيئ",
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_2 : "ظروف غير صحية",
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_3 : "قلة النظافة",
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_4 : "العنف اللفظي",
+    CustomLocale.VENDOR_DETAILS_REPORT_REASON_5 : "أسعار عالية",
 
     // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.WISHLISTS_TITLE : "الرغبات",

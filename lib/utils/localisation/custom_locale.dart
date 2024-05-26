@@ -148,8 +148,6 @@ mixin CustomLocale{
   static const String BE_VENDOR_CIN = "Be Vendor CIN";
   static const String BE_VENDOR_PHONE = "Be Vendor Phone";
   static const String BE_VENDOR_BIRTHDAY = "Be Vendor Birthday";
-  static const String BE_VENDOR_BUTTON_CONTINUE_TITLE = "Be Vendor Button Continue Title";
-  static const String BE_VENDOR_BUTTON_BACK_TITLE = "Be Vendor Button Back Title";
   static const String BE_VENDOR_STEP_1_TITLE = "Be Vendor Step 1 Title";
   static const String BE_VENDOR_TITLE_1 = "Be Vendor Title 1";
   static const String BE_VENDOR_GENDER_TITLE = "Be Gender Title";
@@ -158,8 +156,35 @@ mixin CustomLocale{
 
   static const String BE_VENDOR_STEP_2_TITLE = "Be Vendor Step 2 Title";
   static const String BE_VENDOR_TITLE_2 = "Be Vendor Title 2";
-  static const String BE_VENDOR_CAR_TYPE_TITLE = "Be Vendor Car Type Title";
+  static const String BE_VENDOR_PICK_CAR_TYPE_TITLE = "Be Vendor Pick Car Type Title";
+  static const String BE_VENDOR_CAR_TRICYCLE_TYPE_TITLE = "Be Vendor Car Tricycle Type Title";
+  static const String BE_VENDOR_CAR_PICK_UP_TYPE_TITLE = "Be Vendor Car Pick Up Type Title";
+  static const String BE_VENDOR_CAR_CAR_TYPE_TITLE = "Be Vendor Car Car Type Title";
   static const String BE_VENDOR_CAR_THUMBNAIL_TITLE = "Be Vendor Car Thumbnail Title";
+  static const String BE_VENDOR_CAR_INFO_TITLE = "Be Vendor Car Info Title";
+  static const String BE_VENDOR_CAR_ASSURANCE_NUMBER_TITLE = "Be Vendor Car Assurance Number Title";
+  static const String BE_VENDOR_CAR_REGISTRATION_NUMBER_TITLE = "Be Vendor Car Registration Number Title";
+
+  static const String BE_VENDOR_STEP_3_TITLE = "Be Vendor Step 3 Title";
+  static const String BE_VENDOR_TITLE_3 = "Be Vendor Title 3";
+  static const String BE_VENDOR_CIN_FRONT_THUMBNAIL_TITLE = "Be Vendor Cin Front Thumbnail Title";
+  static const String BE_VENDOR_CIN_BACK_THUMBNAIL_TITLE = "Be Vendor Cin Back Thumbnail Title";
+  static const String BE_VENDOR_CAR_REGISTRATION_NUMBER_THUMBNAIL_TITLE = "Be Vendor Car Registration Number Thumbnail Title";
+  static const String BE_VENDOR_CAR_ASSURANCE_NUMBER_THUMBNAIL_TITLE = "Be Vendor Car Assurance Number Thumbnail Title";
+
+  static const String BE_VENDOR_BUTTON_CONTINUE_TITLE = "Be Vendor Button Continue Title";
+  static const String BE_VENDOR_BUTTON_BACK_TITLE = "Be Vendor Button Back Title";
+
+  static const String BE_VENDOR_SUCCESS_STATE_TITLE = "Be Vendor Success State Title";
+  static const String BE_VENDOR_SUCCESS_STATE_SUB_TITLE = "Be Vendor Success State Sub Title";
+  static const String BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE = "Be Vendor Success State Button Title";
+
+  // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String VENDOR_DETAILS_REPORT_REASON_1 = "Vendor Details Report Reason 1";
+  static const String VENDOR_DETAILS_REPORT_REASON_2 = "Vendor Details Report Reason 2";
+  static const String VENDOR_DETAILS_REPORT_REASON_3 = "Vendor Details Report Reason 3";
+  static const String VENDOR_DETAILS_REPORT_REASON_4 = "Vendor Details Report Reason 4";
+  static const String VENDOR_DETAILS_REPORT_REASON_5 = "Vendor Details Report Reason 5";
 
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
   static const String EMAIL = "Email";
