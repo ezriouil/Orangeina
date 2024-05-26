@@ -142,6 +142,19 @@ class English {
   CustomLocale.NOTIFICATION_DIALOG_DISMISS_TITLE : "Dismiss",
   CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE : "No Notification Found !",
 
+  // - - - - - - - - - - - - - - - - - - BE SELLER SCREEN - - - - - - - - - - - - - - - - - -  //
+  CustomLocale.BE_VENDOR_TITLE : "Become Vendor",
+  CustomLocale.BE_VENDOR_CIN : "CIN",
+  CustomLocale.BE_VENDOR_PHONE : "Phone Number",
+  CustomLocale.BE_VENDOR_BIRTHDAY : "Birthday Date",
+  CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE : "Continue",
+  CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE : "Back",
+  CustomLocale.BE_VENDOR_STEP_1_TITLE : "Personal Information",
+  CustomLocale.BE_VENDOR_TITLE_1 : "Fill The Blanks With Your Information ..",
+  CustomLocale.BE_VENDOR_GENDER_TITLE : "Gender",
+  CustomLocale.BE_VENDOR_GENDER_MAN_TITLE : "Man",
+  CustomLocale.BE_VENDOR_GENDER_WOMAN_TITLE : "Woman",
+
   // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
   CustomLocale.WISHLISTS_TITLE : "WishLists",
   CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE : "Delete",

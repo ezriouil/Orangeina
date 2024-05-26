@@ -2,6 +2,7 @@ import 'package:berkania/dependency_injection.dart';
 import 'package:berkania/presentation/auth/forget_password/forget_password_cubit.dart';
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
 import 'package:berkania/presentation/auth/register/register_cubit.dart';
+import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
@@ -82,6 +83,7 @@ class _IndexState extends State<App> {
           BlocProvider(create: (_) => DependencyInjection.getIt<VendorDetailsCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<VendorNewOrderCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<VendorOrdersCubit>()),
+          BlocProvider(create: (_) => DependencyInjection.getIt<BeVendorCubit>()),
         ],
         child: MaterialApp.router(
             themeMode: ThemeMode.system,

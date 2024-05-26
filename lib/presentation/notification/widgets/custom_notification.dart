@@ -10,6 +10,7 @@ import '../../../utils/localisation/custom_locale.dart';
 import '../../../utils/state/custom_state.dart';
 
 class CustomNotification extends CustomState {
+
   final NotificationEntity notificationEntity;
   final void Function(NotificationEntity notification) onClick;
   final void Function(String) onDelete;

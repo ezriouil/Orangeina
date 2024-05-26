@@ -143,6 +143,24 @@ mixin CustomLocale{
   static const String WSIHLIST_DIALOG_DISMISS_TITLE = "Wishlist Dialog Dismiss Title";
   static const String WISHLIST_EMPTY_LIST_TITLE = "WishList Empty List Title";
 
+  // - - - - - - - - - - - - - - - - - - BE VENDOR SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String BE_VENDOR_TITLE = "Be Vendor Title";
+  static const String BE_VENDOR_CIN = "Be Vendor CIN";
+  static const String BE_VENDOR_PHONE = "Be Vendor Phone";
+  static const String BE_VENDOR_BIRTHDAY = "Be Vendor Birthday";
+  static const String BE_VENDOR_BUTTON_CONTINUE_TITLE = "Be Vendor Button Continue Title";
+  static const String BE_VENDOR_BUTTON_BACK_TITLE = "Be Vendor Button Back Title";
+  static const String BE_VENDOR_STEP_1_TITLE = "Be Vendor Step 1 Title";
+  static const String BE_VENDOR_TITLE_1 = "Be Vendor Title 1";
+  static const String BE_VENDOR_GENDER_TITLE = "Be Gender Title";
+  static const String BE_VENDOR_GENDER_MAN_TITLE = "Be Gender Man Title";
+  static const String BE_VENDOR_GENDER_WOMAN_TITLE = "Be Gender Woman Title";
+
+  static const String BE_VENDOR_STEP_2_TITLE = "Be Vendor Step 2 Title";
+  static const String BE_VENDOR_TITLE_2 = "Be Vendor Title 2";
+  static const String BE_VENDOR_CAR_TYPE_TITLE = "Be Vendor Car Type Title";
+  static const String BE_VENDOR_CAR_THUMBNAIL_TITLE = "Be Vendor Car Thumbnail Title";
+
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
   static const String EMAIL = "Email";
   static const String PASSWORD = "Password";

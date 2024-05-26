@@ -1,7 +1,6 @@
 import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
 import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
-import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -9,6 +9,7 @@ import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/auth/forget_password/forget_password_cubit.dart';
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
 import 'package:berkania/presentation/auth/register/register_cubit.dart';
+import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
@@ -54,6 +55,7 @@ class DependencyInjection{
     getIt.registerFactory<VendorDetailsCubit>( () => VendorDetailsCubit());
     getIt.registerFactory<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));
     getIt.registerFactory<VendorOrdersCubit>( () => VendorOrdersCubit(storage: getIt(), vendorRepository: getIt()));
+    getIt.registerFactory<BeVendorCubit>( () => BeVendorCubit());
   }
 
 }

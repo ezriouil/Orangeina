@@ -123,6 +123,7 @@ class Arabic{
     CustomLocale.NEW_ORDER_MAD: "درهم",
 
     // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.BE_VENDOR_TITLE : "كن بائعًا",
     CustomLocale.ORDERS_TITLE : "طلبات",
     CustomLocale.ORDERS_BAG_PRICE_TITLE : "سعر الحقيبة",
     CustomLocale.ORDERS_Quantity_TITLE : "الكمية",
@@ -140,6 +141,18 @@ class Arabic{
     CustomLocale.NOTIFICATION_DIALOG_DELETE_TITLE : "مسح",
     CustomLocale.NOTIFICATION_DIALOG_DISMISS_TITLE : "عودة",
     CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE : "لم يتم العثور على أية إشعارات !",
+
+    // - - - - - - - - - - - - - - - - - - BE SELLER SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.BE_VENDOR_CIN : "رقم البطاقة الوطنية",
+    CustomLocale.BE_VENDOR_PHONE : "الهاتف",
+    CustomLocale.BE_VENDOR_BIRTHDAY : "تاريخ الميلاد",
+    CustomLocale.BE_VENDOR_BUTTON_CONTINUE_TITLE : "التالي",
+    CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE : "عودة",
+    CustomLocale.BE_VENDOR_STEP_1_TITLE : "المعلومات الشخصية",
+    CustomLocale.BE_VENDOR_TITLE_1 : "إملأ الفراغات بمعلوماتك ..",
+    CustomLocale.BE_VENDOR_GENDER_TITLE : "الجنس",
+    CustomLocale.BE_VENDOR_GENDER_MAN_TITLE : "رجل",
+    CustomLocale.BE_VENDOR_GENDER_WOMAN_TITLE : "مرأة",
 
     // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.WISHLISTS_TITLE : "الرغبات",

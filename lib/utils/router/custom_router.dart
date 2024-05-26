@@ -1,5 +1,6 @@
 import 'package:berkania/presentation/auth/forget_password/forget_password_screen.dart';
 import 'package:berkania/presentation/auth/login/login_screen.dart';
+import 'package:berkania/presentation/be_vendor/be_vendor_screen.dart';
 import 'package:berkania/presentation/vendor_details/vendor_details_screen.dart';
 import 'package:berkania/presentation/vendor_new_order/vendor_new_order_screen.dart';
 import 'package:flutter/widgets.dart';
@@ -16,7 +17,7 @@ class CustomRouter{
   // - - - - - - - - - - - - - - - - - - CONFIG ROUTER - - - - - - - - - - - - - - - - - -  //
   static final GoRouter CONFIG_ROUTER = GoRouter(
 
-    initialLocation: LOGIN,
+    initialLocation: INDEX,
     routes: <RouteBase>[
 
       // - - -  LOGIN - - -  //
@@ -66,6 +67,13 @@ class CustomRouter{
         builder: (BuildContext context, GoRouterState state) => const VendorOrdersScreen(),
       ),
 
+      // - - -  BE_VENDOR - - -  //
+      GoRoute(
+        name: BE_VENDOR,
+        path: BE_VENDOR,
+        builder: (BuildContext context, GoRouterState state) => const BeVendorScreen(),
+      ),
+
     ],
   );
 
@@ -78,5 +86,6 @@ class CustomRouter{
   static const String VENDOR_DETAILS = "/vendorDetails";
   static const String VENDOR_NEW_ORDER = "/vendorNewOrder";
   static const String VENDOR_ORDERS = "/vendorOrders";
+  static const String BE_VENDOR = "/beVendor";
 
 }

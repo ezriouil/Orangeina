@@ -114,7 +114,7 @@ class SettingsScreen extends CustomState {
                           if(!(state.isVendor!)) CustomSettingTile(
                              title: CustomLocale.SETTINGS_BE_VENDOR_TITLE.getString(context),
                              subTitle: CustomLocale.SETTINGS_BE_VENDOR_SUB_TITLE.getString(context),
-                            icon: Iconsax.shop, onClick: () {  },
+                            icon: Iconsax.shop, onClick: (){ context.read<SettingsCubit>().onNavigateToBeVendorScreen(context: context); },
                             trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24 : Iconsax.arrow_right_3, color: darkLightColor(context)),
                           ) ,
 

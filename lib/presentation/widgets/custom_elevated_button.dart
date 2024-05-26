@@ -6,7 +6,7 @@ import '../../utils/state/custom_state.dart';
 
 class CustomElevatedButton extends CustomState {
   final Widget child;
-  final GestureTapCallback onClick;
+  final void Function()? onClick;
   final double? width, height;
   final Color? backgroundColor, foregroundColor;
   final bool withDefaultPadding;
@@ -28,11 +28,10 @@ class CustomElevatedButton extends CustomState {
       width: width ?? getWidth(context),
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal:
-                withDefaultPadding ? CustomSizes.SPACE_BETWEEN_ITEMS / 2 : 0,
+            horizontal: withDefaultPadding ? CustomSizes.SPACE_BETWEEN_ITEMS / 2 : 0,
             vertical: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
         child: ElevatedButton(
-          onPressed: () => onClick(),
+          onPressed: onClick,
           style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
               backgroundColor: MaterialStateProperty.all(backgroundColor ?? primaryColor(context)),
               foregroundColor: MaterialStateProperty.all(foregroundColor ?? CustomColors.WHITE), 

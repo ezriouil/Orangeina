@@ -65,7 +65,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE IMAGE PROFILE - - - - - - - - - - - - - - - - - -  //
-  onUpdateImageProfile({required BuildContext context}) async {
+  void onUpdateImageProfile({required BuildContext context}) async {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -127,7 +127,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
-  onUpdateFullName({required BuildContext context}) async {
+  void onUpdateFullName({required BuildContext context}) async {
     final String firstName = vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
     final String lastName = vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
 
@@ -213,9 +213,6 @@ class SettingsCubit extends Cubit<SettingsState> {
                               currentState.updateLastNameController!.clear();
                               context.mounted ? context.pop() : null;
                             } catch (e) {
-                              print("+++++++++");
-                              print(e.toString());
-                              print("+++++++++");
                               context.mounted ? context.pop() : null;
                             }
                           },
@@ -228,7 +225,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
-  onUpdatePhone({required BuildContext context}) async {
+  void onUpdatePhone({required BuildContext context}) async {
     final String phone = vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
 
     final currentState = state as SettingsMainState;
@@ -319,7 +316,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR => (ONLINE / OFFLINE) - - - - - - - - - - - - - - - - - -  //
-  updateVendorStatus(bool value) async{
+  void updateVendorStatus(bool value) async{
     try{
 
       if (uid == null) return;
@@ -343,13 +340,16 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR => ON NAVIGATE TO NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
-  onNavigateToNewOrderScreen({ required BuildContext context }) { context.pushNamed(CustomRouter.VENDOR_NEW_ORDER); }
+  void onNavigateToNewOrderScreen({ required BuildContext context }) { context.pushNamed(CustomRouter.VENDOR_NEW_ORDER); }
 
   // - - - - - - - - - - - - - - - - - - VENDOR => ON NAVIGATE TO ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
-  onNavigateToOrdersScreen({ required BuildContext context }) { context.pushNamed(CustomRouter.VENDOR_ORDERS); }
+  void onNavigateToOrdersScreen({ required BuildContext context }) { context.pushNamed(CustomRouter.VENDOR_ORDERS); }
+
+  // - - - - - - - - - - - - - - - - - - BECOME VENDOR - - - - - - - - - - - - - - - - - -  //
+  void onNavigateToBeVendorScreen({ required BuildContext context }) { context.pushNamed(CustomRouter.BE_VENDOR); }
 
   // - - - - - - - - - - - - - - - - - - SHOW DIALOG LANGUAGES - - - - - - - - - - - - - - - - - -  //
-  onUpdateLanguage({required BuildContext context, required Function callBack}) async {
+  void onUpdateLanguage({required BuildContext context, required Function callBack}) async {
     final SettingsMainState currentState = state as SettingsMainState;
     String langSelected = "";
 
@@ -473,13 +473,13 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO PRIVACY AND SECURITY - - - - - - - - - - - - - - - - - -  //
-  onNavigateToPrivacyAndSecurity() {}
+  void onNavigateToPrivacyAndSecurity() {}
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO HELP AND SUPPORT - - - - - - - - - - - - - - - - - -  //
-  onNavigateToHelpAndSupport() {}
+  void onNavigateToHelpAndSupport() {}
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO ABOUT - - - - - - - - - - - - - - - - - -  //
-  onNavigateToAbout() {}
+  void onNavigateToAbout() {}
 }
 
 /*

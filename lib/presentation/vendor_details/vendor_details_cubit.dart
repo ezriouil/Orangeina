@@ -3,5 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'vendor_details_state.dart';
 
 class VendorDetailsCubit extends Cubit<VendorDetailsState> {
-  VendorDetailsCubit() : super(VendorDetailsMainState());
+  VendorDetailsCubit() : super(VendorDetailsMainState()){ init(); }
+
+  // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
+  init() async{
+  }
+
 }

@@ -39,8 +39,7 @@ class CustomSettingTile extends CustomState {
               children: [
                 Text(title, style : Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: titleSize)),
                 Text(
-                  subTitle, style:
-                      Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: subTitleSize),
+                  subTitle, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: subTitleSize),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
