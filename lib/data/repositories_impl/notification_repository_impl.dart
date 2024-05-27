@@ -14,8 +14,8 @@ class NotificationRepositoryImpl extends NotificationRepository {
     final List<NotificationDto> notificationsDto = await Remote.getAllNotification(userId: id);
 
     if(notificationsDto.isNotEmpty){
-      for(NotificationDto notificationsDto in notificationsDto){
-        notificationsEntity.add(notificationsDto.toNotificationEntity());
+      for(NotificationDto notificationDto in notificationsDto){
+        notificationsEntity.add(notificationDto.toNotificationEntity());
       }
     }
 

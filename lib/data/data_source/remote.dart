@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:berkania/data/models/notification_dto.dart';
 import 'package:berkania/data/models/order_dto.dart';
+import 'package:berkania/data/models/report_dto.dart';
+import 'package:berkania/data/models/review_dto.dart';
 import 'package:berkania/data/models/user_dto.dart';
 import 'package:berkania/data/models/wishList_dto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -111,6 +113,13 @@ class Remote{
   }
 
   // - - - - - - - - - - - - - - - - - - SAVE USER DATA - - - - - - - - - - - - - - - - - -  //
+  static Future<UserDto?> getUserData({ required String id }) async{
+    final DocumentSnapshot<Map<String,dynamic>> userJson = await _firebaseFirestore.collection("USERS").doc(id).get();
+    if(!userJson.exists) return null;
+    return UserDto.fromJson(userJson.data()!);
+  }
+
+  // - - - - - - - - - - - - - - - - - - SAVE USER DATA - - - - - - - - - - - - - - - - - -  //
   static Future<void> saveUserData({ required UserDto userDto }) async{
     await _firebaseFirestore.collection("USERS").doc(userDto.id).set(userDto.toJson());
   }
@@ -186,7 +195,7 @@ class Remote{
     await _firebaseFirestore.collection("WISHLISTS").doc(id).delete();
   }
 
-  // - - - - - - - - - - - - - - - - - - DELETE WISHLIST BY ID - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - GET ALL NOTIFICATION - - - - - - - - - - - - - - - - - -  //
   static Future<List<NotificationDto>> getAllNotification({ required String userId }) async{
 
     final List<NotificationDto> notifications = [];
@@ -210,4 +219,45 @@ class Remote{
     await _firebaseFirestore.collection("NOTIFICATIONS").doc(id).delete();
   }
 
+  // - - - - - - - - - - - - - - - - - - GET ALL REVIEWS - - - - - - - - - - - - - - - - - -  //
+  static Future<List<ReviewDto>> getAllReviews({ required String vendorId }) async{
+
+    final List<ReviewDto> reviews = [];
+    final QuerySnapshot<Map<String, dynamic>> reviewsCollection = await _firebaseFirestore.collection("REVIEWS").where("vendorId", isEqualTo: vendorId).get();
+    if(reviewsCollection.size > 0){
+      for (QueryDocumentSnapshot<Map<String, dynamic>> reviewJson in reviewsCollection.docs) {
+        ReviewDto reviewDto = ReviewDto.fromJson(reviewJson.data());
+        reviews.add(reviewDto);
+      }
+    }
+    return reviews.reversed.toList();
+  }
+
+  // - - - - - - - - - - - - - - - - - - INSERT NEW REVIEW - - - - - - - - - - - - - - - - - -  //
+  static Future<void> insertReview({ required ReviewDto reviewDto }) async{
+    final newDoc = _firebaseFirestore.collection("REVIEWS").doc();
+    await newDoc.set({
+      'id': newDoc.id,
+      'vendorId': reviewDto.vendorId,
+      'fullName': reviewDto.fullName,
+      'reviewBody': reviewDto.reviewBody,
+      'avatar': reviewDto.avatar,
+      'rating': reviewDto.rating,
+      'createAt': reviewDto.createAt
+    });
+  }
+
+  static insertReport({required ReportDto reportDto}) async{
+    final newDoc = _firebaseFirestore.collection("REPORTS").doc();
+    await newDoc.set({
+      'id': newDoc.id,
+      'vendorId': reportDto.vendorId,
+      'fullName': reportDto.fullName,
+      'reportType': reportDto.reportType,
+      'reportBody': reportDto.reportBody,
+      'avatar': reportDto.avatar,
+      'rating': reportDto.rating,
+      'createAt': reportDto.createAt
+    });
+  }
 }

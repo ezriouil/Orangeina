@@ -1,20 +1,28 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:berkania/domain/entities/report_entity.dart';
+import 'package:berkania/domain/entities/review_entity.dart';
+import 'package:berkania/domain/entities/user_entity.dart';
+import 'package:berkania/domain/repositories/review_repository.dart';
+import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
+import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../domain/entities/vendor_entity.dart';
+import '../../domain/repositories/report_repository.dart';
 import '../../domain/repositories/vendor_repository.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/custom_image_strings.dart';
@@ -24,34 +32,64 @@ part 'vendor_details_state.dart';
 class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
+  final UserRepository userRepository;
   final VendorRepository vendorRepository;
+  final ReviewRepository reviewRepository;
+  final ReportRepository reportRepository;
+  final GetStorage storage;
+  String? argumentId;
+  String? uid;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  VendorDetailsCubit({ required this.vendorRepository }) : super(VendorDetailsLoadingState()){ init(); }
+  VendorDetailsCubit(
+      {required this.userRepository,
+      required this.vendorRepository,
+      required this.reviewRepository,
+      required this.reportRepository,
+      required this.storage})
+      : super(VendorDetailsLoadingState()) {
+    init();
+  }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{
+
     emit(VendorDetailsMainState(
       mapController:  Completer<GoogleMapController>(),
       vendor: VendorEntity(),
       markers: const {},
+      reviews: const [],
       feedbackController: TextEditingController(),
       feedback: 0.0,
       reportReason: ""
     ));
     await getVendorInfo();
+    uid = await LocalStorage.read(key: "UID", storage: storage);
+    await getReviews();
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
   getVendorInfo() async{
     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
-    final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: "Hf5pDcHrIMMuzbSoFAlGDSRbIK92");
+    print("++++++++");
+    print(argumentId);
+    print("++++++++");
+    final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId!);
+
     final markers = <Marker>{};
     if(vendor == null) return;
 
     markers.add(await customMarker(lat: 31.7071858, lng: -7.9518629));
 
     emit(currentState.copyWith(vendor: vendor, markers: markers));
+  }
+
+  // - - - - - - - - - - - - - - - - - - GET ALL REVIEWS - - - - - - - - - - - - - - - - - -  //
+  getReviews() async{
+    final VendorDetailsMainState currentState = state as VendorDetailsMainState;
+    if(uid == null) return;
+    final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: uid!);
+    emit(currentState.copyWith(reviews: reviews));
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
@@ -78,7 +116,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - ALERT FEEDBACK - - - - - - - - - - - - - - - - - -  //
-  void onGiveFeedback({required BuildContext context}) async {
+  void onGiveFeedback({required BuildContext context, required Function callBack}) async {
 
     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
 
@@ -142,14 +180,44 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                     // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
                     Row(
                       children: [
-                        // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(child: Text("Submit"), onClick: (){}, height: 78, withDefaultPadding: false)),
-                
-                        // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                        const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
-                
+
                         // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
                         Expanded(child: CustomElevatedButton(child: Text("Cancel"), onClick: context.pop, height: 78, withDefaultPadding: false)),
+
+                        // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                        const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+
+                        // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
+                        Expanded(child: CustomElevatedButton(child: Text("Submit"), onClick: () async{
+
+                          if(currentState.feedbackController!.text.trim().length < 6){
+                            // SHOW SNACK BAR
+                            return;
+                          }
+
+                          if(uid == null) return;
+
+                          final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
+
+                          if(userEntity == null) return;
+
+                          final date = DateTime.now();
+                          final ReviewEntity review = ReviewEntity(
+                            vendorId: uid,
+                            fullName: "${userEntity.firstName} ${userEntity.lastName}",
+                            reviewBody: currentState.feedbackController!.text.trim(),
+                            avatar: userEntity.avatar,
+                            rating: currentState.feedback!,
+                            createAt: "${date.day}/${date.month}/${date.year}"
+                          );
+                          await reviewRepository.insert(reviewEntity: review);
+
+                          currentState.feedbackController!.clear();
+
+                          callBack.call();
+
+                        }, height: 78, withDefaultPadding: false)),
+
                       ],
                     )
                     
@@ -162,7 +230,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - ALERT REPORT - - - - - - - - - - - - - - - - - -  //
-  void onReport({required BuildContext context}) async {
+  void onReport({required BuildContext context, required Function callBack}) async {
 
     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
 
@@ -220,7 +288,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
                 
                     // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
-                    CustomTextField(hint: "Write Your Feedback ..!", controller: currentState.feedbackController!, leadingIcon: Iconsax.bookmark, validator: null,),
+                    CustomTextField(hint: "Write Your Feedback ..!", controller: currentState.feedbackController!, leadingIcon: Iconsax.bookmark, validator: null),
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
@@ -228,14 +296,45 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                     // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
                     Row(
                       children: [
-                        // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(child: Text("Submit"), onClick: (){}, height: 78, withDefaultPadding: false)),
-                
-                        // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                        const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
-                
+
                         // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
                         Expanded(child: CustomElevatedButton(child: Text("Cancel"), onClick: context.pop, height: 78, withDefaultPadding: false)),
+
+                        // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                        const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+
+                        // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
+                        Expanded(child: CustomElevatedButton(child: Text("Submit"), onClick: () async{
+
+                          if(currentState.feedbackController!.text.trim().length < 6){
+                            // SHOW SNACK BAR
+                            return;
+                          }
+
+                          if(uid == null) return;
+
+                          final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
+
+                          if(userEntity == null) return;
+
+                          final date = DateTime.now();
+                          final ReportEntity report = ReportEntity(
+                              vendorId: uid,
+                              fullName: "${userEntity.firstName} ${userEntity.lastName}",
+                              reportType: currentState.reportReason,
+                              reportBody: currentState.feedbackController!.text.trim(),
+                              avatar: userEntity.avatar,
+                              rating: currentState.feedback!,
+                              createAt: "${date.day}/${date.month}/${date.year}"
+                          );
+                          await reportRepository.insert(reportEntity: report);
+
+                          currentState.feedbackController!.clear();
+
+                          callBack.call();
+
+                        }, height: 78, withDefaultPadding: false)),
+
                       ],
                     )
                 
@@ -246,4 +345,5 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
           );
         });
   }
+
 }

@@ -14,7 +14,7 @@ import '../../utils/constants/custom_sizes.dart';
 import '../../utils/localisation/custom_locale.dart';
 
 class VendorOrdersScreen extends CustomState {
-  const VendorOrdersScreen({super.key});
+   const VendorOrdersScreen({super.key});
 
   @override
   Widget run(BuildContext context) {

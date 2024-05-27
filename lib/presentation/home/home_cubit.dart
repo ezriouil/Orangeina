@@ -65,9 +65,9 @@ class HomeCubit extends Cubit<HomeState> {
     uid = await LocalStorage.read(key: "UID", storage: storage) ?? "";
 
     await onRefreshVendors();
-
     /// PERIODIC TIMER TO REFRESH VENDORS ON MAP
     Timer.periodic(const Duration(minutes: 1), (time) async{ await onRefreshVendors(); });
+
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
@@ -110,10 +110,12 @@ class HomeCubit extends Cubit<HomeState> {
           lat: vendor.shopLat!,
           lng: vendor.shopLng!,
           avatar: vendor.avatar!,
+          id: vendor.id!,
           firstName: vendor.firstName!,
           lastName: vendor.lastName!,
           rating: vendor.averageRating!,
-          distance: 135.8));
+          distance: 135.8
+      ));
 
     }
 
@@ -251,6 +253,7 @@ class HomeCubit extends Cubit<HomeState> {
       {required double lat,
       required double lng,
       required String avatar,
+      required String id,
       required String firstName,
       required String lastName,
       required num rating,
@@ -263,6 +266,7 @@ class HomeCubit extends Cubit<HomeState> {
         onTap: () {
           (state as HomeMainState).customInfoWindowController!.addInfoWindow!(
               CustomMarkerWindow(
+                  id: id,
                   firstName: firstName,
                   lastName: lastName,
                   avatar: avatar,

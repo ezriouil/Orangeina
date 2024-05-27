@@ -45,26 +45,31 @@ class HomeScreen extends CustomState {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           FloatingActionButton(
+                            heroTag: "hero1",
                             onPressed: (){ context.read<HomeCubit>().onMapSettings(context: context); },
                             child: Icon(Iconsax.setting, size: 20.0, color: darkLightColor(context)),
                           ),
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapVendorsEnabled!) FloatingActionButton(
+                                heroTag: "hero2",
                                 child: Icon(Iconsax.shop, size: 20.0, color: darkLightColor(context)),
                                 onPressed: () { /*context.read<HomeCubit>().showVendors();*/ },
                           ),
                           if(state.mapVendorsEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapRefreshEnabled!)  FloatingActionButton(
+                                heroTag: "hero3",
                                 onPressed: context.read<HomeCubit>().onRefreshVendors,
                                 child: Icon(Iconsax.refresh, size: 20.0, color: darkLightColor(context)),
                           ),
                           if(state.mapRefreshEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapFilterEnabled!) FloatingActionButton(
+                              heroTag: "hero4",
                               onPressed: context.read<HomeCubit>().filterVendors,
                               child: Icon(Iconsax.filter, size: 20.0, color: darkLightColor(context))
                           ),
                           if(state.mapFilterEnabled!)  const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapMyLocationEnabled!) FloatingActionButton(
+                              heroTag: "hero5",
                               onPressed: context.read<HomeCubit>().onGetMyLocation,
                               child: Icon(Iconsax.gps, color: darkLightColor(context))
                           ),

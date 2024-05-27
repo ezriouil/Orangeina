@@ -2,6 +2,9 @@ import 'package:berkania/domain/entities/user_entity.dart';
 
 abstract class UserRepository {
 
+  // - - - - - - - - - - - - - - - - - - GET USER INFO BY ID - - - - - - - - - - - - - - - - - -  //
+  Future<UserEntity?> getUserInfo({required String id});
+
   // - - - - - - - - - - - - - - - - - - SAVE USER INFO - - - - - - - - - - - - - - - - - -  //
   Future<void> saveUserInfo({required UserEntity userEntity});
 

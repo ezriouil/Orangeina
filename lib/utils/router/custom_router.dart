@@ -17,7 +17,7 @@ class CustomRouter{
   // - - - - - - - - - - - - - - - - - - CONFIG ROUTER - - - - - - - - - - - - - - - - - -  //
   static final GoRouter CONFIG_ROUTER = GoRouter(
 
-    initialLocation: VENDOR_DETAILS,
+    initialLocation: INDEX,
     routes: <RouteBase>[
 
       // - - -  LOGIN - - -  //
@@ -49,8 +49,9 @@ class CustomRouter{
       // - - -  VENDOR_DETAILS - - -  //
       GoRoute(
         name: VENDOR_DETAILS,
-        path: VENDOR_DETAILS,
-        builder: (BuildContext context, GoRouterState state) => const VendorDetailsScreen(),
+        path: "$VENDOR_DETAILS/:id",
+        builder: (BuildContext context, GoRouterState state) => VendorDetailsScreen( id : state.pathParameters['id']! ),
+
       ),
 
       // - - -  VENDOR_NEW_ORDER - - -  //
