@@ -57,7 +57,7 @@ class HomeCubit extends Cubit<HomeState> {
         mapSatelliteEnabled: false,
         mapVendorsEnabled: true,
         customInfoWindowController: CustomInfoWindowController(),
-        myCurrentLocation: CameraPosition(target: LatLng(currentPosition?.latitude ?? 31.6538843,currentPosition?.longitude ?? -7.4565771), zoom: currentPosition == null ? 6.0 : 18.0),
+        myCurrentLocation: CameraPosition(target: LatLng(currentPosition?.latitude ?? 31.6538843,currentPosition?.longitude ?? -7.4565771), zoom: 6.0),
         vendors:  vendors,
         markers: const {}
     ));
@@ -77,6 +77,17 @@ class HomeCubit extends Cubit<HomeState> {
     updateState.mapController!.complete(mapController);
     updateState.customInfoWindowController!.googleMapController = mapController;
     emit(updateState);
+  }
+
+  onVendorClick(VendorEntity vendorEntity) async{
+
+    final currentState = state as HomeMainState;
+
+    emit(HomeLoadingState());
+    await Future.delayed(const Duration(milliseconds: 500));
+    emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(
+        (vendorEntity.shopLat as double),
+        (vendorEntity.shopLng as double)),zoom: 12.0 )));
   }
 
   // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
@@ -263,16 +274,21 @@ class HomeCubit extends Cubit<HomeState> {
         markerId: MarkerId("$lat $lng"),
         position: LatLng(lat, lng),
         icon: customIcon,
-        onTap: () {
-          (state as HomeMainState).customInfoWindowController!.addInfoWindow!(
-              CustomMarkerWindow(
-                  id: id,
-                  firstName: firstName,
-                  lastName: lastName,
-                  avatar: avatar,
-                  rating: rating,
-                  distance: distance),
-              LatLng(lat, lng));
+        onTap: () async{
+          try{
+            final currentState = state as HomeMainState;
+            currentState.customInfoWindowController!.addInfoWindow!(CustomMarkerWindow(
+                id: id,
+                firstName: firstName,
+                lastName: lastName,
+                avatar: avatar,
+                rating: rating,
+                distance: distance), LatLng(lat, lng));
+          }catch(e){
+            print("+++++++");
+            print(e.toString());
+            print("+++++++");
+          }
         });
   }
 

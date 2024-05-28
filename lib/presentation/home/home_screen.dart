@@ -45,9 +45,7 @@ class HomeScreen extends CustomState {
                         itemCount: state.vendors!.length,
                         itemBuilder: (context, index) => CustomVendor(
                             vendorEntity: state.vendors![index],
-                            onClick: (vendorEntity) {
-                              state.mapController?.future.then((value) => value.animateCamera(CameraUpdate.newLatLng(LatLng((vendorEntity.shopLat as double), (vendorEntity.shopLng as double)))));
-                            })),
+                            onClick: context.read<HomeCubit>().onVendorClick)),
                   )),
                   SizedBox(
                     width: getWidth(context),
