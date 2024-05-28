@@ -179,7 +179,26 @@ mixin CustomLocale{
   static const String BE_VENDOR_SUCCESS_STATE_SUB_TITLE = "Be Vendor Success State Sub Title";
   static const String BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE = "Be Vendor Success State Button Title";
 
-  // - - - - - - - - - - - - - - - - - - VENDOR ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String VENDOR_DETAILS_TITLE = "Vendor Details Title";
+  static const String VENDOR_DETAILS_TITLE_BUTTON_FEEDBACK = "Vendor Details Title Button Feedback";
+  static const String VENDOR_DETAILS_TITLE_BUTTON_REPORT = "Vendor Details Title Button Report";
+  static const String VENDOR_DETAILS_TITLE_TAB_MAP = "Vendor Details Title Tab Map";
+  static const String VENDOR_DETAILS_TITLE_TAB_REVIEWS = "Vendor Details Title Tab Reviews";
+
+  static const String VENDOR_DETAILS_FEEDBACK_TITLE = "Vendor Details Feedback Title";
+  static const String VENDOR_DETAILS_FEEDBACK_SUB_TITLE = "Vendor Details Feedback Sub Title";
+  static const String VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE = "Vendor Details Feedback Text Field Title";
+  static const String VENDOR_DETAILS_FEEDBACK_HINT_TITLE = "Vendor Details Feedback Hint Title";
+
+  static const String VENDOR_DETAILS_REPORT_TITLE = "Vendor Details Report Title";
+  static const String VENDOR_DETAILS_REPORT_SUB_TITLE = "Vendor Details Report Sub Title";
+
+  static const String VENDOR_DETAILS_TITLE_BUTTON_CANCEL = "Vendor Details Title Button Cancel";
+  static const String VENDOR_DETAILS_TITLE_BUTTON_SUBMIT = "Vendor Details Title Button Submit";
+
+  static const String VENDOR_DETAILS_REVIEWS_EMPTY_LIST = "Vendor Details Reviews Empty List";
+
   static const String VENDOR_DETAILS_REPORT_REASON_1 = "Vendor Details Report Reason 1";
   static const String VENDOR_DETAILS_REPORT_REASON_2 = "Vendor Details Report Reason 2";
   static const String VENDOR_DETAILS_REPORT_REASON_3 = "Vendor Details Report Reason 3";

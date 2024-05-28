@@ -45,4 +45,5 @@ class WishListDto {
         rating: json['rating'] as double,
         createAt: json['createAt'] as String);
   }
+
 }

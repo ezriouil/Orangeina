@@ -28,5 +28,18 @@ class WishListRepositoryImpl extends WishListRepository {
     await Remote.deleteWishListById(id: id);
   }
 
+  // - - - - - - - - - - - - - - - - - - OVERRIDE INSERT NEW WISHLIST - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<String> insertWishList({required WishListEntity wishListEntity}) async{
+    final result = await Remote.insertWishList(wishListDto: wishListEntity.toWishListDto());
+    return result;
+  }
+
+  // - - - - - - - - - - - - - - - - - - OVERRIDE IS FROM WISHLIST - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<WishListEntity?> isFromWishList({required String userId, required String vendorId}) async{
+    final wishListDto = await Remote.isFromWishList(vendorId: vendorId, userId: userId);
+    return wishListDto?.toWishListEntity();
+  }
 
 }

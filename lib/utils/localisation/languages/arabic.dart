@@ -178,6 +178,25 @@ class Arabic{
     CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE: "حسنا",
 
     // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.VENDOR_DETAILS_TITLE : "تفاصيل البائع",
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_FEEDBACK : "تقيم",
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_REPORT : "تقرير",
+    CustomLocale.VENDOR_DETAILS_TITLE_TAB_MAP : "الخريطة",
+    CustomLocale.VENDOR_DETAILS_TITLE_TAB_REVIEWS : "التعليقات",
+
+    CustomLocale.VENDOR_DETAILS_FEEDBACK_TITLE : "اعطي رأيك",
+    CustomLocale.VENDOR_DETAILS_FEEDBACK_SUB_TITLE : "ما رأيك في هذا البائع؟",
+    CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE : "هل لديك أي أفكار وترغب في مشاركتها؟",
+    CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE : "اكتب تعليقا ..!",
+
+    CustomLocale.VENDOR_DETAILS_REPORT_TITLE : "إعطاء تقرير",
+    CustomLocale.VENDOR_DETAILS_REPORT_SUB_TITLE : "لماذا تريد الإبلاغ عن هذا البائع؟",
+
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL : "رجوع",
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT : "إرسال",
+
+    CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST : "لم يتم العثور على أية ارآء !",
+
     CustomLocale.VENDOR_DETAILS_REPORT_REASON_1 : "نوعية / طعم سيئ",
     CustomLocale.VENDOR_DETAILS_REPORT_REASON_2 : "ظروف غير صحية",
     CustomLocale.VENDOR_DETAILS_REPORT_REASON_3 : "قلة النظافة",

@@ -4,7 +4,7 @@ class VendorDto{
   late final int? totalOrders, birthdayYear;
   late final num? averageRating;
 
-  late final double? shopLat, shopLng;
+  late final num? shopLat, shopLng;
 
   late final bool? isOnline;
 
@@ -93,8 +93,8 @@ class VendorDto{
         averageRating: json['averageRating'] as num,
         birthdayYear: json['birthdayYear'] as int,
         totalOrders: json['totalOrders'] as int,
-        shopLat: json['shopLat'] as double,
-        shopLng: json['shopLng'] as double,
+        shopLat: json['shopLat'] as num,
+        shopLng: json['shopLng'] as num,
         uploadedPaperImagesAt: json['uploadedPaperImagesAt'] as String,
         paperImages: json['paperImages'] as List<dynamic>,
         createAt: json['createAt'] as String);

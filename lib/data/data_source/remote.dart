@@ -190,6 +190,28 @@ class Remote{
     return wishLists.reversed.toList();
   }
 
+  static Future<String> insertWishList({required WishListDto wishListDto}) async{
+    final newDoc = _firebaseFirestore.collection("WISHLISTS").doc();
+    await newDoc.set({
+      'id': newDoc.id,
+      'userId': wishListDto.userId,
+      'vendorId': wishListDto.vendorId,
+      'avatar': wishListDto.avatar,
+      'fullName': wishListDto.fullName,
+      'phone': wishListDto.phone,
+      'rating': wishListDto.rating,
+      'createAt': wishListDto.createAt
+    });
+    return newDoc.id;
+  }
+
+  // - - - - - - - - - - - - - - - - - - DELETE WISHLIST BY ID - - - - - - - - - - - - - - - - - -  //
+  static Future<WishListDto?> isFromWishList({ required String vendorId, required String userId, }) async{
+    final wishlist = await _firebaseFirestore.collection("WISHLISTS").where("vendorId", isEqualTo: vendorId).where("userId", isEqualTo: userId).limit(1).get();
+    if (wishlist.size == 0) return null;
+    return WishListDto.fromJson(wishlist.docs.first.data());
+  }
+
   // - - - - - - - - - - - - - - - - - - DELETE WISHLIST BY ID - - - - - - - - - - - - - - - - - -  //
   static Future<void> deleteWishListById({ required String id }) async{
     await _firebaseFirestore.collection("WISHLISTS").doc(id).delete();

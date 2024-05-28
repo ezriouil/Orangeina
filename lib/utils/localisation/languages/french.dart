@@ -174,6 +174,25 @@ class French{
     CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE: "Ok",
 
     // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.VENDOR_DETAILS_TITLE : "Détails Du Vendeur",
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_FEEDBACK : "Avis",
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_REPORT : "Rapport",
+    CustomLocale.VENDOR_DETAILS_TITLE_TAB_MAP : "Carte",
+    CustomLocale.VENDOR_DETAILS_TITLE_TAB_REVIEWS : "Commentaires",
+
+    CustomLocale.VENDOR_DETAILS_FEEDBACK_TITLE : "Donner votre avis",
+    CustomLocale.VENDOR_DETAILS_FEEDBACK_SUB_TITLE : "Que pensez-vous de ce vendeur",
+    CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE : "Avez-vous des idées et aimeriez-vous les partager ?",
+    CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE : "Écrivez vos commentaires ..!",
+
+    CustomLocale.VENDOR_DETAILS_REPORT_TITLE : "Donner un rapport",
+    CustomLocale.VENDOR_DETAILS_REPORT_SUB_TITLE : "Pourquoi souhaitez-vous signaler ce vendeur?",
+
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL : "Annuler",
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT : "Valide",
+
+    CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST : "Aucune Avis Trouvée !",
+
     CustomLocale.VENDOR_DETAILS_REPORT_REASON_1 : "Mauvaise qualité / goût",
     CustomLocale.VENDOR_DETAILS_REPORT_REASON_2 : "Conditions insalubres",
     CustomLocale.VENDOR_DETAILS_REPORT_REASON_3 : "Manque d'hygiène",

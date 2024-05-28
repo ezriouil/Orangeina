@@ -5,7 +5,7 @@ sealed class VendorDetailsState {}
 
 final class VendorDetailsMainState extends VendorDetailsState {
   final TextEditingController? feedbackController;
-  final String? reportReason;
+  final String? reportReason, wishListId;
   final double? feedback;
   final Completer<GoogleMapController>? mapController;
   final VendorEntity? vendor;
@@ -15,6 +15,7 @@ final class VendorDetailsMainState extends VendorDetailsState {
   VendorDetailsMainState(
       {this.feedbackController, this.reportReason, this.feedback,
         this.mapController,
+        this.wishListId,
         this.vendor,
         this.reviews,
         this.markers});
@@ -23,6 +24,7 @@ final class VendorDetailsMainState extends VendorDetailsState {
       {
         TextEditingController? feedbackController,
         String? reportReason,
+        String? wishListId,
         double? feedback,
         Completer<GoogleMapController>? mapController,
         CameraPosition? myCurrentLocation,
@@ -34,6 +36,7 @@ final class VendorDetailsMainState extends VendorDetailsState {
       VendorDetailsMainState(
           feedbackController: feedbackController ?? this.feedbackController,
           reportReason: reportReason ?? this.reportReason,
+          wishListId: wishListId ?? this.wishListId,
           feedback: feedback ?? this.feedback,
           mapController: mapController ?? this.mapController,
           vendor: vendor ?? this.vendor,

@@ -179,6 +179,25 @@ class English {
     CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE: "Ok",
 
     // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
+  CustomLocale.VENDOR_DETAILS_TITLE : "Vendor Details",
+  CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_FEEDBACK : "Feedback",
+  CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_REPORT : "Report",
+  CustomLocale.VENDOR_DETAILS_TITLE_TAB_MAP : "Map",
+  CustomLocale.VENDOR_DETAILS_TITLE_TAB_REVIEWS : "Reviews",
+
+  CustomLocale.VENDOR_DETAILS_FEEDBACK_TITLE : "Give Feedback",
+  CustomLocale.VENDOR_DETAILS_FEEDBACK_SUB_TITLE : "What do you think about this seller",
+  CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE : "Do you have any thoughts would you like to share it ?",
+  CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE : "Write your feedback ..!",
+
+  CustomLocale.VENDOR_DETAILS_REPORT_TITLE : "Give Report",
+  CustomLocale.VENDOR_DETAILS_REPORT_SUB_TITLE : "Why you want to report this seller?",
+
+  CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL : "Cancel",
+  CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT : "Submit",
+  
+  CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST : "No Reviews Found !",
+
   CustomLocale.VENDOR_DETAILS_REPORT_REASON_1 : "Bad quality and taste",
   CustomLocale.VENDOR_DETAILS_REPORT_REASON_2 : "Unsanitary conditions",
   CustomLocale.VENDOR_DETAILS_REPORT_REASON_3 : "Lack of hygiene",

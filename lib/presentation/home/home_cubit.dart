@@ -107,8 +107,8 @@ class HomeCubit extends Cubit<HomeState> {
       if(vendor.id! == uid) continue;
       vendors.add(vendor);
       markers.add(await customMarker(
-          lat: vendor.shopLat!,
-          lng: vendor.shopLng!,
+          lat: vendor.shopLat! as double,
+          lng: vendor.shopLng! as double,
           avatar: vendor.avatar!,
           id: vendor.id!,
           firstName: vendor.firstName!,

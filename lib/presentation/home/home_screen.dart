@@ -1,6 +1,8 @@
 import 'package:berkania/presentation/home/home_cubit.dart';
+import 'package:berkania/presentation/home/widgets/custom_vendor.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:custom_info_window/custom_info_window.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -35,6 +37,18 @@ class HomeScreen extends CustomState {
                     onMapCreated: context.read<HomeCubit>().onMapCompleted,
                     markers : state.markers!,
                     ),
+                  Positioned(bottom: 0,child: SizedBox(
+                    width: getWidth(context),
+                    height: 90.0,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.vendors!.length,
+                        itemBuilder: (context, index) => CustomVendor(
+                            vendorEntity: state.vendors![index],
+                            onClick: (vendorEntity) {
+                              state.mapController?.future.then((value) => value.animateCamera(CameraUpdate.newLatLng(LatLng((vendorEntity.shopLat as double), (vendorEntity.shopLng as double)))));
+                            })),
+                  )),
                   SizedBox(
                     width: getWidth(context),
                     height: getHeight(context),
@@ -83,7 +97,8 @@ class HomeScreen extends CustomState {
                     height: 90,
                     width: 250,
                     offset: 40,
-                  )
+                  ),
+
                 ],
               );
             }

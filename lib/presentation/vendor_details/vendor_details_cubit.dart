@@ -4,8 +4,10 @@ import 'dart:ui' as ui;
 import 'package:berkania/domain/entities/report_entity.dart';
 import 'package:berkania/domain/entities/review_entity.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
+import 'package:berkania/domain/entities/wishList_entity.dart';
 import 'package:berkania/domain/repositories/review_repository.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
+import 'package:berkania/domain/repositories/wishList_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
@@ -35,6 +37,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   final UserRepository userRepository;
   final VendorRepository vendorRepository;
   final ReviewRepository reviewRepository;
+  final WishListRepository wishListRepository;
   final ReportRepository reportRepository;
   final GetStorage storage;
   String? argumentId;
@@ -45,6 +48,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       {required this.userRepository,
       required this.vendorRepository,
       required this.reviewRepository,
+      required this.wishListRepository,
       required this.reportRepository,
       required this.storage})
       : super(VendorDetailsLoadingState()) {
@@ -53,35 +57,63 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{
-
     emit(VendorDetailsMainState(
       mapController:  Completer<GoogleMapController>(),
       vendor: VendorEntity(),
+        wishListId: "",
       markers: const {},
       reviews: const [],
       feedbackController: TextEditingController(),
       feedback: 0.0,
       reportReason: ""
     ));
-    await getVendorInfo();
     uid = await LocalStorage.read(key: "UID", storage: storage);
+    await getVendorInfo();
     await getReviews();
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
   getVendorInfo() async{
+    await Future.delayed(const Duration(milliseconds: 1500));
     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
-    print("++++++++");
-    print(argumentId);
-    print("++++++++");
     final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId!);
 
     final markers = <Marker>{};
     if(vendor == null) return;
 
-    markers.add(await customMarker(lat: 31.7071858, lng: -7.9518629));
+    final WishListEntity wishList = await wishListRepository.isFromWishList(userId: uid!, vendorId: vendor.id!) ?? WishListEntity();
 
-    emit(currentState.copyWith(vendor: vendor, markers: markers));
+    markers.add(await customMarker(lat: (vendor.shopLat ?? 0.0) as double, lng: (vendor.shopLng ?? 0.0) as double));
+
+    emit(currentState.copyWith(vendor: vendor, markers: markers, wishListId: wishList.id));
+  }
+
+  // - - - - - - - - - - - - - - - - - - ( INSERT / REMOVE ) WISHLISTS - - - - - - - - - - - - - - - - - -  //
+  void upsertVendorWishList() async{
+    final currentState = state as VendorDetailsMainState;
+    final date = DateTime.now();
+    String resultWishListId = "";
+    emit(VendorDetailsLoadingState());
+    await Future.delayed(const Duration(milliseconds: 500));
+    if(currentState.wishListId == "") {
+      final WishListEntity wishListEntity = WishListEntity(
+        userId: uid!,
+        vendorId: currentState.vendor?.id,
+        avatar: currentState.vendor?.avatar,
+        fullName: "${currentState.vendor?.firstName} ${currentState.vendor?.lastName}",
+        phone: currentState.vendor?.phoneNumber,
+        rating: (currentState.vendor?.averageRating ?? 3.5) as double,
+        createAt: "${date.year}/${date.month}/${date.day}"
+      );
+      final result = await wishListRepository.insertWishList(wishListEntity: wishListEntity);
+      resultWishListId = result;
+    }
+    else{
+      await wishListRepository.deleteWishListById(id: currentState.wishListId!);
+      resultWishListId = "";
+    }
+
+    emit(currentState.copyWith(wishListId: resultWishListId));
   }
 
   // - - - - - - - - - - - - - - - - - - GET ALL REVIEWS - - - - - - - - - - - - - - - - - -  //
@@ -126,23 +158,22 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
           return AlertDialog(
             content: SizedBox(
               width: double.infinity,
-              height: 360,
+              height: 330,
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                 
                     // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
-                    Text("Give Feedback", style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6)),
+                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6)),
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                 
                     // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
-                    Text("What do you think about this seller.", style: Theme.of(context).textTheme.bodySmall),
+                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -151,14 +182,14 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                     Center(
                       child: RatingBar.builder(
                         itemCount: 5,
-                        initialRating:  3,
+                        initialRating:  4.5,
                         maxRating: 5,
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemPadding: EdgeInsets.zero,
                         itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
-                        onRatingUpdate: (double value) {  },
+                        onRatingUpdate: (double value) { emit(currentState.copyWith(feedback: value));  },
                       ),
                     ),
                 
@@ -166,13 +197,13 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                 
                     // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
-                    Text("Do you have any thoughts you would like to share ?.", style: Theme.of(context).textTheme.bodySmall),
+                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
                 
                     // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
-                    CustomTextField(hint: "Write Your Feedback ..!", controller: currentState.feedbackController!, leadingIcon: Iconsax.bookmark, validator: null),
+                    CustomTextField(hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context), controller: currentState.feedbackController!, leadingIcon: Iconsax.bookmark, validator: null),
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
@@ -182,13 +213,13 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                       children: [
 
                         // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(child: Text("Cancel"), onClick: context.pop, height: 78, withDefaultPadding: false)),
+                        Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
 
                         // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                         const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
 
                         // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(child: Text("Submit"), onClick: () async{
+                        Expanded(child: CustomElevatedButton(onClick: () async{
 
                           if(currentState.feedbackController!.text.trim().length < 6){
                             // SHOW SNACK BAR
@@ -216,7 +247,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
                           callBack.call();
 
-                        }, height: 78, withDefaultPadding: false)),
+                        }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
 
                       ],
                     )
@@ -231,7 +262,6 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - ALERT REPORT - - - - - - - - - - - - - - - - - -  //
   void onReport({required BuildContext context, required Function callBack}) async {
-
     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
 
     await showDialog(
@@ -240,23 +270,25 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
           return AlertDialog(
             content: SizedBox(
               width: double.infinity,
-              height: 360,
+              height: 350,
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                 
                     // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
-                    Text("Report", style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6)),
-                
+                    Text(
+                        CustomLocale.VENDOR_DETAILS_REPORT_TITLE.getString(context),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6),
+                    ),
+
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                 
                     // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
-                    Text("Why you want to report this seller ?", style: Theme.of(context).textTheme.bodySmall),
+                    Text(CustomLocale.VENDOR_DETAILS_REPORT_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -282,13 +314,13 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
                 
                     // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
-                    Text("Do you have any thoughts you would like to share ?.", style: Theme.of(context).textTheme.bodySmall),
+                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
                 
                     // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
-                    CustomTextField(hint: "Write Your Feedback ..!", controller: currentState.feedbackController!, leadingIcon: Iconsax.bookmark, validator: null),
+                    CustomTextField(hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context), controller: currentState.feedbackController!, leadingIcon: Iconsax.bookmark, validator: null),
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                     const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
@@ -298,13 +330,13 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                       children: [
 
                         // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(child: Text("Cancel"), onClick: context.pop, height: 78, withDefaultPadding: false)),
+                        Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
 
                         // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                         const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
 
                         // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(child: Text("Submit"), onClick: () async{
+                        Expanded(child: CustomElevatedButton(onClick: () async{
 
                           if(currentState.feedbackController!.text.trim().length < 6){
                             // SHOW SNACK BAR
@@ -333,7 +365,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
                           callBack.call();
 
-                        }, height: 78, withDefaultPadding: false)),
+                        }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
 
                       ],
                     )
