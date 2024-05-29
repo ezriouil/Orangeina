@@ -69,7 +69,7 @@ class CustomWishList extends CustomState {
                   ignoreGestures: true,
                   itemSize: 20.0,
                   itemPadding: EdgeInsets.zero,
-                  itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.YELLOW_LIGHT),
+                  itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
                   onRatingUpdate: (double value) {  },
                 ),
               ],

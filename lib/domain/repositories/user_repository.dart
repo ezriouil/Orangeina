@@ -18,7 +18,7 @@ abstract class UserRepository {
   Future<void> updateUserFullName({required String userId, required String newFirstName, required String newLastName});
 
   // - - - - - - - - - - - - - - - - - - UPDATE USER EMAIL - - - - - - - - - - - - - - - - - -  //
-  // Future<void> updateUserEmail({required String userId, required String newEmail});
+  Future<void> updateUserAvatar({required String userId, required String newAvatar});
 
   // - - - - - - - - - - - - - - - - - - UPDATE USER PASSWORD - - - - - - - - - - - - - - - - - -  //
   //Future<void> updateUserPassword({required String userId, required String newPassword});

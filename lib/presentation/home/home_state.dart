@@ -10,7 +10,6 @@ final class HomeMainState extends HomeState {
  final bool? mapMyLocationEnabled, mapTrafficEnabled, mapRefreshEnabled, mapSatelliteEnabled, mapVendorsEnabled;
   final  List<VendorEntity>? vendors;
   final  Set<Marker>? markers;
-  final PolylinePoints? polylinePoints;
   final  Set<Polyline>? polyline;
 
   HomeMainState(
@@ -25,7 +24,6 @@ final class HomeMainState extends HomeState {
       this.cameraCurrentLocation,
       this.markers,
       this.vendors,
-      this.polylinePoints,
       this.polyline,
       });
 
@@ -36,7 +34,6 @@ final class HomeMainState extends HomeState {
           CameraPosition? cameraCurrentLocation, bool? mapMyLocationEnabled, bool? mapTrafficEnabled, bool? mapRefreshEnabled, bool? mapVendorsEnabled, bool? mapSatelliteEnabled,
           List<VendorEntity>? vendors,
           Set<Marker>? markers,
-          PolylinePoints? polylinePoints,
           Set<Polyline>? polyline,
           }) =>
       HomeMainState(
@@ -51,7 +48,6 @@ final class HomeMainState extends HomeState {
           mapSatelliteEnabled: mapSatelliteEnabled ?? this.mapSatelliteEnabled,
           vendors: vendors ?? this.vendors,
            markers: markers ?? this.markers,
-          polylinePoints: polylinePoints ?? this.polylinePoints,
           polyline: polyline ?? this.polyline
       );
 }

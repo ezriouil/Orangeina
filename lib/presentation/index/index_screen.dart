@@ -23,10 +23,10 @@ class IndexScreen extends CustomState {
             IndexMainState() => NavigationBar(
                 height: 70.0,
                 elevation: 0.0,
+
                 animationDuration: const Duration(seconds: 3),
                 selectedIndex: state.currentPageIndex!,
-                onDestinationSelected:
-                    context.read<IndexCubit>().onUpdateCurrentIndex,
+                onDestinationSelected: context.read<IndexCubit>().onUpdateCurrentIndex,
                 destinations: [
                   NavigationDestination(icon: const Icon(Iconsax.map), label: CustomLocale.INDEX_EXPLORE_TITLE.getString(context)),
                   NavigationDestination(icon: const Icon(Iconsax.heart), label: CustomLocale.INDEX_WISHLIST_TITLE.getString(context)),

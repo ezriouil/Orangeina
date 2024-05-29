@@ -158,7 +158,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
           return AlertDialog(
             content: SizedBox(
               width: double.infinity,
-              height: 330,
+              height: 350,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -317,13 +317,11 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                     Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
                 
                     // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                 
                     // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
                     CustomTextField(hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context), controller: currentState.feedbackController!, leadingIcon: Iconsax.bookmark, validator: null),
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+
                 
                     // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
                     Row(

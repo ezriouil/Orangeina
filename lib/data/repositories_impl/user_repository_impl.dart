@@ -17,6 +17,12 @@ class UserRepositoryImpl extends UserRepository {
     await Remote.updateFullName(collection: "USERS", doc: userId, newFirstName: newFirstName, newLastName: newLastName);
   }
 
+  // - - - - - - - - - - - - - - - - - - OVERRIDE UPDATE AVATAR - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<void> updateUserAvatar({required String userId, required String newAvatar}) async{
+    await Remote.updateAvatar(collection: "USERS", doc: userId, newAvatar: newAvatar);
+  }
+
   // - - - - - - - - - - - - - - - - - - OVERRIDE UPDATE USER IMAGE - - - - - - - - - - - - - - - - - -  //
   @override
   Future<String> updateUserImage({required String userId, required String newImage}) async =>

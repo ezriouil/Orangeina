@@ -4,6 +4,9 @@ import '../entities/vendor_entity.dart';
 
 abstract class VendorRepository {
 
+  // - - - - - - - - - - - - - - - - - - INSERT NEW VENDOR  - - - - - - - - - - - - - - - - - -  //
+  Future<void> insertNewVendor({ required VendorEntity vendorEntity });
+
   // - - - - - - - - - - - - - - - - - - GET ALL VENDORS DATA FROM FIRESTORE - - - - - - - - - - - - - - - - - -  //
   Future<List<VendorEntity>> getAllVendors();
 
@@ -15,6 +18,9 @@ abstract class VendorRepository {
 
   // - - - - - - - - - - - - - - - - - - MAKE VENDOR OFFLINE - - - - - - - - - - - - - - - - - -  //
   Future<void> offline({ required String vendorId });
+
+  // - - - - - - - - - - - - - - - - - - UPDATE VENDOR AVATAR - - - - - - - - - - - - - - - - - -  //
+  Future<void> updateVendorAvatar({required String vendorId, required String newAvatar});
 
   // - - - - - - - - - - - - - - - - - - GET VENDOR INFO - - - - - - - - - - - - - - - - - -  //
   Future<VendorEntity?> getVendorById({required String vendorId});

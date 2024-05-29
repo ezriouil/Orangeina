@@ -7,9 +7,7 @@ final class SettingsMainState extends SettingsState {
 
   final bool? arabicLang, frenchLang, englishLang, isVendor, vendorOnlineOffline;
   final String? updateImageProfilePath;
-  final TextEditingController? updateFirstNameController,
-      updateLastNameController,
-      updatePhoneController;
+  final TextEditingController? updateFirstNameController, updateLastNameController, updatePhoneController;
 
   SettingsMainState(
       {

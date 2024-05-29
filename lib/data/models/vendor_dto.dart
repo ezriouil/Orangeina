@@ -6,7 +6,7 @@ class VendorDto{
 
   late final num? shopLat, shopLng;
 
-  late final bool? isOnline;
+  late final bool? isOnline, visible;
 
   late final List<dynamic>? paperImages;
 
@@ -40,6 +40,7 @@ class VendorDto{
       this.carRegistration = "",
       this.carType = "",
       this.isOnline = false,
+      this.visible = false,
       this.averageRating = 0.0,
       this.birthdayYear = 0,
       this.totalOrders = 0,
@@ -90,6 +91,7 @@ class VendorDto{
         carRegistration: json['carRegistration'] as String,
         carType: json['carType'] as String,
         isOnline: json['isOnline'] as bool,
+        visible: json['visible'] as bool,
         averageRating: json['averageRating'] as num,
         birthdayYear: json['birthdayYear'] as int,
         totalOrders: json['totalOrders'] as int,

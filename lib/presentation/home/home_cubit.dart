@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
@@ -67,7 +66,6 @@ class HomeCubit extends Cubit<HomeState> {
         myCurrentLocation: CameraPosition(target: LatLng(currentPosition?.latitude ?? 31.6538843,currentPosition?.longitude ?? -7.4565771), zoom: 6.0),
         vendors:  vendors,
         markers: const {},
-        polylinePoints: PolylinePoints(),
         polyline: const {},
     ));
 
@@ -88,14 +86,15 @@ class HomeCubit extends Cubit<HomeState> {
     emit(updateState);
   }
 
-  onVendorClick(VendorEntity vendorEntity) async{
+  // - - - - - - - - - - - - - - - - - - CLICK SPECIFIC VENDOR - - - - - - - - - - - - - - - - - -  //
+  onVendorClick({ required num? lat, required num? lng }) async{
 
     final currentState = state as HomeMainState;
     final polyline = <Polyline>{};
 
       const String apiKey = CustomTextStrings.GOOGLE_API_KEY;
       final String start = '${currentState.myCurrentLocation!.target.longitude},${currentState.myCurrentLocation!.target.latitude}';
-      final String end = '${(vendorEntity.shopLng ?? 0.0) as double},${(vendorEntity.shopLat ?? 0.0) as double}';
+      final String end = '${(lng ?? 0.0) as double},${(lat ?? 0.0) as double}';
       final String uri = '${CustomTextStrings.POLYLINE_BASE_URI}?api_key=$apiKey&start=$start&end=$end';
 
       final response = await http.get(Uri.parse(uri));
@@ -108,9 +107,7 @@ class HomeCubit extends Cubit<HomeState> {
     await Future.delayed(const Duration(milliseconds: 500));
 
     emit(currentState.copyWith(
-        cameraCurrentLocation: CameraPosition(target: LatLng(
-        (vendorEntity.shopLat as double),
-        (vendorEntity.shopLng as double)),zoom: 14.0 ),
+        cameraCurrentLocation: CameraPosition(target: LatLng((lat as double), (lng as double)),zoom: 14.0 ),
       polyline: polyline
     ));
   }
@@ -145,7 +142,7 @@ class HomeCubit extends Cubit<HomeState> {
       markers.add(await customMarker(
           lat: vendor.shopLat! as double,
           lng: vendor.shopLng! as double,
-          avatar: vendor.avatar!,
+          avatar: vendor.shopThumbnail!,
           id: vendor.id!,
           firstName: vendor.firstName!,
           lastName: vendor.lastName!,
@@ -263,42 +260,48 @@ class HomeCubit extends Cubit<HomeState> {
         });
   }
 
-  // - - - - - - - - - - - - - - - - - -  FILTER VENDORS ON MAP  - - - - - - - - - - - - - - - - - -  //
-  filterVendors() {}
-
   // - - - - - - - - - - - - - - - - - - MARKER - - - - - - - - - - - - - - - - - -  //
-  Future<Marker> customMarker(
-      {required double lat,
-      required double lng,
-      required String avatar,
-      required String id,
-      required String firstName,
-      required String lastName,
-      required num rating,
-      required double distance}) async{
+  Future<Marker> customMarker({required double lat, required double lng, required String avatar, required String id, required String firstName, required String lastName, required num rating, required double distance}) async{
     final customIcon = BitmapDescriptor.fromBytes(await _getBytesFromAsset(CustomImageStrings.MARKER_SELLER, 120));
     return Marker(
         markerId: MarkerId("$lat $lng"),
         position: LatLng(lat, lng),
         icon: customIcon,
         onTap: () async{
-            final currentState = state as HomeMainState;
-            
-            var p = 0.017453292519943295;
-            var a = 0.5 - cos((lat - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos(lat * p) * (1 - cos((lng - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
-            var distance = ((12742 * asin(sqrt(a))));
 
-            currentState.customInfoWindowController!.addInfoWindow!(CustomMarkerWindow(
-                id: id,
-                firstName: firstName,
-                lastName: lastName,
-                avatar: avatar,
-                rating: rating,
-                distance: distance
-            ), LatLng(lat, lng));
+          final currentState = state as HomeMainState;
+
+          // POLYLINE
+          final polyline = <Polyline>{};
+          const String apiKey = CustomTextStrings.GOOGLE_API_KEY;
+          final String start = '${currentState.myCurrentLocation!.target.longitude},${currentState.myCurrentLocation!.target.latitude}';
+          final String end = '$lng,$lat';
+          final String uri = '${CustomTextStrings.POLYLINE_BASE_URI}?api_key=$apiKey&start=$start&end=$end';
+          final response = await http.get(Uri.parse(uri));
+          final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
+          final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
+          polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 4, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
+
+          // CALCULATE DISTANCE
+            const double p = 0.017453292519943295;
+            final double a = 0.5 - cos((lat - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos(lat * p) * (1 - cos((lng - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
+            final double distance = ((12742 * asin(sqrt(a))));
+
+          // ADD WINDOW INFO
+            currentState.customInfoWindowController!.addInfoWindow!(
+              CustomMarkerWindow(
+                  id: id,
+                  firstName: firstName,
+                  lastName: lastName,
+                  avatar: avatar,
+                  rating: rating,
+                  distance: distance),
+              LatLng(lat, lng),
+            );
+
+          emit(currentState.copyWith(polyline: polyline));
         });
   }
-
   Future<Uint8List> _getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);

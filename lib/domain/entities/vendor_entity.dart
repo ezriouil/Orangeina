@@ -6,7 +6,7 @@ class VendorEntity{
 
   late final num? shopLat, shopLng;
 
-  late final bool? isOnline;
+  late final bool? isOnline, visible;
 
   late final List<dynamic>? paperImages;
 
@@ -40,6 +40,7 @@ class VendorEntity{
       this.carRegistration = "",
       this.carType = "",
       this.isOnline = false,
+      this.visible = false,
       this.averageRating = 0.0,
       this.birthdayYear = 0,
       this.totalOrders = 0,
@@ -64,6 +65,7 @@ class VendorEntity{
         'carRegistration': carRegistration,
         'carType': carType,
         'isOnline': isOnline,
+        'isOnline': visible,
         'averageRating': averageRating,
         'birthdayYear': birthdayYear,
         'totalOrders': totalOrders,
@@ -90,6 +92,7 @@ class VendorEntity{
         carRegistration: json['carRegistration'] as String,
         carType: json['carType'] as String,
         isOnline: json['isOnline'] as bool,
+        visible: json['visible'] as bool,
         averageRating: json['averageRating'] as double,
         birthdayYear: json['birthdayYear'] as int,
         totalOrders: json['totalOrders'] as int,

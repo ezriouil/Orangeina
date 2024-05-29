@@ -49,7 +49,7 @@ class SettingsScreen extends CustomState {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                                     child: SizedBox(
-                                      width: 140,
+                                      width: 140.0,
                                       height: 140.0,
                                       child: Image.network(state.updateImageProfilePath ?? CustomImageStrings.DEFAULT_IMAGE_PROFILE,
                                           height: getHeight(context),

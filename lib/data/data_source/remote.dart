@@ -73,6 +73,11 @@ class Remote{
     await _firebaseFirestore.collection(collection).doc(doc).update({'firstName' : newFirstName, 'lastName' : newLastName, });
   }
 
+  // - - - - - - - - - - - - - - - - - - UPDATE AVATAR - - - - - - - - - - - - - - - - - -  //
+  static Future<void> updateAvatar({required String collection,required String doc, required String newAvatar}) async{
+    await _firebaseFirestore.collection(collection).doc(doc).update({'avatar' : newAvatar});
+  }
+
   // - - - - - - - - - - - - - - - - - - SAVE IMAGE - - - - - - - - - - - - - - - - - -  //
   static Future<String> saveImage({required String path, required String imgName, required String imgPath}) async{
     final saveImg =  await _firebaseStorage.ref(path).child(imgName).putFile(File(imgPath));
@@ -101,7 +106,7 @@ class Remote{
   // - - - - - - - - - - - - - - - - - - GET ALL VENDORS - - - - - - - - - - - - - - - - - -  //
   static Future<List<VendorDto>> getAllVendors() async{
     final List<VendorDto> vendors = [];
-    final QuerySnapshot<Map<String, dynamic>> vendorsCollection = await _firebaseFirestore.collection("VENDORS").get();
+    final QuerySnapshot<Map<String, dynamic>> vendorsCollection = await _firebaseFirestore.collection("VENDORS").where('visible', isEqualTo: true).get();
 
     if(vendorsCollection.size > 0){
       for (QueryDocumentSnapshot<Map<String, dynamic>> vendorJson in vendorsCollection.docs) {
@@ -153,6 +158,11 @@ class Remote{
       }
     }
     return orders.reversed.toList();
+  }
+
+  // - - - - - - - - - - - - - - - - - - NEW VENDOR - - - - - - - - - - - - - - - - - -  //
+  static Future<void> newVendor({required VendorDto vendorDto}) async{
+    _firebaseFirestore.collection("ORDERS").doc(vendorDto.id).set(vendorDto.toJson());
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR MAKE NEW ORDER - - - - - - - - - - - - - - - - - -  //

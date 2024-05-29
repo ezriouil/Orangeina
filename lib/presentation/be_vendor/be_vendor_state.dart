@@ -8,6 +8,7 @@ final class BeVendorMainState extends BeVendorState {
   final int? currentStep;
   final String? gender, carType, shopThumbnail, cinFrontImage, cinBackImage, carAssuranceImage, carRegistrationImage;
   final TextEditingController? cinController, phoneController, birthdayController, carAssuranceController, carRegistrationController;
+  final UserEntity? userEntity;
 
   BeVendorMainState(
       {this.scrollPhysics,
@@ -23,7 +24,9 @@ final class BeVendorMainState extends BeVendorState {
       this.phoneController,
       this.birthdayController,
       this.carAssuranceController,
-      this.carRegistrationController});
+      this.carRegistrationController,
+      this.userEntity,
+      });
 
   BeVendorMainState copyWith(
           {ScrollPhysics? scrollPhysics,
@@ -39,7 +42,8 @@ final class BeVendorMainState extends BeVendorState {
           TextEditingController? phoneController,
           TextEditingController? birthdayController,
           TextEditingController? carAssuranceController,
-          TextEditingController? carRegistrationController}) =>
+          TextEditingController? carRegistrationController,
+          UserEntity? userEntity}) =>
       BeVendorMainState(
           scrollPhysics: scrollPhysics ?? this.scrollPhysics,
           currentStep: currentStep ?? this.currentStep,
@@ -54,7 +58,8 @@ final class BeVendorMainState extends BeVendorState {
         phoneController: phoneController ?? this.phoneController,
         birthdayController: birthdayController ?? this.birthdayController,
         carAssuranceController: carAssuranceController ?? this.carAssuranceController,
-        carRegistrationController: carRegistrationController ?? this.carRegistrationController
+        carRegistrationController: carRegistrationController ?? this.carRegistrationController,
+          userEntity: userEntity ?? this.userEntity
   );
 
 }

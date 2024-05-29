@@ -1,3 +1,4 @@
+import 'package:berkania/domain/entities/user_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
@@ -26,6 +27,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   final FlutterLocalization localization = FlutterLocalization.instance;
   final ImagePicker _imagePicker = ImagePicker();
   VendorEntity? _vendor;
+  UserEntity? _user;
   String? uid, lang;
   
   final GetStorage storage;
@@ -54,13 +56,20 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     if(uid == null) return;
     final bool isVendor = await vendorRepository.existVendor(vendorId: uid!);
-    if(isVendor) _vendor = await vendorRepository.getVendorById(vendorId: uid!);
+    if(isVendor) { _vendor = await vendorRepository.getVendorById(vendorId: uid!); }
+    else { _user = await userRepository.getUserInfo(id: uid!); }
+
+    print("+++++++");
+    print(_vendor?.shopThumbnail);
+    print(_vendor?.avatar);
+    print(_user?.avatar);
+    print("+++++++");
 
     emit((state as SettingsMainState).copyWith(
       frenchLang: lang == CustomLocale.FR ? true : false,
       arabicLang: lang == CustomLocale.AR ? true : false,
       englishLang: lang == CustomLocale.EN ? true : false,
-      updateImageProfilePath: _vendor?.avatar ?? "",
+      updateImageProfilePath: _user?.avatar ?? _vendor?.avatar,
       isVendor: isVendor,
       vendorOnlineOffline: _vendor?.isOnline ?? false,
     ));
@@ -97,6 +106,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                           final isUserExist = await userRepository.existUser(userId: uid);
                           if (isUserExist) {
                             final String newImageLink = await userRepository.updateUserImage(userId: uid, newImage: img.path);
+                            await userRepository.updateUserAvatar(userId: uid, newAvatar: newImageLink);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
                             //SNACK BAR
                             return;
@@ -106,11 +116,14 @@ class SettingsCubit extends Cubit<SettingsState> {
                           if (isVendorExist) {
                             await vendorRepository.deleteVendorImage(imgName: uid);
                             final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid, imgPath: img.path);
+                            await vendorRepository.updateVendorAvatar(vendorId: uid, newAvatar: newImageLink);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
                             //SNACK BAR
                             return;
                           }
+
                           context.mounted ? context.pop() : null;
+
                         } catch (_) {}
                       }),
 

@@ -3,6 +3,7 @@ import 'package:berkania/presentation/vendor_details/widgets/custom_review.dart'
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
+import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class VendorDetailsScreen extends CustomState {
                     child: SizedBox(
                       width: 140.0,
                       height: 140.0,
-                      child: Image.network(state.vendor?.avatar ?? "",
+                      child: Image.network(state.vendor?.shopThumbnail ?? CustomImageStrings.DEFAULT_IMAGE_PROFILE,
                           height: getHeight(context),
                           width: getWidth(context),
                           fit: BoxFit.cover,

@@ -26,6 +26,11 @@ class VendorRepositoryImpl extends VendorRepository {
   }
 
   @override
+  Future<void> insertNewVendor({ required VendorEntity vendorEntity }) async {
+    await Remote.newVendor(vendorDto: vendorEntity.toVendorDto());
+  }
+
+  @override
   Future<bool> existVendor({required String vendorId}) async => Remote.exist(collection: "VENDORS", doc: vendorId);
 
   @override
@@ -36,6 +41,12 @@ class VendorRepositoryImpl extends VendorRepository {
   @override
   Future<void> updateVendorPhone({required String vendorId, required String newPhone}) async{
     await Remote.updatePhone(collection: "VENDORS", doc: vendorId, newPhone: newPhone);
+  }
+
+  // - - - - - - - - - - - - - - - - - - OVERRIDE UPDATE AVATAR - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<void> updateVendorAvatar({required String vendorId, required String newAvatar}) async{
+    await Remote.updateAvatar(collection: "VENDOR", doc: vendorId, newAvatar: newAvatar);
   }
 
   @override
@@ -86,5 +97,6 @@ class VendorRepositoryImpl extends VendorRepository {
     if(vendorDto == null) return null;
     return vendorDto.toVendorEntity();
   }
+
 
 }

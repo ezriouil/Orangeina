@@ -2,10 +2,8 @@ import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
-import 'package:berkania/utils/router/custom_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/state/custom_state.dart';
@@ -24,7 +22,7 @@ class CustomVendor extends CustomState {
       child: Container(
         padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
         margin: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), color: darkLightColor(context)),
+        decoration: BoxDecoration(border: Border.all(color: darkLightColor(context)), borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), color: darkDarkLightLightColor(context)),
         height: 90,
         width: 250,
         child: Row(
@@ -52,7 +50,7 @@ class CustomVendor extends CustomState {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text("${vendorEntity.firstName} ${vendorEntity.lastName}", style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: darkDarkLightLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text("${vendorEntity.firstName} ${vendorEntity.lastName}", style: Theme.of(context).textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
                   RatingBar.builder(
                     itemCount: 5,
                     initialRating: (vendorEntity.averageRating ?? 3.5) as double,
@@ -70,8 +68,8 @@ class CustomVendor extends CustomState {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Icon(Iconsax.call, size: 12, color: darkDarkLightLightColor(context)),
-                      Text(" ${vendorEntity.phoneNumber ?? "06 00 00 00 00"}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkDarkLightLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Icon(Iconsax.call, size: 12, color: darkLightColor(context)),
+                      Text(" ${vendorEntity.phoneNumber ?? "06 00 00 00 00"}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ],

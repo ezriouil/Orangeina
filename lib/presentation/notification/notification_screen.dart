@@ -23,7 +23,7 @@ class NotificationScreen extends CustomState {
         centerTitle: false,
         title: Text(CustomLocale.NOTIFICATIONS_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
         actions: [Padding(
-          padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+          padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 1.5),
           child: InkWell(
             onTap: context.read<NotificationCubit>().onRefresh,
             borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),

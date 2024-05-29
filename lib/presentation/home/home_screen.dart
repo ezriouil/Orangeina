@@ -1,8 +1,8 @@
+import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/home/widgets/custom_vendor.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:custom_info_window/custom_info_window.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -49,7 +49,7 @@ class HomeScreen extends CustomState {
                         itemCount: state.vendors!.length,
                         itemBuilder: (context, index) => CustomVendor(
                             vendorEntity: state.vendors![index],
-                            onClick: context.read<HomeCubit>().onVendorClick)),
+                            onClick: (VendorEntity vendor) { context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng); })),
                   )),
                   SizedBox(
                     width: getWidth(context),
@@ -79,7 +79,7 @@ class HomeScreen extends CustomState {
                           ),
                           if(state.mapRefreshEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapMyLocationEnabled!) FloatingActionButton(
-                              heroTag: "hero5",
+                              heroTag: "hero4",
                               onPressed: context.read<HomeCubit>().onGetMyLocation,
                               child: Icon(Iconsax.gps, color: darkLightColor(context))
                           ),
