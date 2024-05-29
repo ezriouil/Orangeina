@@ -77,7 +77,7 @@ class CustomMarkerWindow extends CustomState {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Icon(Iconsax.arrow_up, size: 15, color: darkDarkLightLightColor(context)),
-                      Text("$distance Km", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkDarkLightLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text("${distance.toStringAsFixed(2)} Km", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkDarkLightLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ],

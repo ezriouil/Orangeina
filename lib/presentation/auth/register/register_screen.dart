@@ -34,8 +34,11 @@ class RegisterScreen extends CustomState {
             context.pop();
           },
           borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-          child: Icon( Iconsax.arrow_right_3,
-              color: darkLightColor(context)),
+          child: Builder(
+            builder: (context) {
+              return Icon( isArabic(context) ? Iconsax.arrow_right_3: Iconsax.arrow_left_24, color: darkLightColor(context));
+            }
+          )
         ),
       ),
       body: BlocBuilder<RegisterCubit, RegisterState>(

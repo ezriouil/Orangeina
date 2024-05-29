@@ -32,10 +32,14 @@ class HomeScreen extends CustomState {
                     mapType: state.mapSatelliteEnabled! ? MapType.satellite : MapType.normal,
                     myLocationEnabled: state.mapMyLocationEnabled!,
                     trafficEnabled: state.mapTrafficEnabled!,
-                    onTap: (latLng){ state.customInfoWindowController!.hideInfoWindow!(); },
+                    onTap: (latLng){
+                      state.customInfoWindowController!.hideInfoWindow!();
+                      state.polyline!.clear();
+                      },
                     onCameraMove: context.read<HomeCubit>().onCameraMoved,
                     onMapCreated: context.read<HomeCubit>().onMapCompleted,
                     markers : state.markers!,
+                    polylines: state.polyline!
                     ),
                   Positioned(bottom: 0,child: SizedBox(
                     width: getWidth(context),
@@ -74,12 +78,6 @@ class HomeScreen extends CustomState {
                                 child: Icon(Iconsax.refresh, size: 20.0, color: darkLightColor(context)),
                           ),
                           if(state.mapRefreshEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                          if(state.mapFilterEnabled!) FloatingActionButton(
-                              heroTag: "hero4",
-                              onPressed: context.read<HomeCubit>().filterVendors,
-                              child: Icon(Iconsax.filter, size: 20.0, color: darkLightColor(context))
-                          ),
-                          if(state.mapFilterEnabled!)  const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapMyLocationEnabled!) FloatingActionButton(
                               heroTag: "hero5",
                               onPressed: context.read<HomeCubit>().onGetMyLocation,

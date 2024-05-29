@@ -1,18 +1,24 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/presentation/home/widgets/custom_marker_window.dart';
+import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
+import 'package:berkania/utils/constants/custom_txt_strings.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
 
 import '../../domain/repositories/vendor_repository.dart';
@@ -30,7 +36,9 @@ class HomeCubit extends Cubit<HomeState> {
   String? uid;
 
   // - - - - - - - - - - - - - - - - - - CONTRACTURE - - - - - - - - - - - - - - - - - -  //
-  HomeCubit({ required this.vendorRepository, required this.storage }) : super(HomeLoadingState()){ init(); }
+  HomeCubit({ required this.vendorRepository, required this.storage }) : super(HomeLoadingState()){
+    init();
+  }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
@@ -52,14 +60,15 @@ class HomeCubit extends Cubit<HomeState> {
         cameraCurrentLocation:  null,
         mapMyLocationEnabled: true,
         mapRefreshEnabled: true,
-        mapFilterEnabled: true,
         mapTrafficEnabled: false,
         mapSatelliteEnabled: false,
         mapVendorsEnabled: true,
         customInfoWindowController: CustomInfoWindowController(),
         myCurrentLocation: CameraPosition(target: LatLng(currentPosition?.latitude ?? 31.6538843,currentPosition?.longitude ?? -7.4565771), zoom: 6.0),
         vendors:  vendors,
-        markers: const {}
+        markers: const {},
+        polylinePoints: PolylinePoints(),
+        polyline: const {},
     ));
 
     uid = await LocalStorage.read(key: "UID", storage: storage) ?? "";
@@ -73,21 +82,37 @@ class HomeCubit extends Cubit<HomeState> {
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
   onMapCompleted(GoogleMapController mapController) {
     final HomeMainState updateState = state as HomeMainState;
+    updateState.customInfoWindowController!.googleMapController = mapController;
     if(updateState.mapController!.isCompleted) return;
     updateState.mapController!.complete(mapController);
-    updateState.customInfoWindowController!.googleMapController = mapController;
     emit(updateState);
   }
 
   onVendorClick(VendorEntity vendorEntity) async{
 
     final currentState = state as HomeMainState;
+    final polyline = <Polyline>{};
+
+      const String apiKey = CustomTextStrings.GOOGLE_API_KEY;
+      final String start = '${currentState.myCurrentLocation!.target.longitude},${currentState.myCurrentLocation!.target.latitude}';
+      final String end = '${(vendorEntity.shopLng ?? 0.0) as double},${(vendorEntity.shopLat ?? 0.0) as double}';
+      final String uri = '${CustomTextStrings.POLYLINE_BASE_URI}?api_key=$apiKey&start=$start&end=$end';
+
+      final response = await http.get(Uri.parse(uri));
+      final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
+      final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
+
+      polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 4, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
     emit(HomeLoadingState());
     await Future.delayed(const Duration(milliseconds: 500));
-    emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(
+
+    emit(currentState.copyWith(
+        cameraCurrentLocation: CameraPosition(target: LatLng(
         (vendorEntity.shopLat as double),
-        (vendorEntity.shopLng as double)),zoom: 12.0 )));
+        (vendorEntity.shopLng as double)),zoom: 14.0 ),
+      polyline: polyline
+    ));
   }
 
   // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
@@ -127,7 +152,6 @@ class HomeCubit extends Cubit<HomeState> {
           rating: vendor.averageRating!,
           distance: 135.8
       ));
-
     }
 
     emit(currentState.copyWith(vendors: vendors, markers: markers));
@@ -142,7 +166,7 @@ class HomeCubit extends Cubit<HomeState> {
         builder: (BuildContext context) {
           return AlertDialog(
             content: SizedBox(
-              height: 300,
+              height: 250,
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,23 +218,6 @@ class HomeCubit extends Cubit<HomeState> {
                             value: currentState.mapTrafficEnabled!,
                             onChanged: (value) {
                               emit(currentState.copyWith(mapTrafficEnabled: value));
-                              context.pop();
-                            })
-                    ),
-                  ),
-                  CustomSettingTile(
-                    title: CustomLocale.HOME_ENABLE_MAP_FILTER_TITLE.getString(context),
-                    subTitle: CustomLocale.HOME_ENABLE_MAP_FILTER_SUB_TITLE.getString(context),
-                    icon: Iconsax.filter,
-                    iconSize: 24.0,
-                    titleSize: 12.0,
-                    subTitleSize: 10.0,
-                    trailing: Transform.scale(
-                        scale: 0.8,
-                        child: Switch(
-                            value: currentState.mapFilterEnabled!,
-                            onChanged: (value) {
-                              emit(currentState.copyWith(mapFilterEnabled: value));
                               context.pop();
                             })
                     ),
@@ -275,20 +282,20 @@ class HomeCubit extends Cubit<HomeState> {
         position: LatLng(lat, lng),
         icon: customIcon,
         onTap: () async{
-          try{
             final currentState = state as HomeMainState;
+            
+            var p = 0.017453292519943295;
+            var a = 0.5 - cos((lat - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos(lat * p) * (1 - cos((lng - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
+            var distance = ((12742 * asin(sqrt(a))));
+
             currentState.customInfoWindowController!.addInfoWindow!(CustomMarkerWindow(
                 id: id,
                 firstName: firstName,
                 lastName: lastName,
                 avatar: avatar,
                 rating: rating,
-                distance: distance), LatLng(lat, lng));
-          }catch(e){
-            print("+++++++");
-            print(e.toString());
-            print("+++++++");
-          }
+                distance: distance
+            ), LatLng(lat, lng));
         });
   }
 
