@@ -494,8 +494,10 @@ class SettingsCubit extends Cubit<SettingsState> {
     await launchUrl(Uri.parse(CustomTextStrings.TERMS_LINK), mode: LaunchMode.inAppWebView);
   }
 
-  void signOut({required BuildContext context}) {
-
+  void signOut({required BuildContext context}) async{
+    await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
+    if(!context.mounted) return;
+    context.pushReplacementNamed(CustomRouter.LOGIN);
   }
 }
 
