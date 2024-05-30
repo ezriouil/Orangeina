@@ -99,7 +99,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
         avatar: currentState.vendor?.avatar,
         fullName: "${currentState.vendor?.firstName} ${currentState.vendor?.lastName}",
         phone: currentState.vendor?.phoneNumber,
-        rating: (currentState.vendor?.averageRating ?? 3.5) as double,
+        rating: (currentState.vendor?.averageRating ?? 3.5).toDouble(),
         createAt: "${date.year}/${date.month}/${date.day}"
       );
       final result = await wishListRepository.insertWishList(wishListEntity: wishListEntity);

@@ -68,9 +68,10 @@ class App extends StatefulWidget {
 class _IndexState extends State<App> {
 
   final FlutterLocalization localization = DependencyInjection.getIt<FlutterLocalization>();
-
+  String? initLocation;
   @override
   void initState() {
+    initLocation = widget.initLocation;
     initLocalization();
     super.initState();
   }
@@ -78,7 +79,10 @@ class _IndexState extends State<App> {
   // - - - - - - - - - - - - - - - - - - INIT LOCALISATION - - - - - - - - - - - - - - - - - -  //
   initLocalization() async{
     await localization.init(mapLocales: CustomLocale.LOCALS, initLanguageCode: CustomLocale.EN);
-    localization.onTranslatedLanguage = (Locale? locale) { setState(() {}); };
+    localization.onTranslatedLanguage = (Locale? locale) async{
+      initLocation ??= "INDEX";
+      setState(() {});
+    };
   }
 
   @override
@@ -106,6 +110,6 @@ class _IndexState extends State<App> {
             debugShowCheckedModeBanner: false,
             supportedLocales: localization.supportedLocales,
             localizationsDelegates: localization.localizationsDelegates,
-            routerConfig: CustomRouter.router(initialLocation: widget.initLocation)));
+            routerConfig: CustomRouter.router(initialLocation: initLocation)));
   }
 }

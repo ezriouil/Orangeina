@@ -120,7 +120,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                           context.mounted ? context.pop() : null;
 
-                        } catch (e) { print(e.toString());}
+                        } catch (_) {}
                       }),
 
                   CustomElevatedButton(
