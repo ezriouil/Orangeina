@@ -40,7 +40,6 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   final WishListRepository wishListRepository;
   final ReportRepository reportRepository;
   final GetStorage storage;
-  String? argumentId;
   String? uid;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
@@ -68,15 +67,13 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       reportReason: ""
     ));
     uid = await LocalStorage.read(key: "UID", storage: storage);
-    await getVendorInfo();
-    await getReviews();
+
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
-  getVendorInfo() async{
-    await Future.delayed(const Duration(milliseconds: 1500));
+  void getVendorInfo({ required String argumentId }) async{
     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
-    final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId!);
+    final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId);
 
     final markers = <Marker>{};
     if(vendor == null) return;
@@ -117,10 +114,10 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - GET ALL REVIEWS - - - - - - - - - - - - - - - - - -  //
-  getReviews() async{
+  getReviews({ required String argumentId }) async{
     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
     if(uid == null) return;
-    final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: uid!);
+    final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
     emit(currentState.copyWith(reviews: reviews));
   }
 
@@ -148,7 +145,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - ALERT FEEDBACK - - - - - - - - - - - - - - - - - -  //
-  void onGiveFeedback({required BuildContext context, required Function callBack}) async {
+  void onGiveFeedback({required BuildContext context, required Function callBack, required String argumentId }) async {
 
     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
 

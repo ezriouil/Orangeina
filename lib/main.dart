@@ -67,7 +67,7 @@ class App extends StatefulWidget {
 
 class _IndexState extends State<App> {
 
-  final FlutterLocalization localization = FlutterLocalization.instance;
+  final FlutterLocalization localization = DependencyInjection.getIt<FlutterLocalization>();
 
   @override
   void initState() {

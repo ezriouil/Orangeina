@@ -53,7 +53,7 @@ class CustomVendor extends CustomState {
                   Text("${vendorEntity.firstName} ${vendorEntity.lastName}", style: Theme.of(context).textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
                   RatingBar.builder(
                     itemCount: 5,
-                    initialRating: (vendorEntity.averageRating ?? 3.5) as double,
+                    initialRating: (vendorEntity.averageRating ?? 3.5).toDouble(),
                     maxRating: 5,
                     minRating: 1,
                     unratedColor: grayColor(context),

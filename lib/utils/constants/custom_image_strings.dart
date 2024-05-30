@@ -25,9 +25,6 @@ class CustomImageStrings{
 
   //! Images
   static const String IMAGE_404 = 'assets/images/404_error.png';
-  static const String ON_BOARDING_1 = 'assets/images/illus_onBoarding1.png';
-  static const String ON_BOARDING_2 = 'assets/images/illus_onBoarding2.png';
-  static const String ON_BOARDING_3 = 'assets/images/illus_onBoarding3.png';
   static const String IMG_PROFILE = 'assets/images/user_profile_picB.png';
   static const String SEND_EMAIL = 'assets/images/send_email.jpg';
 

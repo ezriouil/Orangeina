@@ -110,6 +110,8 @@ class BeVendorCubit extends Cubit<BeVendorState> {
     await vendorRepository.saveVendorPaperImages(imgName: "${uid}_car_registration_image", imgPath: currentState.carRegistrationImage!)
     ];
 
+    final String shopThumbnailUri = await vendorRepository.saveVendorPaperImages(imgName: "${uid}_shop_thumbnail", imgPath: currentState.shopThumbnail!);
+
     // ADD NEW VENDOR
     final VendorEntity vendorEntity = VendorEntity(
       id: uid,
@@ -120,13 +122,13 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       email: currentState.userEntity?.email,
       phoneNumber: currentState.phoneController!.text.trim(),
       gender: currentState.gender,
-      shopThumbnail: currentState.shopThumbnail,
+      shopThumbnail: shopThumbnailUri,
       carAssurance: currentState.carAssuranceController?.text.trim(),
       carRegistration: currentState.carRegistrationController?.text.trim(),
       carType: currentState.carType,
       isOnline: false,
       visible: false,
-      averageRating: 0.0,
+      averageRating: 3.0,
       birthdayYear:int.parse( currentState.ageController!.text.trim()),
       totalOrders: 0,
       shopLat: 0.0,
@@ -177,36 +179,56 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF VEHICLE FROM GALLERY- - - - - - - - - - - - - - - - - -  //
   void onPickCarImage() async{
     final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    if(img == null){
+      // SHOW SNAKE BAR
+      return;
+    }
     final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(shopThumbnail: img?.path));
+    emit(currentState.copyWith(shopThumbnail: img.path));
   }
 
   // - - - - - - - - - - - - - - - - - - PICK FRONT IMAGE OF CIN FROM GALLERY- - - - - - - - - - - - - - - - - -  //
   void onPickCinFrontImage() async{
     final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    if(img == null){
+      // SHOW SNAKE BAR
+      return;
+    }
     final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(cinFrontImage: img?.path));
+    emit(currentState.copyWith(cinFrontImage: img.path));
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE BACK OF CIN FROM GALLERY- - - - - - - - - - - - - - - - - -  //
   void onPickCinBackImage() async{
     final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    if(img == null){
+      // SHOW SNAKE BAR
+      return;
+    }
     final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(cinBackImage: img?.path));
+    emit(currentState.copyWith(cinBackImage: img.path));
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF ASSURANCE FROM GALLERY- - - - - - - - - - - - - - - - - -  //
   void onPickAssuranceCarImage() async{
     final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    if(img == null){
+      // SHOW SNAKE BAR
+      return;
+    }
     final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(carAssuranceImage: img?.path));
+    emit(currentState.copyWith(carAssuranceImage: img.path));
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF REGISTRATION FROM GALLERY- - - - - - - - - - - - - - - - - -  //
   void onPickRegistrationCarImage() async{
     final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    if(img == null){
+      // SHOW SNAKE BAR
+      return;
+    }
     final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(carRegistrationImage: img?.path));
+    emit(currentState.copyWith(carRegistrationImage: img.path));
   }
 
 }

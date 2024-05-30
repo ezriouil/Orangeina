@@ -89,7 +89,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                       onClick: () async {
                         try {
                           context.pop();
-                          final String uid = await LocalStorage.read(key: "UID", storage: storage);
+                          if(uid == null) return;
 
                           final currentState = state as SettingsMainState;
 
@@ -99,20 +99,20 @@ class SettingsCubit extends Cubit<SettingsState> {
                             return;
                           }
 
-                          final isUserExist = await userRepository.existUser(userId: uid);
+                          final isUserExist = await userRepository.existUser(userId: uid!);
                           if (isUserExist) {
-                            final String newImageLink = await userRepository.updateUserImage(userId: uid, newImage: img.path);
-                            await userRepository.updateUserAvatar(userId: uid, newAvatar: newImageLink);
+                            final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img.path);
+                            await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
                             //SNACK BAR
                             return;
                           }
 
-                          final isVendorExist = await vendorRepository.existVendor(vendorId: uid);
+                          final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                           if (isVendorExist) {
-                            await vendorRepository.deleteVendorImage(imgName: uid);
-                            final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid, imgPath: img.path);
-                            await vendorRepository.updateVendorAvatar(vendorId: uid, newAvatar: newImageLink);
+                            await vendorRepository.deleteVendorImage(imgName: uid!);
+                            final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img.path);
+                            await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
                             //SNACK BAR
                             return;
@@ -120,7 +120,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                           context.mounted ? context.pop() : null;
 
-                        } catch (_) {}
+                        } catch (e) { print(e.toString());}
                       }),
 
                   CustomElevatedButton(
@@ -385,8 +385,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                             )),
 
                         // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
-                        Text("العربية",
-                            style: Theme.of(context).textTheme.headlineSmall),
+                        Text("العربية", style: Theme.of(context).textTheme.headlineSmall),
 
                         // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
                         Checkbox(
@@ -418,8 +417,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                             )),
 
                         // - - - - - - - - - - - - - - - - - - TEXT - - - - - - - - - - - - - - - - - -  //
-                        Text("Francais",
-                            style: Theme.of(context).textTheme.headlineSmall),
+                        Text("Francais", style: Theme.of(context).textTheme.headlineSmall),
 
                         // - - - - - - - - - - - - - - - - - - CHECKBOX - - - - - - - - - - - - - - - - - -  //
                         Checkbox(
@@ -494,6 +492,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     await launchUrl(Uri.parse(CustomTextStrings.TERMS_LINK), mode: LaunchMode.inAppWebView);
   }
 
+  // - - - - - - - - - - - - - - - - - - ON SIGN OUT - - - - - - - - - - - - - - - - - -  //
   void signOut({required BuildContext context}) async{
     await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
     if(!context.mounted) return;

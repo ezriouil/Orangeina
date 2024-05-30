@@ -23,6 +23,7 @@ import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.da
 import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
 import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -39,6 +40,7 @@ class DependencyInjection{
 
     // - - - - - - - - - - - - - - - - - - UTILS - - - - - - - - - - - - - - - - - -  //
     getIt.registerLazySingleton<GetStorage>( () => GetStorage());
+    getIt.registerLazySingleton<FlutterLocalization>( () => FlutterLocalization.instance);
     getIt.registerLazySingleton<Connectivity>( () => Connectivity());
 
     // - - - - - - - - - - - - - - - - - - REPOSITORIES - - - - - - - - - - - - - - - - - -  //

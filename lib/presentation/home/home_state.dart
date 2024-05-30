@@ -7,7 +7,7 @@ final class HomeMainState extends HomeState {
   final Completer<GoogleMapController>? mapController;
   final CameraPosition? myCurrentLocation, cameraCurrentLocation;
   final CustomInfoWindowController? customInfoWindowController;
- final bool? mapMyLocationEnabled, mapTrafficEnabled, mapRefreshEnabled, mapSatelliteEnabled, mapVendorsEnabled;
+ final bool? mapMyLocationEnabled, mapTrafficEnabled, mapRefreshEnabled, mapSatelliteEnabled;
   final  List<VendorEntity>? vendors;
   final  Set<Marker>? markers;
   final  Set<Polyline>? polyline;
@@ -20,7 +20,6 @@ final class HomeMainState extends HomeState {
       this.mapSatelliteEnabled,
       this.customInfoWindowController,
       this.mapRefreshEnabled,
-      this.mapVendorsEnabled,
       this.cameraCurrentLocation,
       this.markers,
       this.vendors,
@@ -31,7 +30,7 @@ final class HomeMainState extends HomeState {
           {Completer<GoogleMapController>? mapController,
           CameraPosition? myCurrentLocation,
           CustomInfoWindowController? customInfoWindowController,
-          CameraPosition? cameraCurrentLocation, bool? mapMyLocationEnabled, bool? mapTrafficEnabled, bool? mapRefreshEnabled, bool? mapVendorsEnabled, bool? mapSatelliteEnabled,
+          CameraPosition? cameraCurrentLocation, bool? mapMyLocationEnabled, bool? mapTrafficEnabled, bool? mapRefreshEnabled, bool? mapSatelliteEnabled,
           List<VendorEntity>? vendors,
           Set<Marker>? markers,
           Set<Polyline>? polyline,
@@ -44,7 +43,6 @@ final class HomeMainState extends HomeState {
           mapTrafficEnabled: mapTrafficEnabled ?? this.mapTrafficEnabled,
           mapRefreshEnabled: mapRefreshEnabled ?? this.mapRefreshEnabled,
           customInfoWindowController: customInfoWindowController ?? this.customInfoWindowController,
-          mapVendorsEnabled: mapVendorsEnabled ?? this.mapVendorsEnabled,
           mapSatelliteEnabled: mapSatelliteEnabled ?? this.mapSatelliteEnabled,
           vendors: vendors ?? this.vendors,
            markers: markers ?? this.markers,

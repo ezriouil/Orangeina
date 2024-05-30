@@ -135,7 +135,7 @@ class LoginScreen extends CustomState {
 
                           // - - - - - - - - - - - - - - - - - - BUTTON GOOGLE - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
-                              onClick: () {context.read<LoginCubit>().loginWithGoogle(context: context, callBack: (){ context.pushReplacement(CustomRouter.INDEX); } );},
+                              onClick: () {context.read<LoginCubit>().loginWithGoogle(context: context, callBack: (){ context.pushReplacementNamed(CustomRouter.INDEX); } );},
                               height: 74,
                               withDefaultPadding: false,
                               backgroundColor: darkLightColor(context),

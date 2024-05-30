@@ -25,6 +25,8 @@ dependencies:
   google_maps_flutter: ^2.6.0
   geolocator: ^11.0.0
   custom_info_window: ^1.0.1
+
+  # NETWORK CALL
   http: ^1.2.0
 
   # DI
@@ -40,7 +42,7 @@ dependencies:
   # ONBOARDING
   smooth_page_indicator: ^1.1.0
 
-  # NAVIGATION
+  # NAVIGATION BETWEEN SCREENS
   go_router: ^14.1.0
 
   # LOCAL STORAGE
@@ -69,6 +71,9 @@ dependencies:
 
   # RATING
   flutter_rating_bar: ^4.0.1
+
+  # CHANGE APP ICON
+  flutter_launcher_icons: ^0.13.1
 
 # ------------------------------------------------------ #
 

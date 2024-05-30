@@ -57,21 +57,15 @@ class HomeScreen extends CustomState {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal:CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
+                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
                           FloatingActionButton(
                             heroTag: "hero1",
                             onPressed: (){ context.read<HomeCubit>().onMapSettings(context: context); },
                             child: Icon(Iconsax.setting, size: 20.0, color: darkLightColor(context)),
                           ),
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                          if(state.mapVendorsEnabled!) FloatingActionButton(
-                                heroTag: "hero2",
-                                child: Icon(Iconsax.shop, size: 20.0, color: darkLightColor(context)),
-                                onPressed: () { /*context.read<HomeCubit>().showVendors();*/ },
-                          ),
-                          if(state.mapVendorsEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapRefreshEnabled!)  FloatingActionButton(
                                 heroTag: "hero3",
                                 onPressed: context.read<HomeCubit>().onRefreshVendors,
@@ -83,7 +77,6 @@ class HomeScreen extends CustomState {
                               onPressed: context.read<HomeCubit>().onGetMyLocation,
                               child: Icon(Iconsax.gps, color: darkLightColor(context))
                           ),
-                          if(state.mapMyLocationEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                         ],
                       ),
                     ),

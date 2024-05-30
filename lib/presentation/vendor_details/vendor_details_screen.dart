@@ -25,8 +25,10 @@ class VendorDetailsScreen extends CustomState {
   @override
   Widget run(BuildContext context) {
     return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
+
       builder: (context, state) {
-        context.read<VendorDetailsCubit>().argumentId = id;
+        context.read<VendorDetailsCubit>().getVendorInfo(argumentId: id);
+        context.read<VendorDetailsCubit>().getReviews(argumentId: id);
         return Scaffold(
           appBar: switch(state){
             VendorDetailsMainState() => AppBar(
@@ -34,8 +36,7 @@ class VendorDetailsScreen extends CustomState {
                   onTap: context.pop,
                   borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                   child: Icon(Iconsax.arrow_left_24, color: darkLightColor(context))),
-              title: Text(
-                  CustomLocale.VENDOR_DETAILS_TITLE.getString(context),
+              title: Text(CustomLocale.VENDOR_DETAILS_TITLE.getString(context),
                   style: Theme.of(context).textTheme.bodyLarge),
               actions: [
                 Padding(
@@ -105,7 +106,7 @@ class VendorDetailsScreen extends CustomState {
                 // - - - - - - - - - - - - - - - - - -  RATING - - - - - - - - - - - - - - - - - -  //
                 RatingBar.builder(
                   itemCount: 5,
-                  initialRating: ((state.vendor?.averageRating ?? 3.5) as double),
+                  initialRating: (state.vendor?.averageRating ?? 3.5).toDouble(),
                   maxRating: 5,
                   minRating: 1,
                   direction: Axis.horizontal,
@@ -131,6 +132,7 @@ class VendorDetailsScreen extends CustomState {
                             darkDarkLightLightColor(context),
                             onClick: () {
                               context.read<VendorDetailsCubit>().onGiveFeedback(context: context,
+                                  argumentId: id,
                                   callBack: () {
                                     context.pop();
                                     //SNACK BAR

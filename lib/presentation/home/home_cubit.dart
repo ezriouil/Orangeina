@@ -61,7 +61,6 @@ class HomeCubit extends Cubit<HomeState> {
         mapRefreshEnabled: true,
         mapTrafficEnabled: false,
         mapSatelliteEnabled: false,
-        mapVendorsEnabled: true,
         customInfoWindowController: CustomInfoWindowController(),
       myCurrentLocation: CameraPosition(
           target: LatLng(
@@ -109,7 +108,7 @@ class HomeCubit extends Cubit<HomeState> {
       polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 4, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
     emit(HomeLoadingState());
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 300));
 
     emit(currentState.copyWith(
         cameraCurrentLocation: CameraPosition(target: LatLng((lat as double), (lng as double)),zoom: 14.0 ),
@@ -122,7 +121,7 @@ class HomeCubit extends Cubit<HomeState> {
     final currentState = state as HomeMainState;
     emit(HomeLoadingState());
     final currentPosition = await Geolocator.getCurrentPosition();
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 300));
     emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude),zoom: 18.0 )));
   }
 
@@ -168,7 +167,7 @@ class HomeCubit extends Cubit<HomeState> {
         builder: (BuildContext context) {
           return AlertDialog(
             content: SizedBox(
-              height: 250,
+              height: 200,
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,23 +236,6 @@ class HomeCubit extends Cubit<HomeState> {
                             value: currentState.mapRefreshEnabled!,
                             onChanged: (value) {
                               emit(currentState.copyWith(mapRefreshEnabled: value));
-                              context.pop();
-                            })
-                    ),
-                  ),
-                  CustomSettingTile(
-                    title: CustomLocale.HOME_ENABLE_MAP_VENDORS_TITLE.getString(context),
-                    subTitle: CustomLocale.HOME_ENABLE_MAP_VENDORS_SUB_TITLE.getString(context),
-                    icon: Iconsax.shop,
-                    iconSize: 24.0,
-                    titleSize: 12.0,
-                    subTitleSize: 10.0,
-                    trailing: Transform.scale(
-                        scale: 0.8,
-                        child: Switch(
-                            value: currentState.mapVendorsEnabled!,
-                            onChanged: (value) {
-                              emit(currentState.copyWith(mapVendorsEnabled: value));
                               context.pop();
                             })
                     ),
