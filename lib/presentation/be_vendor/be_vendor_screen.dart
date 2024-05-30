@@ -55,7 +55,7 @@ class BeVendorScreen extends CustomState {
                           content: StepPersonalInfo(
                               cinController: state.cinController,
                               phoneController: state.phoneController,
-                              birthdayController: state.birthdayController,
+                              ageController: state.ageController,
                               gender: state.gender,
                               onChangeGender: context.read<BeVendorCubit>().onChangeGender)),
                       Step(

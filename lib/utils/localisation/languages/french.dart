@@ -141,7 +141,7 @@ class French{
     CustomLocale.BE_VENDOR_TITLE : "Devenez Vendeur",
     CustomLocale.BE_VENDOR_CIN : "CIN",
     CustomLocale.BE_VENDOR_PHONE : "Téléphone",
-    CustomLocale.BE_VENDOR_BIRTHDAY : "Date D'anniversaire",
+    CustomLocale.BE_VENDOR_BIRTHDAY : "L'age",
     CustomLocale.BE_VENDOR_STEP_1_TITLE : "Informations personnelles",
     CustomLocale.BE_VENDOR_TITLE_1 : "Remplissez Les Blancs Avec Vos Informations ..",
     CustomLocale.BE_VENDOR_GENDER_TITLE : "Genre",

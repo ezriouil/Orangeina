@@ -130,8 +130,8 @@ class Remote{
   }
 
   // - - - - - - - - - - - - - - - - - - MAKE VENDOR ONLINE - - - - - - - - - - - - - - - - - -  //
-  static Future<void> vendorOnline({ required String vendorId }) async{
-    await _firebaseFirestore.collection("VENDORS").doc(vendorId).update({'isOnline' : true});
+  static Future<void> vendorOnline({ required String vendorId ,required num shopLat ,required num shopLng }) async{
+    await _firebaseFirestore.collection("VENDORS").doc(vendorId).update({'isOnline' : true, 'shopLat' : shopLat, 'shopLng' : shopLng});
   }
 
   // - - - - - - - - - - - - - - - - - - MAKE VENDOR OFFLINE - - - - - - - - - - - - - - - - - -  //
@@ -162,7 +162,7 @@ class Remote{
 
   // - - - - - - - - - - - - - - - - - - NEW VENDOR - - - - - - - - - - - - - - - - - -  //
   static Future<void> newVendor({required VendorDto vendorDto}) async{
-    _firebaseFirestore.collection("ORDERS").doc(vendorDto.id).set(vendorDto.toJson());
+    _firebaseFirestore.collection("VENDORS").doc(vendorDto.id).set(vendorDto.toJson());
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR MAKE NEW ORDER - - - - - - - - - - - - - - - - - -  //

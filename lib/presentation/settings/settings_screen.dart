@@ -34,7 +34,17 @@ class SettingsScreen extends CustomState {
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
 
                           // - - - - - - - - - - - - - - - - - -  Display - - - - - - - - - - - - - - - - - -  //
-                          Text(CustomLocale.SETTINGS_PROFILE_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(color: grayColor(context), letterSpacing: 0.6)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(CustomLocale.SETTINGS_PROFILE_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(color: grayColor(context), letterSpacing: 0.6)),
+                              InkWell(
+                                onTap: (){ context.read<SettingsCubit>().signOut(context:context); },
+                                borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                child: Icon( isArabic(context) ? Iconsax.arrow_left: Iconsax.arrow_right, color: darkLightColor(context).withOpacity(0.4) ),
+                              ),
+                            ],
+                          ),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -175,7 +185,7 @@ class SettingsScreen extends CustomState {
                             title: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_SUB_TITLE.getString(context),
                               icon: Iconsax.lock,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: () {  },),
+                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToAbout),
                     
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -185,7 +195,7 @@ class SettingsScreen extends CustomState {
                             title: CustomLocale.SETTINGS_HELP_AND_SUPPOR_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE.getString(context),
                               icon: Iconsax.headphone5,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: () {  },),
+                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToHelpAndSupport),
                     
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -195,7 +205,7 @@ class SettingsScreen extends CustomState {
                             title: CustomLocale.SETTINGS_ABOUT_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_ABOUT_SUB_TITLE.getString(context),
                               icon: Iconsax.info_circle,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: () {  },),
+                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToAbout),
                     
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),

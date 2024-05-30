@@ -16,6 +16,7 @@ import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
+import 'package:berkania/presentation/on_boarding/on_boarding_cubit.dart';
 import 'package:berkania/presentation/settings/settings_cubit.dart';
 import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
 import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
@@ -50,6 +51,7 @@ class DependencyInjection{
     getIt.registerLazySingleton<ReportRepository>( () => ReportRepositoryImpl());
 
     // - - - - - - - - - - - - - - - - - - CUBITS - - - - - - - - - - - - - - - - - -  //
+    getIt.registerFactory<OnBoardingCubit>( () =>OnBoardingCubit(storage: getIt()));
     getIt.registerFactory<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
     getIt.registerFactory<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
     getIt.registerFactory<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));

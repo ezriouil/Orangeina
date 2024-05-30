@@ -3,14 +3,17 @@ import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
+import 'package:berkania/utils/constants/custom_txt_strings.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../domain/entities/vendor_entity.dart';
 import '../../utils/constants/custom_colors.dart';
@@ -58,13 +61,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     final bool isVendor = await vendorRepository.existVendor(vendorId: uid!);
     if(isVendor) { _vendor = await vendorRepository.getVendorById(vendorId: uid!); }
     else { _user = await userRepository.getUserInfo(id: uid!); }
-
-    print("+++++++");
-    print(_vendor?.shopThumbnail);
-    print(_vendor?.avatar);
-    print(_user?.avatar);
-    print("+++++++");
-
     emit((state as SettingsMainState).copyWith(
       frenchLang: lang == CustomLocale.FR ? true : false,
       arabicLang: lang == CustomLocale.AR ? true : false,
@@ -333,7 +329,14 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(SettingsLoadingState());
 
       if(value) {
-        await vendorRepository.online(vendorId: uid!);
+        final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+        final permission = await Geolocator.checkPermission();
+        if(!isLocationServiceEnabled || permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
+          // SNACK BAR
+          return;
+        }
+        final Position currentPosition = await Geolocator.getCurrentPosition();
+        await vendorRepository.online(vendorId: uid!, lat: currentPosition.latitude, lng: currentPosition.longitude);
         await LocalStorage.upsert(key: "VENDOR_ONLINE_OFFLINE", value: value, storage: storage);
       }else{
         await vendorRepository.offline(vendorId: uid!);
@@ -477,13 +480,23 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO PRIVACY AND SECURITY - - - - - - - - - - - - - - - - - -  //
-  void onNavigateToPrivacyAndSecurity() {}
+  void onNavigateToPrivacyAndSecurity() async{
+    await launchUrl(Uri.parse(CustomTextStrings.TERMS_LINK), mode: LaunchMode.inAppWebView);
+  }
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO HELP AND SUPPORT - - - - - - - - - - - - - - - - - -  //
-  void onNavigateToHelpAndSupport() {}
+  void onNavigateToHelpAndSupport() async{
+    await launchUrl(Uri.parse(CustomTextStrings.AIDE_LINK), mode: LaunchMode.inAppWebView);
+  }
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO ABOUT - - - - - - - - - - - - - - - - - -  //
-  void onNavigateToAbout() {}
+  void onNavigateToAbout() async{
+    await launchUrl(Uri.parse(CustomTextStrings.TERMS_LINK), mode: LaunchMode.inAppWebView);
+  }
+
+  void signOut({required BuildContext context}) {
+
+  }
 }
 
 /*

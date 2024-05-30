@@ -148,7 +148,7 @@ class English {
   CustomLocale.BE_VENDOR_TITLE : "Become Vendor",
   CustomLocale.BE_VENDOR_CIN : "CIN",
   CustomLocale.BE_VENDOR_PHONE : "Phone Number",
-  CustomLocale.BE_VENDOR_BIRTHDAY : "Birthday Date",
+  CustomLocale.BE_VENDOR_BIRTHDAY : "Age",
   CustomLocale.BE_VENDOR_GENDER_TITLE : "Gender",
   CustomLocale.BE_VENDOR_GENDER_MAN_TITLE : "Man",
   CustomLocale.BE_VENDOR_GENDER_WOMAN_TITLE : "Woman",

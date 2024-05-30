@@ -60,7 +60,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
     emit(VendorDetailsMainState(
       mapController:  Completer<GoogleMapController>(),
       vendor: VendorEntity(),
-        wishListId: "",
+      wishListId: "",
       markers: const {},
       reviews: const [],
       feedbackController: TextEditingController(),
@@ -228,13 +228,14 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
                           if(uid == null) return;
 
+
                           final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
 
                           if(userEntity == null) return;
 
                           final date = DateTime.now();
                           final ReviewEntity review = ReviewEntity(
-                            vendorId: uid,
+                            vendorId: argumentId,
                             fullName: "${userEntity.firstName} ${userEntity.lastName}",
                             reviewBody: currentState.feedbackController!.text.trim(),
                             avatar: userEntity.avatar,

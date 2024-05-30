@@ -89,7 +89,7 @@ class LoginCubit extends Cubit<LoginState> {
       await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
       await LocalStorage.upsert(key: "EMAIL", value: currentState.emailController!.text, storage: storage);
       await LocalStorage.upsert(key: "PASSWORD", value: currentState.passwordController!.text, storage: storage);
-
+      await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
       callBack.call();
@@ -139,6 +139,8 @@ class LoginCubit extends Cubit<LoginState> {
         await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
 
       }
+
+      await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
 
       // NAVIGATE TO HOME SCREEN
       emit((state as LoginMainState));

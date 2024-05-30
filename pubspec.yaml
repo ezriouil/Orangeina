@@ -37,6 +37,9 @@ dependencies:
   cloud_firestore: ^4.17.1
   google_sign_in: ^6.2.1
 
+  # ONBOARDING
+  smooth_page_indicator: ^1.1.0
+
   # NAVIGATION
   go_router: ^14.1.0
 
@@ -84,6 +87,8 @@ flutter:
     - assets/icons/
     - assets/animations/
     - assets/images/
+    - assets/animations/onboarding/
+
   fonts:
     - family: Cal
       fonts:

@@ -1,6 +1,5 @@
-import 'package:berkania/utils/constants/custom_colors.dart';
-import 'package:flutter/material.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -9,11 +8,11 @@ import '../../../utils/state/custom_state.dart';
 import '../../widgets/custom_text_field.dart';
 
 class StepPersonalInfo extends CustomState {
-  final TextEditingController? cinController, phoneController, birthdayController;
+  final TextEditingController? cinController, phoneController, ageController;
   final String? gender;
   final void Function(String? value) onChangeGender;
 
-  const StepPersonalInfo({super.key, this.cinController, this.phoneController, this.birthdayController, this.gender, required this.onChangeGender, });
+  const StepPersonalInfo({super.key, this.cinController, this.phoneController, this.ageController, this.gender, required this.onChangeGender, });
 
   @override
   Widget run(BuildContext context) {
@@ -46,8 +45,10 @@ class StepPersonalInfo extends CustomState {
         // - - - - - - - - - - - - - - - - - - BIRTHDAY - - - - - - - - - - - - - - - - - -  //
         CustomTextField(
             leadingIcon: Iconsax.cake,
-            controller: birthdayController!,
-            hint: CustomLocale.BE_VENDOR_BIRTHDAY.getString(context)),
+            controller: ageController!,
+            hint: CustomLocale.BE_VENDOR_BIRTHDAY.getString(context),
+          textInputType: TextInputType.number,
+        ),
 
         // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
         const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),

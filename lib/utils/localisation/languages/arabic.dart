@@ -145,7 +145,7 @@ class Arabic{
     // - - - - - - - - - - - - - - - - - - BE SELLER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.BE_VENDOR_CIN : "رقم البطاقة الوطنية",
     CustomLocale.BE_VENDOR_PHONE : "الهاتف",
-    CustomLocale.BE_VENDOR_BIRTHDAY : "تاريخ الميلاد",
+    CustomLocale.BE_VENDOR_BIRTHDAY : "السن",
     CustomLocale.BE_VENDOR_STEP_1_TITLE : "المعلومات الشخصية",
     CustomLocale.BE_VENDOR_TITLE_1 : "إملأ الفراغات بمعلوماتك ..",
     CustomLocale.BE_VENDOR_GENDER_TITLE : "الجنس",

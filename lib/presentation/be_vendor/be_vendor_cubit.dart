@@ -37,7 +37,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         carRegistrationImage: "",
         cinController: TextEditingController(),
         phoneController: TextEditingController(),
-        birthdayController: TextEditingController(),
+        ageController: TextEditingController(),
         carAssuranceController: TextEditingController(),
         carRegistrationController: TextEditingController(),
       userEntity: UserEntity()
@@ -64,7 +64,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         // SHOW SNAKE BAR
         return;
       }
-      if(currentState.birthdayController!.text.trim().isEmpty){
+      if(currentState.ageController!.text.trim().isEmpty){
         // SHOW SNAKE BAR
         return;
       }
@@ -103,7 +103,12 @@ class BeVendorCubit extends Cubit<BeVendorState> {
     }
 
     final date = DateTime.now();
-    final paperImages = [currentState.cinFrontImage, currentState.cinBackImage, currentState.carAssuranceImage, currentState.carRegistrationImage];
+    final paperImages = [
+    await vendorRepository.saveVendorPaperImages(imgName: "${uid}_cin_front", imgPath: currentState.cinFrontImage!),
+    await vendorRepository.saveVendorPaperImages(imgName: "${uid}_cin_back", imgPath: currentState.cinBackImage!),
+    await vendorRepository.saveVendorPaperImages(imgName: "${uid}_car_assurance_image", imgPath: currentState.carAssuranceImage!),
+    await vendorRepository.saveVendorPaperImages(imgName: "${uid}_car_registration_image", imgPath: currentState.carRegistrationImage!)
+    ];
 
     // ADD NEW VENDOR
     final VendorEntity vendorEntity = VendorEntity(
@@ -113,7 +118,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       cin: currentState.cinController?.text.trim(),
       avatar: currentState.userEntity?.avatar,
       email: currentState.userEntity?.email,
-      phoneNumber: currentState.userEntity?.phoneNumber,
+      phoneNumber: currentState.phoneController!.text.trim(),
       gender: currentState.gender,
       shopThumbnail: currentState.shopThumbnail,
       carAssurance: currentState.carAssuranceController?.text.trim(),
@@ -122,7 +127,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       isOnline: false,
       visible: false,
       averageRating: 0.0,
-      birthdayYear:int.parse( currentState.birthdayController!.text.trim()),
+      birthdayYear:int.parse( currentState.ageController!.text.trim()),
       totalOrders: 0,
       shopLat: 0.0,
       shopLng: 0.0,
@@ -135,7 +140,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
     
     if(currentState.currentStep! >= 2) {
       emit(BeVendorLoadingState());
-      await Future.delayed(const Duration(seconds: 2000));
+      await Future.delayed(const Duration(milliseconds: 1000));
       emit(BeVendorSuccessState());
       return;
     }

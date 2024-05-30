@@ -8,4 +8,8 @@ class CustomAnimationStrings {
   static const String EMPTY_ANIMATION = "assets/animations/empty.json";
   static const String SUCCESS_ANIMATION = "assets/animations/success.json";
 
+  static const String ONBOARDING_FASE_DELIVERY_SHIPPING = "assets/animations/onboarding/fast_delivery_shipping.json";
+  static const String ONBOARDING_ONLINE_DELIVERY_SERVICE = "assets/animations/onboarding/online_delivery_service.json";
+  static const String ONBOARDING_SHOPPING = "assets/animations/onboarding/shopping.json";
+
 }

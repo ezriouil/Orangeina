@@ -65,7 +65,7 @@ class VendorEntity{
         'carRegistration': carRegistration,
         'carType': carType,
         'isOnline': isOnline,
-        'isOnline': visible,
+        'visible': visible,
         'averageRating': averageRating,
         'birthdayYear': birthdayYear,
         'totalOrders': totalOrders,

@@ -2,7 +2,7 @@ class CustomImageStrings{
   CustomImageStrings._();
 
   //! Vehicles
-  static const String DEFAULT_IMAGE_PROFILE = "https://firebasestorage.googleapis.com/v0/b/limounareworked.appspot.com/o/default-avatar.jpg?alt=media&token=b1080418-c54f-4301-8273-d0c33d284094";
+  static const String DEFAULT_IMAGE_PROFILE = "https://firebasestorage.googleapis.com/v0/b/limounareworked.appspot.com/o/default-avatar-profile.jpg?alt=media&token=f0ecda73-9ee4-4697-8c97-4f8ca1960cab";
   //! Vehicles
   static const String HONDS = 'assets/images/honda.jpg';
   static const String TRIPORTEUR = 'assets/images/triporteur.png';

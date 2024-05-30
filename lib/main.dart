@@ -6,11 +6,13 @@ import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
+import 'package:berkania/presentation/on_boarding/on_boarding_cubit.dart';
 import 'package:berkania/presentation/settings/settings_cubit.dart';
 import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
 import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
 import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
 import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
+import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:berkania/utils/theme/theme_app.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'firebase_options.dart';
@@ -25,7 +28,10 @@ import 'utils/localisation/custom_locale.dart';
 
 void main() async {
 
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  // - - - - - - - - - - - - - - - - - - SPLASH SCREEN - - - - - - - - - - - - - - - - - -  //
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // - - - - - - - - - - - - - - - - - - INIT FIREBASE - - - - - - - - - - - - - - - - - -  //
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -35,18 +41,25 @@ void main() async {
 
   // - - - - - - - - - - - - - - - - - - INIT LOCAL STORAGE - - - - - - - - - - - - - - - - - -  //
   await GetStorage.init();
+  String? initLocation;
+  final GetStorage storage = DependencyInjection.getIt<GetStorage>();
+  initLocation = await LocalStorage.read(key: "INIT_LOCATION", storage: storage);
 
   // - - - - - - - - - - - - - - - - - - HIDE THE TOP STATUS BAR AND SYSTEM BOTTOM BAR - - - - - - - - - - - - - - - - - -  //
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
+  // - - - - - - - - - - - - - - - - - - REMOVE SPLASH SCREEN - - - - - - - - - - - - - - - - - -  //
+  FlutterNativeSplash.remove();
+
   // - - - - - - - - - - - - - - - - - - RUN APP - - - - - - - - - - - - - - - - - -  //
-  runApp(const App());
+  runApp(App(initLocation: initLocation));
 
 }
 
 class App extends StatefulWidget {
 
-  const App({super.key});
+  final String? initLocation;
+  const App({super.key, this.initLocation});
 
   @override
   State<App> createState() => _IndexState();
@@ -72,6 +85,7 @@ class _IndexState extends State<App> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => DependencyInjection.getIt<OnBoardingCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<RegisterCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<LoginCubit>()),
           BlocProvider(create: (_) => DependencyInjection.getIt<ForgetPasswordCubit>()),
@@ -92,6 +106,6 @@ class _IndexState extends State<App> {
             debugShowCheckedModeBanner: false,
             supportedLocales: localization.supportedLocales,
             localizationsDelegates: localization.localizationsDelegates,
-            routerConfig: CustomRouter.CONFIG_ROUTER));
+            routerConfig: CustomRouter.router(initialLocation: widget.initLocation)));
   }
 }

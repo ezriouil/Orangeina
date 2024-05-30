@@ -53,7 +53,6 @@ class VendorRepositoryImpl extends VendorRepository {
   Future<String> saveVendorImage({required String imgName, required String imgPath})  async =>
       await Remote.saveImage(path: "VENDORS", imgName: imgName, imgPath: imgPath);
 
-
   @override
   Future<void> deleteVendorImage({required String imgName}) async{
     await Remote.deleteUserImage(path: "VENDORS", imgName: imgName);
@@ -65,8 +64,8 @@ class VendorRepositoryImpl extends VendorRepository {
   }
 
   @override
-  Future<void> online({ required String vendorId }) async{
-    await Remote.vendorOnline(vendorId: vendorId);
+  Future<void> online({ required String vendorId , required num lat , required num lng }) async{
+    await Remote.vendorOnline(vendorId: vendorId, shopLat: lat, shopLng: lng);
   }
 
   @override
@@ -98,5 +97,8 @@ class VendorRepositoryImpl extends VendorRepository {
     return vendorDto.toVendorEntity();
   }
 
+  @override
+  Future<String> saveVendorPaperImages({required String imgName, required String imgPath})async =>
+      await Remote.saveImage(path: "VENDORS_PAPER", imgName: imgName, imgPath: imgPath);
 
 }

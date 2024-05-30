@@ -49,7 +49,7 @@ class CustomWishList extends CustomState {
                 Row(children: [
                   Icon(Iconsax.user, size: 14.0, color: darkLightColor(context)),
                   Expanded(child: Text("  ${wishListEntity.fullName}", style: Theme.of(context).textTheme.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis)),
-                  InkWell(onTap: (){ onDelete(wishListEntity.id ?? ""); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT), child: Transform.rotate(angle: 0.8, child: Icon(Iconsax.add_circle, size: 22.0, color: darkLightColor(context)))),
+                  InkWell(onTap: (){ onDelete(wishListEntity.id ?? ""); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT), child: Icon(Iconsax.close_circle, size: 22.0, color: darkLightColor(context))),
                 ]),
                 Row(children: [
                   Icon(Iconsax.call, size: 14.0, color: darkLightColor(context)),

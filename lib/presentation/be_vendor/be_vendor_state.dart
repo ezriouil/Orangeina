@@ -7,7 +7,7 @@ final class BeVendorMainState extends BeVendorState {
   final ScrollPhysics? scrollPhysics;
   final int? currentStep;
   final String? gender, carType, shopThumbnail, cinFrontImage, cinBackImage, carAssuranceImage, carRegistrationImage;
-  final TextEditingController? cinController, phoneController, birthdayController, carAssuranceController, carRegistrationController;
+  final TextEditingController? cinController, phoneController, ageController, carAssuranceController, carRegistrationController;
   final UserEntity? userEntity;
 
   BeVendorMainState(
@@ -22,7 +22,7 @@ final class BeVendorMainState extends BeVendorState {
       this.carRegistrationImage,
       this.cinController,
       this.phoneController,
-      this.birthdayController,
+      this.ageController,
       this.carAssuranceController,
       this.carRegistrationController,
       this.userEntity,
@@ -40,7 +40,7 @@ final class BeVendorMainState extends BeVendorState {
           String? carRegistrationImage,
           TextEditingController? cinController,
           TextEditingController? phoneController,
-          TextEditingController? birthdayController,
+          TextEditingController? ageController,
           TextEditingController? carAssuranceController,
           TextEditingController? carRegistrationController,
           UserEntity? userEntity}) =>
@@ -56,7 +56,7 @@ final class BeVendorMainState extends BeVendorState {
         carRegistrationImage: carRegistrationImage ?? this.carRegistrationImage,
         cinController: cinController ?? this.cinController,
         phoneController: phoneController ?? this.phoneController,
-        birthdayController: birthdayController ?? this.birthdayController,
+          ageController: ageController ?? this.ageController,
         carAssuranceController: carAssuranceController ?? this.carAssuranceController,
         carRegistrationController: carRegistrationController ?? this.carRegistrationController,
           userEntity: userEntity ?? this.userEntity

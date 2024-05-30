@@ -14,7 +14,7 @@ abstract class VendorRepository {
   Future<bool> existVendor({required String vendorId});
 
   // - - - - - - - - - - - - - - - - - - MAKE VENDOR ONLINE - - - - - - - - - - - - - - - - - -  //
-  Future<void> online({ required String vendorId });
+  Future<void> online({ required String vendorId, required num lat, required num lng});
 
   // - - - - - - - - - - - - - - - - - - MAKE VENDOR OFFLINE - - - - - - - - - - - - - - - - - -  //
   Future<void> offline({ required String vendorId });
@@ -33,6 +33,9 @@ abstract class VendorRepository {
 
   // - - - - - - - - - - - - - - - - - - SAVE VENDOR IMAGE - - - - - - - - - - - - - - - - - -  //
   Future<String> saveVendorImage({required String imgName, required String imgPath});
+
+  // - - - - - - - - - - - - - - - - - - SAVE VENDOR IMAGE - - - - - - - - - - - - - - - - - -  //
+  Future<String> saveVendorPaperImages({required String imgName, required String imgPath});
 
   // - - - - - - - - - - - - - - - - - - DELETE VENDOR IMAGE - - - - - - - - - - - - - - - - - -  //
   Future<void> deleteVendorImage({required String imgName});

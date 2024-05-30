@@ -63,10 +63,15 @@ class HomeCubit extends Cubit<HomeState> {
         mapSatelliteEnabled: false,
         mapVendorsEnabled: true,
         customInfoWindowController: CustomInfoWindowController(),
-        myCurrentLocation: CameraPosition(target: LatLng(currentPosition?.latitude ?? 31.6538843,currentPosition?.longitude ?? -7.4565771), zoom: 6.0),
-        vendors:  vendors,
+      myCurrentLocation: CameraPosition(
+          target: LatLng(
+              currentPosition?.latitude ?? CustomTextStrings.INITAIL_LAT,
+              currentPosition?.longitude ?? CustomTextStrings.INITAIL_LNG),
+          zoom: 6.0),
+      vendors:  vendors,
         markers: const {},
         polyline: const {},
+
     ));
 
     uid = await LocalStorage.read(key: "UID", storage: storage) ?? "";
@@ -271,23 +276,23 @@ class HomeCubit extends Cubit<HomeState> {
 
           final currentState = state as HomeMainState;
 
-          // POLYLINE
-          final polyline = <Polyline>{};
-          const String apiKey = CustomTextStrings.GOOGLE_API_KEY;
-          final String start = '${currentState.myCurrentLocation!.target.longitude},${currentState.myCurrentLocation!.target.latitude}';
-          final String end = '$lng,$lat';
-          final String uri = '${CustomTextStrings.POLYLINE_BASE_URI}?api_key=$apiKey&start=$start&end=$end';
-          final response = await http.get(Uri.parse(uri));
-          final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
-          final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
-          polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 4, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
+            // POLYLINE
+            final polyline = <Polyline>{};
+            const String apiKey = CustomTextStrings.GOOGLE_API_KEY;
+            final String start = '${currentState.myCurrentLocation!.target.longitude},${currentState.myCurrentLocation!.target.latitude}';
+            final String end = '$lng,$lat';
+            final String uri = '${CustomTextStrings.POLYLINE_BASE_URI}?api_key=$apiKey&start=$start&end=$end';
+            final response = await http.get(Uri.parse(uri));
+            final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
+            final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
+            polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 4, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
-          // CALCULATE DISTANCE
+            // CALCULATE DISTANCE
             const double p = 0.017453292519943295;
             final double a = 0.5 - cos((lat - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos(lat * p) * (1 - cos((lng - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
             final double distance = ((12742 * asin(sqrt(a))));
 
-          // ADD WINDOW INFO
+            // ADD WINDOW INFO
             currentState.customInfoWindowController!.addInfoWindow!(
               CustomMarkerWindow(
                   id: id,
@@ -299,7 +304,8 @@ class HomeCubit extends Cubit<HomeState> {
               LatLng(lat, lng),
             );
 
-          emit(currentState.copyWith(polyline: polyline));
+            emit(currentState.copyWith(polyline: polyline));
+
         });
   }
   Future<Uint8List> _getBytesFromAsset(String path, int width) async {

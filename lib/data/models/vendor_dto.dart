@@ -65,6 +65,7 @@ class VendorDto{
         'carRegistration': carRegistration,
         'carType': carType,
         'isOnline': isOnline,
+        'visible': visible,
         'averageRating': averageRating,
         'birthdayYear': birthdayYear,
         'totalOrders': totalOrders,
