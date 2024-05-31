@@ -37,7 +37,7 @@ class WishlistScreen extends CustomState {
                  itemCount: state.wishLists!.length,
                   itemBuilder: (context, index) => CustomWishList(wishListEntity: state.wishLists![index], onDelete: (String id){ context.read<WishlistCubit>().onDelete( context : context, id : id); }));
             case WishlistLoadingState(): return const CustomLoadingScreen();
-            case WishlistErrorState(): return CustomErrorScreen(onClick: (){});
+            case WishlistErrorState(): return CustomErrorScreen(onClick: context.read<WishlistCubit>().init);
             case WishListEmptyState(): return CustomEmptyScreen(text: CustomLocale.WISHLIST_EMPTY_LIST_TITLE.getString(context));
           }
         },

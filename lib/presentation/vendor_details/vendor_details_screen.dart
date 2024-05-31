@@ -27,8 +27,8 @@ class VendorDetailsScreen extends CustomState {
     return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
 
       builder: (context, state) {
-        context.read<VendorDetailsCubit>().getVendorInfo(argumentId: id);
-        context.read<VendorDetailsCubit>().getReviews(argumentId: id);
+        context.read<VendorDetailsCubit>().getVendorInfo(argumentId: id, context: context);
+        context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
         return Scaffold(
           appBar: switch(state){
             VendorDetailsMainState() => AppBar(
@@ -135,7 +135,7 @@ class VendorDetailsScreen extends CustomState {
                                   argumentId: id,
                                   callBack: () {
                                     context.pop();
-                                    //SNACK BAR
+                                    context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
                                   });
                             },
                             child: Row(
@@ -204,13 +204,11 @@ class VendorDetailsScreen extends CustomState {
                             onMapCreated: context.read<VendorDetailsCubit>().onMapCompleted,
                             markers: state.markers!,
                           ),
-                          state.reviews!.isEmpty
-                              ? Center(
-                            child: Text(
+                          state.reviews!.isEmpty ?
+                          Center(child: Text(
                                 CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST.getString(context),
                                 style: Theme.of(context).textTheme.bodyLarge),
-                          )
-                              : ListView.builder(
+                          ) : ListView.builder(
                               itemCount: state.reviews!.length,
                               itemBuilder: (context, index) => CustomReview(review: state.reviews![index]))
                         ]),

@@ -60,7 +60,9 @@ class Remote{
   // - - - - - - - - - - - - - - - - - - EXIST - - - - - - - - - - - - - - - - - -  //
   static Future<bool> exist({required String collection, required String doc}) async{
     final result = await _firebaseFirestore.collection(collection).doc(doc).get();
-    return result.exists;
+    if(!result.exists) return false;
+    if(result.data()!['visible'] == false) return false;
+    return true;
   }
 
   // - - - - - - - - - - - - - - - - - - UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
@@ -106,7 +108,7 @@ class Remote{
   // - - - - - - - - - - - - - - - - - - GET ALL VENDORS - - - - - - - - - - - - - - - - - -  //
   static Future<List<VendorDto>> getAllVendors() async{
     final List<VendorDto> vendors = [];
-    final QuerySnapshot<Map<String, dynamic>> vendorsCollection = await _firebaseFirestore.collection("VENDORS").where('visible', isEqualTo: true).get();
+    final QuerySnapshot<Map<String, dynamic>> vendorsCollection = await _firebaseFirestore.collection("VENDORS").where('visible', isEqualTo: true).where('isOnline', isEqualTo: true).get();
 
     if(vendorsCollection.size > 0){
       for (QueryDocumentSnapshot<Map<String, dynamic>> vendorJson in vendorsCollection.docs) {
@@ -143,6 +145,7 @@ class Remote{
   static Future<VendorDto?> getVendorById({ required String vendorId }) async{
     final vendor = await _firebaseFirestore.collection("VENDORS").doc(vendorId).get();
     if(!vendor.exists) return null;
+    if(vendor.data()!['visible'] == false) return null;
     return VendorDto.fromJson(vendor.data()!);
   }
 

@@ -44,7 +44,7 @@ class VendorOrdersScreen extends CustomState {
                 itemBuilder: (context, index) => CustomOrder(orderEntity: state.orders![index])
               );
             case VendorOrdersLoadingState(): return const CustomLoadingScreen();
-            case VendorOrdersErrorState(): return CustomErrorScreen(onClick: (){});
+            case VendorOrdersErrorState(): return CustomErrorScreen(onClick: context.read<VendorOrdersCubit>().init);
             case VendorOrdersEmptyState(): return CustomEmptyScreen(text: CustomLocale.ORDERS_EMPTY_LIST_TITLE.getString(context));
           }
         },

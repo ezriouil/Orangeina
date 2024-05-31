@@ -1,6 +1,9 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
@@ -8,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/vendor_repository.dart';
+import '../widgets/custom_snackbars.dart';
 part 'be_vendor_state.dart';
 
 class BeVendorCubit extends Cubit<BeVendorState> {
@@ -51,103 +55,116 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   }
 
   // - - - - - - - - - - - - - - - - - - NEXT STEP - - - - - - - - - - - - - - - - - -  //
-  void continued() async{
+  void continued({ required BuildContext context }) async{
+    try{
 
-    final BeVendorMainState currentState = state as BeVendorMainState;
+      final BeVendorMainState currentState = state as BeVendorMainState;
 
-    if(currentState.currentStep! == 0){
-      if(currentState.cinController!.text.trim().length < 6){
-        // SHOW SNAKE BAR
-        return;
+      switch(currentState.currentStep){
+        case 0 :
+        {
+          if(currentState.cinController!.text.trim().length < 6 && context.mounted){
+            CustomSnackBar.show(context: context, title: "Error Cin Filed", subTitle: "Required At least 6 chars", type: ContentType.failure);
+            return;
+          }
+          if(currentState.phoneController!.text.trim().length < 10){
+            CustomSnackBar.show(context: context, title: "Error Phone Filed", subTitle: "Required At least 10 chars", type: ContentType.failure);
+            return;
+          }
+          CustomSnackBar.show(context: context, title: "Error Age Filed", subTitle: "Required At least 2 chars", type: ContentType.failure);
+          if(currentState.ageController!.text.trim().length < 2){
+            return;
+          }
+          emit(currentState.copyWith(currentStep: 1));
+        }
+        case 1 :
+          {
+            if(currentState.carAssuranceController!.text.trim().length < 4){
+              CustomSnackBar.show(context: context, title: "Error Car Assurance Filed", subTitle: "Required At least 4 chars", type: ContentType.failure);
+              return;
+            }
+            if(currentState.carRegistrationController!.text.trim().length <= 4){
+              CustomSnackBar.show(context: context, title: "Error Car Registration Filed", subTitle: "Required At least 4 chars", type: ContentType.failure);
+              return;
+            }
+            if(currentState.shopThumbnail == ""){
+              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+              return;
+            }
+            emit(currentState.copyWith(currentStep: 2));
+          }
+        case 2 :
+          {
+            if(currentState.cinFrontImage == ""){
+              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image Of You Cin", type: ContentType.warning);
+              return;
+            }
+            if(currentState.cinBackImage == ""){
+              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image Of You Cin", type: ContentType.warning);
+              return;
+            }
+            if(currentState.carAssuranceImage == ""){
+              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image Of You Car Assurance", type: ContentType.warning);
+              return;
+            }
+            if(currentState.carRegistrationImage == ""){
+              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image Of You Car Registration", type: ContentType.warning);
+              return;
+            }
+          }
       }
-      if(currentState.phoneController!.text.trim().length < 10){
-        // SHOW SNAKE BAR
-        return;
-      }
-      if(currentState.ageController!.text.trim().isEmpty){
-        // SHOW SNAKE BAR
-        return;
-      }
-    }
-    if(currentState.currentStep! == 1){
-      if(currentState.carAssuranceController!.text.trim().length < 6){
-        // SHOW SNAKE BAR
-        return;
-      }
-      if(currentState.carRegistrationController!.text.trim().length <= 6){
-        // SHOW SNAKE BAR
-        return;
-      }
-      if(currentState.shopThumbnail == ""){
-        // SHOW SNAKE BAR
-        return;
-      }
-    }
-    if(currentState .currentStep! == 2) {
-      if(currentState.cinFrontImage == ""){
-        // SHOW SNAKE BAR
-        return;
-      }
-      if(currentState.cinBackImage == ""){
-        // SHOW SNAKE BAR
-        return;
-      }
-      if(currentState.carAssuranceImage == ""){
-        // SHOW SNAKE BAR
-        return;
-      }
-      if(currentState.carAssuranceImage == ""){
-        // SHOW SNAKE BAR
-        return;
-      }
-    }
 
-    final date = DateTime.now();
-    final paperImages = [
-    await vendorRepository.saveVendorPaperImages(imgName: "${uid}_cin_front", imgPath: currentState.cinFrontImage!),
-    await vendorRepository.saveVendorPaperImages(imgName: "${uid}_cin_back", imgPath: currentState.cinBackImage!),
-    await vendorRepository.saveVendorPaperImages(imgName: "${uid}_car_assurance_image", imgPath: currentState.carAssuranceImage!),
-    await vendorRepository.saveVendorPaperImages(imgName: "${uid}_car_registration_image", imgPath: currentState.carRegistrationImage!)
-    ];
-
-    final String shopThumbnailUri = await vendorRepository.saveVendorPaperImages(imgName: "${uid}_shop_thumbnail", imgPath: currentState.shopThumbnail!);
-
-    // ADD NEW VENDOR
-    final VendorEntity vendorEntity = VendorEntity(
-      id: uid,
-      firstName: currentState.userEntity?.firstName,
-      lastName: currentState.userEntity?.lastName,
-      cin: currentState.cinController?.text.trim(),
-      avatar: currentState.userEntity?.avatar,
-      email: currentState.userEntity?.email,
-      phoneNumber: currentState.phoneController!.text.trim(),
-      gender: currentState.gender,
-      shopThumbnail: shopThumbnailUri,
-      carAssurance: currentState.carAssuranceController?.text.trim(),
-      carRegistration: currentState.carRegistrationController?.text.trim(),
-      carType: currentState.carType,
-      isOnline: false,
-      visible: false,
-      averageRating: 3.0,
-      birthdayYear:int.parse( currentState.ageController!.text.trim()),
-      totalOrders: 0,
-      shopLat: 0.0,
-      shopLng: 0.0,
-      uploadedPaperImagesAt:  "${date.day}/${date.month}/${date.year}",
-      paperImages: paperImages,
-      createAt: "${date.day}/${date.month}/${date.year}"
-    );
-
-    await vendorRepository.insertNewVendor(vendorEntity : vendorEntity);
-    
-    if(currentState.currentStep! >= 2) {
       emit(BeVendorLoadingState());
-      await Future.delayed(const Duration(milliseconds: 1000));
-      emit(BeVendorSuccessState());
-      return;
+
+      final date = DateTime.now();
+      final paperImages = [
+        await vendorRepository.saveVendorPaperImages(imgName: "${uid}_cin_front", imgPath: currentState.cinFrontImage!),
+        await vendorRepository.saveVendorPaperImages(imgName: "${uid}_cin_back", imgPath: currentState.cinBackImage!),
+        await vendorRepository.saveVendorPaperImages(imgName: "${uid}_car_assurance_image", imgPath: currentState.carAssuranceImage!),
+        await vendorRepository.saveVendorPaperImages(imgName: "${uid}_car_registration_image", imgPath: currentState.carRegistrationImage!)
+      ];
+
+      final String shopThumbnailUri = await vendorRepository.saveVendorPaperImages(imgName: "${uid}_shop_thumbnail", imgPath: currentState.shopThumbnail!);
+
+      // ADD NEW VENDOR
+      final VendorEntity vendorEntity = VendorEntity(
+          id: uid,
+          firstName: currentState.userEntity?.firstName,
+          lastName: currentState.userEntity?.lastName,
+          cin: currentState.cinController?.text.trim(),
+          avatar: currentState.userEntity?.avatar,
+          email: currentState.userEntity?.email,
+          phoneNumber: currentState.phoneController!.text.trim(),
+          gender: currentState.gender,
+          shopThumbnail: shopThumbnailUri,
+          carAssurance: currentState.carAssuranceController?.text.trim(),
+          carRegistration: currentState.carRegistrationController?.text.trim(),
+          carType: currentState.carType,
+          isOnline: false,
+          visible: false,
+          averageRating: 3.0,
+          birthdayYear:int.parse( currentState.ageController!.text.trim()),
+          totalOrders: 0,
+          shopLat: 0.0,
+          shopLng: 0.0,
+          uploadedPaperImagesAt:  "${date.day}/${date.month}/${date.year}",
+          paperImages: paperImages,
+          createAt: "${date.day}/${date.month}/${date.year}"
+      );
+
+      await vendorRepository.insertNewVendor(vendorEntity : vendorEntity);
+
+      if(currentState.currentStep! >= 2) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        emit(BeVendorSuccessState());
+        return;
+      }
+      final updateCurrentStep = currentState.currentStep! + 1;
+      emit(currentState.copyWith(currentStep: updateCurrentStep));
+
+    }catch(_){
+      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
     }
-    final updateCurrentStep = currentState.currentStep! + 1;
-    emit(currentState.copyWith(currentStep: updateCurrentStep));
   }
 
   // - - - - - - - - - - - - - - - - - - STEP BACK - - - - - - - - - - - - - - - - - -  //
@@ -177,58 +194,80 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF VEHICLE FROM GALLERY- - - - - - - - - - - - - - - - - -  //
-  void onPickCarImage() async{
-    final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-    if(img == null){
-      // SHOW SNAKE BAR
-      return;
-    }
-    final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(shopThumbnail: img.path));
+  void onPickCarImage({ required BuildContext context }) async{
+   try{
+     final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+     if(img == null && context.mounted){
+       CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+       return;
+     }
+     final BeVendorMainState currentState = state as BeVendorMainState;
+     emit(currentState.copyWith(shopThumbnail: img?.path));
+   }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK FRONT IMAGE OF CIN FROM GALLERY- - - - - - - - - - - - - - - - - -  //
-  void onPickCinFrontImage() async{
-    final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-    if(img == null){
-      // SHOW SNAKE BAR
-      return;
-    }
-    final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(cinFrontImage: img.path));
+  void onPickCinFrontImage({ required BuildContext context }) async{
+    try{
+      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+      if(img == null && context.mounted){
+        CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+        return;
+      }
+      final BeVendorMainState currentState = state as BeVendorMainState;
+      emit(currentState.copyWith(cinFrontImage: img?.path));
+    }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE BACK OF CIN FROM GALLERY- - - - - - - - - - - - - - - - - -  //
-  void onPickCinBackImage() async{
-    final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-    if(img == null){
-      // SHOW SNAKE BAR
-      return;
-    }
-    final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(cinBackImage: img.path));
+  void onPickCinBackImage({ required BuildContext context }) async{
+    try{
+      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+      if(img == null && context.mounted){
+        CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+        return;
+      }
+      final BeVendorMainState currentState = state as BeVendorMainState;
+      emit(currentState.copyWith(cinBackImage: img?.path));
+    }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
   }
 
-  // - - - - - - - - - - - - - - - - - - PICK IMAGE OF ASSURANCE FROM GALLERY- - - - - - - - - - - - - - - - - -  //
-  void onPickAssuranceCarImage() async{
+  // - - - - - - - - - - - - - - - - - - PICK IMAGE OF CAR REGISTRATION FROM GALLERY- - - - - - - - - - - - - - - - - -  //
+  void onPickRegistrationCarImage({ required BuildContext context }) async{
     final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-    if(img == null){
-      // SHOW SNAKE BAR
+    if(img == null && context.mounted){
+      CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
       return;
     }
-    final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(carAssuranceImage: img.path));
+    try{
+      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+      if(img == null && context.mounted){
+        CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+        return;
+      }
+      final BeVendorMainState currentState = state as BeVendorMainState;
+      emit(currentState.copyWith(carRegistrationImage: img?.path));
+    }
+    catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
   }
 
-  // - - - - - - - - - - - - - - - - - - PICK IMAGE OF REGISTRATION FROM GALLERY- - - - - - - - - - - - - - - - - -  //
-  void onPickRegistrationCarImage() async{
+  // - - - - - - - - - - - - - - - - - - PICK IMAGE OF CAR ASSURANCE FROM GALLERY- - - - - - - - - - - - - - - - - -  //
+  void onPickAssuranceCarImage({ required BuildContext context }) async{
     final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-    if(img == null){
-      // SHOW SNAKE BAR
+    if(img == null && context.mounted){
+      CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
       return;
     }
-    final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(carRegistrationImage: img.path));
+    try{
+      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+      if(img == null && context.mounted){
+        CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+        return;
+      }
+      final BeVendorMainState currentState = state as BeVendorMainState;
+      emit(currentState.copyWith(carAssuranceImage: img?.path));
+    }
+  catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
   }
 
 }

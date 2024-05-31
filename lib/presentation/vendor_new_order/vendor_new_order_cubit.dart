@@ -81,7 +81,7 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
       // VALIDATION
       if(currentState.counter! < 1 && context.mounted){
         emit(currentState);
-        // SHOW SNACK BAR
+        CustomSnackBar.show(context: context, title: "Empty Field", subTitle: "Please Insert How Many KG You Want.", type: ContentType.failure);
         return;
       }
 
@@ -102,10 +102,8 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
       emit(currentState);
       callback.call();
 
-    }catch(e){
-      print("++++++++");
-      print(e.toString());
-      print("++++++++");
+    }catch(_){
+      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
     }
   }
 

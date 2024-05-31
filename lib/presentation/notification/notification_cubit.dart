@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/domain/repositories/notification_repository.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
@@ -13,6 +14,7 @@ import '../../utils/constants/custom_colors.dart';
 import '../../utils/local/storage/local_storage.dart';
 import '../../utils/localisation/custom_locale.dart';
 import '../widgets/custom_elevated_button.dart';
+import '../widgets/custom_snackbars.dart';
 
 part 'notification_state.dart';
 
@@ -136,7 +138,7 @@ class NotificationCubit extends Cubit<NotificationState> {
           });
 
     }catch(e){
-      emit(NotificationErrorState(message: e.toString()));
+      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
     }
   }
 

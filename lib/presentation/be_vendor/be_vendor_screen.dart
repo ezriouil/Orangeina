@@ -41,7 +41,7 @@ class BeVendorScreen extends CustomState {
                     currentStep: state.currentStep!,
                     connectorColor: MaterialStateProperty.all(primaryColor(context)),
                     onStepTapped: context.read<BeVendorCubit>().onStepTapped,
-                    onStepContinue: context.read<BeVendorCubit>().continued,
+                    onStepContinue: (){ context.read<BeVendorCubit>().continued(context: context); },
                     onStepCancel: context.read<BeVendorCubit>().cancel,
                     controlsBuilder: (BuildContext context, ControlsDetails details) => Row( children: [
                           Expanded(child: CustomElevatedButton(onClick: details.onStepCancel, height: 76, child: Text(CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE.getString(context)))),
@@ -167,7 +167,9 @@ class BeVendorScreen extends CustomState {
 
                               // - - - - - - - - - - - - - - - - - - IMAGE - - - - - - - - - - - - - - - - - -  //
                               InkWell(
-                                onTap: context.read<BeVendorCubit>().onPickCarImage,
+                                onTap: (){
+                                  context.read<BeVendorCubit>().onPickCarImage(context: context);
+                                },
                                 borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                                 child: Stack(
                                     children: [
@@ -257,7 +259,7 @@ class BeVendorScreen extends CustomState {
 
                               // - - - - - - - - - - - - - - - - - - IMAGE CIN ( FRONT ) - - - - - - - - - - - - - - - - - -  //
                               InkWell(
-                                onTap: context.read<BeVendorCubit>().onPickCinFrontImage,
+                                onTap: (){ context.read<BeVendorCubit>().onPickCinFrontImage(context: context); },
                                 borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                                 child: Stack(
                                     children: [
@@ -308,7 +310,7 @@ class BeVendorScreen extends CustomState {
 
                               // - - - - - - - - - - - - - - - - - - IMAGE CIN ( BACK ) - - - - - - - - - - - - - - - - - -  //
                               InkWell(
-                                onTap: context.read<BeVendorCubit>().onPickCinBackImage,
+                                onTap: (){ context.read<BeVendorCubit>().onPickCinBackImage(context: context); },
                                 borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                                 child: Stack(
                                     children: [
@@ -359,7 +361,7 @@ class BeVendorScreen extends CustomState {
 
                               // - - - - - - - - - - - - - - - - - - IMAGE CAR ASSURANCE - - - - - - - - - - - - - - - - - -  //
                               InkWell(
-                                onTap: context.read<BeVendorCubit>().onPickAssuranceCarImage,
+                                onTap: (){ context.read<BeVendorCubit>().onPickAssuranceCarImage(context: context); },
                                 borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                                 child: Stack(
                                     children: [
@@ -410,7 +412,7 @@ class BeVendorScreen extends CustomState {
 
                               // - - - - - - - - - - - - - - - - - - IMAGE CAR REGISTRATION - - - - - - - - - - - - - - - - - -  //
                               InkWell(
-                                onTap: context.read<BeVendorCubit>().onPickRegistrationCarImage,
+                                onTap: (){ context.read<BeVendorCubit>().onPickRegistrationCarImage(context: context); },
                                 borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                                 child: Stack(
                                     children: [

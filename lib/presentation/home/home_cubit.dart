@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/presentation/home/widgets/custom_marker_window.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
@@ -24,6 +25,7 @@ import '../../domain/repositories/vendor_repository.dart';
 import '../../utils/local/storage/local_storage.dart';
 import '../../utils/localisation/custom_locale.dart';
 import '../settings/widgets/custom_settings_tile.dart';
+import '../widgets/custom_snackbars.dart';
 
 part 'home_state.dart';
 
@@ -91,10 +93,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // - - - - - - - - - - - - - - - - - - CLICK SPECIFIC VENDOR - - - - - - - - - - - - - - - - - -  //
-  onVendorClick({ required num? lat, required num? lng }) async{
+  onVendorClick({ required num? lat, required num? lng , required BuildContext context}) async{
 
-    final currentState = state as HomeMainState;
-    final polyline = <Polyline>{};
+    try{
+      final currentState = state as HomeMainState;
+      final polyline = <Polyline>{};
 
       const String apiKey = CustomTextStrings.GOOGLE_API_KEY;
       final String start = '${currentState.myCurrentLocation!.target.longitude},${currentState.myCurrentLocation!.target.latitude}';
@@ -107,22 +110,29 @@ class HomeCubit extends Cubit<HomeState> {
 
       polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 4, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
-    emit(HomeLoadingState());
-    await Future.delayed(const Duration(milliseconds: 300));
+      emit(HomeLoadingState());
+      await Future.delayed(const Duration(milliseconds: 300));
 
-    emit(currentState.copyWith(
-        cameraCurrentLocation: CameraPosition(target: LatLng((lat as double), (lng as double)),zoom: 14.0 ),
-      polyline: polyline
-    ));
+      emit(currentState.copyWith(
+          cameraCurrentLocation: CameraPosition(target: LatLng((lat as double), (lng as double)),zoom: 14.0 ),
+          polyline: polyline
+      ));
+    }catch(_){
+    }
+    if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Vendor Not Found !", type: ContentType.failure);
   }
 
   // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
-  void onGetMyLocation() async{
-    final currentState = state as HomeMainState;
-    emit(HomeLoadingState());
-    final currentPosition = await Geolocator.getCurrentPosition();
-    await Future.delayed(const Duration(milliseconds: 300));
-    emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude),zoom: 18.0 )));
+  void onGetMyLocation({ required BuildContext context }) async{
+    try{
+      final currentState = state as HomeMainState;
+      emit(HomeLoadingState());
+      final currentPosition = await Geolocator.getCurrentPosition();
+      await Future.delayed(const Duration(milliseconds: 300));
+      emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude),zoom: 18.0 )));
+    }catch(_){
+      if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Cannot Get You Current Location !", type: ContentType.failure);
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - CAMERA MOVED - - - - - - - - - - - - - - - - - -  //

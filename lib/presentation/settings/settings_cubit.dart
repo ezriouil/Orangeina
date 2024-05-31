@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/domain/repositories/vendor_repository.dart';
@@ -21,6 +22,7 @@ import '../../utils/constants/custom_image_strings.dart';
 import '../../utils/constants/custom_sizes.dart';
 import '../../utils/local/storage/local_storage.dart';
 import '../../utils/localisation/custom_locale.dart';
+import '../widgets/custom_snackbars.dart';
 
 part 'settings_state.dart';
 
@@ -94,33 +96,33 @@ class SettingsCubit extends Cubit<SettingsState> {
                           final currentState = state as SettingsMainState;
 
                           final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-                          if (img == null) {
-                            //SNACK BAR
+                          if (img == null && context.mounted) {
+                            CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image For Your Profile", type: ContentType.warning);
                             return;
                           }
 
                           final isUserExist = await userRepository.existUser(userId: uid!);
                           if (isUserExist) {
-                            final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img.path);
+                            final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
                             await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                            //SNACK BAR
                             return;
                           }
 
                           final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                           if (isVendorExist) {
                             await vendorRepository.deleteVendorImage(imgName: uid!);
-                            final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img.path);
+                            final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
                             await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                            //SNACK BAR
                             return;
                           }
 
                           context.mounted ? context.pop() : null;
 
-                        } catch (_) {}
+                        } catch (_) {
+                          context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time.", type: ContentType.failure) : null;
+                        }
                       }),
 
                   CustomElevatedButton(
@@ -175,6 +177,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                               if (currentState.updateFirstNameController!.text.trim().length < 3 || currentState.updateFirstNameController!.text.trim().length < 3) {
                                 context.mounted ? context.pop() : null;
+                                CustomSnackBar.show(context: context, title: "Fields Empty", subTitle: "Please Fill The Fields", type: ContentType.warning);
                                 return;
                               }
 
@@ -191,8 +194,9 @@ class SettingsCubit extends Cubit<SettingsState> {
                                     storage: storage);
                                 currentState.updateFirstNameController!.clear();
                                 currentState.updateLastNameController!.clear();
-                                context.mounted ? context.pop() : null;
-                                //SNACK BAR
+                                if(!context.mounted) return;
+                                context.pop();
+                                CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
                                 return;
                               }
 
@@ -212,16 +216,18 @@ class SettingsCubit extends Cubit<SettingsState> {
                                     storage: storage);
                                 currentState.updateFirstNameController!.clear();
                                 currentState.updateLastNameController!.clear();
-                                context.mounted ? context.pop() : null;
-                                //SNACK BAR
+                                if(!context.mounted) return;
+                                context.pop();
+                                CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
                                 return;
                               }
 
                               currentState.updateFirstNameController!.clear();
                               currentState.updateLastNameController!.clear();
-                              context.mounted ? context.pop() : null;
+                              context.mounted ? context.pop(): null;
+
                             } catch (e) {
-                              context.mounted ? context.pop() : null;
+                              context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
                             }
                           },
                           child: Text(
@@ -281,7 +287,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                                     storage: storage);
                                 currentState.updatePhoneController!.clear();
                                 context.mounted ? context.pop() : null;
-                                //SNACK BAR
+                                CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
                                 return;
                               }
 
@@ -297,23 +303,19 @@ class SettingsCubit extends Cubit<SettingsState> {
                                     storage: storage);
                                 currentState.updatePhoneController!.clear();
                                 context.mounted ? context.pop() : null;
-                                //SNACK BAR
+                                if(!context.mounted) return;
+                                context.pop();
+                                CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
                                 return;
                               }
 
                               currentState.updatePhoneController!.clear();
                               context.mounted ? context.pop() : null;
                             } catch (e) {
-                              context.mounted ? context.pop() : null;
+                              context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
                             }
                           },
-                          child: Text(
-                              CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE
-                                  .getString(context),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(color: CustomColors.WHITE)))
+                          child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
                     ],
                   )));
         });

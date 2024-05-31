@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/report_entity.dart';
 import 'package:berkania/domain/entities/review_entity.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
@@ -28,6 +29,7 @@ import '../../domain/repositories/report_repository.dart';
 import '../../domain/repositories/vendor_repository.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/custom_image_strings.dart';
+import '../widgets/custom_snackbars.dart';
 
 part 'vendor_details_state.dart';
 
@@ -71,18 +73,24 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
-  void getVendorInfo({ required String argumentId }) async{
-    final VendorDetailsMainState currentState = state as VendorDetailsMainState;
-    final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId);
+  void getVendorInfo({ required String argumentId,  required BuildContext context }) async{
+   try{
 
-    final markers = <Marker>{};
-    if(vendor == null) return;
+     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
+     final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId);
 
-    final WishListEntity wishList = await wishListRepository.isFromWishList(userId: uid!, vendorId: vendor.id!) ?? WishListEntity();
+     final markers = <Marker>{};
+     if(vendor == null) return;
 
-    markers.add(await customMarker(lat: (vendor.shopLat ?? 0.0) as double, lng: (vendor.shopLng ?? 0.0) as double));
+     final WishListEntity wishList = await wishListRepository.isFromWishList(userId: uid!, vendorId: vendor.id!) ?? WishListEntity();
 
-    emit(currentState.copyWith(vendor: vendor, markers: markers, wishListId: wishList.id));
+     markers.add(await customMarker(lat: (vendor.shopLat ?? 0.0) as double, lng: (vendor.shopLng ?? 0.0) as double));
+
+     emit(currentState.copyWith(vendor: vendor, markers: markers, wishListId: wishList.id));
+
+   }catch(_){
+     context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
+   }
   }
 
   // - - - - - - - - - - - - - - - - - - ( INSERT / REMOVE ) WISHLISTS - - - - - - - - - - - - - - - - - -  //
@@ -114,11 +122,16 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - GET ALL REVIEWS - - - - - - - - - - - - - - - - - -  //
-  getReviews({ required String argumentId }) async{
-    final VendorDetailsMainState currentState = state as VendorDetailsMainState;
-    if(uid == null) return;
-    final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
-    emit(currentState.copyWith(reviews: reviews));
+  getReviews({ required String argumentId, required BuildContext context }) async{
+    try{
+      final VendorDetailsMainState currentState = state as VendorDetailsMainState;
+      if(uid == null) return;
+      final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
+      emit(currentState.copyWith(reviews: reviews));
+    }
+    catch(_){
+    context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //

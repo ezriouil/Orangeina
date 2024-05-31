@@ -46,7 +46,7 @@ class NotificationScreen extends CustomState {
              );
 
             case NotificationLoadingState(): return const CustomLoadingScreen();
-            case NotificationErrorState(): return CustomErrorScreen(onClick: (){});
+            case NotificationErrorState(): return CustomErrorScreen(onClick: context.read<NotificationCubit>().init);
             case NotificationEmptyState(): return CustomEmptyScreen(text: CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE.getString(context));
           }
         },

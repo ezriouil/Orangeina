@@ -1,6 +1,6 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/wishList_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_storage/get_storage.dart';
@@ -11,6 +11,7 @@ import '../../utils/constants/custom_colors.dart';
 import '../../utils/local/storage/local_storage.dart';
 import '../../utils/localisation/custom_locale.dart';
 import '../widgets/custom_elevated_button.dart';
+import '../widgets/custom_snackbars.dart';
 
 part 'wishlist_state.dart';
 
@@ -96,7 +97,7 @@ class WishlistCubit extends Cubit<WishlistState> {
           });
 
     }catch(e){
-      emit(WishlistErrorState());
+      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
     }
   }
 }

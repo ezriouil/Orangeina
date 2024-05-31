@@ -49,7 +49,7 @@ class HomeScreen extends CustomState {
                         itemCount: state.vendors!.length,
                         itemBuilder: (context, index) => CustomVendor(
                             vendorEntity: state.vendors![index],
-                            onClick: (VendorEntity vendor) { context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng); })),
+                            onClick: (VendorEntity vendor) { context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context); })),
                   )),
                   SizedBox(
                     width: getWidth(context),
@@ -74,7 +74,7 @@ class HomeScreen extends CustomState {
                           if(state.mapRefreshEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapMyLocationEnabled!) FloatingActionButton(
                               heroTag: "hero4",
-                              onPressed: context.read<HomeCubit>().onGetMyLocation,
+                              onPressed: (){context.read<HomeCubit>().onGetMyLocation(context: context);},
                               child: Icon(Iconsax.gps, color: darkLightColor(context))
                           ),
                         ],
