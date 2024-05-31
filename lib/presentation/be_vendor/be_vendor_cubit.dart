@@ -61,60 +61,34 @@ class BeVendorCubit extends Cubit<BeVendorState> {
 
       final BeVendorMainState currentState = state as BeVendorMainState;
 
-      switch(currentState.currentStep){
-        case 0 :
-        {
-          if(currentState.cinController!.text.trim().length < 6 && context.mounted){
-            CustomSnackBar.show(context: context, title: "Error Cin Filed", subTitle: "Required At least 6 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
-            return;
-          }
-          if(currentState.phoneController!.text.trim().length < 10){
-            CustomSnackBar.show(context: context, title: "Error Phone Filed", subTitle: "Required At least 10 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
-            return;
-          }
-          CustomSnackBar.show(context: context, title: "Error Age Filed", subTitle: "Required At least 2 chars", type: ContentType.failure ,color: CustomColors.RED_LIGHT);
-          if(currentState.ageController!.text.trim().length < 2){
-            return;
-          }
-          emit(currentState.copyWith(currentStep: 1));
+      if((state as BeVendorMainState).currentStep == 0){
+        if(currentState.cinController!.text.trim().length < 6 && context.mounted){
+          CustomSnackBar.show(context: context, title: "Error Cin Filed", subTitle: "Required At least 6 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
+          return;
         }
-        case 1 :
-          {
-            if(currentState.carAssuranceController!.text.trim().length < 4){
-              CustomSnackBar.show(context: context, title: "Error Car Assurance Filed", subTitle: "Required At least 4 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
-              return;
-            }
-            if(currentState.carRegistrationController!.text.trim().length <= 4){
-              CustomSnackBar.show(context: context, title: "Error Car Registration Filed", subTitle: "Required At least 4 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
-              return;
-            }
-            if(currentState.shopThumbnail == ""){
-              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
-              return;
-            }
-            emit(currentState.copyWith(currentStep: 2));
-          }
-        case 2 :
-          {
-            if(currentState.cinFrontImage == ""){
-              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image Of You Cin", type: ContentType.warning);
-              return;
-            }
-            if(currentState.cinBackImage == ""){
-              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image Of You Cin", type: ContentType.warning);
-              return;
-            }
-            if(currentState.carAssuranceImage == ""){
-              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image Of You Car Assurance", type: ContentType.warning);
-              return;
-            }
-            if(currentState.carRegistrationImage == ""){
-              CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image Of You Car Registration", type: ContentType.warning);
-              return;
-            }
-          }
+        if(currentState.phoneController!.text.trim().length < 10){
+          CustomSnackBar.show(context: context, title: "Error Phone Filed", subTitle: "Required At least 10 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
+          return;
+        }
+        if(currentState.ageController!.text.trim().length < 2){
+          return;
+        }
+        emit(currentState.copyWith(currentStep: 1));
       }
 
+      if((state as BeVendorMainState).currentStep == 1){
+        if(currentState.carAssuranceController!.text.trim().length < 4) return;
+        if(currentState.carRegistrationController!.text.trim().length <= 4) return;
+        if(currentState.shopThumbnail == "") return;
+        emit(currentState.copyWith(currentStep: 2));
+      }
+
+      if((state as BeVendorMainState).currentStep == 2){
+        if(currentState.cinFrontImage == "") return;
+        if(currentState.cinBackImage == "") return;
+        if(currentState.carAssuranceImage == "") return;
+        if(currentState.carRegistrationImage == "") return;
+      }
       emit(BeVendorLoadingState());
 
       final date = DateTime.now();

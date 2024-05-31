@@ -23,7 +23,6 @@ class IndexScreen extends CustomState {
             IndexMainState() => NavigationBar(
                 height: 70.0,
                 elevation: 0.0,
-
                 animationDuration: const Duration(seconds: 3),
                 selectedIndex: state.currentPageIndex!,
                 onDestinationSelected: context.read<IndexCubit>().onUpdateCurrentIndex,

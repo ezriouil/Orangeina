@@ -30,7 +30,7 @@ class CustomMarkerWindow extends CustomState {
       child: Container(
         padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
         margin: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), color: darkLightColor(context)),
+        decoration: BoxDecoration(border:Border.all(color: darkDarkLightLightColor(context)), borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), color: darkLightColor(context)),
         height: 90,
         width: 250,
         child: Row(

@@ -22,7 +22,7 @@ class CustomVendor extends CustomState {
       child: Container(
         padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
         margin: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
-        decoration: BoxDecoration(border: Border.all(color: darkLightColor(context)), borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), color: darkDarkLightLightColor(context)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), color: darkDarkLightLightColor(context)),
         height: 90,
         width: 250,
         child: Row(
