@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
+import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,14 +65,14 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         case 0 :
         {
           if(currentState.cinController!.text.trim().length < 6 && context.mounted){
-            CustomSnackBar.show(context: context, title: "Error Cin Filed", subTitle: "Required At least 6 chars", type: ContentType.failure);
+            CustomSnackBar.show(context: context, title: "Error Cin Filed", subTitle: "Required At least 6 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
             return;
           }
           if(currentState.phoneController!.text.trim().length < 10){
-            CustomSnackBar.show(context: context, title: "Error Phone Filed", subTitle: "Required At least 10 chars", type: ContentType.failure);
+            CustomSnackBar.show(context: context, title: "Error Phone Filed", subTitle: "Required At least 10 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
             return;
           }
-          CustomSnackBar.show(context: context, title: "Error Age Filed", subTitle: "Required At least 2 chars", type: ContentType.failure);
+          CustomSnackBar.show(context: context, title: "Error Age Filed", subTitle: "Required At least 2 chars", type: ContentType.failure ,color: CustomColors.RED_LIGHT);
           if(currentState.ageController!.text.trim().length < 2){
             return;
           }
@@ -80,11 +81,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         case 1 :
           {
             if(currentState.carAssuranceController!.text.trim().length < 4){
-              CustomSnackBar.show(context: context, title: "Error Car Assurance Filed", subTitle: "Required At least 4 chars", type: ContentType.failure);
+              CustomSnackBar.show(context: context, title: "Error Car Assurance Filed", subTitle: "Required At least 4 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
               return;
             }
             if(currentState.carRegistrationController!.text.trim().length <= 4){
-              CustomSnackBar.show(context: context, title: "Error Car Registration Filed", subTitle: "Required At least 4 chars", type: ContentType.failure);
+              CustomSnackBar.show(context: context, title: "Error Car Registration Filed", subTitle: "Required At least 4 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
               return;
             }
             if(currentState.shopThumbnail == ""){
@@ -163,7 +164,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       emit(currentState.copyWith(currentStep: updateCurrentStep));
 
     }catch(_){
-      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
+      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
   }
 
@@ -203,7 +204,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
      }
      final BeVendorMainState currentState = state as BeVendorMainState;
      emit(currentState.copyWith(shopThumbnail: img?.path));
-   }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
+   }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK FRONT IMAGE OF CIN FROM GALLERY- - - - - - - - - - - - - - - - - -  //
@@ -216,7 +217,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       }
       final BeVendorMainState currentState = state as BeVendorMainState;
       emit(currentState.copyWith(cinFrontImage: img?.path));
-    }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
+    }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE BACK OF CIN FROM GALLERY- - - - - - - - - - - - - - - - - -  //
@@ -229,7 +230,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       }
       final BeVendorMainState currentState = state as BeVendorMainState;
       emit(currentState.copyWith(cinBackImage: img?.path));
-    }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
+    }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF CAR REGISTRATION FROM GALLERY- - - - - - - - - - - - - - - - - -  //
@@ -248,7 +249,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       final BeVendorMainState currentState = state as BeVendorMainState;
       emit(currentState.copyWith(carRegistrationImage: img?.path));
     }
-    catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
+    catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF CAR ASSURANCE FROM GALLERY- - - - - - - - - - - - - - - - - -  //
@@ -267,7 +268,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       final BeVendorMainState currentState = state as BeVendorMainState;
       emit(currentState.copyWith(carAssuranceImage: img?.path));
     }
-  catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;  }
+  catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }
 
 }

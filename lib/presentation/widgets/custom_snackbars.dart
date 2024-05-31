@@ -13,10 +13,9 @@ class CustomSnackBar {
             elevation: 0,
             width: double.infinity,
             behavior: SnackBarBehavior.floating,
-            dismissDirection: DismissDirection.down,
             backgroundColor: Colors.transparent,
             content: AwesomeSnackbarContent(
-              color: color ?? CustomColors.PRIMARY_LIGHT,
+              color: color ?? CustomColors.YELLOW_DARK,
               title: title,
               message: subTitle,
               contentType: type,

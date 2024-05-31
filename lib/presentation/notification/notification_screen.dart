@@ -22,12 +22,12 @@ class NotificationScreen extends CustomState {
       appBar: AppBar(
         centerTitle: false,
         title: Text(CustomLocale.NOTIFICATIONS_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
-        actions: [Padding(
-          padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 1.5),
-          child: InkWell(
-            onTap: context.read<NotificationCubit>().onRefresh,
-            borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-            child: Icon( Iconsax.refresh, size: 20, color: darkLightColor(context)),
+        actions: [InkWell(
+          onTap: context.read<NotificationCubit>().onRefresh,
+          borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+          child: Padding(
+            padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),
+            child: Icon( Iconsax.refresh_circle5, color: darkLightColor(context)),
           ),
         )],
       ),

@@ -121,7 +121,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                           context.mounted ? context.pop() : null;
 
                         } catch (_) {
-                          context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time.", type: ContentType.failure) : null;
+                          context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time.", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                         }
                       }),
 
@@ -227,7 +227,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                               context.mounted ? context.pop(): null;
 
                             } catch (e) {
-                              context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
+                              context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                             }
                           },
                           child: Text(
@@ -312,7 +312,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                               currentState.updatePhoneController!.clear();
                               context.mounted ? context.pop() : null;
                             } catch (e) {
-                              context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
+                              context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                             }
                           },
                           child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))

@@ -26,11 +26,11 @@ class VendorOrdersScreen extends CustomState {
           child: Icon( Iconsax.arrow_left_24, color: darkLightColor(context)),
         ),
         title: Text(CustomLocale.ORDERS_TITLE.getString(context), style: Theme.of(context).textTheme.titleMedium),
-        actions: [Padding(
-          padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-          child: InkWell(
-            onTap: context.read<VendorOrdersCubit>().onRefresh,
-            borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+        actions: [InkWell(
+          onTap: context.read<VendorOrdersCubit>().onRefresh,
+          borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+          child: Padding(
+            padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),
             child: Icon( Iconsax.refresh, size: 20, color: darkLightColor(context)),
           ),
         )],

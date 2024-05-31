@@ -36,8 +36,7 @@ class VendorDetailsScreen extends CustomState {
                   onTap: context.pop,
                   borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                   child: Icon(Iconsax.arrow_left_24, color: darkLightColor(context))),
-              title: Text(CustomLocale.VENDOR_DETAILS_TITLE.getString(context),
-                  style: Theme.of(context).textTheme.bodyLarge),
+              title: Text(CustomLocale.VENDOR_DETAILS_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
               actions: [
                 Padding(
                   padding: const EdgeInsets.symmetric(

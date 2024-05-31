@@ -89,7 +89,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
      emit(currentState.copyWith(vendor: vendor, markers: markers, wishListId: wishList.id));
 
    }catch(_){
-     context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
+     context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
    }
   }
 
@@ -130,7 +130,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       emit(currentState.copyWith(reviews: reviews));
     }
     catch(_){
-    context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
+    context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
   }
 

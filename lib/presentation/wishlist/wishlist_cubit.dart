@@ -97,7 +97,7 @@ class WishlistCubit extends Cubit<WishlistState> {
           });
 
     }catch(e){
-      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
+      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
   }
 }

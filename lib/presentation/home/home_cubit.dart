@@ -119,7 +119,7 @@ class HomeCubit extends Cubit<HomeState> {
       ));
     }catch(_){
     }
-    if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Vendor Not Found !", type: ContentType.failure);
+    if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Vendor Not Found !", type: ContentType.failure, color: CustomColors.RED_LIGHT);
   }
 
   // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
@@ -131,7 +131,7 @@ class HomeCubit extends Cubit<HomeState> {
       await Future.delayed(const Duration(milliseconds: 300));
       emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude),zoom: 18.0 )));
     }catch(_){
-      if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Cannot Get You Current Location !", type: ContentType.failure);
+      if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Cannot Get You Current Location !", type: ContentType.failure, color: CustomColors.RED_LIGHT);
     }
   }
 

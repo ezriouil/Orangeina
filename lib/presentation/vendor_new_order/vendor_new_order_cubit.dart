@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/order_entity.dart';
+import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,7 +82,7 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
       // VALIDATION
       if(currentState.counter! < 1 && context.mounted){
         emit(currentState);
-        CustomSnackBar.show(context: context, title: "Empty Field", subTitle: "Please Insert How Many KG You Want.", type: ContentType.failure);
+        CustomSnackBar.show(context: context, title: "Empty Field", subTitle: "Please Insert How Many KG You Want.", type: ContentType.failure, color: CustomColors.RED_LIGHT);
         return;
       }
 
@@ -103,7 +104,7 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
       callback.call();
 
     }catch(_){
-      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure) : null;
+      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
   }
 
