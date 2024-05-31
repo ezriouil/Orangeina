@@ -27,7 +27,7 @@ class NotificationScreen extends CustomState {
           borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
           child: Padding(
             padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),
-            child: Icon( Iconsax.refresh_circle5, color: darkLightColor(context)),
+            child: Icon( Iconsax.refresh, size: 20, color: darkLightColor(context)),
           ),
         )],
       ),

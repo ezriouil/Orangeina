@@ -60,9 +60,9 @@ class VendorNewOrderScreen extends CustomState {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            FloatingActionButton(onPressed: context.read<VendorNewOrderCubit>().decrement, backgroundColor: primaryColor(context), child: const Icon(Iconsax.minus, color: CustomColors.WHITE)),
+                            FloatingActionButton(heroTag: "1", onPressed: context.read<VendorNewOrderCubit>().decrement, backgroundColor: primaryColor(context), child: const Icon(Iconsax.minus, color: CustomColors.WHITE)),
                             Text(state.counter! < 10 ? "0${state.counter}" : state.counter.toString(), style: Theme.of(context).textTheme.headlineMedium),
-                            FloatingActionButton(onPressed: context.read<VendorNewOrderCubit>().increment, backgroundColor: primaryColor(context), child: const Icon(Iconsax.add, color: CustomColors.WHITE)),
+                            FloatingActionButton(heroTag: "2", onPressed: context.read<VendorNewOrderCubit>().increment, backgroundColor: primaryColor(context), child: const Icon(Iconsax.add, color: CustomColors.WHITE)),
                           ],
                         ),
                       ),
