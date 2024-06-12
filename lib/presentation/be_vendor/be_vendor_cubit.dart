@@ -45,7 +45,9 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         ageController: TextEditingController(),
         carAssuranceController: TextEditingController(),
         carRegistrationController: TextEditingController(),
-      userEntity: UserEntity()
+      userEntity: UserEntity(),
+      personalInfoFormState: GlobalKey<FormState>(),
+      carInfoFormState: GlobalKey<FormState>()
     ));
 
     final currentState = state as BeVendorMainState;
@@ -61,33 +63,37 @@ class BeVendorCubit extends Cubit<BeVendorState> {
 
       final BeVendorMainState currentState = state as BeVendorMainState;
 
-      if((state as BeVendorMainState).currentStep == 0){
-        if(currentState.cinController!.text.trim().length < 6 && context.mounted){
-          CustomSnackBar.show(context: context, title: "Error Cin Filed", subTitle: "Required At least 6 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
-          return;
-        }
-        if(currentState.phoneController!.text.trim().length < 10){
-          CustomSnackBar.show(context: context, title: "Error Phone Filed", subTitle: "Required At least 10 chars", type: ContentType.failure, color: CustomColors.RED_LIGHT);
-          return;
-        }
-        if(currentState.ageController!.text.trim().length < 2){
-          return;
-        }
-        emit(currentState.copyWith(currentStep: 1));
-      }
+
+      // CHECK THE FORM
+      if(!currentState.personalInfoFormState!.currentState!.validate()) return;
+      emit(currentState.copyWith(currentStep: 1));
 
       if((state as BeVendorMainState).currentStep == 1){
-        if(currentState.carAssuranceController!.text.trim().length < 4) return;
-        if(currentState.carRegistrationController!.text.trim().length <= 4) return;
-        if(currentState.shopThumbnail == "") return;
+        if(!currentState.carInfoFormState!.currentState!.validate()) return;
+        if(currentState.shopThumbnail == "") {
+          CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+          return;
+        }
         emit(currentState.copyWith(currentStep: 2));
       }
 
       if((state as BeVendorMainState).currentStep == 2){
-        if(currentState.cinFrontImage == "") return;
-        if(currentState.cinBackImage == "") return;
-        if(currentState.carAssuranceImage == "") return;
-        if(currentState.carRegistrationImage == "") return;
+        if(currentState.cinFrontImage == "") {
+          CustomSnackBar.show(context: context, title: "Please Select Cin Image", subTitle: "Try Again", type: ContentType.warning);
+          return;
+        }
+        if(currentState.cinBackImage == "") {
+          CustomSnackBar.show(context: context, title: "Please Select Cin Image", subTitle: "Try Again", type: ContentType.warning);
+          return;
+        }
+        if(currentState.carAssuranceImage == "") {
+          CustomSnackBar.show(context: context, title: "Please Select Car Assurance Image", subTitle: "Try Again", type: ContentType.warning);
+          return;
+        };
+        if(currentState.carRegistrationImage == "") {
+          CustomSnackBar.show(context: context, title: "Please Select Car Assurance Image", subTitle: "Try Again", type: ContentType.warning);
+          return;
+        };
       }
       emit(BeVendorLoadingState());
 
@@ -209,11 +215,6 @@ class BeVendorCubit extends Cubit<BeVendorState> {
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF CAR REGISTRATION FROM GALLERY- - - - - - - - - - - - - - - - - -  //
   void onPickRegistrationCarImage({ required BuildContext context }) async{
-    final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-    if(img == null && context.mounted){
-      CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
-      return;
-    }
     try{
       final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
       if(img == null && context.mounted){
@@ -228,11 +229,6 @@ class BeVendorCubit extends Cubit<BeVendorState> {
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF CAR ASSURANCE FROM GALLERY- - - - - - - - - - - - - - - - - -  //
   void onPickAssuranceCarImage({ required BuildContext context }) async{
-    final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-    if(img == null && context.mounted){
-      CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
-      return;
-    }
     try{
       final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
       if(img == null && context.mounted){

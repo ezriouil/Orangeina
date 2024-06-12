@@ -3,7 +3,7 @@ class Validator {
 
   static String? validateEmptyField(String fieldName, String? value) {
     if (value == null || value.isEmpty || value.length < 2) {
-      return "fieldName";
+      return fieldName;
     }
     return null;
   }
@@ -34,4 +34,30 @@ class Validator {
 
     return null;
   }
+
+  static String? validateMobilePhone(String? value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    RegExp regExp = RegExp(pattern);
+    if (value!.isEmpty) {
+      return 'Mobile Number Error';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid mobile number';
+    }
+    return null;
+  }
+
+  static String? validateAge(String? value) {
+    if (value!.isEmpty) {
+      return 'Age Empty';
+    }
+    else if (int.parse(value) < 18) {
+      return 'You are under 18 y';
+    }
+    else if (int.parse(value) > 70) {
+      return 'You are more 70 y';
+    }
+    return null;
+  }
+
 }

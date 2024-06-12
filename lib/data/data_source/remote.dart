@@ -67,7 +67,7 @@ class Remote{
 
   // - - - - - - - - - - - - - - - - - - UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
   static Future<void> updatePhone({required String collection, required String doc, required String newPhone}) async{
-    await _firebaseFirestore.collection(collection).doc(doc).update({'phone' : newPhone});
+    await _firebaseFirestore.collection(collection).doc(doc).update({'phoneNumber' : newPhone});
   }
 
   // - - - - - - - - - - - - - - - - - - UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
@@ -211,7 +211,7 @@ class Remote{
       'vendorId': wishListDto.vendorId,
       'avatar': wishListDto.avatar,
       'fullName': wishListDto.fullName,
-      'phone': wishListDto.phone,
+      'phoneNumber': wishListDto.phone,
       'rating': wishListDto.rating,
       'createAt': wishListDto.createAt
     });

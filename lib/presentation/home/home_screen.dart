@@ -49,7 +49,7 @@ class HomeScreen extends CustomState {
                         itemCount: state.vendors!.length,
                         itemBuilder: (context, index) => CustomVendor(
                             vendorEntity: state.vendors![index],
-                            onClick: (VendorEntity vendor) { context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context); })),
+                            onClick: (VendorEntity vendor) { context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context); }, myCurrentLocation: state.myCurrentLocation!.target)),
                   )),
                   SizedBox(
                     width: getWidth(context),

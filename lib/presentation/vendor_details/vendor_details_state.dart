@@ -11,6 +11,7 @@ final class VendorDetailsMainState extends VendorDetailsState {
   final VendorEntity? vendor;
   final  List<ReviewEntity>? reviews;
   final  Set<Marker>? markers;
+  final  GlobalKey<FormState>? reportFormState, feedBackFormState;
 
   VendorDetailsMainState(
       {this.feedbackController, this.reportReason, this.feedback,
@@ -18,7 +19,10 @@ final class VendorDetailsMainState extends VendorDetailsState {
         this.wishListId,
         this.vendor,
         this.reviews,
-        this.markers});
+        this.markers,
+        this.reportFormState,
+        this.feedBackFormState,
+      });
 
   VendorDetailsMainState copyWith(
       {
@@ -31,7 +35,9 @@ final class VendorDetailsMainState extends VendorDetailsState {
         CameraPosition? vendorLocation,
         VendorEntity? vendor,
         List<ReviewEntity>? reviews,
-        Set<Marker>? markers
+        Set<Marker>? markers,
+        GlobalKey<FormState>? reportFormState,
+        GlobalKey<FormState>? feedBackFormState,
       }) =>
       VendorDetailsMainState(
           feedbackController: feedbackController ?? this.feedbackController,
@@ -41,7 +47,9 @@ final class VendorDetailsMainState extends VendorDetailsState {
           mapController: mapController ?? this.mapController,
           vendor: vendor ?? this.vendor,
           reviews: reviews ?? this.reviews,
-          markers: markers ?? this.markers
+          markers: markers ?? this.markers,
+          reportFormState: reportFormState ?? this.reportFormState,
+      feedBackFormState: feedBackFormState ?? this.feedBackFormState
       );
 
 }

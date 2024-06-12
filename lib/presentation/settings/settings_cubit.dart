@@ -20,6 +20,7 @@ import '../../domain/entities/vendor_entity.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/custom_image_strings.dart';
 import '../../utils/constants/custom_sizes.dart';
+import '../../utils/extensions/validator.dart';
 import '../../utils/local/storage/local_storage.dart';
 import '../../utils/localisation/custom_locale.dart';
 import '../widgets/custom_snackbars.dart';
@@ -138,8 +139,18 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
   void onUpdateFullName({required BuildContext context}) async {
-    final String firstName = _vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
-    final String lastName = _vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
+
+    String firstName;
+    String lastName;
+    final GlobalKey<FormState> formState = GlobalKey<FormState>();
+
+    if(_user != null){
+      firstName = _user?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
+      lastName = _user?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
+    }else{
+      firstName = _vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
+      lastName = _vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
+    }
 
     final currentState = state as SettingsMainState;
 
@@ -147,101 +158,110 @@ class SettingsCubit extends Cubit<SettingsState> {
         context: context.mounted ? context : context,
         builder: (BuildContext context) {
           return AlertDialog(
+            scrollable: true,
               content: SizedBox(
-                  height: 250.0,
+                  height: 260.0,
                   width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // - - - - - - - - - - - - - - - - - - FIRST NAME - - - - - - - - - - - - - - - - - -  //
-                      CustomTextField(
-                          leadingIcon: Iconsax.user,
-                          hint: firstName,
-                          controller: currentState.updateFirstNameController!),
+                  child: Form(
+                    key: formState,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // - - - - - - - - - - - - - - - - - - FIRST NAME - - - - - - - - - - - - - - - - - -  //
+                        CustomTextField(
+                            leadingIcon: Iconsax.user,
+                            hint: firstName,
+                            validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_FIRST_NAME_VALIDATOR.getString(context), value),
+                            controller: currentState.updateFirstNameController!),
 
-                      // - - - - - - - - - - - - - - - - - - LAST NAME - - - - - - - - - - - - - - - - - -  //
-                      CustomTextField(
-                          leadingIcon: Iconsax.user,
-                          hint: lastName,
-                          controller: currentState.updateLastNameController!),
+                        // - - - - - - - - - - - - - - - - - - LAST NAME - - - - - - - - - - - - - - - - - -  //
+                        CustomTextField(
+                            leadingIcon: Iconsax.user,
+                            hint: lastName,
+                            validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_LAST_NAME_VALIDATOR.getString(context), value),
+                            controller: currentState.updateLastNameController!),
 
-                      // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(
-                          onClick: () async {
-                            try {
+                        // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
+                        CustomElevatedButton(
+                            onClick: () async {
+                              try {
 
-                              if (uid == null) {
-                                context.mounted ? context.pop() : null;
-                                return;
-                              }
+                                // CHECK THE FORM
+                                if(!formState.currentState!.validate()) return;
 
-                              if (currentState.updateFirstNameController!.text.trim().length < 3 || currentState.updateFirstNameController!.text.trim().length < 3) {
-                                context.mounted ? context.pop() : null;
-                                CustomSnackBar.show(context: context, title: "Fields Empty", subTitle: "Please Fill The Fields", type: ContentType.warning);
-                                return;
-                              }
+                                if (uid == null) {
+                                  context.mounted ? context.pop() : null;
+                                  return;
+                                }
 
-                              final isUserExist = await userRepository.existUser(userId: uid!);
-                              if (isUserExist) {
-                                await userRepository.updateUserFullName(userId: uid!, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
-                                await LocalStorage.upsert(
-                                    key: "FIRST_NAME",
-                                    value: currentState.updateFirstNameController!.text,
-                                    storage: storage);
-                                await LocalStorage.upsert(
-                                    key: "LAST_NAME",
-                                    value: currentState.updateLastNameController!.text,
-                                    storage: storage);
+                                final isUserExist = await userRepository.existUser(userId: uid!);
+                                if (isUserExist) {
+                                  await userRepository.updateUserFullName(userId: uid!, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
+                                  await LocalStorage.upsert(
+                                      key: "FIRST_NAME",
+                                      value: currentState.updateFirstNameController!.text,
+                                      storage: storage);
+                                  await LocalStorage.upsert(
+                                      key: "LAST_NAME",
+                                      value: currentState.updateLastNameController!.text,
+                                      storage: storage);
+                                  if(!context.mounted) return;
+                                  context.pop();
+                                  CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
+                                  return;
+                                }
+
+                                final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
+                                if (isVendorExist) {
+                                  await vendorRepository.updateVendorFullName(
+                                      vendorId: uid!,
+                                      newFirstName: currentState.updateFirstNameController!.text,
+                                      newLastName: currentState.updateLastNameController!.text);
+                                  await LocalStorage.upsert(
+                                      key: "FIRST_NAME",
+                                      value: currentState.updateFirstNameController!.text,
+                                      storage: storage);
+                                  await LocalStorage.upsert(
+                                      key: "LAST_NAME",
+                                      value: currentState.updateLastNameController!.text,
+                                      storage: storage);
+                                  currentState.updateFirstNameController!.clear();
+                                  currentState.updateLastNameController!.clear();
+                                  if(!context.mounted) return;
+                                  context.pop();
+                                  CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
+                                  return;
+                                }
+
                                 currentState.updateFirstNameController!.clear();
                                 currentState.updateLastNameController!.clear();
-                                if(!context.mounted) return;
-                                context.pop();
-                                CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
-                                return;
+                                context.mounted ? context.pop(): null;
+
+                              } catch (e) {
+                                context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                               }
+                            },
+                            child: Text(
+                                CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context),
+                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
 
-                              final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
-                              if (isVendorExist) {
-                                await vendorRepository.updateVendorFullName(
-                                    vendorId: uid!,
-                                    newFirstName: currentState.updateFirstNameController!.text,
-                                    newLastName: currentState.updateLastNameController!.text);
-                                await LocalStorage.upsert(
-                                    key: "FIRST_NAME",
-                                    value: currentState.updateFirstNameController!.text,
-                                    storage: storage);
-                                await LocalStorage.upsert(
-                                    key: "LAST_NAME",
-                                    value: currentState.updateLastNameController!.text,
-                                    storage: storage);
-                                currentState.updateFirstNameController!.clear();
-                                currentState.updateLastNameController!.clear();
-                                if(!context.mounted) return;
-                                context.pop();
-                                CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
-                                return;
-                              }
-
-                              currentState.updateFirstNameController!.clear();
-                              currentState.updateLastNameController!.clear();
-                              context.mounted ? context.pop(): null;
-
-                            } catch (e) {
-                              context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-                            }
-                          },
-                          child: Text(
-                              CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context),
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
-
-                    ],
+                      ],
+                    ),
                   )));
         });
   }
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
   void onUpdatePhone({required BuildContext context}) async {
-    final String phone = _vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
+    String phone;
+    final GlobalKey<FormState> formState = GlobalKey<FormState>();
+
+    if(_user != null){
+      phone = _user?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
+    }else{
+      phone = _vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
+    }
+
 
     final currentState = state as SettingsMainState;
     await showDialog(
@@ -251,72 +271,61 @@ class SettingsCubit extends Cubit<SettingsState> {
               content: SizedBox(
                   height: 180.0,
                   width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // - - - - - - - - - - - - - - - - - - PHONE - - - - - - - - - - - - - - - - - -  //
-                      CustomTextField(
-                        leadingIcon: Iconsax.call,
-                        hint: phone,
-                        controller: currentState.updatePhoneController!,
-                        textInputType: TextInputType.phone,
-                      ),
+                  child: Form(
+                    key: formState,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // - - - - - - - - - - - - - - - - - - PHONE - - - - - - - - - - - - - - - - - -  //
+                        CustomTextField(
+                          leadingIcon: Iconsax.call,
+                          hint: phone,
+                          controller: currentState.updatePhoneController!,
+                          validator: (value) => Validator.validateMobilePhone(value),
+                          textInputType: TextInputType.phone,
+                        ),
 
-                      // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(
-                          onClick: () async {
-                            try {
+                        // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
+                        CustomElevatedButton(
+                            onClick: () async {
+                              try {
 
-                              if (uid == null) {
+                                // CHECK THE FORM
+                                if(!formState.currentState!.validate()) return;
+
+                                if (uid == null) {
+                                  context.mounted ? context.pop() : null;
+                                  return;
+                                }
+
+                                final isUserExist = await userRepository.existUser(userId: uid!);
+                                if (isUserExist) {
+                                  await userRepository.updateUserPhone(userId: uid!, newPhone: currentState.updatePhoneController!.text);
+                                  await LocalStorage.upsert(key: "PHONE", value: currentState.updatePhoneController!.text, storage: storage);
+                                  if(!context.mounted) return;
+                                  context.mounted ? context.pop() : null;
+                                  CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
+                                  return;
+                                }
+
+                                final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
+                                if (isVendorExist) {
+                                  await vendorRepository.updateVendorPhone(vendorId: uid!, newPhone: currentState.updatePhoneController!.text);
+                                  await LocalStorage.upsert(key: "PHONE", value: currentState.updatePhoneController!.text, storage: storage);
+                                  context.mounted ? context.pop() : null;
+                                  if(!context.mounted) return;
+                                  context.pop();
+                                  CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
+                                  return;
+                                }
                                 context.mounted ? context.pop() : null;
-                                return;
+                              } catch (e) {
+                                context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                               }
-
-                              if (currentState.updatePhoneController!.text.trim().length < 10) {
-                                //snack bar
-                                context.mounted ? context.pop() : null;
-                                return;
-                              }
-
-                              final isUserExist = await userRepository.existUser(userId: uid!);
-                              if (isUserExist) {
-                                await userRepository.updateUserPhone(userId: uid!, newPhone: currentState.updatePhoneController!.text);
-                                await LocalStorage.upsert(
-                                    key: "PHONE",
-                                    value: currentState.updatePhoneController!.text,
-                                    storage: storage);
-                                currentState.updatePhoneController!.clear();
-                                context.mounted ? context.pop() : null;
-                                CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
-                                return;
-                              }
-
-                              final isVendorExist = await vendorRepository
-                                  .existVendor(vendorId: uid!);
-                              if (isVendorExist) {
-                                await vendorRepository.updateVendorPhone(
-                                    vendorId: uid!,
-                                    newPhone: currentState.updatePhoneController!.text);
-                                await LocalStorage.upsert(
-                                    key: "PHONE",
-                                    value: currentState.updatePhoneController!.text,
-                                    storage: storage);
-                                currentState.updatePhoneController!.clear();
-                                context.mounted ? context.pop() : null;
-                                if(!context.mounted) return;
-                                context.pop();
-                                CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
-                                return;
-                              }
-
-                              currentState.updatePhoneController!.clear();
-                              context.mounted ? context.pop() : null;
-                            } catch (e) {
-                              context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-                            }
-                          },
-                          child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
-                    ],
+                            },
+                            child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
+                      ],
+                    ),
                   )));
         });
   }

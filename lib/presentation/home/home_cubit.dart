@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:math';
 import 'dart:ui' as ui;
 
@@ -151,6 +152,7 @@ class HomeCubit extends Cubit<HomeState> {
     final vendors = <VendorEntity>[];
 
     for (VendorEntity vendor in getVendors) {
+
       if(vendor.id! == uid) continue;
       vendors.add(vendor);
       markers.add(await customMarker(
@@ -161,9 +163,29 @@ class HomeCubit extends Cubit<HomeState> {
           firstName: vendor.firstName!,
           lastName: vendor.lastName!,
           rating: vendor.averageRating!,
-          distance: 135.8
+          distance: 104.5
       ));
     }
+
+    // vendors.sort((a,b) {
+    //
+    //           const double p = 0.017453292519943295;
+    //
+    //            double calA = 0.5 - cos(((a.shopLat as double) - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos((a.shopLat as double)  * p) * (1 - cos(((a.shopLng as double)  - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
+    //           final double distanceA = ((12742 * asin(sqrt(calA))));
+    //
+    //           final double calB = 0.5 - cos(((b.shopLat as double)  - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos((b.shopLat as double)  * p) * (1 - cos(((b.shopLng as double)  - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
+    //           final double distanceB = ((12742 * asin(sqrt(calB))));
+    //
+    //           return distanceB.compareTo(distanceA);
+    //         });
+    // print("++++++++++");
+    // print(vendors.first);
+    // print("++++++++++");
+    // vendors.reversed.toList();
+    // print("++++++++++");
+    // print(vendors.reversed.toList().first);
+    // print("++++++++++");
 
     emit(currentState.copyWith(vendors: vendors, markers: markers));
 

@@ -9,6 +9,7 @@ final class BeVendorMainState extends BeVendorState {
   final String? gender, carType, shopThumbnail, cinFrontImage, cinBackImage, carAssuranceImage, carRegistrationImage;
   final TextEditingController? cinController, phoneController, ageController, carAssuranceController, carRegistrationController;
   final UserEntity? userEntity;
+  final GlobalKey<FormState>? personalInfoFormState, carInfoFormState;
 
   BeVendorMainState(
       {this.scrollPhysics,
@@ -26,6 +27,8 @@ final class BeVendorMainState extends BeVendorState {
       this.carAssuranceController,
       this.carRegistrationController,
       this.userEntity,
+      this.personalInfoFormState,
+      this.carInfoFormState,
       });
 
   BeVendorMainState copyWith(
@@ -43,7 +46,10 @@ final class BeVendorMainState extends BeVendorState {
           TextEditingController? ageController,
           TextEditingController? carAssuranceController,
           TextEditingController? carRegistrationController,
-          UserEntity? userEntity}) =>
+          UserEntity? userEntity,
+          GlobalKey<FormState>? personalInfoFormState,
+          GlobalKey<FormState>? carInfoFormState,
+          }) =>
       BeVendorMainState(
           scrollPhysics: scrollPhysics ?? this.scrollPhysics,
           currentStep: currentStep ?? this.currentStep,
@@ -59,7 +65,9 @@ final class BeVendorMainState extends BeVendorState {
           ageController: ageController ?? this.ageController,
         carAssuranceController: carAssuranceController ?? this.carAssuranceController,
         carRegistrationController: carRegistrationController ?? this.carRegistrationController,
-          userEntity: userEntity ?? this.userEntity
+        userEntity: userEntity ?? this.userEntity,
+        personalInfoFormState: personalInfoFormState ?? this.personalInfoFormState,
+        carInfoFormState: carInfoFormState ?? this.carInfoFormState,
   );
 
 }

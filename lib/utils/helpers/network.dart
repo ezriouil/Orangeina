@@ -1,7 +1,4 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:iconsax/iconsax.dart';
-
-import '../../presentation/widgets/custom_snackbars.dart';
 
 class Network {
   Network._();

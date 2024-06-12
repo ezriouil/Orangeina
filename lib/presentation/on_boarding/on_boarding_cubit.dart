@@ -26,7 +26,7 @@ class OnBoardingCubit extends Cubit<OnBoardingState> {
   // - - - - - - - - - - - - - - - - - - SKIP BUTTON - - - - - - - - - - - - - - - - - -  //
   void onSkip() async{
     final currentState = state as OnBoardingMainState;
-    currentState.pageController!.animateToPage(currentState.lastPageNbr!, duration: const Duration(milliseconds: 1000), curve: Curves.linear);
+    currentState.pageController!.animateToPage(currentState.lastPageNbr!, duration: const Duration(milliseconds: 500), curve: Curves.linear);
     emit(currentState.copyWith(currentPageIndex: currentState.lastPageNbr));
   }
 

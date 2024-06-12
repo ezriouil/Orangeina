@@ -14,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../utils/constants/custom_sizes.dart';
+import '../../utils/extensions/validator.dart';
 import '../../utils/localisation/custom_locale.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -53,6 +54,7 @@ class BeVendorScreen extends CustomState {
                           state: state.currentStep! > 0 ? StepState.complete : StepState.disabled,
                           title: Text(CustomLocale.BE_VENDOR_STEP_1_TITLE.getString(context)),
                           content: StepPersonalInfo(
+                            formState: state.personalInfoFormState!,
                               cinController: state.cinController,
                               phoneController: state.phoneController,
                               ageController: state.ageController,
@@ -218,20 +220,29 @@ class BeVendorScreen extends CustomState {
                               // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                               const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
-                              // - - - - - - - - - - - - - - - - - - ASSURANCE NUMBER - - - - - - - - - - - - - - - - - -  //
-                              CustomTextField(
-                                leadingIcon: Iconsax.bookmark,
-                                controller: state.carAssuranceController!,
-                                hint: CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_TITLE.getString(context),
-                                textInputType: TextInputType.number,
-                              ),
+                              Form(
+                                key: state.carInfoFormState,
+                                child: Column(
+                                  children: [
+                                    // - - - - - - - - - - - - - - - - - - ASSURANCE NUMBER - - - - - - - - - - - - - - - - - -  //
+                                    CustomTextField(
+                                      leadingIcon: Iconsax.bookmark,
+                                      controller: state.carAssuranceController!,
+                                      hint: CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_TITLE.getString(context),
+                                      validator: (value) => Validator.validateEmptyField("Car Assurance Number Required", value),
+                                      textInputType: TextInputType.number,
+                                    ),
 
-                              // - - - - - - - - - - - - - - - - - - REGISTRATION NUMBER - - - - - - - - - - - - - - - - - -  //
-                              CustomTextField(
-                                  leadingIcon: Iconsax.bookmark,
-                                  controller: state.carRegistrationController!,
-                                  hint: CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_TITLE.getString(context),
-                                  textInputType: TextInputType.number),
+                                    // - - - - - - - - - - - - - - - - - - REGISTRATION NUMBER - - - - - - - - - - - - - - - - - -  //
+                                    CustomTextField(
+                                        leadingIcon: Iconsax.bookmark,
+                                        controller: state.carRegistrationController!,
+                                        hint: CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_TITLE.getString(context),
+                                        validator: (value) => Validator.validateEmptyField("Car Registration Number Required", value),
+                                        textInputType: TextInputType.number),
+                                  ],
+                                ),
+                              ),
 
                               // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                               const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),

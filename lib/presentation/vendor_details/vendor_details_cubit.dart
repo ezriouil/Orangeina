@@ -12,6 +12,7 @@ import 'package:berkania/domain/repositories/wishList_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
+import 'package:berkania/utils/extensions/validator.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:flutter/material.dart';
@@ -65,8 +66,10 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       markers: const {},
       reviews: const [],
       feedbackController: TextEditingController(),
-      feedback: 0.0,
-      reportReason: ""
+      feedback: 3.5,
+      reportReason: "",
+      feedBackFormState: GlobalKey<FormState>(),
+      reportFormState: GlobalKey<FormState>()
     ));
     uid = await LocalStorage.read(key: "UID", storage: storage);
 
@@ -170,100 +173,105 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
               width: double.infinity,
               height: 350,
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
+                child: Form(
+                  key: currentState.feedBackFormState,
+                  child: Column(
+                    children: [
 
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                
-                    // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
-                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6)),
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                
-                    // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
-                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-                
-                    // - - - - - - - - - - - - - - - - - -  RATING - - - - - - - - - - - - - - - - - -  //
-                    Center(
-                      child: RatingBar.builder(
-                        itemCount: 5,
-                        initialRating:  4.5,
-                        maxRating: 5,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemPadding: EdgeInsets.zero,
-                        itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
-                        onRatingUpdate: (double value) { emit(currentState.copyWith(feedback: value));  },
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+
+                      // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
+                      Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6)),
+
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+
+                      // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
+                      Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                      // - - - - - - - - - - - - - - - - - -  RATING - - - - - - - - - - - - - - - - - -  //
+                      Center(
+                        child: RatingBar.builder(
+                          itemCount: 5,
+                          initialRating:  currentState.feedback!,
+                          maxRating: 5,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemPadding: EdgeInsets.zero,
+                          itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
+                          onRatingUpdate: (double value) { emit(currentState.copyWith(feedback: value));  },
+                        ),
                       ),
-                    ),
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                
-                    // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
-                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-                
-                    // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
-                    CustomTextField(hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context), controller: currentState.feedbackController!, leadingIcon: Iconsax.bookmark, validator: null),
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
-                
-                    // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
-                    Row(
-                      children: [
 
-                        // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
-                        // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                        const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+                      // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
+                      Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
 
-                        // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(onClick: () async{
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
-                          if(currentState.feedbackController!.text.trim().length < 6){
-                            // SHOW SNACK BAR
-                            return;
-                          }
+                      // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
+                      CustomTextField(
+                          hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context),
+                          controller: currentState.feedbackController!,
+                          leadingIcon: Iconsax.bookmark,
+                          validator: (value) => Validator.validateEmptyField("FeedBack required", value)),
 
-                          if(uid == null) return;
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+
+                      // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
+                      Row(
+                        children: [
+
+                          // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
+                          Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
+
+                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                          const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+
+                          // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
+                          Expanded(child: CustomElevatedButton(onClick: () async{
+
+                            // CHECK THE FORM
+                            if(!currentState.feedBackFormState!.currentState!.validate()) return;
+
+                            if(uid == null) return;
 
 
-                          final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
+                            final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
 
-                          if(userEntity == null) return;
+                            if(userEntity == null) return;
 
-                          final date = DateTime.now();
-                          final ReviewEntity review = ReviewEntity(
-                            vendorId: argumentId,
-                            fullName: "${userEntity.firstName} ${userEntity.lastName}",
-                            reviewBody: currentState.feedbackController!.text.trim(),
-                            avatar: userEntity.avatar,
-                            rating: currentState.feedback!,
-                            createAt: "${date.day}/${date.month}/${date.year}"
-                          );
-                          await reviewRepository.insert(reviewEntity: review);
+                            final date = DateTime.now();
+                            final ReviewEntity review = ReviewEntity(
+                              vendorId: argumentId,
+                              fullName: "${userEntity.firstName} ${userEntity.lastName}",
+                              reviewBody: currentState.feedbackController!.text.trim(),
+                              avatar: userEntity.avatar,
+                              rating: currentState.feedback!,
+                              createAt: "${date.day}/${date.month}/${date.year}"
+                            );
+                            await reviewRepository.insert(reviewEntity: review);
 
-                          currentState.feedbackController!.clear();
+                            currentState.feedbackController!.clear();
 
-                          callBack.call();
+                            callBack.call();
 
-                        }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
+                          }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
 
-                      ],
-                    )
-                    
-                  ],
+                        ],
+                      )
+
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -283,103 +291,107 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
               width: double.infinity,
               height: 350,
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                
-                    // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
-                    Text(
-                        CustomLocale.VENDOR_DETAILS_REPORT_TITLE.getString(context),
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6),
-                    ),
+                child: Form(
+                  key: currentState.reportFormState,
+                  child: Column(
+                    children: [
 
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                
-                    // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
-                    Text(CustomLocale.VENDOR_DETAILS_REPORT_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-                
-                    DropdownButton<String>(
-                        isExpanded: true,
-                        borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        items:[
-                          DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
-                          DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_2.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_2.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
-                          DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_3.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_3.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
-                          DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
-                          DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+
+                      // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
+                      Text(
+                          CustomLocale.VENDOR_DETAILS_REPORT_TITLE.getString(context),
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6),
+                      ),
+
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+
+                      // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
+                      Text(CustomLocale.VENDOR_DETAILS_REPORT_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                      DropdownButton<String>(
+                          isExpanded: true,
+                          borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          items:[
+                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_2.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_2.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_3.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_3.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                          ],
+                          onChanged: (String? value) {
+                            emit(currentState.copyWith(reportReason: value));
+                          },
+                          icon: const Icon(Iconsax.arrow_bottom),
+                          value: currentState.reportReason == "" ? CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context) : currentState.reportReason ),
+
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+
+                      // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
+                      Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+
+                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+
+                      // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
+                      CustomTextField(
+                          hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context),
+                          controller: currentState.feedbackController!,
+                          leadingIcon: Iconsax.bookmark,
+                          validator: (value) => Validator.validateEmptyField("Report required", value)),
+
+                      // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
+                      Row(
+                        children: [
+
+                          // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
+                          Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
+
+                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                          const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+
+                          // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
+                          Expanded(child: CustomElevatedButton(onClick: () async{
+
+                            // CHECK THE FORM
+                            if(!currentState.reportFormState!.currentState!.validate()) return;
+
+                            if(uid == null) return;
+
+                            final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
+
+                            if(userEntity == null) return;
+
+                            final date = DateTime.now();
+                            final ReportEntity report = ReportEntity(
+                                vendorId: uid,
+                                fullName: "${userEntity.firstName} ${userEntity.lastName}",
+                                reportType: currentState.reportReason,
+                                reportBody: currentState.feedbackController!.text.trim(),
+                                avatar: userEntity.avatar,
+                                rating: currentState.feedback!,
+                                createAt: "${date.day}/${date.month}/${date.year}"
+                            );
+                            await reportRepository.insert(reportEntity: report);
+
+                            currentState.feedbackController!.clear();
+
+                            callBack.call();
+
+                          }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
+
                         ],
-                        onChanged: (String? value) {
-                          emit(currentState.copyWith(reportReason: value));
-                        },
-                        icon: const Icon(Iconsax.arrow_bottom),
-                        value: currentState.reportReason == "" ? CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context) : currentState.reportReason ),
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-                
-                    // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
-                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
-                
-                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                
-                    // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
-                    CustomTextField(hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context), controller: currentState.feedbackController!, leadingIcon: Iconsax.bookmark, validator: null),
+                      )
 
-                
-                    // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
-                    Row(
-                      children: [
-
-                        // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
-
-                        // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                        const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
-
-                        // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
-                        Expanded(child: CustomElevatedButton(onClick: () async{
-
-                          if(currentState.feedbackController!.text.trim().length < 6){
-                            // SHOW SNACK BAR
-                            return;
-                          }
-
-                          if(uid == null) return;
-
-                          final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
-
-                          if(userEntity == null) return;
-
-                          final date = DateTime.now();
-                          final ReportEntity report = ReportEntity(
-                              vendorId: uid,
-                              fullName: "${userEntity.firstName} ${userEntity.lastName}",
-                              reportType: currentState.reportReason,
-                              reportBody: currentState.feedbackController!.text.trim(),
-                              avatar: userEntity.avatar,
-                              rating: currentState.feedback!,
-                              createAt: "${date.day}/${date.month}/${date.year}"
-                          );
-                          await reportRepository.insert(reportEntity: report);
-
-                          currentState.feedbackController!.clear();
-
-                          callBack.call();
-
-                        }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
-
-                      ],
-                    )
-                
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
