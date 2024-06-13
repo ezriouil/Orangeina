@@ -72,6 +72,9 @@ dependencies:
   # RATING
   flutter_rating_bar: ^4.0.1
 
+  # PHONE NUMBER PICKER
+  intl_phone_number_input: ^0.7.4
+
   # CHANGE APP ICON
   flutter_launcher_icons: ^0.13.1
 

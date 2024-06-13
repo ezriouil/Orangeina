@@ -29,7 +29,7 @@ class SettingsScreen extends CustomState {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                    
+
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
 

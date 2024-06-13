@@ -77,9 +77,8 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
   void getVendorInfo({ required String argumentId,  required BuildContext context }) async{
+    final VendorDetailsMainState currentState = state as VendorDetailsMainState;
    try{
-
-     final VendorDetailsMainState currentState = state as VendorDetailsMainState;
      final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId);
 
      final markers = <Marker>{};
@@ -126,8 +125,8 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - GET ALL REVIEWS - - - - - - - - - - - - - - - - - -  //
   getReviews({ required String argumentId, required BuildContext context }) async{
+    final VendorDetailsMainState currentState = state as VendorDetailsMainState;
     try{
-      final VendorDetailsMainState currentState = state as VendorDetailsMainState;
       if(uid == null) return;
       final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
       emit(currentState.copyWith(reviews: reviews));

@@ -14,6 +14,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../domain/entities/vendor_entity.dart';
@@ -262,8 +263,8 @@ class SettingsCubit extends Cubit<SettingsState> {
       phone = _vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
     }
 
-
     final currentState = state as SettingsMainState;
+
     await showDialog(
         context: context.mounted ? context : context,
         builder: (BuildContext context) {
@@ -276,24 +277,28 @@ class SettingsCubit extends Cubit<SettingsState> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        
-                        // - - - - - - - - - - - - - - - - - - PHONE - - - - - - - - - - - - - - - - - -  //
-                        CustomTextField(
-                          leadingWidget: Padding(
-                            padding: const EdgeInsets.only(top: 14, left: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                            child: Text("+212", style: Theme.of(context).textTheme.bodyMedium),
+
+                        InternationalPhoneNumberInput(
+                          onInputChanged: (PhoneNumber number) {},
+                          selectorConfig: const SelectorConfig(
+                            selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                            useBottomSheetSafeArea: true,
+                            showFlags: false
                           ),
-                          hint: phone,
-                          controller: currentState.updatePhoneController!,
+                          selectorTextStyle: Theme.of(context).textTheme.bodyLarge,
+                          textFieldController: currentState.updatePhoneController,
+                          hintText: phone,
+                          initialValue: PhoneNumber(isoCode: "MA"),
                           validator: (value) => Validator.validateMobilePhone(value),
-                          textInputType: TextInputType.phone,
+                          spaceBetweenSelectorAndTextField: 0,
                         ),
+
+
 
                         // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
                         CustomElevatedButton(
                             onClick: () async {
                               try {
-
                                 // CHECK THE FORM
                                 if(!formState.currentState!.validate()) return;
 
@@ -533,6 +538,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                         await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
                         if(!context.mounted) return;
                         context.pushReplacementNamed(CustomRouter.LOGIN);
+                        context.pop();
                       }),
                   CustomElevatedButton(
                       onClick: context.pop,

@@ -3,7 +3,9 @@ import 'package:berkania/utils/extensions/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
+import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/localisation/custom_locale.dart';
 import '../../../utils/state/custom_state.dart';
 import '../../widgets/custom_text_field.dart';
@@ -39,15 +41,6 @@ class StepPersonalInfo extends CustomState {
             textInputType: TextInputType.emailAddress,
           ),
 
-          // - - - - - - - - - - - - - - - - - - CALL - - - - - - - - - - - - - - - - - -  //
-          CustomTextField(
-              leadingIcon: Iconsax.call,
-              controller: phoneController!,
-              hint: CustomLocale.BE_VENDOR_PHONE.getString(context),
-              validator: (value) => Validator.validateMobilePhone(value),
-              textInputType: TextInputType.phone),
-
-
           // - - - - - - - - - - - - - - - - - - BIRTHDAY - - - - - - - - - - - - - - - - - -  //
           CustomTextField(
               leadingIcon: Iconsax.cake,
@@ -55,6 +48,30 @@ class StepPersonalInfo extends CustomState {
               hint: CustomLocale.BE_VENDOR_BIRTHDAY.getString(context),
             validator: (value) => Validator.validateAge(value),
             textInputType: TextInputType.number,
+          ),
+
+          // - - - - - - - - - - - - - - - - - - CALL - - - - - - - - - - - - - - - - - -  //
+          InternationalPhoneNumberInput(
+            onInputChanged: (PhoneNumber number) {},
+            selectorConfig: const SelectorConfig(
+                selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                useBottomSheetSafeArea: true,
+                showFlags: false
+            ),
+            inputDecoration:InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 24),
+                fillColor: CustomColors.TRANSPARENT,
+                hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
+                prefixIcon: Icon(Iconsax.call, color: grayColor(context)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(color: darkLightColor(context)))),
+            selectorTextStyle: Theme.of(context).textTheme.bodyLarge,
+            textFieldController:  phoneController!,
+            hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
+            initialValue: PhoneNumber(isoCode: "MA"),
+            validator: (value) => Validator.validateMobilePhone(value),
+            spaceBetweenSelectorAndTextField: 0,
           ),
 
           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //

@@ -186,7 +186,7 @@ class VendorDetailsScreen extends CustomState {
                                         overflow: TextOverflow.ellipsis)),
                                 Tab(
                                     icon: Text(
-                                        CustomLocale.VENDOR_DETAILS_REPORT_TITLE.getString(context),
+                                        CustomLocale.VENDOR_DETAILS_TITLE_TAB_REVIEWS.getString(context),
                                         style: Theme.of(context).textTheme.bodyLarge,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis)),
