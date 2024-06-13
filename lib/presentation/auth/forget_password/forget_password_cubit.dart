@@ -20,16 +20,19 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init(){
-    emit(ForgetPasswordMainState(emailController: TextEditingController()));
+    emit(ForgetPasswordMainState(emailController: TextEditingController(), formState: GlobalKey<FormState>()));
   }
 
   // - - - - - - - - - - - - - - - - - - SEND EMAIL LINK RESET THE PASSWORD - - - - - - - - - - - - - - - - - -  //
   onSend({required BuildContext context, required Function callBack}) async{
+
+    // CURRENT STATE
+    final ForgetPasswordMainState currentState = state as ForgetPasswordMainState;
+
     try{
 
-
-      // CURRENT STATE
-      final ForgetPasswordMainState currentState = state as ForgetPasswordMainState;
+      // CHECK THE FORM
+      if(!currentState.formState!.currentState!.validate()) return;
 
       // CHECK CONNECTION INTERNET
       final hasConnection = await Network.hasConnection(connectivity);
@@ -47,6 +50,16 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
       // EMIT LOADING STATE
       emit(ForgetPasswordLoadingState());
 
+      // CHECK THE EMAIL IS EXIST OR NOT
+      final isExist1 = await authRepository.emailExist(collection: "USERS", email: currentState.emailController!.text);
+      final isExist2 = await authRepository.emailExist(collection: "VENDORS", email: currentState.emailController!.text);
+
+      if(!isExist1 && !isExist2){
+        emit(currentState);
+        CustomSnackBar.show(context: context, title: "Email Not Found", subTitle: "Please Try Another Email", type: ContentType.warning);
+        return;
+      }
+
       // SEND RESET PASSWORD LINK
       await authRepository.forgetPassword(email: currentState.emailController!.text);
 
@@ -55,11 +68,14 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
+      CustomSnackBar.show(context: context, title: "Please Check Your Email", subTitle: "We Sent The Link To Reset Your Password", type: ContentType.warning);
       callBack.call();
 
     }catch(e){
+      print(e.toString());
       // EMIT ERROR STATE
-      emit(ForgetPasswordErrorState(message: e.toString()));
+      emit(currentState);
+      CustomSnackBar.show(context: context, title: "Server Error", subTitle: "Please Try Again", type: ContentType.warning);
     }
   }
 

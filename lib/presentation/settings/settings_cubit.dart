@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
+import 'package:berkania/domain/repositories/auth_repository.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
@@ -39,10 +40,11 @@ class SettingsCubit extends Cubit<SettingsState> {
   
   final GetStorage storage;
   final UserRepository userRepository;
+  final AuthRepository authRepository;
   final VendorRepository vendorRepository;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  SettingsCubit({ required this.storage, required this.userRepository, required this.vendorRepository }) : super(SettingsMainState()) { init(); }
+  SettingsCubit({ required this.storage, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsMainState()) { init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async {
@@ -289,6 +291,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                           textFieldController: currentState.updatePhoneController,
                           hintText: phone,
                           initialValue: PhoneNumber(isoCode: "MA"),
+                          formatInput: false,
                           validator: (value) => Validator.validateMobilePhone(value),
                           spaceBetweenSelectorAndTextField: 0,
                         ),
@@ -535,6 +538,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                         ],
                       ),
                       onClick: () async{
+                        await authRepository.signOut();
                         await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
                         if(!context.mounted) return;
                         context.pushReplacementNamed(CustomRouter.LOGIN);

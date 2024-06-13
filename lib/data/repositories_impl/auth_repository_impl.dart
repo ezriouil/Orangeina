@@ -1,3 +1,4 @@
+import 'package:berkania/data/data_source/remote.dart';
 import 'package:berkania/domain/repositories/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -47,5 +48,10 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> signOut() async{
     await _firebaseAuth.signOut();
   }
+
+
+  @override
+  Future<bool> emailExist({required String collection, required String email})async => await Remote.emailExist(collection: collection, email: email);
+
 
 }

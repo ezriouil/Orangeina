@@ -46,6 +46,7 @@ class CustomTextField extends CustomState {
         maxLines: 1,
         style: const TextStyle().copyWith(fontSize: 14.0, color: darkLightColor(context), fontFamily: "Cal", fontWeight: FontWeight.normal),
         autocorrect: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         autofocus: autoFocus,
         readOnly: readOnly,
         obscureText: obscureText,

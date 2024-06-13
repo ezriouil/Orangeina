@@ -19,7 +19,7 @@ class CustomRouter{
 
     return GoRouter(
       //initialLocation: initialLocation == null ? ON_BOARDING : initialLocation == "LOGIN"  ? LOGIN : INDEX,
-      initialLocation:BE_VENDOR,
+      initialLocation:LOGIN,
       routes: <RouteBase>[
 
         // - - -  ON BOARDING - - -  //

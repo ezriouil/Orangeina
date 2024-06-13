@@ -5,14 +5,9 @@ sealed class ForgetPasswordState {}
 
 final class ForgetPasswordMainState extends ForgetPasswordState {
   final TextEditingController? emailController;
+  final GlobalKey<FormState>? formState;
 
-  ForgetPasswordMainState({ this.emailController });
+  ForgetPasswordMainState({ this.emailController, this.formState });
 }
 
 final class ForgetPasswordLoadingState extends ForgetPasswordState {}
-
-final class ForgetPasswordErrorState extends ForgetPasswordState {
-  final String message;
-
-  ForgetPasswordErrorState({ required this.message });
-}

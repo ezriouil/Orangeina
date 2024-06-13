@@ -67,7 +67,6 @@ class BeVendorCubit extends Cubit<BeVendorState> {
 
       final BeVendorMainState currentState = state as BeVendorMainState;
 
-
       // CHECK THE FORM
       if(!currentState.personalInfoFormState!.currentState!.validate()) return;
       emit(currentState.copyWith(currentStep: 1));
@@ -165,13 +164,25 @@ class BeVendorCubit extends Cubit<BeVendorState> {
     final BeVendorMainState currentState = state as BeVendorMainState;
     if(currentState.currentStep! <= 0) return;
     final updateCurrentStep = currentState.currentStep! - 1;
-    emit(currentState.copyWith(currentStep: updateCurrentStep));
-  }
 
-  // - - - - - - - - - - - - - - - - - - UPDATE CURRENT STEP - - - - - - - - - - - - - - - - - -  //
-  void onStepTapped(int step){
-    final BeVendorMainState currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(currentStep: step));
+    if(updateCurrentStep == 1){
+      currentState.carRegistrationController?.clear();
+      currentState.carAssuranceController?.clear();
+      emit(currentState.copyWith(
+          currentStep: updateCurrentStep
+      ));
+      return;
+    }
+    if(updateCurrentStep == 2){
+      emit(currentState.copyWith(
+          currentStep: updateCurrentStep,
+          carAssuranceImage: "",
+          carRegistrationImage: "",
+          cinFrontImage: "",
+          cinBackImage: ""));
+      return;
+    }
+    emit(currentState.copyWith(currentStep: updateCurrentStep));
   }
 
   // - - - - - - - - - - - - - - - - - - UPDATE GENDER RADIO BUTTON - - - - - - - - - - - - - - - - - -  //
@@ -190,12 +201,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   void onPickCarImage({ required BuildContext context }) async{
    try{
      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-     if(img == null && context.mounted){
-       CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+     if(img == null){
        return;
      }
      final BeVendorMainState currentState = state as BeVendorMainState;
-     emit(currentState.copyWith(shopThumbnail: img?.path));
+     emit(currentState.copyWith(shopThumbnail: img.path));
    }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }
 
@@ -203,12 +213,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   void onPickCinFrontImage({ required BuildContext context }) async{
     try{
       final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-      if(img == null && context.mounted){
-        CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+      if(img == null){
         return;
       }
       final BeVendorMainState currentState = state as BeVendorMainState;
-      emit(currentState.copyWith(cinFrontImage: img?.path));
+      emit(currentState.copyWith(cinFrontImage: img.path));
     }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }
 
@@ -216,12 +225,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   void onPickCinBackImage({ required BuildContext context }) async{
     try{
       final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-      if(img == null && context.mounted){
-        CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+      if(img == null){
         return;
       }
       final BeVendorMainState currentState = state as BeVendorMainState;
-      emit(currentState.copyWith(cinBackImage: img?.path));
+      emit(currentState.copyWith(cinBackImage: img.path));
     }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }
 
@@ -229,12 +237,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   void onPickRegistrationCarImage({ required BuildContext context }) async{
     try{
       final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-      if(img == null && context.mounted){
-        CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+      if(img == null){
         return;
       }
       final BeVendorMainState currentState = state as BeVendorMainState;
-      emit(currentState.copyWith(carRegistrationImage: img?.path));
+      emit(currentState.copyWith(carRegistrationImage: img.path));
     }
     catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }
@@ -243,12 +250,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   void onPickAssuranceCarImage({ required BuildContext context }) async{
     try{
       final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-      if(img == null && context.mounted){
-        CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+      if(img == null){
         return;
       }
       final BeVendorMainState currentState = state as BeVendorMainState;
-      emit(currentState.copyWith(carAssuranceImage: img?.path));
+      emit(currentState.copyWith(carAssuranceImage: img.path));
     }
   catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
   }

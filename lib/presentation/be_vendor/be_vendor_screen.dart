@@ -41,7 +41,8 @@ class BeVendorScreen extends CustomState {
                     physics: state.scrollPhysics!,
                     currentStep: state.currentStep!,
                     connectorColor: MaterialStateProperty.all(primaryColor(context)),
-                    onStepTapped: context.read<BeVendorCubit>().onStepTapped,
+                    //onStepTapped: context.read<BeVendorCubit>().onStepTapped,
+                    onStepTapped: null,
                     onStepContinue: (){ context.read<BeVendorCubit>().continued(context: context); },
                     onStepCancel: context.read<BeVendorCubit>().cancel,
                     controlsBuilder: (BuildContext context, ControlsDetails details) => Row( children: [

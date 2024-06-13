@@ -57,6 +57,12 @@ class Remote{
      await _firebaseAuth.signOut();
   }
 
+  // - - - - - - - - - - - - - - - - - - EMAIL EXIST - - - - - - - - - - - - - - - - - -  //
+  static Future<bool> emailExist({ required String collection, required String email }) async{
+     final data = await _firebaseFirestore.collection(collection).where("email", isEqualTo: email).get();
+     return data.size > 0 ? true : false;
+  }
+
   // - - - - - - - - - - - - - - - - - - EXIST - - - - - - - - - - - - - - - - - -  //
   static Future<bool> exist({required String collection, required String doc}) async{
     final result = await _firebaseFirestore.collection(collection).doc(doc).get();
