@@ -78,7 +78,7 @@ class CustomVendor extends CustomState {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Icon(Iconsax.call, size: 12, color: darkLightColor(context)),
-                      Text(" ${vendorEntity.phoneNumber ?? "06 00 00 00 00"}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text(" +212 ${vendorEntity.phoneNumber ?? "06 00 00 00 00"}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],
                   ),
                   Row(

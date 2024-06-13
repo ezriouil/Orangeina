@@ -185,7 +185,7 @@ class SettingsScreen extends CustomState {
                             title: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_SUB_TITLE.getString(context),
                               icon: Iconsax.lock,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToAbout),
+                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToHelpAndSupport),
                     
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -205,7 +205,7 @@ class SettingsScreen extends CustomState {
                             title: CustomLocale.SETTINGS_ABOUT_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_ABOUT_SUB_TITLE.getString(context),
                               icon: Iconsax.info_circle,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToAbout),
+                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: (){ context.read<SettingsCubit>().onNavigateToAbout(context: context); }),
                     
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),

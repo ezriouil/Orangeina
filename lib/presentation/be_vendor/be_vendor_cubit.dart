@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
@@ -11,8 +12,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../domain/entities/user_entity.dart';
+import '../../domain/repositories/notification_repository.dart';
 import '../../domain/repositories/vendor_repository.dart';
 import '../widgets/custom_snackbars.dart';
+
 part 'be_vendor_state.dart';
 
 class BeVendorCubit extends Cubit<BeVendorState> {
@@ -22,11 +25,12 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   String? uid;
 
   final VendorRepository vendorRepository;
+  final NotificationRepository notificationRepository;
   final UserRepository userRepository;
   final GetStorage storage;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  BeVendorCubit({ required this.vendorRepository, required this.userRepository, required this.storage }) : super(BeVendorMainState()){ init(); }
+  BeVendorCubit({ required this.notificationRepository, required this.vendorRepository, required this.userRepository, required this.storage }) : super(BeVendorMainState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
@@ -136,7 +140,15 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       await vendorRepository.insertNewVendor(vendorEntity : vendorEntity);
 
       if(currentState.currentStep! >= 2) {
-        await Future.delayed(const Duration(milliseconds: 1000));
+        final DateTime dateTime = DateTime.now();
+        final NotificationEntity notificationEntity = NotificationEntity(
+          userId: uid,
+          type: "INFORMATION",
+          title: "Demand Be Seller",
+          body: "Thank you for you interesting to be one of our sellers, We will hande your data then we will inform you in the next 48h.",
+          createAt: "${dateTime.day}/${dateTime.month}/${dateTime.year}",
+        );
+        notificationRepository.sendNotification(notificationEntity: notificationEntity);
         emit(BeVendorSuccessState());
         return;
       }

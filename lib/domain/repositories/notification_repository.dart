@@ -11,4 +11,7 @@ abstract class NotificationRepository {
   // - - - - - - - - - - - - - - - - - - READ NOTIFICATION BY ID - - - - - - - - - - - - - - - - - -  //
   Future<void> readNotification({ required String id });
 
+  // - - - - - - - - - - - - - - - - - - SEND NOTIFICATION - - - - - - - - - - - - - - - - - -  //
+  Future<void> sendNotification({ required NotificationEntity notificationEntity });
+
 }

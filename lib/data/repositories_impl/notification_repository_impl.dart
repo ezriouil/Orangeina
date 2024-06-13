@@ -34,5 +34,11 @@ class NotificationRepositoryImpl extends NotificationRepository {
     await Remote.readNotification(id: id);
   }
 
+  // - - - - - - - - - - - - - - - - - - OVERRIDE SEND NOTIFICATION - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<void> sendNotification({required NotificationEntity notificationEntity}) async{
+    await Remote.sendNotification(notificationDto: notificationEntity.toNotificationDto());
+  }
+
 
 }

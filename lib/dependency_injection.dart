@@ -65,7 +65,7 @@ class DependencyInjection{
     getIt.registerFactory<VendorDetailsCubit>( () => VendorDetailsCubit(vendorRepository: getIt(), reviewRepository: getIt(), storage: getIt(), userRepository: getIt(), reportRepository: getIt(), wishListRepository: getIt()));
     getIt.registerFactory<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));
     getIt.registerFactory<VendorOrdersCubit>( () => VendorOrdersCubit(storage: getIt(), vendorRepository: getIt()));
-    getIt.registerFactory<BeVendorCubit>( () => BeVendorCubit(vendorRepository: getIt(), userRepository: getIt(), storage: getIt()));
+    getIt.registerFactory<BeVendorCubit>( () => BeVendorCubit(notificationRepository: getIt(), vendorRepository: getIt(), userRepository: getIt(), storage: getIt()));
   }
 
 }

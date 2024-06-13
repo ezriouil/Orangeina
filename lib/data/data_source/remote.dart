@@ -244,6 +244,20 @@ class Remote{
     return notifications.reversed.toList();
   }
 
+  // - - - - - - - - - - - - - - - - - - Send NOTIFICATION BY ID - - - - - - - - - - - - - - - - - -  //
+  static Future<void> sendNotification({ required NotificationDto notificationDto }) async{
+    final newDoc = _firebaseFirestore.collection("NOTIFICATIONS").doc();
+    await newDoc.set({
+      'id': newDoc.id,
+      'userId' : notificationDto.userId,
+      'type' : notificationDto.type,
+      'title' : notificationDto.title,
+      'isRead' : notificationDto.isRead,
+      'body' : notificationDto.body,
+      'createAt' : notificationDto.createAt,
+    });
+  }
+
   // - - - - - - - - - - - - - - - - - - READ NOTIFICATION BY ID - - - - - - - - - - - - - - - - - -  //
   static Future<void> readNotification({ required String id }) async{
     await _firebaseFirestore.collection("NOTIFICATIONS").doc(id).update({ 'isRead' : true});

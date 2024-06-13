@@ -36,7 +36,7 @@ class Validator {
   }
 
   static String? validateMobilePhone(String? value) {
-    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    String pattern = r'(^(?:[+0]9)?[0-9]{9,11}$)';
     RegExp regExp = RegExp(pattern);
     if (value!.isEmpty) {
       return 'Mobile Number Error';

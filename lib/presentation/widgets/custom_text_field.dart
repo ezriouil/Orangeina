@@ -6,6 +6,7 @@ class CustomTextField extends CustomState {
   final String hint;
   final bool obscureText, readOnly, autoFocus;
   final IconData? leadingIcon;
+  final Widget? leadingWidget;
   final Widget? trailingIcon;
   final TextInputType textInputType;
   final TextEditingController controller;
@@ -18,7 +19,7 @@ class CustomTextField extends CustomState {
       this.autoFocus = false,
       this.readOnly = false,
       this.obscureText = false,
-
+      this.leadingWidget,
       required this.controller,
       this.textInputType = TextInputType.text,
       this.trailingIcon,
@@ -36,7 +37,7 @@ class CustomTextField extends CustomState {
           contentPadding: const EdgeInsets.symmetric(vertical:24),
             fillColor: CustomColors.TRANSPARENT,
             hintText: hint,
-            prefixIcon: leadingIcon != null ? Icon(leadingIcon, color: grayColor(context)) : null,
+            prefixIcon: leadingWidget ?? Icon(leadingIcon, color: grayColor(context)),
             suffixIcon: trailingIcon,
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
