@@ -99,9 +99,6 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       // SAVE EMAIL + PASSWORD INTO LOCAL
       await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
-      await LocalStorage.upsert(key: "EMAIL", value: currentState.emailController!.text, storage: storage);
-      await LocalStorage.upsert(key: "PASSWORD", value: currentState.passwordController!.text, storage: storage);
-
 
       // CLEAR TEXT FIELDS
       currentState.firstNameController!.clear();

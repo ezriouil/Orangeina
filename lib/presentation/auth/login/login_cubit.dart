@@ -41,12 +41,10 @@ class LoginCubit extends Cubit<LoginState> {
   init() async {
 
     final String lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.EN;
-    final String email = await LocalStorage.read(key: "EMAIL", storage: storage) ?? "";
-    final String password = await LocalStorage.read(key: "PASSWORD", storage: storage) ?? "";
 
     emit(LoginMainState(
-        emailController: TextEditingController(text: email),
-        passwordController: TextEditingController(text: password),
+        emailController: TextEditingController(),
+        passwordController: TextEditingController(),
         obscureText: true,
         frenchLang: lang == CustomLocale.FR ? true : false,
         arabicLang: lang == CustomLocale.AR ? true : false,
@@ -87,8 +85,6 @@ class LoginCubit extends Cubit<LoginState> {
 
       // SAVE EMAIL + PASSWORD INTO LOCAL STORAGE
       await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
-      await LocalStorage.upsert(key: "EMAIL", value: currentState.emailController!.text, storage: storage);
-      await LocalStorage.upsert(key: "PASSWORD", value: currentState.passwordController!.text, storage: storage);
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
       // NAVIGATE TO HOME SCREEN
       emit(currentState);

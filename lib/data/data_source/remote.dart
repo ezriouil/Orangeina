@@ -151,7 +151,7 @@ class Remote{
   static Future<VendorDto?> getVendorById({ required String vendorId }) async{
     final vendor = await _firebaseFirestore.collection("VENDORS").doc(vendorId).get();
     if(!vendor.exists) return null;
-    if(vendor.data()!['visible'] == false) return null;
+    //if(vendor.data()!['visible'] == false) return null;
     return VendorDto.fromJson(vendor.data()!);
   }
 

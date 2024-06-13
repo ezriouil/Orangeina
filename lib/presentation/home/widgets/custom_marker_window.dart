@@ -26,7 +26,9 @@ class CustomMarkerWindow extends CustomState {
   Widget run(BuildContext context) {
 
     return InkWell(
-      onTap: (){ context.pushNamed(CustomRouter.VENDOR_DETAILS, pathParameters: { 'id' : id}); },
+      onTap: (){
+        print(id);
+        context.pushNamed(CustomRouter.VENDOR_DETAILS, pathParameters: { 'id' : id}); },
       child: Container(
         padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
         margin: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 2),

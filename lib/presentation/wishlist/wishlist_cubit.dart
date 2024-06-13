@@ -49,6 +49,9 @@ class WishlistCubit extends Cubit<WishlistState> {
       }
       emit(WishlistMainState(wishLists: wishLists));
     }catch(e){
+      print("=============");
+      print(e.toString());
+      print("=============");
       emit(WishlistErrorState());
     }
   }
@@ -57,6 +60,9 @@ class WishlistCubit extends Cubit<WishlistState> {
     try{
 
     }catch(e){
+      print("=============");
+      print(e.toString());
+      print("=============");
       emit(WishlistErrorState());
     }
   }

@@ -24,11 +24,20 @@ class VendorDetailsScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
+    String idCheck = "";
     return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
 
       builder: (context, state) {
-        context.read<VendorDetailsCubit>().getVendorInfo(argumentId: id, context: context);
-        context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
+
+        if(id != idCheck){
+          print("===============");
+          print("NEW ID");
+          print("===============");
+          context.read<VendorDetailsCubit>().getVendorInfo(argumentId: id, context: context);
+          context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
+          idCheck = id;
+        }
+
         return Scaffold(
           appBar: switch(state){
             VendorDetailsMainState() => AppBar(
@@ -38,14 +47,12 @@ class VendorDetailsScreen extends CustomState {
                   child: Icon(Iconsax.arrow_left_24, color: darkLightColor(context))),
               title: Text(CustomLocale.VENDOR_DETAILS_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
               actions: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 1.5),
-                  child: InkWell(
-                    onTap: context.read<VendorDetailsCubit>().upsertVendorWishList,
-                    borderRadius:
-                    BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-                    child: Icon(state.wishListId != "" ? Iconsax.heart5 : Iconsax.heart , color: state.wishListId != "" ? redColor(context) : darkLightColor(context)),
+                InkWell(
+                  onTap: context.read<VendorDetailsCubit>().upsertVendorWishList,
+                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                  child: Padding(
+                    padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),
+                    child:  Icon(state.wishListId != "" ? Iconsax.heart5 : Iconsax.heart , color: state.wishListId != "" ? redColor(context) : darkLightColor(context)),
                   ),
                 )
               ],
