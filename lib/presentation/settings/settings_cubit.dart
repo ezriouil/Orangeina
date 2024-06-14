@@ -292,6 +292,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                           hintText: phone,
                           initialValue: PhoneNumber(isoCode: "MA"),
                           formatInput: false,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) => Validator.validateMobilePhone(value),
                           spaceBetweenSelectorAndTextField: 0,
                         ),

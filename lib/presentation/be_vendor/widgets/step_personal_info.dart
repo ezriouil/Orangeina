@@ -71,7 +71,7 @@ class StepPersonalInfo extends CustomState {
             hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
             initialValue: PhoneNumber(isoCode: "MA"),
             formatInput: false,
-            autoValidateMode: AutovalidateMode.always,
+            autoValidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) => Validator.validateMobilePhone(value),
             spaceBetweenSelectorAndTextField: 0,
           ),

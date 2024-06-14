@@ -20,7 +20,7 @@ class CustomWishList extends CustomState {
       margin: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
       decoration: BoxDecoration(border: Border.all(color: grayColor(context)), borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2)),
       width: getWidth(context),
-      height: 120,
+      height: 100,
       child: Row(
         children: [
           Expanded(
@@ -41,23 +41,24 @@ class CustomWishList extends CustomState {
           ),
           const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS),
           Expanded(
-            flex: 6,
+            flex: 8,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(children: [
+                Row(
+                children: [
                   Icon(Iconsax.user, size: 14.0, color: darkLightColor(context)),
-                  Expanded(child: Text("  ${wishListEntity.fullName}", style: Theme.of(context).textTheme.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis)),
+                  Expanded(child: Text("  ${wishListEntity.fullName}", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   InkWell(onTap: (){ onDelete(wishListEntity.id ?? ""); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT), child: Icon(Iconsax.close_circle, size: 22.0, color: darkLightColor(context))),
                 ]),
                 Row(children: [
                   Icon(Iconsax.call, size: 14.0, color: darkLightColor(context)),
-                  Expanded(child: Text("  ${wishListEntity.phoneNumber}", style: Theme.of(context).textTheme.bodySmall)),
+                  Expanded(child: Text("  +212 ${wishListEntity.phoneNumber}", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0))),
                 ]),
                 Row(children: [
                   Icon(Iconsax.timer_1, size: 14.0, color: darkLightColor(context)),
-                  Expanded(child: Text("  ${wishListEntity.createAt}", style: Theme.of(context).textTheme.bodySmall)),
+                  Expanded(child: Text("  ${wishListEntity.createAt}", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0))),
                 ]),
                 RatingBar.builder(
                   itemCount: 5,
@@ -67,7 +68,7 @@ class CustomWishList extends CustomState {
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   ignoreGestures: true,
-                  itemSize: 20.0,
+                  itemSize: 18.0,
                   itemPadding: EdgeInsets.zero,
                   itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
                   onRatingUpdate: (double value) {  },

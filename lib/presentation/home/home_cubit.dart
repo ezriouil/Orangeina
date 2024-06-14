@@ -60,7 +60,7 @@ class HomeCubit extends Cubit<HomeState> {
         mapController:  Completer<GoogleMapController>(),
         cameraCurrentLocation:  null,
         mapMyLocationEnabled: true,
-        mapRefreshEnabled: true,
+        mapRefreshEnabled: false,
         mapTrafficEnabled: false,
         mapSatelliteEnabled: false,
         customInfoWindowController: CustomInfoWindowController(),
