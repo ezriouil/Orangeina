@@ -54,13 +54,15 @@ class LoginCubit extends Cubit<LoginState> {
 
   // - - - - - - - - - - - - - - - - - - LOGIN WITH EMAIL AND PASSWORD - - - - - - - - - - - - - - - - - -  //
   onLogin({required BuildContext context, required Function callBack}) async{
+    // CURRENT STATE
+    final LoginMainState currentState = state as LoginMainState;
+
     try{
 
-      // CURRENT STATE
-      final LoginMainState currentState = state as LoginMainState;
-
       // CHECK THE FORM
-      if(!currentState.formState!.currentState!.validate()) return;
+      if(!currentState.formState!.currentState!.validate()) {
+        return;
+      }
 
       // CHECK CONNECTION INTERNET
       final hasConnection = await Network.hasConnection(connectivity);
@@ -91,15 +93,16 @@ class LoginCubit extends Cubit<LoginState> {
       callBack.call();
 
     }catch(e){
-
       // EMIT ERROR STATE
-      emit(LoginErrorState(message: e.toString()));
-
+      CustomSnackBar.show(context: context, title: "Email Or Password Invalid", subTitle: "Verify you email and password.", type: ContentType.warning);
+      emit(currentState);
     }
   }
 
   // - - - - - - - - - - - - - - - - - - LOGIN WITH GOOGLE - - - - - - - - - - - - - - - - - -  //
   void loginWithGoogle({ required BuildContext context, required Function callBack }) async{
+
+    final currentState = state as LoginMainState;
 
     // CHECK CONNECTION INTERNET
     final hasConnection = await Network.hasConnection(connectivity);
@@ -136,6 +139,9 @@ class LoginCubit extends Cubit<LoginState> {
 
       }
 
+      print("****************");
+      print(userCredential.user?.uid);
+      print("****************");
       await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
 
@@ -145,7 +151,8 @@ class LoginCubit extends Cubit<LoginState> {
 
     }catch(e){
       // EMIT ERROR STATE
-      emit(LoginErrorState(message: "Cannot login with this email"));
+      CustomSnackBar.show(context: context, title: "Cannot login with this email", subTitle: "Try again", type: ContentType.warning);
+      emit(currentState);
     }
   }
 

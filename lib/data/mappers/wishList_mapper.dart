@@ -8,7 +8,7 @@ extension WishListEntityMapper on WishListEntity {
     vendorId: vendorId,
     avatar: avatar,
     fullName: fullName,
-    phone: phone,
+    phoneNumber: phoneNumber,
     rating: rating,
     createAt: createAt
   );
@@ -21,7 +21,7 @@ extension WishListDtoMapper on WishListDto {
       vendorId: vendorId,
       avatar: avatar,
       fullName: fullName,
-      phone: phone,
+      phoneNumber: phoneNumber,
       rating: rating,
       createAt: createAt
   );

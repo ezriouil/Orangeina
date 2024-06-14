@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/report_entity.dart';
 import 'package:berkania/domain/entities/review_entity.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
@@ -29,6 +30,7 @@ import '../../domain/repositories/report_repository.dart';
 import '../../domain/repositories/vendor_repository.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/custom_image_strings.dart';
+import '../widgets/custom_snackbars.dart';
 
 part 'vendor_details_state.dart';
 
@@ -75,21 +77,24 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
   void getVendorInfo({ required String argumentId,  required BuildContext context }) async{
-    final VendorDetailsMainState currentState = state as VendorDetailsMainState;
+    VendorDetailsMainState currentState = state as VendorDetailsMainState;
    try{
+
      final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId);
 
      final markers = <Marker>{};
-     if(vendor == null) return;
+     if(vendor == null) context.pop();
 
-     final WishListEntity wishList = await wishListRepository.isFromWishList(userId: uid!, vendorId: vendor.id!) ?? WishListEntity();
+     markers.add(await customMarker(lat: vendor!.shopLat!.toDouble(), lng: vendor.shopLng!.toDouble()));
+     emit(currentState.copyWith(vendor: vendor, markers: markers));
 
-     markers.add(await customMarker(lat: (vendor.shopLat) as double, lng: (vendor.shopLng ?? 0.0) as double));
+     final WishListEntity? wishList = await wishListRepository.isFromWishList(userId: uid!, vendorId: vendor.id!);
 
-     emit(currentState.copyWith(vendor: vendor, markers: markers, wishListId: wishList.id));
+     currentState = state as VendorDetailsMainState;
+     emit(currentState.copyWith(wishListId: (wishList?.id) ?? ""));
 
    }catch(e){
-     //context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+     context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
    }
   }
 
@@ -106,7 +111,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
         vendorId: currentState.vendor?.id,
         avatar: currentState.vendor?.avatar,
         fullName: "${currentState.vendor?.firstName} ${currentState.vendor?.lastName}",
-        phone: currentState.vendor?.phoneNumber,
+          phoneNumber: currentState.vendor?.phoneNumber,
         rating: (currentState.vendor?.averageRating ?? 3.5).toDouble(),
         createAt: "${date.year}/${date.month}/${date.day}"
       );

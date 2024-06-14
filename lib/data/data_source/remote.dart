@@ -217,7 +217,7 @@ class Remote{
       'vendorId': wishListDto.vendorId,
       'avatar': wishListDto.avatar,
       'fullName': wishListDto.fullName,
-      'phoneNumber': wishListDto.phone,
+      'phoneNumber': wishListDto.phoneNumber,
       'rating': wishListDto.rating,
       'createAt': wishListDto.createAt
     });

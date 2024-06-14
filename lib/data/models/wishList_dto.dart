@@ -1,13 +1,13 @@
 class WishListDto {
 
   // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
-  late final double? rating;
+  late final num? rating;
   late final String? id,
       userId,
       vendorId,
       avatar,
       fullName,
-      phone,
+      phoneNumber,
       createAt;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR- - - - - - - - - - - - - - - - - -  //
@@ -17,7 +17,7 @@ class WishListDto {
       this.vendorId = "",
       this.avatar = "",
       this.fullName = "",
-      this.phone = "",
+      this.phoneNumber = "",
       this.rating = 0.0,
       this.createAt = ""});
 
@@ -28,7 +28,7 @@ class WishListDto {
         'vendorId': vendorId,
         'avatar': avatar,
         'fullName': fullName,
-        'phone': phone,
+        'phoneNumber': phoneNumber,
         'rating': rating,
         'createAt': createAt
       };
@@ -41,8 +41,8 @@ class WishListDto {
         vendorId: json['vendorId'] as String,
         avatar: json['avatar'] as String,
         fullName: json['fullName'] as String,
-        phone: json['phone'] as String,
-        rating: json['rating'] as double,
+        phoneNumber: json['phoneNumber'] as String,
+        rating: json['rating'] as num,
         createAt: json['createAt'] as String);
   }
 

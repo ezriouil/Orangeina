@@ -72,7 +72,6 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
       callBack.call();
 
     }catch(e){
-      print(e.toString());
       // EMIT ERROR STATE
       emit(currentState);
       CustomSnackBar.show(context: context, title: "Server Error", subTitle: "Please Try Again", type: ContentType.warning);

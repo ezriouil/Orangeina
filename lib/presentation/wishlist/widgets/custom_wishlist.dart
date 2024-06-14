@@ -53,7 +53,7 @@ class CustomWishList extends CustomState {
                 ]),
                 Row(children: [
                   Icon(Iconsax.call, size: 14.0, color: darkLightColor(context)),
-                  Expanded(child: Text("  ${wishListEntity.phone}", style: Theme.of(context).textTheme.bodySmall)),
+                  Expanded(child: Text("  ${wishListEntity.phoneNumber}", style: Theme.of(context).textTheme.bodySmall)),
                 ]),
                 Row(children: [
                   Icon(Iconsax.timer_1, size: 14.0, color: darkLightColor(context)),
@@ -61,7 +61,7 @@ class CustomWishList extends CustomState {
                 ]),
                 RatingBar.builder(
                   itemCount: 5,
-                  initialRating: wishListEntity.rating ?? 3,
+                  initialRating: (wishListEntity.rating ?? 3).toDouble(),
                   maxRating: 5,
                   minRating: 1,
                   direction: Axis.horizontal,

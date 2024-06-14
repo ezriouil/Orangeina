@@ -30,9 +30,6 @@ class VendorDetailsScreen extends CustomState {
       builder: (context, state) {
 
         if(id != idCheck){
-          print("===============");
-          print("NEW ID");
-          print("===============");
           context.read<VendorDetailsCubit>().getVendorInfo(argumentId: id, context: context);
           context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
           idCheck = id;
@@ -120,8 +117,7 @@ class VendorDetailsScreen extends CustomState {
                   ignoreGestures: true,
                   itemSize: 20.0,
                   itemPadding: EdgeInsets.zero,
-                  itemBuilder: (context, _) => const Icon(Iconsax.star5,
-                      color: CustomColors.PRIMARY_LIGHT),
+                  itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
                   onRatingUpdate: (double value) {},
                 ),
 
