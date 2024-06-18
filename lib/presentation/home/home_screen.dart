@@ -2,7 +2,9 @@ import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/home/widgets/custom_vendor.dart';
 import 'package:berkania/utils/state/custom_state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_info_window/custom_info_window.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -41,15 +43,33 @@ class HomeScreen extends CustomState {
                     markers : state.markers!,
                     polylines: state.polyline!
                     ),
+                  // Positioned(bottom: 0,child: SizedBox(
+                  //   width: getWidth(context),
+                  //   height: 90.0,
+                  //   child: ListView.builder(
+                  //       scrollDirection: Axis.horizontal,
+                  //       itemCount: state.vendors!.length,
+                  //       itemBuilder: (context, index) => CustomVendor(
+                  //           vendorEntity: state.vendors![index],
+                  //           onClick: (VendorEntity vendor) { context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context); }, myCurrentLocation: state.myCurrentLocation!.target)),
+                  // )),
                   Positioned(bottom: 0,child: SizedBox(
                     width: getWidth(context),
                     height: 90.0,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.vendors!.length,
-                        itemBuilder: (context, index) => CustomVendor(
-                            vendorEntity: state.vendors![index],
-                            onClick: (VendorEntity vendor) { context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context); }, myCurrentLocation: state.myCurrentLocation!.target)),
+                    child: FirestorePagination(
+                      limit: 1,
+                      scrollDirection: Axis.horizontal,
+                      viewType: ViewType.list,
+                      bottomLoader: Center(child: CircularProgressIndicator(color: primaryColor(context))),
+                      query: FirebaseFirestore.instance.collection('VENDORS').where('visible', isEqualTo: true).where('isOnline', isEqualTo: true),
+                      itemBuilder: (context, documentSnapshot, index) {
+                        final data = VendorEntity.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+                        return CustomVendor(
+                                  vendorEntity: data,
+                                  onClick: (VendorEntity vendor) {context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context);},
+                                  myCurrentLocation: state.myCurrentLocation!.target);
+                            },
+                    ),
                   )),
                   SizedBox(
                     width: getWidth(context),

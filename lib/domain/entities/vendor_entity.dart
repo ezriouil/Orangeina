@@ -93,7 +93,7 @@ class VendorEntity{
         carType: json['carType'] as String,
         isOnline: json['isOnline'] as bool,
         visible: json['visible'] as bool,
-        averageRating: json['averageRating'] as double,
+        averageRating: json['averageRating'] as num,
         birthdayYear: json['birthdayYear'] as int,
         totalOrders: json['totalOrders'] as int,
         shopLat: json['shopLat'] as num,
