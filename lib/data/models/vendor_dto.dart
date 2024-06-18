@@ -2,9 +2,8 @@ class VendorDto{
 
   // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
   late final int? totalOrders, birthdayYear;
-  late final num? averageRating;
 
-  late final num? shopLat, shopLng;
+  late final num? shopLat, shopLng, averageRating;
 
   late final bool? isOnline, visible;
 
