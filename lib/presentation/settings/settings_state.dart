@@ -7,7 +7,6 @@ final class SettingsMainState extends SettingsState {
 
   final bool? arabicLang, frenchLang, englishLang, isVendor, vendorOnlineOffline;
   final String? updateImageProfilePath;
-  final TextEditingController? updateFirstNameController, updateLastNameController, updatePhoneController;
 
   SettingsMainState(
       {
@@ -16,10 +15,7 @@ final class SettingsMainState extends SettingsState {
       this.englishLang,
       this.isVendor = false,
       this.vendorOnlineOffline,
-      this.updateImageProfilePath,
-      this.updateFirstNameController,
-      this.updateLastNameController,
-      this.updatePhoneController});
+      this.updateImageProfilePath});
 
   SettingsMainState copyWith(
           {
@@ -28,10 +24,7 @@ final class SettingsMainState extends SettingsState {
           bool? englishLang,
           bool? isVendor,
           bool? vendorOnlineOffline,
-          String? updateImageProfilePath,
-            TextEditingController? updateFirstNameController,
-          TextEditingController? updateLastNameController,
-          TextEditingController? updatePhoneController}) =>
+          String? updateImageProfilePath}) =>
 
       SettingsMainState(
         arabicLang: arabicLang ?? this.arabicLang,
@@ -39,10 +32,7 @@ final class SettingsMainState extends SettingsState {
         englishLang: englishLang ?? this.englishLang,
         isVendor: isVendor ?? this.isVendor,
         vendorOnlineOffline: vendorOnlineOffline ?? this.vendorOnlineOffline,
-        updateImageProfilePath: updateImageProfilePath ?? this.updateImageProfilePath,
-        updateFirstNameController: updateFirstNameController ?? this.updateFirstNameController,
-        updateLastNameController: updateLastNameController ?? this.updateLastNameController,
-        updatePhoneController: updatePhoneController ?? this.updatePhoneController,
+        updateImageProfilePath: updateImageProfilePath ?? this.updateImageProfilePath
       );
 
 }

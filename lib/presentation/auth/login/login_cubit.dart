@@ -138,10 +138,6 @@ class LoginCubit extends Cubit<LoginState> {
         await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
 
       }
-
-      print("****************");
-      print(userCredential.user?.uid);
-      print("****************");
       await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
 

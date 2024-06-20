@@ -55,9 +55,6 @@ class SettingsCubit extends Cubit<SettingsState> {
       frenchLang: false,
       vendorOnlineOffline: false,
       updateImageProfilePath: "",
-      updateFirstNameController: TextEditingController(),
-      updateLastNameController: TextEditingController(),
-      updatePhoneController: TextEditingController(),
     ));
 
     uid = await LocalStorage.read(key: "UID", storage: storage);
@@ -143,19 +140,17 @@ class SettingsCubit extends Cubit<SettingsState> {
   // - - - - - - - - - - - - - - - - - - ON UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
   void onUpdateFullName({required BuildContext context}) async {
 
-    String firstName;
-    String lastName;
     final GlobalKey<FormState> formState = GlobalKey<FormState>();
+    final firstNameController =  TextEditingController();
+    final lastNameController =  TextEditingController();
 
     if(_user != null){
-      firstName = _user?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
-      lastName = _user?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
+      firstNameController.text = _user?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
+      lastNameController.text = _user?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
     }else{
-      firstName = _vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
-      lastName = _vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
+      firstNameController.text = _vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
+      lastNameController.text = _vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
     }
-
-    final currentState = state as SettingsMainState;
 
     await showDialog(
         context: context.mounted ? context : context,
@@ -173,16 +168,16 @@ class SettingsCubit extends Cubit<SettingsState> {
                         // - - - - - - - - - - - - - - - - - - FIRST NAME - - - - - - - - - - - - - - - - - -  //
                         CustomTextField(
                             leadingIcon: Iconsax.user,
-                            hint: firstName,
+                            hint: firstNameController.text,
                             validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_FIRST_NAME_VALIDATOR.getString(context), value),
-                            controller: currentState.updateFirstNameController!),
+                            controller: firstNameController),
 
                         // - - - - - - - - - - - - - - - - - - LAST NAME - - - - - - - - - - - - - - - - - -  //
                         CustomTextField(
                             leadingIcon: Iconsax.user,
-                            hint: lastName,
+                            hint: lastNameController.text,
                             validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_LAST_NAME_VALIDATOR.getString(context), value),
-                            controller: currentState.updateLastNameController!),
+                            controller: lastNameController),
 
                         // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
                         CustomElevatedButton(
@@ -199,14 +194,14 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                                 final isUserExist = await userRepository.existUser(userId: uid!);
                                 if (isUserExist) {
-                                  await userRepository.updateUserFullName(userId: uid!, newFirstName: currentState.updateFirstNameController!.text, newLastName: currentState.updateLastNameController!.text);
+                                  await userRepository.updateUserFullName(userId: uid!, newFirstName: firstNameController.text, newLastName: lastNameController.text);
                                   await LocalStorage.upsert(
                                       key: "FIRST_NAME",
-                                      value: currentState.updateFirstNameController!.text,
+                                      value: firstNameController.text,
                                       storage: storage);
                                   await LocalStorage.upsert(
                                       key: "LAST_NAME",
-                                      value: currentState.updateLastNameController!.text,
+                                      value: lastNameController.text,
                                       storage: storage);
                                   if(!context.mounted) return;
                                   context.pop();
@@ -218,26 +213,15 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 if (isVendorExist) {
                                   await vendorRepository.updateVendorFullName(
                                       vendorId: uid!,
-                                      newFirstName: currentState.updateFirstNameController!.text,
-                                      newLastName: currentState.updateLastNameController!.text);
-                                  await LocalStorage.upsert(
-                                      key: "FIRST_NAME",
-                                      value: currentState.updateFirstNameController!.text,
-                                      storage: storage);
-                                  await LocalStorage.upsert(
-                                      key: "LAST_NAME",
-                                      value: currentState.updateLastNameController!.text,
-                                      storage: storage);
-                                  currentState.updateFirstNameController!.clear();
-                                  currentState.updateLastNameController!.clear();
+                                      newFirstName: firstNameController.text,
+                                      newLastName: lastNameController.text);
+                                  await LocalStorage.upsert(key: "FIRST_NAME", value: firstNameController.text, storage: storage);
+                                  await LocalStorage.upsert(key: "LAST_NAME", value: lastNameController.text, storage: storage);
                                   if(!context.mounted) return;
                                   context.pop();
                                   CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
                                   return;
                                 }
-
-                                currentState.updateFirstNameController!.clear();
-                                currentState.updateLastNameController!.clear();
                                 context.mounted ? context.pop(): null;
 
                               } catch (e) {
@@ -256,16 +240,15 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
   void onUpdatePhone({required BuildContext context}) async {
-    String phone;
+
+    final TextEditingController phone = TextEditingController();
     final GlobalKey<FormState> formState = GlobalKey<FormState>();
 
     if(_user != null){
-      phone = _user?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
+      phone.text = _user?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
     }else{
-      phone = _vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
+      phone.text = _vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
     }
-
-    final currentState = state as SettingsMainState;
 
     await showDialog(
         context: context.mounted ? context : context,
@@ -288,10 +271,10 @@ class SettingsCubit extends Cubit<SettingsState> {
                             showFlags: false
                           ),
                           selectorTextStyle: Theme.of(context).textTheme.bodyLarge,
-                          textFieldController: currentState.updatePhoneController,
-                          hintText: phone,
+                          hintText: phone.text,
                           initialValue: PhoneNumber(isoCode: "MA"),
                           formatInput: false,
+                          textFieldController: phone,
                           autoValidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) => Validator.validateMobilePhone(value),
                           spaceBetweenSelectorAndTextField: 0,
@@ -313,8 +296,8 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                                 final isUserExist = await userRepository.existUser(userId: uid!);
                                 if (isUserExist) {
-                                  await userRepository.updateUserPhone(userId: uid!, newPhone: currentState.updatePhoneController!.text);
-                                  await LocalStorage.upsert(key: "PHONE", value: currentState.updatePhoneController!.text, storage: storage);
+                                  await userRepository.updateUserPhone(userId: uid!, newPhone: phone.text);
+                                  await LocalStorage.upsert(key: "PHONE", value: phone.text, storage: storage);
                                   if(!context.mounted) return;
                                   context.mounted ? context.pop() : null;
                                   CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
@@ -323,8 +306,8 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                                 final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                                 if (isVendorExist) {
-                                  await vendorRepository.updateVendorPhone(vendorId: uid!, newPhone: currentState.updatePhoneController!.text);
-                                  await LocalStorage.upsert(key: "PHONE", value: currentState.updatePhoneController!.text, storage: storage);
+                                  await vendorRepository.updateVendorPhone(vendorId: uid!, newPhone: phone.text);
+                                  await LocalStorage.upsert(key: "PHONE", value: phone.text, storage: storage);
                                   context.mounted ? context.pop() : null;
                                   if(!context.mounted) return;
                                   context.pop();
