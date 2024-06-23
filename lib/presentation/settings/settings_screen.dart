@@ -186,30 +186,30 @@ class SettingsScreen extends CustomState {
                             subTitle: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_SUB_TITLE.getString(context),
                               icon: Iconsax.lock,
                               trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToHelpAndSupport),
-                    
+
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-                    
+
                           // - - - - - - - - - - - - - - - - - - HELP AND SUPPORT - - - - - - - - - - - - - - - - - -  //
                           CustomSettingTile(
                             title: CustomLocale.SETTINGS_HELP_AND_SUPPOR_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE.getString(context),
                               icon: Iconsax.headphone5,
                               trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToHelpAndSupport),
-                    
+
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
-                    
+
                           // - - - - - - - - - - - - - - - - - - ABOUT - - - - - - - - - - - - - - - - - -  //
                           CustomSettingTile(
                             title: CustomLocale.SETTINGS_ABOUT_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_ABOUT_SUB_TITLE.getString(context),
                               icon: Iconsax.info_circle,
                               trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: (){ context.read<SettingsCubit>().onNavigateToAbout(context: context); }),
-                    
+
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
-                    
+
                           // - - - - - - - - - - - - - - - - - -  VERSION  - - - - - - - - - - - - - - - - - -  //
                           Center(child: Text(CustomLocale.SETTINGS_APP_VERSION_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall)),
 

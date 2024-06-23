@@ -18,7 +18,8 @@ class CustomRouter{
   static GoRouter router({required String? initialLocation}) {
 
     return GoRouter(
-      initialLocation: initialLocation == null ? ON_BOARDING : initialLocation == "LOGIN"  ? LOGIN : INDEX,
+      //initialLocation: initialLocation == null ? ON_BOARDING : initialLocation == "LOGIN"  ? LOGIN : INDEX,
+      initialLocation:LOGIN,
       routes: <RouteBase>[
 
         // - - -  ON BOARDING - - -  //
