@@ -31,8 +31,8 @@ class CustomVendor extends CustomState {
       child: Container(
         padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
         margin: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 4),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), color: darkDarkLightLightColor(context)),
-        height: 90,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), color: darkDarkLightLightColor(context), border: Border.all(color: CustomColors.BLACK)),
+        height: 100,
         width: 260,
         child: Row(
           children: [
@@ -84,8 +84,8 @@ class CustomVendor extends CustomState {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Icon(Iconsax.arrow_up, size: 12, color: darkLightColor(context)),
-                      Text("${distance.toStringAsFixed(2)} Km" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Icon(Iconsax.routing, size: 16, color: darkLightColor(context)),
+                      Text("  ${distance.toStringAsFixed(2)} Km" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ],

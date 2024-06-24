@@ -48,8 +48,13 @@ class Validator {
   }
 
   static String? validateAge(String? value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{2,3}$)';
+    RegExp regExp = RegExp(pattern);
     if (value!.isEmpty) {
       return 'Age Empty';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid mobile number';
     }
     else if (int.parse(value) < 18) {
       return 'You are under 18 y';

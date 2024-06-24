@@ -16,6 +16,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../domain/entities/vendor_entity.dart';
@@ -75,6 +76,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   }
 
+
   // - - - - - - - - - - - - - - - - - - ON UPDATE IMAGE PROFILE - - - - - - - - - - - - - - - - - -  //
   void onUpdateImageProfile({required BuildContext context}) async {
     await showDialog(
@@ -92,6 +94,18 @@ class SettingsCubit extends Cubit<SettingsState> {
                       onClick: () async {
                         try {
                           context.pop();
+
+                          final status = await Permission.camera.status;
+                          print("status => ${status}");
+                          if(status.isDenied){
+                            await Permission.camera.request();
+                            return ;
+                          }
+                          if(status.isPermanentlyDenied){
+                            Geolocator.openAppSettings();
+                            return ;
+                          }
+
                           if(uid == null) return;
 
                           final currentState = state as SettingsMainState;

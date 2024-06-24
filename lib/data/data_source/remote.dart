@@ -125,6 +125,11 @@ class Remote{
     return vendors;
   }
 
+  // - - - - - - - - - - - - - - - - - - UPDATE VENDOR RATING - - - - - - - - - - - - - - - - - -  //
+  static Future<void> updateVendorRating({required String uid, required num averageRating}) async{
+    await _firebaseFirestore.collection("VENDORS").doc(uid).update({'averageRating' : averageRating});
+  }
+
   // - - - - - - - - - - - - - - - - - - SAVE USER DATA - - - - - - - - - - - - - - - - - -  //
   static Future<UserDto?> getUserData({ required String id }) async{
     final DocumentSnapshot<Map<String,dynamic>> userJson = await _firebaseFirestore.collection("USERS").doc(id).get();
@@ -302,6 +307,7 @@ class Remote{
     });
   }
 
+  // - - - - - - - - - - - - - - - - - - INSERT NEW REPORT - - - - - - - - - - - - - - - - - -  //
   static insertReport({required ReportDto reportDto}) async{
     final newDoc = _firebaseFirestore.collection("REPORTS").doc();
     await newDoc.set({

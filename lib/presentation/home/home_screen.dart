@@ -43,19 +43,9 @@ class HomeScreen extends CustomState {
                     markers : state.markers!,
                     polylines: state.polyline!
                     ),
-                  // Positioned(bottom: 0,child: SizedBox(
-                  //   width: getWidth(context),
-                  //   height: 90.0,
-                  //   child: ListView.builder(
-                  //       scrollDirection: Axis.horizontal,
-                  //       itemCount: state.vendors!.length,
-                  //       itemBuilder: (context, index) => CustomVendor(
-                  //           vendorEntity: state.vendors![index],
-                  //           onClick: (VendorEntity vendor) { context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context); }, myCurrentLocation: state.myCurrentLocation!.target)),
-                  // )),
                   Positioned(bottom: 0,child: SizedBox(
                     width: getWidth(context),
-                    height: 90.0,
+                    height: 100.0,
                     child: FirestorePagination(
                       limit: 1,
                       scrollDirection: Axis.horizontal,

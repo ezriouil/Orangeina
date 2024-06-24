@@ -108,7 +108,7 @@ class HomeCubit extends Cubit<HomeState> {
       final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
       final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
 
-      polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 4, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
+      polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 6, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
       emit(HomeLoadingState());
       await Future.delayed(const Duration(milliseconds: 300));
@@ -165,26 +165,6 @@ class HomeCubit extends Cubit<HomeState> {
           distance: 104.5
       ));
     }
-
-    // vendors.sort((a,b) {
-    //
-    //           const double p = 0.017453292519943295;
-    //
-    //            double calA = 0.5 - cos(((a.shopLat as double) - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos((a.shopLat as double)  * p) * (1 - cos(((a.shopLng as double)  - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
-    //           final double distanceA = ((12742 * asin(sqrt(calA))));
-    //
-    //           final double calB = 0.5 - cos(((b.shopLat as double)  - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos((b.shopLat as double)  * p) * (1 - cos(((b.shopLng as double)  - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
-    //           final double distanceB = ((12742 * asin(sqrt(calB))));
-    //
-    //           return distanceB.compareTo(distanceA);
-    //         });
-    // print("++++++++++");
-    // print(vendors.first);
-    // print("++++++++++");
-    // vendors.reversed.toList();
-    // print("++++++++++");
-    // print(vendors.reversed.toList().first);
-    // print("++++++++++");
 
     emit(currentState.copyWith(vendors: vendors, markers: markers));
 
@@ -298,7 +278,7 @@ class HomeCubit extends Cubit<HomeState> {
             final response = await http.get(Uri.parse(uri));
             final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
             final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
-            polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 4, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
+            polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 6, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
             // CALCULATE DISTANCE
             const double p = 0.017453292519943295;

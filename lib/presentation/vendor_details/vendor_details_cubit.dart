@@ -44,6 +44,8 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   final ReportRepository reportRepository;
   final GetStorage storage;
   String? uid;
+  String idCheckVendorInfo = "";
+  String idCheckReviews = "";
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
   VendorDetailsCubit(
@@ -77,21 +79,22 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
   void getVendorInfo({ required String argumentId,  required BuildContext context }) async{
+    if(argumentId == idCheckVendorInfo) return;
     VendorDetailsMainState currentState = state as VendorDetailsMainState;
-   try{
+    try{
 
-     final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId);
+      final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId);
 
-     final markers = <Marker>{};
-     if(vendor == null) context.pop();
+      final markers = <Marker>{};
 
-     markers.add(await customMarker(lat: vendor!.shopLat!.toDouble(), lng: vendor.shopLng!.toDouble()));
-     emit(currentState.copyWith(vendor: vendor, markers: markers));
+      markers.add(await customMarker(lat: vendor!.shopLat!.toDouble(), lng: vendor.shopLng!.toDouble()));
+      emit(currentState.copyWith(vendor: vendor, markers: markers));
 
-     final WishListEntity? wishList = await wishListRepository.isFromWishList(userId: uid!, vendorId: vendor.id!);
+      final WishListEntity? wishList = await wishListRepository.isFromWishList(userId: uid!, vendorId: vendor.id!);
 
-     currentState = state as VendorDetailsMainState;
-     emit(currentState.copyWith(wishListId: (wishList?.id) ?? ""));
+      currentState = state as VendorDetailsMainState;
+      emit(currentState.copyWith(wishListId: (wishList?.id) ?? ""));
+      idCheckVendorInfo = argumentId;
 
    }catch(e){
      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
@@ -128,14 +131,33 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - GET ALL REVIEWS - - - - - - - - - - - - - - - - - -  //
   getReviews({ required String argumentId, required BuildContext context }) async{
-    final VendorDetailsMainState currentState = state as VendorDetailsMainState;
+    if(argumentId == idCheckReviews) return;
+
     try{
-      if(uid == null) return;
+      final currentState = state as VendorDetailsMainState;
       final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
       emit(currentState.copyWith(reviews: reviews));
+      idCheckReviews = argumentId;
     }
+
     catch(_){
-    //context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+    context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - REFRESH REVIEWS - - - - - - - - - - - - - - - - - -  //
+  refreshReviews({ required String argumentId, required BuildContext context }) async{
+
+    try{
+      final currentState = state as VendorDetailsMainState;
+      currentState.reviews?.clear();
+      final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
+      emit(currentState.copyWith(reviews: reviews));
+      idCheckReviews = argumentId;
+    }
+
+    catch(_){
+    context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
   }
 
@@ -165,7 +187,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   // - - - - - - - - - - - - - - - - - - ALERT FEEDBACK - - - - - - - - - - - - - - - - - -  //
   void onGiveFeedback({required BuildContext context, required Function callBack, required String argumentId }) async {
 
-    final VendorDetailsMainState currentState = state as VendorDetailsMainState;
+    VendorDetailsMainState currentState = state as VendorDetailsMainState;
 
     await showDialog(
         context: context,
@@ -242,15 +264,22 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                           // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
                           Expanded(child: CustomElevatedButton(onClick: () async{
 
+                            currentState = state as VendorDetailsMainState;
+
                             // CHECK THE FORM
                             if(!currentState.feedBackFormState!.currentState!.validate()) return;
 
-                            if(uid == null) return;
-
+                            if(uid == null) {
+                              context.pop();
+                              return;
+                            };
 
                             final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
 
-                            if(userEntity == null) return;
+                            if(userEntity == null) {
+                              context.pop();
+                              return;
+                            }
 
                             final date = DateTime.now();
                             final ReviewEntity review = ReviewEntity(
@@ -261,9 +290,18 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                               rating: currentState.feedback!,
                               createAt: "${date.day}/${date.month}/${date.year}"
                             );
+
                             await reviewRepository.insert(reviewEntity: review);
 
-                            currentState.feedbackController!.clear();
+                            final reviewsCount = currentState.reviews?.length;
+                            num reviewsSum = 0;
+                            for(ReviewEntity review in currentState.reviews!){
+                              reviewsSum += review.rating;
+                            }
+                            reviewsSum += currentState.feedback!;
+                            final newRate = reviewsSum / reviewsCount!;
+
+                            await vendorRepository.updateRating(newRate: newRate, uid: argumentId);
 
                             callBack.call();
 
@@ -271,7 +309,6 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
                         ],
                       )
-
                     ],
                   ),
                 ),

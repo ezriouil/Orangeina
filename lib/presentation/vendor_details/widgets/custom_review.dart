@@ -29,8 +29,8 @@ class CustomReview extends CustomState {
               ClipRRect(
                 borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
                 child: SizedBox(
-                  width: 60.0,
-                  height: 60.0,
+                  width: 40.0,
+                  height: 40.0,
                   child: Image.network(review.avatar ?? CustomImageStrings.DEFAULT_IMAGE_PROFILE,
                       height: getHeight(context),
                       width: getWidth(context),
@@ -52,7 +52,7 @@ class CustomReview extends CustomState {
                         // - - - - - - - - - - - - - - - - - -  RATING - - - - - - - - - - - - - - - - - -  //
                         RatingBar.builder(
                           itemCount: 5,
-                          initialRating:  3,
+                          initialRating:  review.rating as double,
                           maxRating: 5,
                           minRating: 1,
                           direction: Axis.horizontal,

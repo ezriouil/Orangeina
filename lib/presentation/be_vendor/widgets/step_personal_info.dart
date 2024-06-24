@@ -43,11 +43,11 @@ class StepPersonalInfo extends CustomState {
 
           // - - - - - - - - - - - - - - - - - - BIRTHDAY - - - - - - - - - - - - - - - - - -  //
           CustomTextField(
-              leadingIcon: Iconsax.cake,
-              controller: ageController!,
-              hint: CustomLocale.BE_VENDOR_BIRTHDAY.getString(context),
+            leadingIcon: Iconsax.cake,
+            controller: ageController!,
+            hint: CustomLocale.BE_VENDOR_BIRTHDAY.getString(context),
             validator: (value) => Validator.validateAge(value),
-            textInputType: TextInputType.number,
+            textInputType: TextInputType.phone,
           ),
 
           // - - - - - - - - - - - - - - - - - - CALL - - - - - - - - - - - - - - - - - -  //

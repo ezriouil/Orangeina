@@ -19,10 +19,12 @@ class WishlistCubit extends Cubit<WishlistState> {
 
   final WishListRepository wishListRepository;
   final GetStorage storage;
+  String? uid;
   WishlistCubit({ required this.storage, required this.wishListRepository}) : super(WishlistLoadingState()){  init();  }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{
+    uid = await LocalStorage.read(key: "UID", storage: storage);
     await getWishLists();
   }
 
@@ -36,12 +38,11 @@ class WishlistCubit extends Cubit<WishlistState> {
   // - - - - - - - - - - - - - - - - - - GET / REFRESH ORDERS - - - - - - - - - - - - - - - - - -  //
   Future<void> getWishLists()async {
     try{
-      final String? uid = await LocalStorage.read(key: "UID", storage: storage);
       if(uid == null) {
         emit(WishListEmptyState());
         return;
       }
-      final List<WishListEntity> wishLists = await wishListRepository.getAllWishLists(id: uid);
+      final List<WishListEntity> wishLists = await wishListRepository.getAllWishLists(id: uid!);
 
       if(wishLists.isEmpty) {
         emit(WishListEmptyState());
@@ -49,24 +50,9 @@ class WishlistCubit extends Cubit<WishlistState> {
       }
       emit(WishlistMainState(wishLists: wishLists));
     }catch(e){
-      print("=============");
-      print(e.toString());
-      print("=============");
       emit(WishlistErrorState());
     }
   }
-
-  void onDeleteWishList({required String id, required Null Function() callBack}) async{
-    try{
-
-    }catch(e){
-      print("=============");
-      print(e.toString());
-      print("=============");
-      emit(WishlistErrorState());
-    }
-  }
-
 
   // - - - - - - - - - - - - - - - - - - DELETE - - - - - - - - - - - - - - - - - -  //
   void onDelete({ required BuildContext context, required String id })async{
@@ -82,17 +68,18 @@ class WishlistCubit extends Cubit<WishlistState> {
                   children: [
 
                     CustomElevatedButton(
-                        child: Text(CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)),
                         onClick: () async{
 
                           context.pop();
                           await wishListRepository.deleteWishListById(id: id);
                           onRefresh();
 
-                        }
+                        },
+                        child: Text(CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE))
                     ),
 
                     CustomElevatedButton(
+                      backgroundColor: CustomColors.GRAY_LIGHT,
                         onClick: context.pop,
                         child: Text(CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE))),
 

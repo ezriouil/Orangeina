@@ -1,9 +1,9 @@
 import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
 import 'package:berkania/presentation/vendor_details/widgets/custom_review.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
-import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
+import 'package:berkania/utils/constants/custom_txt_strings.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
@@ -19,21 +19,16 @@ import '../../utils/constants/custom_sizes.dart';
 
 class VendorDetailsScreen extends CustomState {
   final String id;
-
   const VendorDetailsScreen({super.key, required this.id});
 
   @override
   Widget run(BuildContext context) {
-    String idCheck = "";
-    return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
 
+    return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
       builder: (context, state) {
 
-        if(id != idCheck){
           context.read<VendorDetailsCubit>().getVendorInfo(argumentId: id, context: context);
           context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
-          idCheck = id;
-        }
 
         return Scaffold(
           appBar: switch(state){
@@ -55,7 +50,6 @@ class VendorDetailsScreen extends CustomState {
               ],
             ),
             VendorDetailsLoadingState() => null,
-            VendorDetailsErrorState() => null
           },
           body: switch(state){
             VendorDetailsMainState() => Column(
@@ -137,7 +131,7 @@ class VendorDetailsScreen extends CustomState {
                                   argumentId: id,
                                   callBack: () {
                                     context.pop();
-                                    context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
+                                    //context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
                                   });
                             },
                             child: Row(
@@ -196,8 +190,9 @@ class VendorDetailsScreen extends CustomState {
                               ]),
                         ),
                         body: TabBarView(children: [
+                          
                           GoogleMap(
-                            initialCameraPosition: const CameraPosition(target: LatLng(31.7071858, -7.9518629), zoom: 5.0),
+                            initialCameraPosition: const CameraPosition(target: LatLng(CustomTextStrings.INITAIL_LAT, CustomTextStrings.INITAIL_LNG), zoom: 5.0),
                             zoomControlsEnabled: true,
                             mapToolbarEnabled: false,
                             myLocationEnabled: true,
@@ -206,22 +201,21 @@ class VendorDetailsScreen extends CustomState {
                             onMapCreated: context.read<VendorDetailsCubit>().onMapCompleted,
                             markers: state.markers!,
                           ),
-                          state.reviews!.isEmpty ?
-                          Center(child: Text(
-                                CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST.getString(context),
-                                style: Theme.of(context).textTheme.bodyLarge),
-                          ) : ListView.builder(
-                              itemCount: state.reviews!.length,
-                              itemBuilder: (context, index) => CustomReview(review: state.reviews![index]))
-                        ]),
+
+                          RefreshIndicator(
+                            onRefresh: ()async{ context.read<VendorDetailsCubit>().refreshReviews(argumentId: id, context: context);},
+                            color: primaryColor(context),
+                            backgroundColor: darkLightColor(context),
+                            child:
+                            state.reviews!.isEmpty ?
+                            Center(child: Text(CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST.getString(context), style: Theme.of(context).textTheme.bodyLarge)) :
+                            ListView.builder(itemCount: state.reviews!.length, itemBuilder: (context, index) => CustomReview(review: state.reviews![index])))
+                          ]),
                       )),
                 )
               ],
             ),
-            // TODO: Handle this case.
             VendorDetailsLoadingState() => const CustomLoadingScreen(),
-            // TODO: Handle this case.
-            VendorDetailsErrorState() => CustomErrorScreen(onClick: () {}),
           },
         );
       },

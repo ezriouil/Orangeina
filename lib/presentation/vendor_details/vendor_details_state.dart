@@ -49,11 +49,9 @@ final class VendorDetailsMainState extends VendorDetailsState {
           reviews: reviews ?? this.reviews,
           markers: markers ?? this.markers,
           reportFormState: reportFormState ?? this.reportFormState,
-      feedBackFormState: feedBackFormState ?? this.feedBackFormState
+          feedBackFormState: feedBackFormState ?? this.feedBackFormState
       );
 
 }
 
 final class VendorDetailsLoadingState extends VendorDetailsState {}
-
-final class VendorDetailsErrorState extends VendorDetailsState {}

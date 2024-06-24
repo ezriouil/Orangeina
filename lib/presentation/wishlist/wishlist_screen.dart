@@ -7,10 +7,12 @@ import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../utils/constants/custom_sizes.dart';
 import '../../utils/localisation/custom_locale.dart';
+import '../../utils/router/custom_router.dart';
 
 class WishlistScreen extends CustomState {
   const WishlistScreen({super.key});
@@ -35,7 +37,13 @@ class WishlistScreen extends CustomState {
           switch(state){
              case WishlistMainState(): return ListView.builder(
                  itemCount: state.wishLists!.length,
-                  itemBuilder: (context, index) => CustomWishList(wishListEntity: state.wishLists![index], onDelete: (String id){ context.read<WishlistCubit>().onDelete( context : context, id : id); }));
+                  itemBuilder: (context, index) => CustomWishList(
+                        wishListEntity: state.wishLists![index],
+                        onDelete: (String id) {context.read<WishlistCubit>().onDelete(context: context, id: id);},
+                        onClick: () {
+                          context.pushNamed(CustomRouter.VENDOR_DETAILS, pathParameters: { 'id' : state.wishLists![index].vendorId!});
+                        },
+                      ));
             case WishlistLoadingState(): return const CustomLoadingScreen();
             case WishlistErrorState(): return CustomErrorScreen(onClick: context.read<WishlistCubit>().init);
             case WishListEmptyState(): return CustomEmptyScreen(text: CustomLocale.WISHLIST_EMPTY_LIST_TITLE.getString(context));
