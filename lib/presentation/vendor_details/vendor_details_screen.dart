@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
 import 'package:berkania/presentation/vendor_details/widgets/custom_review.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
@@ -23,12 +25,14 @@ class VendorDetailsScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
-
+    String idCheckVendor = "";
     return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
       builder: (context, state) {
 
+        if(id != idCheckVendor){
           context.read<VendorDetailsCubit>().getVendorInfo(argumentId: id, context: context);
-          context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
+          idCheckVendor = id;
+        }
 
         return Scaffold(
           appBar: switch(state){
@@ -103,7 +107,7 @@ class VendorDetailsScreen extends CustomState {
                 // - - - - - - - - - - - - - - - - - -  RATING - - - - - - - - - - - - - - - - - -  //
                 RatingBar.builder(
                   itemCount: 5,
-                  initialRating: (state.vendor?.averageRating ?? 3.5).toDouble(),
+                  initialRating: state.vendorRating!,
                   maxRating: 5,
                   minRating: 1,
                   direction: Axis.horizontal,
@@ -131,7 +135,7 @@ class VendorDetailsScreen extends CustomState {
                                   argumentId: id,
                                   callBack: () {
                                     context.pop();
-                                    //context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
+                                    context.read<VendorDetailsCubit>().getReviews(argumentId: id, context: context);
                                   });
                             },
                             child: Row(
@@ -203,7 +207,7 @@ class VendorDetailsScreen extends CustomState {
                           ),
 
                           RefreshIndicator(
-                            onRefresh: ()async{ context.read<VendorDetailsCubit>().refreshReviews(argumentId: id, context: context);},
+                            onRefresh: () async{ context.read<VendorDetailsCubit>().refreshReviews(argumentId: id, context: context);},
                             color: primaryColor(context),
                             backgroundColor: darkLightColor(context),
                             child:

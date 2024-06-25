@@ -5,6 +5,7 @@ extension ReviewEntityMapper on ReviewEntity {
   ReviewDto toReviewDto() => ReviewDto(
     id: id,
       vendorId: vendorId,
+      viewerId: viewerId,
     fullName: fullName,
     reviewBody: reviewBody,
     avatar: avatar,
@@ -18,6 +19,7 @@ extension ReviewDtoMapper on ReviewDto {
       id: id,
       fullName: fullName,
       vendorId: vendorId,
+      viewerId: viewerId,
       reviewBody: reviewBody,
       avatar: avatar,
       rating: rating,

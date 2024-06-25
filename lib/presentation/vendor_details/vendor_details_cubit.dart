@@ -55,9 +55,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       required this.wishListRepository,
       required this.reportRepository,
       required this.storage})
-      : super(VendorDetailsLoadingState()) {
-    init();
-  }
+      : super(VendorDetailsLoadingState()) { init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{
@@ -69,35 +67,34 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       reviews: const [],
       feedbackController: TextEditingController(),
       feedback: 3.5,
+      vendorRating: 0,
       reportReason: "",
       feedBackFormState: GlobalKey<FormState>(),
       reportFormState: GlobalKey<FormState>()
     ));
     uid = await LocalStorage.read(key: "UID", storage: storage);
-
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
   void getVendorInfo({ required String argumentId,  required BuildContext context }) async{
-    if(argumentId == idCheckVendorInfo) return;
     VendorDetailsMainState currentState = state as VendorDetailsMainState;
     try{
 
       final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId);
+      final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
 
       final markers = <Marker>{};
 
       markers.add(await customMarker(lat: vendor!.shopLat!.toDouble(), lng: vendor.shopLng!.toDouble()));
-      emit(currentState.copyWith(vendor: vendor, markers: markers));
+      emit(currentState.copyWith(vendor: vendor, markers: markers, vendorRating: vendor.averageRating!.toDouble()));
 
       final WishListEntity? wishList = await wishListRepository.isFromWishList(userId: uid!, vendorId: vendor.id!);
 
       currentState = state as VendorDetailsMainState;
-      emit(currentState.copyWith(wishListId: (wishList?.id) ?? ""));
-      idCheckVendorInfo = argumentId;
+      emit(currentState.copyWith(wishListId: (wishList?.id) ?? "", reviews: reviews));
 
    }catch(e){
-     context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+     //context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
    }
   }
 
@@ -131,15 +128,11 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - GET ALL REVIEWS - - - - - - - - - - - - - - - - - -  //
   getReviews({ required String argumentId, required BuildContext context }) async{
-    if(argumentId == idCheckReviews) return;
-
     try{
       final currentState = state as VendorDetailsMainState;
       final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
       emit(currentState.copyWith(reviews: reviews));
-      idCheckReviews = argumentId;
     }
-
     catch(_){
     context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
@@ -284,12 +277,19 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                             final date = DateTime.now();
                             final ReviewEntity review = ReviewEntity(
                               vendorId: argumentId,
+                              viewerId: uid,
                               fullName: "${userEntity.firstName} ${userEntity.lastName}",
                               reviewBody: currentState.feedbackController!.text.trim(),
                               avatar: userEntity.avatar,
                               rating: currentState.feedback!,
                               createAt: "${date.day}/${date.month}/${date.year}"
                             );
+
+                           for(ReviewEntity review in currentState.reviews!){
+                             if(review.viewerId == uid){
+                               await reviewRepository.delete(docId: review.id!);
+                             }
+                           }
 
                             await reviewRepository.insert(reviewEntity: review);
 
@@ -299,9 +299,14 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                               reviewsSum += review.rating;
                             }
                             reviewsSum += currentState.feedback!;
-                            final newRate = reviewsSum / reviewsCount!;
+
+                            double newRate = reviewsSum.toDouble();
+                            if(reviewsCount! > 0){
+                               newRate = reviewsSum / reviewsCount;
+                            }
 
                             await vendorRepository.updateRating(newRate: newRate, uid: argumentId);
+                            emit(currentState.copyWith(vendorRating: newRate));
 
                             callBack.call();
 

@@ -53,19 +53,19 @@ class DependencyInjection{
     getIt.registerLazySingleton<ReportRepository>( () => ReportRepositoryImpl());
 
     // - - - - - - - - - - - - - - - - - - CUBITS - - - - - - - - - - - - - - - - - -  //
-    getIt.registerFactory<OnBoardingCubit>( () =>OnBoardingCubit(storage: getIt()));
-    getIt.registerFactory<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
-    getIt.registerFactory<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
-    getIt.registerFactory<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
-    getIt.registerFactory<IndexCubit>( () => IndexCubit());
-    getIt.registerFactory<HomeCubit>( () => HomeCubit(vendorRepository: getIt(), storage: getIt()));
-    getIt.registerFactory<WishlistCubit>( () => WishlistCubit(storage: getIt(), wishListRepository: getIt()));
-    getIt.registerFactory<NotificationCubit>( () => NotificationCubit(notificationRepository: getIt(), storage: getIt()));
-    getIt.registerFactory<SettingsCubit>( () => SettingsCubit(storage: getIt(), vendorRepository: getIt(), userRepository: getIt(), authRepository: getIt()));
-    getIt.registerFactory<VendorDetailsCubit>( () => VendorDetailsCubit(vendorRepository: getIt(), reviewRepository: getIt(), storage: getIt(), userRepository: getIt(), reportRepository: getIt(), wishListRepository: getIt()));
-    getIt.registerFactory<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));
-    getIt.registerFactory<VendorOrdersCubit>( () => VendorOrdersCubit(storage: getIt(), vendorRepository: getIt()));
-    getIt.registerFactory<BeVendorCubit>( () => BeVendorCubit(notificationRepository: getIt(), vendorRepository: getIt(), userRepository: getIt(), storage: getIt()));
+    // getIt.registerFactory<OnBoardingCubit>( () =>OnBoardingCubit(storage: getIt()));
+    // getIt.registerFactory<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
+    // getIt.registerFactory<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
+    // getIt.registerFactory<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
+    // getIt.registerFactory<IndexCubit>( () => IndexCubit());
+    // getIt.registerFactory<HomeCubit>( () => HomeCubit(vendorRepository: getIt(), storage: getIt()));
+    // getIt.registerFactory<WishlistCubit>( () => WishlistCubit(storage: getIt(), wishListRepository: getIt()));
+    // getIt.registerFactory<NotificationCubit>( () => NotificationCubit(notificationRepository: getIt(), storage: getIt()));
+    // getIt.registerFactory<SettingsCubit>( () => SettingsCubit(storage: getIt(), vendorRepository: getIt(), userRepository: getIt(), authRepository: getIt()));
+    // getIt.registerFactory<VendorDetailsCubit>( () => VendorDetailsCubit(vendorRepository: getIt(), reviewRepository: getIt(), storage: getIt(), userRepository: getIt(), reportRepository: getIt(), wishListRepository: getIt()));
+    // getIt.registerFactory<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));
+    // getIt.registerFactory<VendorOrdersCubit>( () => VendorOrdersCubit(storage: getIt(), vendorRepository: getIt()));
+    // getIt.registerFactory<BeVendorCubit>( () => BeVendorCubit(notificationRepository: getIt(), vendorRepository: getIt(), userRepository: getIt(), storage: getIt()));
   }
 
 }

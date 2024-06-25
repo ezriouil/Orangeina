@@ -2,7 +2,6 @@ import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/home/widgets/custom_vendor.dart';
 import 'package:berkania/utils/state/custom_state.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +50,7 @@ class HomeScreen extends CustomState {
                       scrollDirection: Axis.horizontal,
                       viewType: ViewType.list,
                       bottomLoader: Center(child: CircularProgressIndicator(color: primaryColor(context))),
-                      query: FirebaseFirestore.instance.collection('VENDORS').where('visible', isEqualTo: true).where('isOnline', isEqualTo: true),
+                      query: context.read<HomeCubit>().getAllVendors(),
                       itemBuilder: (context, documentSnapshot, index) {
                         final data = VendorEntity.fromJson(documentSnapshot.data() as Map<String, dynamic>);
                         return CustomVendor(

@@ -4,6 +4,7 @@ class ReviewEntity {
   late num rating;
   late final String? id,
       vendorId,
+      viewerId,
       fullName,
       reviewBody,
       avatar,
@@ -13,6 +14,7 @@ class ReviewEntity {
   ReviewEntity(
       {this.id = "",
       this.vendorId = "",
+      this.viewerId = "",
       this.fullName = "",
       this.reviewBody = "",
       this.avatar = "",
@@ -23,6 +25,7 @@ class ReviewEntity {
   Map<String, dynamic> toJson() => {
         'id': id,
         'vendorId': vendorId,
+        'viewerId': viewerId,
         'fullName': fullName,
         'reviewBody': reviewBody,
         'avatar': avatar,
@@ -36,6 +39,7 @@ class ReviewEntity {
         id: json['id'] as String,
         fullName: json['fullName'] as String,
         vendorId: json['vendorId'] as String,
+        viewerId: json['viewerId'] as String,
         reviewBody: json['reviewBody'] as String,
         avatar: json['avatar'] as String,
         rating: json['rating'] as num,

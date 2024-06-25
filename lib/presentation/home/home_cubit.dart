@@ -9,6 +9,7 @@ import 'package:berkania/presentation/home/widgets/custom_marker_window.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/constants/custom_txt_strings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,6 +41,9 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit({ required this.vendorRepository, required this.storage }) : super(HomeLoadingState()){
     init();
   }
+
+  Query<Map<String, dynamic>> getAllVendors() => FirebaseFirestore.instance.collection('VENDORS').where('visible', isEqualTo: true).where('isOnline', isEqualTo: true).where('id', isNotEqualTo: uid);
+
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{

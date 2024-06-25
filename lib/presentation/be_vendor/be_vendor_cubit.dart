@@ -8,8 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/notification_repository.dart';
@@ -92,11 +94,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         if(currentState.carAssuranceImage == "") {
           CustomSnackBar.show(context: context, title: "Please Select Car Assurance Image", subTitle: "Try Again", type: ContentType.warning);
           return;
-        };
+        }
         if(currentState.carRegistrationImage == "") {
           CustomSnackBar.show(context: context, title: "Please Select Car Assurance Image", subTitle: "Try Again", type: ContentType.warning);
           return;
-        };
+        }
       }
       emit(BeVendorLoadingState());
 
@@ -200,6 +202,18 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF VEHICLE FROM GALLERY- - - - - - - - - - - - - - - - - -  //
   void onPickCarImage({ required BuildContext context }) async{
    try{
+
+     final status = await Permission.storage.status;
+
+     if(status.isDenied){
+       await Permission.storage.request();
+       return ;
+     }
+     if(status.isPermanentlyDenied){
+       Geolocator.openAppSettings();
+       return ;
+     }
+
      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
      if(img == null){
        return;

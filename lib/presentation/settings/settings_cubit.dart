@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
 import 'package:berkania/domain/repositories/auth_repository.dart';
@@ -95,10 +97,10 @@ class SettingsCubit extends Cubit<SettingsState> {
                         try {
                           context.pop();
 
-                          final status = await Permission.camera.status;
-                          print("status => ${status}");
+                          final status = await Permission.storage.status;
+
                           if(status.isDenied){
-                            await Permission.camera.request();
+                            await Permission.storage.request();
                             return ;
                           }
                           if(status.isPermanentlyDenied){
@@ -528,30 +530,17 @@ class SettingsCubit extends Cubit<SettingsState> {
               child: Column(
                 children: [
                   CustomElevatedButton(
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Iconsax.call_calling),
-                          Text("  Sign Out"),
-                        ],
-                      ),
+                      child: const Text("Sign Out"),
                       onClick: () async{
                         await authRepository.signOut();
                         await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
                         if(!context.mounted) return;
-                        context.pushReplacementNamed(CustomRouter.LOGIN);
-                        context.pop();
+                        exit(0);
                       }),
                   CustomElevatedButton(
                       onClick: context.pop,
                       backgroundColor: CustomColors.GRAY_LIGHT,
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Iconsax.close_square),
-                          Text("  Close"),
-                        ],
-                      )),
+                      child: const Text("Close")),
                 ],
               ),
             ),

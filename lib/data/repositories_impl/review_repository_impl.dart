@@ -25,4 +25,10 @@ class ReviewRepositoryImpl extends ReviewRepository {
     }
     return reviewsEntity;
   }
+
+  // - - - - - - - - - - - - - - - - - - OVERRIDE DELETE REVIEW - - - - - - - - - - - - - - - - - -  //
+  @override
+  Future<void> delete({required String docId}) async{
+    await Remote.deleteReviewById(id: docId,);
+  }
 }

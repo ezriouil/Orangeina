@@ -4,6 +4,7 @@ class ReviewDto {
   late num rating;
   late final String? id,
       vendorId,
+      viewerId,
       fullName,
       reviewBody,
       avatar,
@@ -13,6 +14,7 @@ class ReviewDto {
   ReviewDto(
       {this.id = "",
       this.vendorId = "",
+      this.viewerId = "",
       this.fullName = "",
       this.reviewBody = "",
       this.avatar = "",
@@ -24,6 +26,7 @@ class ReviewDto {
         'id': id,
         'fullName': fullName,
         'vendorId': vendorId,
+        'viewerId': viewerId,
         'reviewBody': reviewBody,
         'avatar': avatar,
         'rating': rating,
@@ -36,6 +39,7 @@ class ReviewDto {
         id: json['id'] as String,
         fullName: json['fullName'] as String,
         vendorId: json['vendorId'] as String,
+        viewerId: json['viewerId'] as String,
         reviewBody: json['reviewBody'] as String,
         avatar: json['avatar'] as String,
         rating: json['rating'] as num,

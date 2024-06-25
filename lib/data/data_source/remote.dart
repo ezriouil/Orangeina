@@ -299,12 +299,18 @@ class Remote{
     await newDoc.set({
       'id': newDoc.id,
       'vendorId': reviewDto.vendorId,
+      'viewerId': reviewDto.viewerId,
       'fullName': reviewDto.fullName,
       'reviewBody': reviewDto.reviewBody,
       'avatar': reviewDto.avatar,
       'rating': reviewDto.rating,
       'createAt': reviewDto.createAt
     });
+  }
+
+  // - - - - - - - - - - - - - - - - - - DELETE REVIEW BY ID - - - - - - - - - - - - - - - - - -  //
+  static Future<void> deleteReviewById({ required String id }) async{
+    await _firebaseFirestore.collection("REVIEWS").doc(id).delete();
   }
 
   // - - - - - - - - - - - - - - - - - - INSERT NEW REPORT - - - - - - - - - - - - - - - - - -  //
@@ -321,4 +327,5 @@ class Remote{
       'createAt': reportDto.createAt
     });
   }
+
 }

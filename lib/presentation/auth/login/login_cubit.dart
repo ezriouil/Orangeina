@@ -87,7 +87,9 @@ class LoginCubit extends Cubit<LoginState> {
 
       // SAVE EMAIL + PASSWORD INTO LOCAL STORAGE
       await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
+      print(userCredential.user?.uid);
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
+
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
       callBack.call();
