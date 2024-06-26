@@ -10,9 +10,9 @@ import '../../../utils/state/custom_state.dart';
 
 class CustomReview extends CustomState {
   final ReviewEntity review;
+  final Function(ReviewEntity review) onDelete;
 
-  const CustomReview(
-      {super.key, required this.review });
+  const CustomReview({super.key, required this.review, required this.onDelete });
 
   @override
   Widget run(BuildContext context) {
@@ -44,8 +44,15 @@ class CustomReview extends CustomState {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // - - - - - - - - - - - - - - - - - -  FULL NAME - - - - - - - - - - - - - - - - - -  //
-                    Text(review.fullName ?? "", style: Theme.of(context).textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // - - - - - - - - - - - - - - - - - -  FULL NAME - - - - - - - - - - - - - - - - - -  //
+                        Text(review.fullName ?? "", style: Theme.of(context).textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        // - - - - - - - - - - - - - - - - - -  CREATE AT - - - - - - - - - - - - - - - - - -  //
+                        Text(review.createAt ?? "01/01/2025", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10.0), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      ],
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -63,8 +70,13 @@ class CustomReview extends CustomState {
                           itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
                           onRatingUpdate: (double value) {  },
                         ),
-                        // - - - - - - - - - - - - - - - - - -  CREATE AT - - - - - - - - - - - - - - - - - -  //
-                        Text(review.createAt ?? "01/01/2025", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10.0), maxLines: 1, overflow: TextOverflow.ellipsis),
+                        
+                        // - - - - - - - - - - - - - - - - - -  ICON DELETE - - - - - - - - - - - - - - - - - -  //
+                        InkWell(
+                          onTap: (){ onDelete(review); },
+                          overlayColor: MaterialStateProperty.all(CustomColors.TRANSPARENT),
+                          child: Icon(Icons.delete_sweep_rounded, size: 20, color: darkLightColor(context)),
+                        )
                       ],
                     ),
                   ],

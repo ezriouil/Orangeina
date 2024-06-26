@@ -26,6 +26,7 @@ class IndexScreen extends CustomState {
                 animationDuration: const Duration(seconds: 3),
                 selectedIndex: state.currentPageIndex!,
                 onDestinationSelected: context.read<IndexCubit>().onUpdateCurrentIndex,
+                labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
                 destinations: [
                   NavigationDestination(icon: const Icon(Iconsax.map), label: CustomLocale.INDEX_EXPLORE_TITLE.getString(context)),
                   NavigationDestination(icon: const Icon(Iconsax.heart), label: CustomLocale.INDEX_WISHLIST_TITLE.getString(context)),

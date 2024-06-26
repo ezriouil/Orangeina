@@ -133,9 +133,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
       emit(currentState.copyWith(reviews: reviews));
     }
-    catch(_){
-    context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-    }
+    catch(_){}
   }
 
   // - - - - - - - - - - - - - - - - - - REFRESH REVIEWS - - - - - - - - - - - - - - - - - -  //
@@ -149,9 +147,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       idCheckReviews = argumentId;
     }
 
-    catch(_){
-    context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-    }
+    catch(_){}
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //
@@ -259,58 +255,66 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
                             currentState = state as VendorDetailsMainState;
 
-                            // CHECK THE FORM
-                            if(!currentState.feedBackFormState!.currentState!.validate()) return;
+                            try{
 
-                            if(uid == null) {
-                              context.pop();
-                              return;
-                            };
+                              // CHECK THE FORM
+                              if(!currentState.feedBackFormState!.currentState!.validate()) return;
 
-                            final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
+                              if(uid == null) {
+                                context.pop();
+                                return;
+                              };
 
-                            if(userEntity == null) {
-                              context.pop();
-                              return;
-                            }
+                              final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
 
-                            final date = DateTime.now();
-                            final ReviewEntity review = ReviewEntity(
-                              vendorId: argumentId,
-                              viewerId: uid,
-                              fullName: "${userEntity.firstName} ${userEntity.lastName}",
-                              reviewBody: currentState.feedbackController!.text.trim(),
-                              avatar: userEntity.avatar,
-                              rating: currentState.feedback!,
-                              createAt: "${date.day}/${date.month}/${date.year}"
-                            );
-
-
-                            num reviewsSum = 0;
-                            for(ReviewEntity review in currentState.reviews!){
-                               if(review.viewerId == uid){
-                                 await reviewRepository.delete(docId: review.id!);
-                                 reviewsSum -= review.rating;
-                                 //currentState.reviews!.remove(review);
-                               }
-                             }
-
-                            await reviewRepository.insert(reviewEntity: review);
-
-                            double newRate = currentState.feedback!;
-
-                            if(currentState.reviews!.isNotEmpty){
-                              for(ReviewEntity review in currentState.reviews!){
-                                reviewsSum += review.rating;
+                              if(userEntity == null) {
+                                context.pop();
+                                return;
                               }
-                              reviewsSum += currentState.feedback!;
-                               newRate = reviewsSum / currentState.reviews!.length;
+
+                              final date = DateTime.now();
+                              final ReviewEntity review = ReviewEntity(
+                                  vendorId: argumentId,
+                                  viewerId: uid,
+                                  fullName: "${userEntity.firstName} ${userEntity.lastName}",
+                                  reviewBody: currentState.feedbackController!.text.trim(),
+                                  avatar: userEntity.avatar,
+                                  rating: currentState.feedback!,
+                                  createAt: "${date.day}/${date.month}/${date.year}"
+                              );
+
+
+                              num reviewsSum = 0;
+                              for(ReviewEntity review in currentState.reviews!){
+                                if(review.viewerId == uid){
+                                  await reviewRepository.delete(docId: review.id!);
+                                  reviewsSum -= review.rating;
+                                }
+                              }
+
+                              await reviewRepository.insert(reviewEntity: review);
+
+                              double newRate = currentState.feedback!;
+
+                              if(currentState.reviews!.isNotEmpty){
+                                for(ReviewEntity review in currentState.reviews!){
+                                  reviewsSum += review.rating;
+                                }
+                                reviewsSum += currentState.feedback!;
+                                newRate = reviewsSum / currentState.reviews!.length;
+                              }
+
+                              await vendorRepository.updateRating(newRate: newRate, uid: argumentId);
+                              currentState.feedbackController!.clear();
+                              emit(currentState.copyWith(vendorRating: newRate));
+
+                              callBack.call();
+
+                            }catch(_){
+
+                              emit(currentState);
+
                             }
-
-                            await vendorRepository.updateRating(newRate: newRate, uid: argumentId);
-                            emit(currentState.copyWith(vendorRating: newRate));
-
-                            callBack.call();
 
                           }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
 
@@ -442,6 +446,51 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                 ),
               );
             },
+          );
+        });
+  }
+
+  // - - - - - - - - - - - - - - - - - - DELETE REVIEW - - - - - - - - - - - - - - - - - -  //
+  void onDelete(ReviewEntity review, BuildContext context, String argumentId) async{
+    await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            scrollable: true,
+            content: SizedBox(
+              width: double.infinity,
+              height: 150,
+              child: Column(
+                children: [
+                  CustomElevatedButton(
+                      child: const Text("Delete"),
+                      onClick: () async{
+                        context.pop();
+                        final currentState = state as VendorDetailsMainState;
+                        num reviewsSum = 0;
+                        double newRate = 0;
+                        if(currentState.reviews!.isNotEmpty){
+                          for(ReviewEntity review in currentState.reviews!){
+                            reviewsSum += review.rating;
+                          }
+                          reviewsSum -= review.rating;
+                          newRate = reviewsSum / currentState.reviews!.length;
+                        }
+                        await reviewRepository.delete(docId: review.id!);
+                        await vendorRepository.updateRating(newRate: newRate, uid: argumentId);
+                        currentState.reviews!.remove(review);
+                        emit(currentState.copyWith(vendorRating: newRate));
+                        context.mounted ? CustomSnackBar.show(context: context, title: "Review Deleted", subTitle: "Your review is delete successfully!", type: ContentType.success) : null;
+                      }
+                      ),
+                  CustomElevatedButton(
+                      onClick: context.pop,
+                      backgroundColor: CustomColors.GRAY_LIGHT,
+                      child: const Text("Close")),
+                ],
+              ),
+            ),
           );
         });
   }

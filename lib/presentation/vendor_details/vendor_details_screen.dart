@@ -192,7 +192,8 @@ class VendorDetailsScreen extends CustomState {
                               ]),
                         ),
                         body: TabBarView(children: [
-                          
+
+                          // - - - - - - - - - - - - - - - - - -  TAB 1 - - - - - - - - - - - - - - - - - -  //
                           GoogleMap(
                             initialCameraPosition: const CameraPosition(target: LatLng(CustomTextStrings.INITAIL_LAT, CustomTextStrings.INITAIL_LNG), zoom: 5.0),
                             zoomControlsEnabled: true,
@@ -204,6 +205,7 @@ class VendorDetailsScreen extends CustomState {
                             markers: state.markers!,
                           ),
 
+                          // - - - - - - - - - - - - - - - - - -  TAB 2 - - - - - - - - - - - - - - - - - -  //
                           RefreshIndicator(
                             onRefresh: () async{ context.read<VendorDetailsCubit>().refreshReviews(argumentId: id, context: context);},
                             color: primaryColor(context),
@@ -211,9 +213,11 @@ class VendorDetailsScreen extends CustomState {
                             child:
                             state.reviews!.isEmpty ?
                             Center(child: Text(CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST.getString(context), style: Theme.of(context).textTheme.bodyLarge)) :
-                            ListView.builder(itemCount: state.reviews!.length, itemBuilder: (context, index) => CustomReview(review: state.reviews![index])))
+                            ListView.builder(itemCount: state.reviews!.length, itemBuilder: (context, index) => CustomReview(review: state.reviews![index], onDelete: (reviewEntity){ context.read<VendorDetailsCubit>().onDelete(state.reviews![index], context, id); })))
+
                           ]),
-                      )),
+                      )
+                  ),
                 )
               ],
             ),
