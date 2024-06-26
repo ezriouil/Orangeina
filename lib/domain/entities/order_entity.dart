@@ -4,7 +4,6 @@ class OrderEntity {
   late final  int? quantity;
   late final  double? priceEachKg, total;
   late final String? id,
-      vendorFullName,
       vendorId,
       selectedDate,
       status,
@@ -13,7 +12,6 @@ class OrderEntity {
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR- - - - - - - - - - - - - - - - - -  //
   OrderEntity(
       {this.id = "",
-      this.vendorFullName = "",
       this.vendorId = "",
       this.priceEachKg = 0.0,
         this.total = 0.0,
@@ -25,7 +23,6 @@ class OrderEntity {
   // - - - - - - - - - - - - - - - - - - TO JSON - - - - - - - - - - - - - - - - - -  //
   Map<String, dynamic> toJson() => {
         'id': id,
-        'vendorFullName': vendorFullName,
         'vendorId': vendorId,
         'priceEachKg': priceEachKg,
         'total': total,
@@ -39,7 +36,6 @@ class OrderEntity {
   static OrderEntity fromJson(Map json) {
     return OrderEntity(
         id: json['id'] as String,
-        vendorFullName: json['vendorFullName'] as String,
         vendorId: json['vendorId'] as String,
         priceEachKg: json['priceEachKg'] as double,
         total: json['total'] as double,

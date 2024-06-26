@@ -1,7 +1,6 @@
 import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
 import 'package:berkania/presentation/vendor_orders/widgets/custom_order.dart';
 import 'package:berkania/presentation/widgets/custom_empty_screen.dart';
-import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +43,6 @@ class VendorOrdersScreen extends CustomState {
                 itemBuilder: (context, index) => CustomOrder(orderEntity: state.orders![index])
               );
             case VendorOrdersLoadingState(): return const CustomLoadingScreen();
-            case VendorOrdersErrorState(): return CustomErrorScreen(onClick: context.read<VendorOrdersCubit>().init);
             case VendorOrdersEmptyState(): return CustomEmptyScreen(text: CustomLocale.ORDERS_EMPTY_LIST_TITLE.getString(context));
           }
         },

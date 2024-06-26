@@ -1,6 +1,7 @@
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/home/widgets/custom_vendor.dart';
+import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:firebase_pagination/firebase_pagination.dart';
@@ -25,6 +26,7 @@ class HomeScreen extends CustomState {
             case HomeMainState() : {
               return Stack(
                 children: [
+
                   GoogleMap(
                     initialCameraPosition: state.cameraCurrentLocation == null ? state.myCurrentLocation! : state.cameraCurrentLocation!,
                     zoomControlsEnabled: false,
@@ -42,24 +44,53 @@ class HomeScreen extends CustomState {
                     markers : state.markers!,
                     polylines: state.polyline!
                     ),
+
+                  state.vendors!.isEmpty ?
+                  Positioned(bottom: 0, child: Container(
+                      width: getWidth(context),
+                      height: 40,
+                      alignment: Alignment.center,
+                      color: primaryColor(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Iconsax.danger, size: 18.0, color: darkDarkLightLightColor(context)),
+                          Text("  No Vendors Found", style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: darkDarkLightLightColor(context))),
+                        ],
+                      )
+                  )) :
                   Positioned(bottom: 0,child: SizedBox(
                     width: getWidth(context),
-                    height: 100.0,
+                    height: state.vendors!.isEmpty ? 40 : 100,
                     child: FirestorePagination(
                       limit: 1,
                       scrollDirection: Axis.horizontal,
                       viewType: ViewType.list,
                       bottomLoader: Center(child: CircularProgressIndicator(color: primaryColor(context))),
+                      onEmpty: Container(
+                          width: getWidth(context),
+                          height: 40,
+                          alignment: Alignment.center,
+                          color: primaryColor(context),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Iconsax.danger, size: 18.0, color: darkDarkLightLightColor(context)),
+                              Text("  No Vendors Found", style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: darkDarkLightLightColor(context))),
+                            ],
+                          )
+                      ),
                       query: context.read<HomeCubit>().getAllVendors(),
                       itemBuilder: (context, documentSnapshot, index) {
                         final data = VendorEntity.fromJson(documentSnapshot.data() as Map<String, dynamic>);
                         return CustomVendor(
-                                  vendorEntity: data,
-                                  onClick: (VendorEntity vendor) {context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context);},
-                                  myCurrentLocation: state.myCurrentLocation!.target);
-                            },
+                            vendorEntity: data,
+                            onClick: (VendorEntity vendor) {context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context);},
+                            myCurrentLocation: state.myCurrentLocation!.target);
+                      },
                     ),
                   )),
+
                   SizedBox(
                     width: getWidth(context),
                     height: getHeight(context),
@@ -90,6 +121,7 @@ class HomeScreen extends CustomState {
                       ),
                     ),
                   ),
+
                   CustomInfoWindow(
                     controller: state.customInfoWindowController!,
                     height: 90,
@@ -101,7 +133,7 @@ class HomeScreen extends CustomState {
               );
             }
             case HomeLoadingState(): return const CustomLoadingScreen();
-            case HomeErrorState(): return Center(child: Text(state.message, style: Theme.of(context).textTheme.bodyLarge));
+            case HomeErrorState(): return CustomErrorScreen(onClick: context.read<HomeCubit>().init);
           }
         },
       ),

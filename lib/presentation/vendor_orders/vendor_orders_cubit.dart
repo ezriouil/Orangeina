@@ -42,7 +42,7 @@ class VendorOrdersCubit extends Cubit<VendorOrdersState> {
       }
       emit(VendorOrdersMainState(orders: orders));
     }catch(_){
-      emit(VendorOrdersErrorState());
+      emit(VendorOrdersEmptyState());
     }
   }
 

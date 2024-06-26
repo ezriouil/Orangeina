@@ -133,8 +133,12 @@ class VendorNewOrderScreen extends CustomState {
                       const SizedBox(height: CustomSizes.SPACE_DEFAULT),
                       
                       // - - - - - - - - - - - - - - - - - - CONFIRM BUTTON - - - - - - - - - - - - - - - - - -  //
-                      CustomElevatedButton(onClick: (){ context.read<VendorNewOrderCubit>().onConfirm(callback: (){  }, context: context); }, withDefaultPadding: false, child: Text(CustomLocale.NEW_ORDER_CONFIRM_BUTTON.getString(context)))
-                      
+                      CustomElevatedButton(
+                          onClick: () {
+                            context.read<VendorNewOrderCubit>().onConfirm(context: context);
+                          },
+                          withDefaultPadding: false,
+                          child: Text(CustomLocale.NEW_ORDER_CONFIRM_BUTTON.getString(context)))
                     ],
                   ),
                 );

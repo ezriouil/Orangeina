@@ -285,24 +285,26 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                               createAt: "${date.day}/${date.month}/${date.year}"
                             );
 
-                           for(ReviewEntity review in currentState.reviews!){
-                             if(review.viewerId == uid){
-                               await reviewRepository.delete(docId: review.id!);
+
+                            num reviewsSum = 0;
+                            for(ReviewEntity review in currentState.reviews!){
+                               if(review.viewerId == uid){
+                                 await reviewRepository.delete(docId: review.id!);
+                                 reviewsSum -= review.rating;
+                                 //currentState.reviews!.remove(review);
+                               }
                              }
-                           }
 
                             await reviewRepository.insert(reviewEntity: review);
 
-                            final reviewsCount = currentState.reviews?.length;
-                            num reviewsSum = 0;
-                            for(ReviewEntity review in currentState.reviews!){
-                              reviewsSum += review.rating;
-                            }
-                            reviewsSum += currentState.feedback!;
+                            double newRate = currentState.feedback!;
 
-                            double newRate = reviewsSum.toDouble();
-                            if(reviewsCount! > 0){
-                               newRate = reviewsSum / reviewsCount;
+                            if(currentState.reviews!.isNotEmpty){
+                              for(ReviewEntity review in currentState.reviews!){
+                                reviewsSum += review.rating;
+                              }
+                              reviewsSum += currentState.feedback!;
+                               newRate = reviewsSum / currentState.reviews!.length;
                             }
 
                             await vendorRepository.updateRating(newRate: newRate, uid: argumentId);
@@ -325,20 +327,23 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - ALERT REPORT - - - - - - - - - - - - - - - - - -  //
   void onReport({required BuildContext context, required Function callBack}) async {
-    final VendorDetailsMainState currentState = state as VendorDetailsMainState;
 
     await showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            content: SizedBox(
-              width: double.infinity,
-              height: 350,
-              child: SingleChildScrollView(
-                child: Form(
-                  key: currentState.reportFormState,
-                  child: Column(
-                    children: [
+          return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
+            builder: (context, state) {
+              final VendorDetailsMainState currentState =
+                  state as VendorDetailsMainState;
+              return AlertDialog(
+                content: SizedBox(
+                  width: double.infinity,
+                  height: 350,
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: currentState.reportFormState,
+                      child: Column(
+                        children: [
 
                       // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                       const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
@@ -369,9 +374,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                             DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
                             DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
                           ],
-                          onChanged: (String? value) {
-                            emit(currentState.copyWith(reportReason: value));
-                          },
+                          onChanged: (String? value) { emit(currentState.copyWith(reportReason: value)); },
                           icon: const Icon(Iconsax.arrow_bottom),
                           value: currentState.reportReason == "" ? CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context) : currentState.reportReason ),
 
@@ -430,17 +433,16 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                             callBack.call();
 
                           }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
-
+                            ],
+                          )
                         ],
-                      )
-
-                    ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         });
   }
-
 }

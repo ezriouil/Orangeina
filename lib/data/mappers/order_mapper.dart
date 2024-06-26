@@ -4,7 +4,6 @@ import '../../domain/entities/order_entity.dart';
 extension OrderEntityMapper on OrderEntity {
   OrderDto toOrderDto() => OrderDto(
     id: id,
-    vendorFullName: vendorFullName,
     vendorId: vendorId,
     priceEachKg: priceEachKg,
     total: total,
@@ -18,7 +17,6 @@ extension OrderEntityMapper on OrderEntity {
 extension OrderDtoMapper on OrderDto {
   OrderEntity toOrderEntity() => OrderEntity(
       id: id,
-      vendorFullName: vendorFullName,
       vendorId: vendorId,
       priceEachKg: priceEachKg,
       total: total,

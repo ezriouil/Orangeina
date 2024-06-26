@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
 import 'package:berkania/presentation/vendor_details/widgets/custom_review.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';

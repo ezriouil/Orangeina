@@ -102,3 +102,4 @@ class VendorEntity{
         createAt: json['createAt'] as String);
   }
 }
+

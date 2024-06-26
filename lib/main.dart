@@ -123,7 +123,7 @@ class _IndexState extends State<App> {
           BlocProvider(create: (_) => NotificationCubit(notificationRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt())),
           BlocProvider(create: (_) => SettingsCubit(storage: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), authRepository: DependencyInjection.getIt())),
           BlocProvider(create: (_) => VendorDetailsCubit(userRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), reviewRepository: DependencyInjection.getIt(), wishListRepository: DependencyInjection.getIt(), reportRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt())),
-          BlocProvider(create: (_) => VendorNewOrderCubit(connectivity: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => VendorNewOrderCubit(connectivity: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), notificationRepository: DependencyInjection.getIt())),
           BlocProvider(create: (_) => VendorOrdersCubit(storage: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt())),
           BlocProvider(create: (_) => BeVendorCubit(notificationRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt())),
         ],

@@ -15,5 +15,3 @@ final class VendorOrdersMainState extends VendorOrdersState {
 final class VendorOrdersEmptyState extends VendorOrdersState {}
 
 final class VendorOrdersLoadingState extends VendorOrdersState {}
-
-final class VendorOrdersErrorState extends VendorOrdersState {}

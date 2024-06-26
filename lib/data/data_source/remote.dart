@@ -185,7 +185,6 @@ class Remote{
     await newDoc.set({
       "id" : newDoc.id,
       "vendorId" : orderDto.vendorId,
-      "vendorFullName" : orderDto.vendorFullName,
       "priceEachKg" : orderDto.priceEachKg,
       "total" : orderDto.total,
       "quantity" : orderDto.quantity,

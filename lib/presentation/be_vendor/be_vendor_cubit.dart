@@ -128,7 +128,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
           carType: currentState.carType,
           isOnline: false,
           visible: false,
-          averageRating: 3.0,
+          averageRating: 0.0,
           birthdayYear:int.parse( currentState.ageController!.text.trim()),
           totalOrders: 0,
           shopLat: 0.0,
