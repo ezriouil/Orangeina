@@ -209,5 +209,16 @@ class Arabic{
     CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "عودة",
     CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "لم يتم العثور على أية رغبات !",
 
+    // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.Q1 : "أين يمكنني العثور على التطبيق",
+    CustomLocale.R1 : "Google play\nApp store\nHuawei store\n",
+    CustomLocale.Q2 : "ما هي العروض الجديدة؟",
+    CustomLocale.R2 : "انتقل إلى الصفحة الرئيسية وتحقق من الخيار الشائع، ثم ستجد جميع العروض المتوفرة لدينا لك",
+    CustomLocale.Q3 : "كيف يمكنني أن أكون بائعًا؟",
+    CustomLocale.R3 : "انتقل إلى صفحة الإعدادات وانقر على كن بائعًا ثم املأ النموذج. بعد 24 ساعة سوف نرسل لك قبولنا",
+    CustomLocale.Q4 : "كيف يمكنني أن أعرف أنني بائع؟",
+    CustomLocale.R4 : "انتقل إلى صفحة الإشعارات وستجد جميع الإشعارات",
+    CustomLocale.Q5 : "المزيد من الأسئلة",
+    CustomLocale.R5 : "اتصل بنا",
   };
 }

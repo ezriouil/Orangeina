@@ -1,5 +1,4 @@
 import 'package:berkania/presentation/auth/login/login_cubit.dart';
-import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
@@ -171,10 +170,6 @@ class LoginScreen extends CustomState {
             case LoginLoadingState():
               {
                 return const CustomLoadingScreen();
-              }
-            case LoginErrorState():
-              {
-                return CustomErrorScreen(onClick: context.read<LoginCubit>().onTryAgain);
               }
           }
         },

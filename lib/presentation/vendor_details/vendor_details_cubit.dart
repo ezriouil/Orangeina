@@ -81,8 +81,12 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
     try{
 
       final VendorEntity? vendor = await vendorRepository.getVendorById(vendorId: argumentId);
-      final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
-
+      final List<ReviewEntity> reviews = [];
+      final getAllReviews = await reviewRepository.getReviews(id: argumentId);
+      for (ReviewEntity review in getAllReviews) {
+        if(review.viewerId == uid) { reviews.insert(0, review); }
+        else { reviews.add(review); }
+      }
       final markers = <Marker>{};
 
       markers.add(await customMarker(lat: vendor!.shopLat!.toDouble(), lng: vendor.shopLng!.toDouble()));
@@ -142,7 +146,12 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
     try{
       final currentState = state as VendorDetailsMainState;
       currentState.reviews?.clear();
-      final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
+      final List<ReviewEntity> reviews = [];
+      final getAllReviews = await reviewRepository.getReviews(id: argumentId);
+      for (ReviewEntity review in getAllReviews) {
+        if(review.viewerId == uid) { reviews.insert(0, review); }
+        else { reviews.add(review); }
+      }
       emit(currentState.copyWith(reviews: reviews));
       idCheckReviews = argumentId;
     }
@@ -449,6 +458,9 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
           );
         });
   }
+
+  // - - - - - - - - - - - - - - - - - - UID - - - - - - - - - - - - - - - - - -  //
+  String getUid() => uid!;
 
   // - - - - - - - - - - - - - - - - - - DELETE REVIEW - - - - - - - - - - - - - - - - - -  //
   void onDelete(ReviewEntity review, BuildContext context, String argumentId) async{

@@ -33,9 +33,7 @@ class LoginCubit extends Cubit<LoginState> {
       required this.userRepository,
       required this.storage,
       required this.connectivity})
-      : super(LoginLoadingState()) {
-    init();
-  }
+      : super(LoginLoadingState()) { init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async {
@@ -55,7 +53,7 @@ class LoginCubit extends Cubit<LoginState> {
   // - - - - - - - - - - - - - - - - - - LOGIN WITH EMAIL AND PASSWORD - - - - - - - - - - - - - - - - - -  //
   onLogin({required BuildContext context, required Function callBack}) async{
     // CURRENT STATE
-    final LoginMainState currentState = state as LoginMainState;
+    LoginMainState currentState = state as LoginMainState;
 
     try{
 
@@ -71,9 +69,6 @@ class LoginCubit extends Cubit<LoginState> {
         return;
       }
 
-      // EMIT LOADING STATE
-      emit(LoginLoadingState());
-
       // CALL LOGIN METHODE
       final UserCredential userCredential = await authRepository.login(
           email: currentState.emailController!.text.trim(),
@@ -81,16 +76,16 @@ class LoginCubit extends Cubit<LoginState> {
       );
 
       if(userCredential.user == null){
-        emit(LoginErrorState(message: "Invalid Login"));
+        CustomSnackBar.show(context: context, title: "Email Or Password Invalid", subTitle: "Verify you email and password.", type: ContentType.warning);
         return;
       }
 
       // SAVE EMAIL + PASSWORD INTO LOCAL STORAGE
       await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
-      print(userCredential.user?.uid);
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
 
       // NAVIGATE TO HOME SCREEN
+      currentState = state as LoginMainState;
       emit(currentState);
       callBack.call();
 
@@ -117,7 +112,7 @@ class LoginCubit extends Cubit<LoginState> {
     final UserCredential userCredential = await authRepository.loginWithGoogle();
     try{
       if(userCredential.user == null){
-        emit(LoginErrorState(message: "Invalid Login"));
+        CustomSnackBar.show(context: context, title: "Email Or Password Invalid", subTitle: "Verify you email and password.", type: ContentType.warning);
         return;
       }
 
@@ -164,7 +159,7 @@ class LoginCubit extends Cubit<LoginState> {
   // - - - - - - - - - - - - - - - - - - SHOW DIALOG LANGUAGES - - - - - - - - - - - - - - - - - -  //
   onUpdateLanguage({ required BuildContext context, required Function callBack }) async{
 
-    final LoginMainState currentState = (state as LoginMainState);
+    final LoginMainState currentState = state as LoginMainState;
     String langSelected = "";
 
     await showDialog(
@@ -256,6 +251,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     if(langSelected == "") return;
     await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: storage);
+    await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
   }
 
   // - - - - - - - - - - - - - - - - - - TRY AGAIN BUTTON IN ERROR STATE - - - - - - - - - - - - - - - - - -  //

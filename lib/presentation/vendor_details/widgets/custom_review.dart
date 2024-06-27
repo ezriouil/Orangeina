@@ -10,9 +10,10 @@ import '../../../utils/state/custom_state.dart';
 
 class CustomReview extends CustomState {
   final ReviewEntity review;
+  final String uid;
   final Function(ReviewEntity review) onDelete;
 
-  const CustomReview({super.key, required this.review, required this.onDelete });
+  const CustomReview({super.key, required this.review,  required this.uid, required this.onDelete });
 
   @override
   Widget run(BuildContext context) {
@@ -70,13 +71,12 @@ class CustomReview extends CustomState {
                           itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
                           onRatingUpdate: (double value) {  },
                         ),
-                        
                         // - - - - - - - - - - - - - - - - - -  ICON DELETE - - - - - - - - - - - - - - - - - -  //
-                        InkWell(
-                          onTap: (){ onDelete(review); },
-                          overlayColor: MaterialStateProperty.all(CustomColors.TRANSPARENT),
-                          child: Icon(Icons.delete_sweep_rounded, size: 20, color: darkLightColor(context)),
-                        )
+                        Visibility(visible: review.viewerId == uid,
+                            child: InkWell( onTap: () { onDelete(review); },
+                              overlayColor: MaterialStateProperty.all(CustomColors.TRANSPARENT),
+                              child: Icon(Icons.delete_sweep_rounded, size: 20, color: darkLightColor(context)),
+                        ))
                       ],
                     ),
                   ],

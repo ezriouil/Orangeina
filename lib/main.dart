@@ -88,8 +88,9 @@ class _IndexState extends State<App> {
   // - - - - - - - - - - - - - - - - - - INIT LOCALISATION - - - - - - - - - - - - - - - - - -  //
   initLocalization() async{
     await localization.init(mapLocales: CustomLocale.LOCALS, initLanguageCode: CustomLocale.EN);
+    final GetStorage storage = DependencyInjection.getIt<GetStorage>();
     localization.onTranslatedLanguage = (Locale? locale) async{
-      initLocation ??= "INDEX";
+      initLocation = await LocalStorage.read(key: "INIT_LOCATION", storage: storage);
       setState(() {});
     };
   }

@@ -205,6 +205,18 @@ mixin CustomLocale{
   static const String VENDOR_DETAILS_REPORT_REASON_4 = "Vendor Details Report Reason 4";
   static const String VENDOR_DETAILS_REPORT_REASON_5 = "Vendor Details Report Reason 5";
 
+  // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String Q1 = "Q1";
+  static const String R1 = "R1";
+  static const String Q2 = "Q2";
+  static const String R2 = "R2";
+  static const String Q3 = "Q3";
+  static const String R3 = "R3";
+  static const String Q4 = "Q4";
+  static const String R4 = "R4";
+  static const String Q5 = "Q5";
+  static const String R5 = "R5";
+
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
   static const String EMAIL = "Email";
   static const String PASSWORD = "Password";

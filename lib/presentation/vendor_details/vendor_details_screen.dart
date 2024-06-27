@@ -36,9 +36,17 @@ class VendorDetailsScreen extends CustomState {
           appBar: switch(state){
             VendorDetailsMainState() => AppBar(
               leading: InkWell(
-                  onTap: context.pop,
-                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
-                  child: Icon(Iconsax.arrow_left_24, color: darkLightColor(context))),
+                  onTap: () {
+                    context.pop();
+                  },
+                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                  child: Builder(builder: (context) {
+                    return Icon(
+                        isArabic(context)
+                            ? Iconsax.arrow_right_3
+                            : Iconsax.arrow_left_24,
+                        color: darkLightColor(context));
+                  })),
               title: Text(CustomLocale.VENDOR_DETAILS_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
               actions: [
                 InkWell(
@@ -213,9 +221,15 @@ class VendorDetailsScreen extends CustomState {
                             child:
                             state.reviews!.isEmpty ?
                             Center(child: Text(CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST.getString(context), style: Theme.of(context).textTheme.bodyLarge)) :
-                            ListView.builder(itemCount: state.reviews!.length, itemBuilder: (context, index) => CustomReview(review: state.reviews![index], onDelete: (reviewEntity){ context.read<VendorDetailsCubit>().onDelete(state.reviews![index], context, id); })))
-
-                          ]),
+                            ListView.builder(itemCount: state.reviews!.length,
+                                itemBuilder: (context, index) => CustomReview(
+                                    review: state.reviews![index],
+                                    uid: context.read<VendorDetailsCubit>().getUid(),
+                                    onDelete: (reviewEntity) {
+                                      context.read<VendorDetailsCubit>().onDelete(state.reviews![index], context, id);})
+                            )
+                          )
+                        ]),
                       )
                   ),
                 )

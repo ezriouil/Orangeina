@@ -209,5 +209,18 @@ class English {
   CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE : "Delete",
   CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "Dismiss",
   CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "No WishLists Found !",
+
+    // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.Q1 : "Where can i find the application",
+    CustomLocale.R1 : "Google play\nApp store\nHuawei store\n",
+    CustomLocale.Q2 : "What are the new offers have?",
+    CustomLocale.R2 : "Go home page and check the popular option then you will find all offers we have for you\n",
+    CustomLocale.Q3 : "How Can I Be Vendor?",
+    CustomLocale.R3 : "Go Settings page and click on Be Vendor then fill the form. after 24h we will send you our acceptation\n",
+    CustomLocale.Q4 : "How Can I Know I'm a Vendor?",
+    CustomLocale.R4 : "Go Notifications page you will find all notification\n",
+    CustomLocale.Q5 : "More questions",
+    CustomLocale.R5 : "Contact us\n",
+
   };
 }

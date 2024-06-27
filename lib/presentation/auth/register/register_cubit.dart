@@ -41,11 +41,8 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   // - - - - - - - - - - - - - - - - - - CREATE ACCOUNT WITH EMAIL AND PASSWORD - - - - - - - - - - - - - - - - - -  //
   Future<void> onCreateNewAccount({required BuildContext context, required Function callBack}) async{
+    final RegisterMainState currentState = (state as RegisterMainState);
     try{
-
-
-      // CURRENT STATE
-      final RegisterMainState currentState = (state as RegisterMainState);
 
       // CHECK THE FORM
       if(!currentState.formState!.currentState!.validate()){
@@ -81,7 +78,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
 
       if(userCredential.user == null){
-        emit(RegisterErrorState(message: "Invalid Register"));
+        CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
         return;
       }
 
@@ -108,14 +105,12 @@ class RegisterCubit extends Cubit<RegisterState> {
       currentState.confirmPasswordController!.clear();
 
       // NAVIGATE TO HOME SCREEN
-      emit(currentState);
+      emit(state as RegisterMainState);
       callBack.call();
 
     }catch(e){
-
-      // EMIT ERROR STATE
-      emit(RegisterErrorState(message: e.toString()));
-
+      emit(currentState);
+      CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
     }
   }
 
@@ -146,7 +141,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     final UserCredential userCredential = await authRepository.loginWithGoogle();
     try{
       if(userCredential.user == null){
-        emit(RegisterErrorState(message: "Invalid Login"));
+        CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
         return;
       }
 
@@ -170,12 +165,13 @@ class RegisterCubit extends Cubit<RegisterState> {
       }
 
       // NAVIGATE TO HOME SCREEN
-      emit((state as RegisterMainState));
+      emit(state as RegisterMainState);
+      CustomSnackBar.show(context: context, title: "Created Successfully", subTitle: "Your Account Created successfully.", type: ContentType.warning);
       callBack.call();
 
     }catch(e){
-      // EMIT ERROR STATE
-      emit(RegisterErrorState(message: "Cannot login with this email"));
+      CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
+      emit(state as RegisterMainState);
     }
   }
 

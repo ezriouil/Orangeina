@@ -26,10 +26,17 @@ class BeVendorScreen extends CustomState {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-          onTap: context.pop,
-          borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-          child: Icon( Iconsax.arrow_left_24, color: darkLightColor(context)),
-        ),
+            onTap: () {
+              context.pop();
+            },
+            borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+            child: Builder(builder: (context) {
+              return Icon(
+                  isArabic(context)
+                      ? Iconsax.arrow_right_3
+                      : Iconsax.arrow_left_24,
+                  color: darkLightColor(context));
+            })),
         title: Text(CustomLocale.BE_VENDOR_TITLE.getString(context), style: Theme.of(context).textTheme.titleMedium)
       ),
       body: BlocBuilder<BeVendorCubit, BeVendorState>(

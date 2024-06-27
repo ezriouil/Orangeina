@@ -1,7 +1,11 @@
+import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+
+import '../../utils/constants/custom_sizes.dart';
 
 class FAQScreen extends CustomState {
   const FAQScreen({super.key});
@@ -12,52 +16,55 @@ class FAQScreen extends CustomState {
       appBar: AppBar(
         title: const Text("FAQ"),
         leading: InkWell(
-            onTap: context.pop,
-            child: const Icon(Iconsax.arrow_left_24)),
+            onTap: () {
+              context.pop();
+            },
+            borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+            child: Builder(builder: (context) {
+              return Icon(
+                  isArabic(context)
+                      ? Iconsax.arrow_right_3
+                      : Iconsax.arrow_left_24,
+                  color: darkLightColor(context));
+            })),
       ),
       body: Column(
         children: [
-          /// Q1
-          _customQuestionResponseAnimation(
-              question: "What are the store_history.dart options?",
-              response: "Go to down page you will find delivery option check it then you will see all store_history.dart options\n",
-              context: context,
-              color: darkLightColor(context)),
-
-          /// Q2
-          _customQuestionResponseAnimation(
-              question: "Where are you located?",
-              response: "What have lots of store any where\n\nAGADIR HAY SALAM G10 N23\nAGADIR HAY SALAM G10 N98\nAGADIR HAY AL HOUDA G2 N80\n",
-              context: context,
-              color: darkLightColor(context)),
-
           /// Q3
           _customQuestionResponseAnimation(
-              question: "Where can i find the application",
-              response: "Google play\nApp store\nHuawei store\n",
-              context: context,
-              color: darkLightColor(context)),
-
-          /// Q4
-          _customQuestionResponseAnimation(
-              question: "What are payment methods supported",
-              response: "What support lots of methods online also offline for example :\n\nOnline methods :\nPaypal, Visa, Master card, Apple pay...\n\nOffline methods :\n...\n",
+              question: CustomLocale.Q1.getString(context),
+              response: CustomLocale.R1.getString(context),
               context: context,
               color: darkLightColor(context)),
 
           /// Q5
           _customQuestionResponseAnimation(
-              question: "What are the new offers have?",
-              response: "Go home page and check the popular option then you will find all offers we have for you\n",
+              question: CustomLocale.Q2.getString(context),
+              response: CustomLocale.R2.getString(context),
+              context: context,
+              color: darkLightColor(context)),
+
+          /// Q5
+          _customQuestionResponseAnimation(
+              question: CustomLocale.Q3.getString(context),
+              response: CustomLocale.R3.getString(context),
+              context: context,
+              color: darkLightColor(context)),
+
+          /// Q5
+          _customQuestionResponseAnimation(
+              question: CustomLocale.Q4.getString(context),
+              response: CustomLocale.R4.getString(context),
               context: context,
               color: darkLightColor(context)),
 
           /// Q6
           _customQuestionResponseAnimation(
-              question: "More questions",
-              response: "Contact us\n",
+              question: CustomLocale.Q5.getString(context),
+              response: CustomLocale.R5.getString(context),
               context: context,
               color: darkLightColor(context)),
+
         ],
       ),
     );

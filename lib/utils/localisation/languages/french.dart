@@ -205,5 +205,17 @@ class French{
     CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "Rejeter",
     CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "Aucune Souhait Trouvée !",
 
+    // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.Q1 : "Où puis-je trouver l'application",
+    CustomLocale.R1 : "Google play\nApp store\nHuawei store\n",
+    CustomLocale.Q2 : "Quelles sont les nouvelles offres ?",
+    CustomLocale.R2 : "Allez sur la page d'accueil et cochez l'option populaire, vous trouverez alors toutes les offres que nous avons pour vous.\n",
+    CustomLocale.Q3 : "Comment puis-je être vendeur?",
+    CustomLocale.R3 : "Allez sur la page Paramètres et cliquez sur Be Vendor puis remplissez le formulaire. après 24h nous vous enverrons notre acceptation\n",
+    CustomLocale.Q4 : "Comment puis-je savoir que je suis votre fournisseur?",
+    CustomLocale.R4 : "Allez sur la page Notifications, vous trouverez toutes les notifications\n",
+    CustomLocale.Q5 : "Plus de questions",
+    CustomLocale.R5 : "Contactez-nous\n",
+
   };
 }

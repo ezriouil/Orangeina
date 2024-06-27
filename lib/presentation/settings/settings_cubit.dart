@@ -497,6 +497,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     if (langSelected == "") return;
     await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: storage);
+    await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
   }
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO PRIVACY AND SECURITY - - - - - - - - - - - - - - - - - -  //

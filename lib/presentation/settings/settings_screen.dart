@@ -41,7 +41,8 @@ class SettingsScreen extends CustomState {
                               InkWell(
                                 onTap: (){ context.read<SettingsCubit>().signOut(context:context); },
                                 borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-                                child: Icon( isArabic(context) ? Iconsax.arrow_left: Iconsax.arrow_right, color: darkLightColor(context).withOpacity(0.4) ),
+
+                                child: Icon( isArabic(context) ? Iconsax.arrow_left_2: Iconsax.arrow_right_3, color: darkLightColor(context).withOpacity(0.4) ),
                               ),
                             ],
                           ),

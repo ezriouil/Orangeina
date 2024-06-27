@@ -46,8 +46,3 @@ final class RegisterMainState extends RegisterState {
 }
 
 final class RegisterLoadingState extends RegisterState {}
-
-final class RegisterErrorState extends RegisterState {
-  final String message;
-  RegisterErrorState({required this.message});
-}
