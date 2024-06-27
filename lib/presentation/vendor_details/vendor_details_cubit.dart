@@ -67,6 +67,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       feedback: 3.5,
       vendorRating: 0,
       reportReason: "",
+      reviewsLoading : false,
       feedBackFormState: GlobalKey<FormState>(),
       reportFormState: GlobalKey<FormState>()
     ));
@@ -95,9 +96,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       currentState = state as VendorDetailsMainState;
       emit(currentState.copyWith(wishListId: (wishList?.id) ?? "", reviews: reviews));
 
-   }catch(e){
-     //context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-   }
+   }catch(_){}
   }
 
   // - - - - - - - - - - - - - - - - - - ( INSERT / REMOVE ) WISHLISTS - - - - - - - - - - - - - - - - - -  //
@@ -114,7 +113,6 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
         avatar: currentState.vendor?.avatar,
         fullName: "${currentState.vendor?.firstName} ${currentState.vendor?.lastName}",
           phoneNumber: currentState.vendor?.phoneNumber,
-        rating: (currentState.vendor?.averageRating ?? 3.5).toDouble(),
         createAt: "${date.year}/${date.month}/${date.day}"
       );
       final result = await wishListRepository.insertWishList(wishListEntity: wishListEntity);
@@ -285,7 +283,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                               if(uid == null) {
                                 context.pop();
                                 return;
-                              };
+                              }
 
                               final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
 
@@ -490,5 +488,4 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
           );
         });
   }
-
 }

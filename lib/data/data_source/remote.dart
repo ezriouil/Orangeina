@@ -222,7 +222,6 @@ class Remote{
       'avatar': wishListDto.avatar,
       'fullName': wishListDto.fullName,
       'phoneNumber': wishListDto.phoneNumber,
-      'rating': wishListDto.rating,
       'createAt': wishListDto.createAt
     });
     return newDoc.id;

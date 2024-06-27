@@ -7,6 +7,7 @@ final class VendorDetailsMainState extends VendorDetailsState {
   final TextEditingController? feedbackController;
   final String? reportReason, wishListId;
   final double? feedback, vendorRating;
+  final bool? reviewsLoading;
   final Completer<GoogleMapController>? mapController;
   final VendorEntity? vendor;
   final  List<ReviewEntity>? reviews;
@@ -20,6 +21,7 @@ final class VendorDetailsMainState extends VendorDetailsState {
         this.vendor,
         this.reviews,
         this.vendorRating,
+        this.reviewsLoading,
         this.markers,
         this.reportFormState,
         this.feedBackFormState,
@@ -32,6 +34,7 @@ final class VendorDetailsMainState extends VendorDetailsState {
         String? wishListId,
         double? feedback,
         double? vendorRating,
+        bool? reviewsLoading,
         Completer<GoogleMapController>? mapController,
         CameraPosition? myCurrentLocation,
         CameraPosition? vendorLocation,
@@ -50,6 +53,7 @@ final class VendorDetailsMainState extends VendorDetailsState {
           mapController: mapController ?? this.mapController,
           vendor: vendor ?? this.vendor,
           reviews: reviews ?? this.reviews,
+          reviewsLoading: reviewsLoading ?? this.reviewsLoading,
           markers: markers ?? this.markers,
           reportFormState: reportFormState ?? this.reportFormState,
           feedBackFormState: feedBackFormState ?? this.feedBackFormState

@@ -1,7 +1,6 @@
 class WishListDto {
 
   // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
-  late final num? rating;
   late final String? id,
       userId,
       vendorId,
@@ -18,7 +17,6 @@ class WishListDto {
       this.avatar = "",
       this.fullName = "",
       this.phoneNumber = "",
-      this.rating = 0.0,
       this.createAt = ""});
 
   // - - - - - - - - - - - - - - - - - - TO JSON - - - - - - - - - - - - - - - - - -  //
@@ -29,7 +27,6 @@ class WishListDto {
         'avatar': avatar,
         'fullName': fullName,
         'phoneNumber': phoneNumber,
-        'rating': rating,
         'createAt': createAt
       };
 
@@ -42,7 +39,6 @@ class WishListDto {
         avatar: json['avatar'] as String,
         fullName: json['fullName'] as String,
         phoneNumber: json['phoneNumber'] as String,
-        rating: json['rating'] as num,
         createAt: json['createAt'] as String);
   }
 

@@ -19,23 +19,6 @@ class IndexScreen extends CustomState {
     return BlocBuilder<IndexCubit, IndexState>(
       builder: (context, state) {
         return Scaffold(
-          bottomNavigationBar: switch (state) {
-            IndexMainState() => NavigationBar(
-                height: 70.0,
-                elevation: 0.0,
-                animationDuration: const Duration(seconds: 3),
-                selectedIndex: state.currentPageIndex!,
-                onDestinationSelected: context.read<IndexCubit>().onUpdateCurrentIndex,
-                labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-                destinations: [
-                  NavigationDestination(icon: const Icon(Iconsax.map), label: CustomLocale.INDEX_EXPLORE_TITLE.getString(context)),
-                  NavigationDestination(icon: const Icon(Iconsax.heart), label: CustomLocale.INDEX_WISHLIST_TITLE.getString(context)),
-                  NavigationDestination(icon: const Icon(Iconsax.notification), label: CustomLocale.INDEX_NOTIFICATION_TITLE.getString(context)),
-                  NavigationDestination(icon: const Icon(Iconsax.setting), label: CustomLocale.INDEX_SETTINGS_TITLE.getString(context))
-                ],
-              ),
-            IndexPermissionState() => null
-          },
           body: switch (state) {
             IndexMainState() => context.read<IndexCubit>().screens()[state.currentPageIndex!],
             IndexPermissionState() => SingleChildScrollView(
@@ -68,6 +51,22 @@ class IndexScreen extends CustomState {
                   ),
                 ),
               ),
+          },
+          bottomNavigationBar: switch (state) {
+            IndexMainState() => NavigationBar(
+              height: 70.0,
+              elevation: 0.0,
+              animationDuration: const Duration(seconds: 3),
+              selectedIndex: state.currentPageIndex!,
+              onDestinationSelected: context.read<IndexCubit>().onUpdateCurrentIndex,
+              destinations: [
+                NavigationDestination(icon: Icon(state.currentPageIndex == 0 ? Iconsax.map_15 : Iconsax.map), label: CustomLocale.INDEX_EXPLORE_TITLE.getString(context)),
+                NavigationDestination(icon: Icon(state.currentPageIndex == 1 ? Iconsax.heart5 : Iconsax.heart), label: CustomLocale.INDEX_WISHLIST_TITLE.getString(context)),
+                NavigationDestination(icon: Icon(state.currentPageIndex == 2 ? Iconsax.notification5 : Iconsax.notification), label: CustomLocale.INDEX_NOTIFICATION_TITLE.getString(context)),
+                NavigationDestination(icon: Icon(state.currentPageIndex == 3 ? Iconsax.setting1: Iconsax.setting), label: CustomLocale.INDEX_SETTINGS_TITLE.getString(context))
+              ],
+            ),
+            IndexPermissionState() => null
           },
         );
       },

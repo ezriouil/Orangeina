@@ -9,7 +9,6 @@ extension WishListEntityMapper on WishListEntity {
     avatar: avatar,
     fullName: fullName,
     phoneNumber: phoneNumber,
-    rating: rating,
     createAt: createAt
   );
 }
@@ -22,7 +21,6 @@ extension WishListDtoMapper on WishListDto {
       avatar: avatar,
       fullName: fullName,
       phoneNumber: phoneNumber,
-      rating: rating,
       createAt: createAt
   );
 }

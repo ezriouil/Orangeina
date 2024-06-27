@@ -1,3 +1,4 @@
+import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/settings/settings_cubit.dart';
 import 'package:berkania/presentation/settings/widgets/custom_settings_tile.dart';
 import 'package:berkania/presentation/widgets/custom_error_screen.dart';
@@ -19,6 +20,20 @@ class SettingsScreen extends CustomState {
   @override
   Widget run(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: InkWell(onTap: (){ context.read<IndexCubit>().onUpdateCurrentIndex(0); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Icon(isArabic(context) ? Iconsax.arrow_right_3 : Iconsax.arrow_left_2, color: darkLightColor(context))),
+        title: Text(CustomLocale.SETTINGS_PROFILE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
+        actions: [
+          InkWell(
+            onTap: (){ context.read<SettingsCubit>().signOut(context: context); },
+            borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+            child: Padding(
+              padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+              child: Icon(Iconsax.close_circle, color: grayColor(context)),
+            ),
+          )
+        ],
+      ),
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
           switch (state) {
@@ -29,26 +44,6 @@ class SettingsScreen extends CustomState {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
-                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
-
-                          // - - - - - - - - - - - - - - - - - -  Display - - - - - - - - - - - - - - - - - -  //
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(CustomLocale.SETTINGS_PROFILE_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(color: grayColor(context), letterSpacing: 0.6)),
-                              InkWell(
-                                onTap: (){ context.read<SettingsCubit>().signOut(context:context); },
-                                borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-
-                                child: Icon( isArabic(context) ? Iconsax.arrow_left_2: Iconsax.arrow_right_3, color: darkLightColor(context).withOpacity(0.4) ),
-                              ),
-                            ],
-                          ),
-
-                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
                           // - - - - - - - - - - - - - - - - - - IMAGE FROM NETWORK - - - - - - - - - - - - - - - - - -  //
                           Center(
@@ -96,7 +91,7 @@ class SettingsScreen extends CustomState {
                               title: CustomLocale.SETTINGS_UPDATE_FULL_NAME_TITLE.getString(context),
                               subTitle: CustomLocale.SETTINGS_UPDATE_FULL_NAME_SUB_TITLE.getString(context),
                               icon: Iconsax.user,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: () { context.read<SettingsCubit>().onUpdateFullName(context: context) ; },),
+                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: () { context.read<SettingsCubit>().onUpdateFullName(context: context) ; },),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -106,7 +101,7 @@ class SettingsScreen extends CustomState {
                               title: CustomLocale.SETTINGS_UPDATE_PHONE_TITLE.getString(context),
                               subTitle: CustomLocale.SETTINGS_UPDATE_PHONE_SUB_TITLE.getString(context),
                             icon: Iconsax.call,
-                            trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: () { context.read<SettingsCubit>().onUpdatePhone(context: context); }),
+                            trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: () { context.read<SettingsCubit>().onUpdatePhone(context: context); }),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
@@ -186,7 +181,7 @@ class SettingsScreen extends CustomState {
                             title: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_SUB_TITLE.getString(context),
                               icon: Iconsax.lock,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToHelpAndSupport),
+                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToHelpAndSupport),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -196,7 +191,7 @@ class SettingsScreen extends CustomState {
                             title: CustomLocale.SETTINGS_HELP_AND_SUPPOR_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE.getString(context),
                               icon: Iconsax.headphone5,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToHelpAndSupport),
+                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: context.read<SettingsCubit>().onNavigateToHelpAndSupport),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
@@ -206,7 +201,7 @@ class SettingsScreen extends CustomState {
                             title: CustomLocale.SETTINGS_ABOUT_TITLE.getString(context),
                             subTitle: CustomLocale.SETTINGS_ABOUT_SUB_TITLE.getString(context),
                               icon: Iconsax.info_circle,
-                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, size: 32, color: darkLightColor(context)), onClick: (){ context.read<SettingsCubit>().onNavigateToAbout(context: context); }),
+                              trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: (){ context.read<SettingsCubit>().onNavigateToAbout(context: context); }),
 
                           // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),

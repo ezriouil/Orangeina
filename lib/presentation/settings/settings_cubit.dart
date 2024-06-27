@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
 import 'package:berkania/domain/repositories/auth_repository.dart';
@@ -6,6 +8,7 @@ import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
 import 'package:berkania/utils/constants/custom_txt_strings.dart';
+import 'package:berkania/utils/device/device_utility.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -534,7 +537,12 @@ class SettingsCubit extends Cubit<SettingsState> {
                       onClick: () async{
                         await authRepository.signOut();
                         await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
-                        SystemNavigator.pop();
+                        if(DeviceUtility.isAndroid()) { SystemNavigator.pop(); }
+                        else {
+                          context.pop();
+                          await Future.delayed(Duration(milliseconds: 300));
+                          exit(0);
+                        }
                       }),
                   CustomElevatedButton(
                       onClick: context.pop,

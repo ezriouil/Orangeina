@@ -12,6 +12,7 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../utils/constants/custom_sizes.dart';
 import '../../utils/localisation/custom_locale.dart';
+import '../index/index_cubit.dart';
 
 class NotificationScreen extends CustomState {
   const NotificationScreen({super.key});
@@ -20,7 +21,7 @@ class NotificationScreen extends CustomState {
   Widget run(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        leading: InkWell(onTap: (){ context.read<IndexCubit>().onUpdateCurrentIndex(0); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Icon(isArabic(context) ? Iconsax.arrow_right_3 : Iconsax.arrow_left_2, color: darkLightColor(context))),
         title: Text(CustomLocale.NOTIFICATIONS_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
         actions: [InkWell(
           onTap: context.read<NotificationCubit>().onRefresh,
