@@ -102,8 +102,8 @@ class VendorRepositoryImpl extends VendorRepository {
       await Remote.saveImage(path: "VENDORS_PAPER", imgName: imgName, imgPath: imgPath);
 
   @override
-  Future<void> updateRating({required num newRate, required String uid}) async {
-    Remote.updateVendorRating(uid: uid, averageRating: newRate);
+  Future<void> updateRating({required num newRate, required String vendorId}) async {
+    Remote.updateVendorRating(vendorId: vendorId, averageRating: newRate);
   }
 
 }

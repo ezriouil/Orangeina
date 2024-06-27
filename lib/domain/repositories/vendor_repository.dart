@@ -20,7 +20,7 @@ abstract class VendorRepository {
   Future<void> offline({ required String vendorId });
 
   // - - - - - - - - - - - - - - - - - - UPDATE RATING - - - - - - - - - - - - - - - - - -  //
-  Future<void> updateRating({ required num newRate, required String uid });
+  Future<void> updateRating({ required num newRate, required String vendorId });
 
   // - - - - - - - - - - - - - - - - - - UPDATE VENDOR AVATAR - - - - - - - - - - - - - - - - - -  //
   Future<void> updateVendorAvatar({required String vendorId, required String newAvatar});

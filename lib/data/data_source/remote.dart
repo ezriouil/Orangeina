@@ -126,8 +126,8 @@ class Remote{
   }
 
   // - - - - - - - - - - - - - - - - - - UPDATE VENDOR RATING - - - - - - - - - - - - - - - - - -  //
-  static Future<void> updateVendorRating({required String uid, required num averageRating}) async{
-    await _firebaseFirestore.collection("VENDORS").doc(uid).update({'averageRating' : averageRating});
+  static Future<void> updateVendorRating({required String vendorId, required num averageRating}) async{
+    await _firebaseFirestore.collection("VENDORS").doc(vendorId).update({'averageRating' : averageRating});
   }
 
   // - - - - - - - - - - - - - - - - - - SAVE USER DATA - - - - - - - - - - - - - - - - - -  //

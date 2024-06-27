@@ -44,8 +44,6 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   final ReportRepository reportRepository;
   final GetStorage storage;
   String? uid;
-  String idCheckVendorInfo = "";
-  String idCheckReviews = "";
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
   VendorDetailsCubit(
@@ -134,7 +132,12 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   getReviews({ required String argumentId, required BuildContext context }) async{
     try{
       final currentState = state as VendorDetailsMainState;
-      final List<ReviewEntity> reviews = await reviewRepository.getReviews(id: argumentId);
+      final List<ReviewEntity> reviews = [];
+      final getAllReviews = await reviewRepository.getReviews(id: argumentId);
+      for (ReviewEntity review in getAllReviews) {
+        if(review.viewerId == uid) { reviews.insert(0, review); }
+        else { reviews.add(review); }
+      }
       emit(currentState.copyWith(reviews: reviews));
     }
     catch(_){}
@@ -145,15 +148,25 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
     try{
       final currentState = state as VendorDetailsMainState;
-      currentState.reviews?.clear();
+
+      num newRate = 0;
+      double reviewsSum = 0;
       final List<ReviewEntity> reviews = [];
+
       final getAllReviews = await reviewRepository.getReviews(id: argumentId);
-      for (ReviewEntity review in getAllReviews) {
-        if(review.viewerId == uid) { reviews.insert(0, review); }
-        else { reviews.add(review); }
+
+      if(getAllReviews.isNotEmpty){
+        for (ReviewEntity review in getAllReviews) {
+          reviewsSum += review.rating;
+          if(review.viewerId == uid) { reviews.insert(0, review); }
+          else { reviews.add(review); }
+        }
+        newRate = reviewsSum / getAllReviews.length;
       }
-      emit(currentState.copyWith(reviews: reviews));
-      idCheckReviews = argumentId;
+
+      vendorRepository.updateRating(newRate: newRate, vendorId: argumentId);
+      emit(currentState.copyWith(reviews: reviews, vendorRating: newRate.toDouble()));
+
     }
 
     catch(_){}
@@ -292,30 +305,13 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                                   createAt: "${date.day}/${date.month}/${date.year}"
                               );
 
-
-                              num reviewsSum = 0;
                               for(ReviewEntity review in currentState.reviews!){
-                                if(review.viewerId == uid){
-                                  await reviewRepository.delete(docId: review.id!);
-                                  reviewsSum -= review.rating;
-                                }
+                                if(review.viewerId == uid) { await reviewRepository.delete(docId: review.id!); }
                               }
-
                               await reviewRepository.insert(reviewEntity: review);
 
-                              double newRate = currentState.feedback!;
-
-                              if(currentState.reviews!.isNotEmpty){
-                                for(ReviewEntity review in currentState.reviews!){
-                                  reviewsSum += review.rating;
-                                }
-                                reviewsSum += currentState.feedback!;
-                                newRate = reviewsSum / currentState.reviews!.length;
-                              }
-
-                              await vendorRepository.updateRating(newRate: newRate, uid: argumentId);
                               currentState.feedbackController!.clear();
-                              emit(currentState.copyWith(vendorRating: newRate));
+                              refreshReviews(argumentId: argumentId, context: context);
 
                               callBack.call();
 
@@ -479,20 +475,8 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                       child: const Text("Delete"),
                       onClick: () async{
                         context.pop();
-                        final currentState = state as VendorDetailsMainState;
-                        num reviewsSum = 0;
-                        double newRate = 0;
-                        if(currentState.reviews!.isNotEmpty){
-                          for(ReviewEntity review in currentState.reviews!){
-                            reviewsSum += review.rating;
-                          }
-                          reviewsSum -= review.rating;
-                          newRate = reviewsSum / currentState.reviews!.length;
-                        }
                         await reviewRepository.delete(docId: review.id!);
-                        await vendorRepository.updateRating(newRate: newRate, uid: argumentId);
-                        currentState.reviews!.remove(review);
-                        emit(currentState.copyWith(vendorRating: newRate));
+                        refreshReviews(argumentId: argumentId, context: context);
                         context.mounted ? CustomSnackBar.show(context: context, title: "Review Deleted", subTitle: "Your review is delete successfully!", type: ContentType.success) : null;
                       }
                       ),
@@ -506,4 +490,5 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
           );
         });
   }
+
 }
