@@ -25,6 +25,7 @@ class VendorDetailsScreen extends CustomState {
   Widget run(BuildContext context) {
     String idCheckVendor = "";
     return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
+
       builder: (context, state) {
 
         if(id != idCheckVendor){
@@ -214,6 +215,7 @@ class VendorDetailsScreen extends CustomState {
                           ),
 
                           // - - - - - - - - - - - - - - - - - -  TAB 2 - - - - - - - - - - - - - - - - - -  //
+                          state.reviewsLoading! ? Center(child: CircularProgressIndicator(color: primaryColor(context))) :
                           RefreshIndicator(
                             onRefresh: () async{ context.read<VendorDetailsCubit>().refreshReviews(argumentId: id, context: context);},
                             color: primaryColor(context),

@@ -540,7 +540,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                         if(DeviceUtility.isAndroid()) { SystemNavigator.pop(); }
                         else {
                           context.pop();
-                          await Future.delayed(Duration(milliseconds: 300));
+                          await Future.delayed(const Duration(milliseconds: 300));
                           exit(0);
                         }
                       }),

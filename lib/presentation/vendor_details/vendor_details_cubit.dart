@@ -151,6 +151,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       double reviewsSum = 0;
       final List<ReviewEntity> reviews = [];
 
+      emit(currentState.copyWith(reviewsLoading: true));
       final getAllReviews = await reviewRepository.getReviews(id: argumentId);
 
       if(getAllReviews.isNotEmpty){
@@ -162,9 +163,11 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
         newRate = reviewsSum / getAllReviews.length;
       }
 
+      await Future.delayed(const Duration(milliseconds: 500));
+      emit(currentState.copyWith(reviewsLoading: false));
       vendorRepository.updateRating(newRate: newRate, vendorId: argumentId);
+      await Future.delayed(const Duration(milliseconds: 500));
       emit(currentState.copyWith(reviews: reviews, vendorRating: newRate.toDouble()));
-
     }
 
     catch(_){}
@@ -473,7 +476,12 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                       child: const Text("Delete"),
                       onClick: () async{
                         context.pop();
-                        await reviewRepository.delete(docId: review.id!);
+                        try{ await reviewRepository.delete(docId: review.id!); }
+                        catch(e){
+                          print("+++++++");
+                          print(e.toString());
+                          print("+++++++");
+                        }
                         refreshReviews(argumentId: argumentId, context: context);
                         context.mounted ? CustomSnackBar.show(context: context, title: "Review Deleted", subTitle: "Your review is delete successfully!", type: ContentType.success) : null;
                       }

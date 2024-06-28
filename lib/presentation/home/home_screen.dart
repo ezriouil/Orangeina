@@ -85,7 +85,9 @@ class HomeScreen extends CustomState {
                         final data = VendorEntity.fromJson(documentSnapshot.data() as Map<String, dynamic>);
                         return CustomVendor(
                             vendorEntity: data,
-                            onClick: (VendorEntity vendor) {context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context);},
+                            onClick: (VendorEntity vendor) {
+                              context.read<HomeCubit>().onVendorClick(lat: vendor.shopLat, lng: vendor.shopLng, context: context);
+                              },
                             myCurrentLocation: state.myCurrentLocation!.target);
                       },
                     ),

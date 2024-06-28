@@ -2,7 +2,8 @@ class CustomTextStrings {
   CustomTextStrings._();
 
   static const String APP_NAME = "Alberkania";
-  static const String GOOGLE_API_KEY = "5b3ce3597851110001cf62482f806ff878964e05891681c4ce1a8ffb";
+  //static const String GOOGLE_API_KEY = "5b3ce3597851110001cf62482f806ff878964e05891681c4ce1a8ffb";
+  static const String GOOGLE_API_KEY = "5b3ce3597851110001cf6248e252dbc06aca4460a437ccc78e7eb367";
   static const String POLYLINE_BASE_URI = "https://api.openrouteservice.org/v2/directions/driving-car";
 
   static const double INITAIL_LAT = 30.4089927;

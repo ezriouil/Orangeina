@@ -108,9 +108,13 @@ class HomeCubit extends Cubit<HomeState> {
       final String end = '${(lng ?? 0.0) as double},${(lat ?? 0.0) as double}';
       final String uri = '${CustomTextStrings.POLYLINE_BASE_URI}?api_key=$apiKey&start=$start&end=$end';
 
+      print("++++1+++");
       final response = await http.get(Uri.parse(uri));
+      print("++++2+++");
       final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
+      print("++++3++++");
       final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
+      print("++++4+++");
 
       polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 6, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
@@ -121,9 +125,12 @@ class HomeCubit extends Cubit<HomeState> {
           cameraCurrentLocation: CameraPosition(target: LatLng((lat as double), (lng as double)),zoom: 14.0 ),
           polyline: polyline
       ));
-    }catch(_){
-    }
+    }catch(e){
+      print("++++++++");
+      print(e.toString());
+      print("++++++++");
     if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Vendor Not Found !", type: ContentType.failure, color: CustomColors.RED_LIGHT);
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
@@ -132,6 +139,10 @@ class HomeCubit extends Cubit<HomeState> {
       final currentState = state as HomeMainState;
       emit(HomeLoadingState());
       final currentPosition = await Geolocator.getCurrentPosition();
+      print("++++++++");
+      print(currentPosition.longitude);
+      print(currentPosition.latitude);
+      print("++++++++");
       await Future.delayed(const Duration(milliseconds: 300));
       emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude),zoom: 18.0 )));
     }catch(_){
