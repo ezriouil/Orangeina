@@ -8,13 +8,13 @@ abstract class AuthRepository {
   // - - - - - - - - - - - - - - - - - - LOGIN - - - - - - - - - - - - - - - - - -  //
   Future<UserCredential> login({required String email, required String password});
 
-  // - - - - - - - - - - - - - - - - - - LOGIN - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - LOGIN WITH GOOGLE - - - - - - - - - - - - - - - - - -  //
   Future<UserCredential> loginWithGoogle();
 
   // - - - - - - - - - - - - - - - - - - FORGET PASSWORD - - - - - - - - - - - - - - - - - -  //
   Future<void> forgetPassword({required String email});
 
-  // - - - - - - - - - - - - - - - - - - FORGET PASSWORD - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - CHECK EMAIL IF EXIST - - - - - - - - - - - - - - - - - -  //
   Future<bool> emailExist({ required String collection, required String email});
 
   // - - - - - - - - - - - - - - - - - - SIGN OUT - - - - - - - - - - - - - - - - - -  //

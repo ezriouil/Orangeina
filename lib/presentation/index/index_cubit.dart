@@ -1,15 +1,23 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/presentation/home/home_screen.dart';
 import 'package:berkania/presentation/notification/notification_screen.dart';
 import 'package:berkania/presentation/settings/settings_screen.dart';
+import 'package:berkania/presentation/widgets/custom_snackbars.dart';
 import 'package:berkania/presentation/wishlist/wishlist_screen.dart';
+import 'package:berkania/utils/helpers/network.dart';
+import 'package:berkania/utils/localisation/custom_locale.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:geolocator/geolocator.dart';
 
 part 'index_state.dart';
 
 class IndexCubit extends Cubit<IndexState> {
-  IndexCubit() : super(IndexMainState()){ init(); }
+
+  final Connectivity connectivity;
+  IndexCubit({  required this.connectivity}) : super(IndexMainState()){ init(); }
 
   init() async{
 
@@ -19,7 +27,14 @@ class IndexCubit extends Cubit<IndexState> {
   }
 
   // - - - - - - - - - - - - - - - - - -  UPDATE CURRENT INDEX - - - - - - - - - - - - - - - - - -  //
-  void onUpdateCurrentIndex(int value) async{
+  void onUpdateCurrentIndex(int value, BuildContext context) async{
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
 
     final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     final permission = await Geolocator.checkPermission();

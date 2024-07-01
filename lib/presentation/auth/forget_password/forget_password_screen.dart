@@ -19,8 +19,6 @@ class ForgetPasswordScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
-    
-
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(

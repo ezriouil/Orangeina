@@ -68,7 +68,6 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       vendorRating: 0,
       reportReason: "",
       reviewsLoading : false,
-      feedBackFormState: GlobalKey<FormState>(),
       reportFormState: GlobalKey<FormState>()
     ));
     uid = await LocalStorage.read(key: "UID", storage: storage);
@@ -209,125 +208,118 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
               width: double.infinity,
               height: 350,
               child: SingleChildScrollView(
-                child: Form(
-                  key: currentState.feedBackFormState,
-                  child: Column(
-                    children: [
+                child: Column(
+                  children: [
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
-                      // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
-                      Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6)),
+                    // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
+                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6)),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
-                      // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
-                      Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+                    // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
+                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
-                      // - - - - - - - - - - - - - - - - - -  RATING - - - - - - - - - - - - - - - - - -  //
-                      Center(
-                        child: RatingBar.builder(
-                          itemCount: 5,
-                          initialRating:  currentState.feedback!,
-                          maxRating: 5,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemPadding: EdgeInsets.zero,
-                          itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
-                          onRatingUpdate: (double value) { emit(currentState.copyWith(feedback: value));  },
-                        ),
+                    // - - - - - - - - - - - - - - - - - -  RATING - - - - - - - - - - - - - - - - - -  //
+                    Center(
+                      child: RatingBar.builder(
+                        itemCount: 5,
+                        initialRating:  currentState.feedback!,
+                        maxRating: 5,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemPadding: EdgeInsets.zero,
+                        itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
+                        onRatingUpdate: (double value) { emit(currentState.copyWith(feedback: value));  },
                       ),
+                    ),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
-                      // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
-                      Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+                    // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
+                    Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
-                      // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
-                      CustomTextField(
-                          hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context),
-                          controller: currentState.feedbackController!,
-                          leadingIcon: Iconsax.bookmark,
-                          validator: (value) => Validator.validateEmptyField("FeedBack required", value)),
+                    // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
+                    CustomTextField(
+                        hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context),
+                        controller: currentState.feedbackController!,
+                        leadingIcon: Iconsax.bookmark),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+                    // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                    const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
 
-                      // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
-                      Row(
-                        children: [
+                    // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
+                    Row(
+                      children: [
 
-                          // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
-                          Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
+                        // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
+                        Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
 
-                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+                        // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                        const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
 
-                          // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
-                          Expanded(child: CustomElevatedButton(onClick: () async{
+                        // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
+                        Expanded(child: CustomElevatedButton(onClick: () async{
 
-                            currentState = state as VendorDetailsMainState;
+                          currentState = state as VendorDetailsMainState;
 
-                            try{
+                          try{
 
-                              // CHECK THE FORM
-                              if(!currentState.feedBackFormState!.currentState!.validate()) return;
-
-                              if(uid == null) {
-                                context.pop();
-                                return;
-                              }
-
-                              final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
-
-                              if(userEntity == null) {
-                                context.pop();
-                                return;
-                              }
-
-                              final date = DateTime.now();
-                              final ReviewEntity review = ReviewEntity(
-                                  vendorId: argumentId,
-                                  viewerId: uid,
-                                  fullName: "${userEntity.firstName} ${userEntity.lastName}",
-                                  reviewBody: currentState.feedbackController!.text.trim(),
-                                  avatar: userEntity.avatar,
-                                  rating: currentState.feedback!,
-                                  createAt: "${date.day}/${date.month}/${date.year}"
-                              );
-
-                              for(ReviewEntity review in currentState.reviews!){
-                                if(review.viewerId == uid) { await reviewRepository.delete(docId: review.id!); }
-                              }
-                              await reviewRepository.insert(reviewEntity: review);
-
-                              currentState.feedbackController!.clear();
-                              refreshReviews(argumentId: argumentId, context: context);
-
-                              callBack.call();
-
-                            }catch(_){
-
-                              emit(currentState);
-
+                            if(uid == null) {
+                              context.pop();
+                              return;
                             }
 
-                          }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
+                            final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
 
-                        ],
-                      )
-                    ],
-                  ),
+                            if(userEntity == null) {
+                              context.pop();
+                              return;
+                            }
+
+                            final date = DateTime.now();
+                            final ReviewEntity review = ReviewEntity(
+                                vendorId: argumentId,
+                                viewerId: uid,
+                                fullName: "${userEntity.firstName} ${userEntity.lastName}",
+                                reviewBody: currentState.feedbackController!.text.trim(),
+                                avatar: userEntity.avatar,
+                                rating: currentState.feedback!,
+                                createAt: "${date.day}/${date.month}/${date.year}"
+                            );
+
+                            for(ReviewEntity review in currentState.reviews!){
+                              if(review.viewerId == uid) { await reviewRepository.delete(docId: review.id!); }
+                            }
+                            await reviewRepository.insert(reviewEntity: review);
+
+                            currentState.feedbackController!.clear();
+                            refreshReviews(argumentId: argumentId, context: context);
+
+                            callBack.call();
+
+                          }catch(_){
+
+                            emit(currentState);
+
+                          }
+
+                        }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
+
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
@@ -477,11 +469,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                       onClick: () async{
                         context.pop();
                         try{ await reviewRepository.delete(docId: review.id!); }
-                        catch(e){
-                          print("+++++++");
-                          print(e.toString());
-                          print("+++++++");
-                        }
+                        catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Cannot deleted", subTitle: "Sorry we cannot delete this comment..", type: ContentType.success) : null; }
                         refreshReviews(argumentId: argumentId, context: context);
                         context.mounted ? CustomSnackBar.show(context: context, title: "Review Deleted", subTitle: "Your review is delete successfully!", type: ContentType.success) : null;
                       }

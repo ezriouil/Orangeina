@@ -41,12 +41,6 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
         return;
       }
 
-      // CHECK EMAIL FIELD
-      if( (currentState.emailController!.text.trim().length < 7 || !currentState.emailController!.text.contains("@")) && context.mounted){
-        CustomSnackBar.show(context: context, title: CustomLocale.FORGET_PASSOWRD_EMAIL_TITLE_INVALID.getString(context), subTitle: CustomLocale.FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID.getString(context), type: ContentType.warning);
-        return;
-      }
-
       // EMIT LOADING STATE
       emit(ForgetPasswordLoadingState());
 

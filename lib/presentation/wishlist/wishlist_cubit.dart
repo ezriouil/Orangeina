@@ -1,5 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/wishList_entity.dart';
+import 'package:berkania/utils/helpers/network.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -19,8 +21,9 @@ class WishlistCubit extends Cubit<WishlistState> {
 
   final WishListRepository wishListRepository;
   final GetStorage storage;
+  final Connectivity connectivity;
   String? uid;
-  WishlistCubit({ required this.storage, required this.wishListRepository}) : super(WishlistLoadingState()){  init();  }
+  WishlistCubit({ required this.storage, required this.wishListRepository, required this.connectivity}) : super(WishlistLoadingState()){  init();  }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{
@@ -29,7 +32,13 @@ class WishlistCubit extends Cubit<WishlistState> {
   }
 
   // - - - - - - - - - - - - - - - - - - REFRESH - - - - - - - - - - - - - - - - - -  //
-  void onRefresh()async{
+  void onRefresh({ required BuildContext context })async{
+
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
     emit(WishlistLoadingState());
     await Future.delayed(const Duration(milliseconds: 500));
     await getWishLists();
@@ -72,7 +81,7 @@ class WishlistCubit extends Cubit<WishlistState> {
 
                           context.pop();
                           await wishListRepository.deleteWishListById(id: id);
-                          onRefresh();
+                          onRefresh(context: context);
 
                         },
                         child: Text(CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE))

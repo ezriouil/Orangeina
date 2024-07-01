@@ -21,10 +21,10 @@ class NotificationScreen extends CustomState {
   Widget run(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(onTap: (){ context.read<IndexCubit>().onUpdateCurrentIndex(0); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Icon(isArabic(context) ? Iconsax.arrow_right_3 : Iconsax.arrow_left_2, color: darkLightColor(context))),
+        leading: InkWell(onTap: (){ context.read<IndexCubit>().onUpdateCurrentIndex(0, context); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Icon(isArabic(context) ? Iconsax.arrow_right_3 : Iconsax.arrow_left_2, color: darkLightColor(context))),
         title: Text(CustomLocale.NOTIFICATIONS_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
         actions: [InkWell(
-          onTap: context.read<NotificationCubit>().onRefresh,
+          onTap: (){ context.read<NotificationCubit>().onRefresh(context: context); },
           borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
           child: Padding(
             padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),

@@ -9,7 +9,10 @@ import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
 import 'package:berkania/utils/constants/custom_txt_strings.dart';
 import 'package:berkania/utils/device/device_utility.dart';
+import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/router/custom_router.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,12 +47,13 @@ class SettingsCubit extends Cubit<SettingsState> {
   String? uid, lang;
   
   final GetStorage storage;
+  final Connectivity connectivity;
   final UserRepository userRepository;
   final AuthRepository authRepository;
   final VendorRepository vendorRepository;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  SettingsCubit({ required this.storage, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsMainState()) { init(); }
+  SettingsCubit({ required this.storage, required this.connectivity, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsMainState()) { init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async {
@@ -83,6 +87,14 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE IMAGE PROFILE - - - - - - - - - - - - - - - - - -  //
   void onUpdateImageProfile({required BuildContext context}) async {
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
     await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -157,6 +169,13 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
   void onUpdateFullName({required BuildContext context}) async {
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
 
     final GlobalKey<FormState> formState = GlobalKey<FormState>();
     final firstNameController =  TextEditingController();
@@ -259,6 +278,13 @@ class SettingsCubit extends Cubit<SettingsState> {
   // - - - - - - - - - - - - - - - - - - ON UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
   void onUpdatePhone({required BuildContext context}) async {
 
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
     final TextEditingController phone = TextEditingController();
     final GlobalKey<FormState> formState = GlobalKey<FormState>();
 
@@ -345,7 +371,15 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR => (ONLINE / OFFLINE) - - - - - - - - - - - - - - - - - -  //
-  void updateVendorStatus(bool value) async{
+  void updateVendorStatus(bool value, BuildContext context) async{
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
     try{
 
       if (uid == null) return;
@@ -372,16 +406,48 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR => ON NAVIGATE TO NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
-  void onNavigateToNewOrderScreen({ required BuildContext context }) { context.pushNamed(CustomRouter.VENDOR_NEW_ORDER); }
+  void onNavigateToNewOrderScreen({ required BuildContext context }) async{
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+    context.pushNamed(CustomRouter.VENDOR_NEW_ORDER);
+  }
 
   // - - - - - - - - - - - - - - - - - - VENDOR => ON NAVIGATE TO ORDERS SCREEN - - - - - - - - - - - - - - - - - -  //
-  void onNavigateToOrdersScreen({ required BuildContext context }) { context.pushNamed(CustomRouter.VENDOR_ORDERS); }
+  void onNavigateToOrdersScreen({ required BuildContext context }) async{
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+    context.pushNamed(CustomRouter.VENDOR_ORDERS);
+  }
 
   // - - - - - - - - - - - - - - - - - - BECOME VENDOR - - - - - - - - - - - - - - - - - -  //
-  void onNavigateToBeVendorScreen({ required BuildContext context }) { context.pushNamed(CustomRouter.BE_VENDOR); }
+  void onNavigateToBeVendorScreen({ required BuildContext context }) async{
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+    context.pushNamed(CustomRouter.BE_VENDOR);
+  }
 
   // - - - - - - - - - - - - - - - - - - SHOW DIALOG LANGUAGES - - - - - - - - - - - - - - - - - -  //
   void onUpdateLanguage({required BuildContext context, required Function callBack}) async {
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
     final SettingsMainState currentState = state as SettingsMainState;
     String langSelected = "";
 
@@ -503,24 +569,42 @@ class SettingsCubit extends Cubit<SettingsState> {
     await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
   }
 
-  // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO PRIVACY AND SECURITY - - - - - - - - - - - - - - - - - -  //
-  //void onNavigateToPrivacyAndSecurity() async{
-    //await launchUrl(Uri.parse(CustomTextStrings.TERMS_LINK), mode: LaunchMode.inAppWebView);
-  //}
-
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO HELP AND SUPPORT - - - - - - - - - - - - - - - - - -  //
-  void onNavigateToHelpAndSupport() async{
+  void onNavigateToHelpAndSupport({ required BuildContext context }) async{
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
     await launchUrl(Uri.parse(CustomTextStrings.TERMS_LINK), mode: LaunchMode.inAppWebView);
   }
 
   // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO ABOUT - - - - - - - - - - - - - - - - - -  //
   void onNavigateToAbout({ required BuildContext context }) async{
-    //await launchUrl(Uri.parse(CustomTextStrings.TERMS_LINK), mode: LaunchMode.inAppWebView);
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
      context.pushNamed(CustomRouter.FAQ);
   }
 
   // - - - - - - - - - - - - - - - - - - ON SIGN OUT - - - - - - - - - - - - - - - - - -  //
   void signOut({required BuildContext context}) async{
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
     await showDialog(
         context: context,
         barrierDismissible: false,

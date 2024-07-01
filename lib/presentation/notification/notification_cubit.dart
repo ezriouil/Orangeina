@@ -2,7 +2,10 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/domain/repositories/notification_repository.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
+import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/router/custom_router.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -22,8 +25,9 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   final NotificationRepository notificationRepository;
   final GetStorage storage;
+  final Connectivity connectivity;
   String? uid;
-  NotificationCubit({ required this.notificationRepository, required this.storage}) : super(NotificationLoadingState()){  init();  }
+  NotificationCubit({ required this.notificationRepository, required this.storage, required this.connectivity}) : super(NotificationLoadingState()){  init();  }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{
@@ -32,7 +36,13 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   // - - - - - - - - - - - - - - - - - - REFRESH - - - - - - - - - - - - - - - - - -  //
-  void onRefresh()async{
+  void onRefresh({ required BuildContext context })async{
+
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
     emit(NotificationLoadingState());
     await Future.delayed(const Duration(milliseconds: 500));
     await getNotifications();
@@ -68,6 +78,7 @@ class NotificationCubit extends Cubit<NotificationState> {
                 height: 250,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
 
                     Row(
@@ -95,7 +106,6 @@ class NotificationCubit extends Cubit<NotificationState> {
       if(!notification.isRead!) await getNotifications();
 
     }catch(e){
-      print("Error => ${e.toString()}");
       emit(NotificationErrorState(message: e.toString()));
     }
   }

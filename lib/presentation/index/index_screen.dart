@@ -58,7 +58,7 @@ class IndexScreen extends CustomState {
               elevation: 0.0,
               animationDuration: const Duration(seconds: 3),
               selectedIndex: state.currentPageIndex!,
-              onDestinationSelected: context.read<IndexCubit>().onUpdateCurrentIndex,
+              onDestinationSelected: (int value){ context.read<IndexCubit>().onUpdateCurrentIndex(value, context); },
               destinations: [
                 NavigationDestination(icon: Icon(state.currentPageIndex == 0 ? Iconsax.map_15 : Iconsax.map), label: CustomLocale.INDEX_EXPLORE_TITLE.getString(context)),
                 NavigationDestination(icon: Icon(state.currentPageIndex == 1 ? Iconsax.heart5 : Iconsax.heart), label: CustomLocale.INDEX_WISHLIST_TITLE.getString(context)),

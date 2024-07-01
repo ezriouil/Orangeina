@@ -12,7 +12,7 @@ final class VendorDetailsMainState extends VendorDetailsState {
   final VendorEntity? vendor;
   final  List<ReviewEntity>? reviews;
   final  Set<Marker>? markers;
-  final  GlobalKey<FormState>? reportFormState, feedBackFormState;
+  final  GlobalKey<FormState>? reportFormState;
 
   VendorDetailsMainState(
       {this.feedbackController, this.reportReason, this.feedback,
@@ -24,7 +24,6 @@ final class VendorDetailsMainState extends VendorDetailsState {
         this.reviewsLoading,
         this.markers,
         this.reportFormState,
-        this.feedBackFormState,
       });
 
   VendorDetailsMainState copyWith(
@@ -56,7 +55,6 @@ final class VendorDetailsMainState extends VendorDetailsState {
           reviewsLoading: reviewsLoading ?? this.reviewsLoading,
           markers: markers ?? this.markers,
           reportFormState: reportFormState ?? this.reportFormState,
-          feedBackFormState: feedBackFormState ?? this.feedBackFormState
       );
 
 }

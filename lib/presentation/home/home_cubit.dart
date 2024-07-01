@@ -9,7 +9,9 @@ import 'package:berkania/presentation/home/widgets/custom_marker_window.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/constants/custom_txt_strings.dart';
+import 'package:berkania/utils/helpers/network.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,15 +37,11 @@ class HomeCubit extends Cubit<HomeState> {
   // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
   final VendorRepository vendorRepository;
   final GetStorage storage;
+  final Connectivity connectivity;
   String? uid;
 
   // - - - - - - - - - - - - - - - - - - CONTRACTURE - - - - - - - - - - - - - - - - - -  //
-  HomeCubit({ required this.vendorRepository, required this.storage }) : super(HomeLoadingState()){
-    init();
-  }
-
-  Query<Map<String, dynamic>> getAllVendors() => FirebaseFirestore.instance.collection('VENDORS').where('visible', isEqualTo: true).where('isOnline', isEqualTo: true).where('id', isNotEqualTo: uid);
-
+  HomeCubit({ required this.vendorRepository, required this.storage, required this.connectivity }) : super(HomeLoadingState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
@@ -81,8 +79,8 @@ class HomeCubit extends Cubit<HomeState> {
 
     uid = await LocalStorage.read(key: "UID", storage: storage) ?? "";
 
-    await onRefreshVendors();
     /// PERIODIC TIMER TO REFRESH VENDORS ON MAP
+    await onRefreshVendors();
     Timer.periodic(const Duration(minutes: 1), (time) async{ await onRefreshVendors(); });
 
   }
@@ -96,10 +94,21 @@ class HomeCubit extends Cubit<HomeState> {
     emit(updateState);
   }
 
+  // - - - - - - - - - - - - - - - - - - GET VENDORS - - - - - - - - - - - - - - - - - -  //
+  Query<Map<String, dynamic>> getAllVendors() => FirebaseFirestore.instance.collection('VENDORS').where('visible', isEqualTo: true).where('isOnline', isEqualTo: true).where('id', isNotEqualTo: uid);
+
   // - - - - - - - - - - - - - - - - - - CLICK SPECIFIC VENDOR - - - - - - - - - - - - - - - - - -  //
   onVendorClick({ required num? lat, required num? lng , required BuildContext context}) async{
 
     try{
+
+      // CHECK CONNECTION INTERNET
+      final hasConnection = await Network.hasConnection(connectivity);
+      if(!hasConnection && context.mounted){
+        CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+        return;
+      }
+
       final currentState = state as HomeMainState;
       final polyline = <Polyline>{};
 
@@ -108,13 +117,9 @@ class HomeCubit extends Cubit<HomeState> {
       final String end = '${(lng ?? 0.0) as double},${(lat ?? 0.0) as double}';
       final String uri = '${CustomTextStrings.POLYLINE_BASE_URI}?api_key=$apiKey&start=$start&end=$end';
 
-      print("++++1+++");
       final response = await http.get(Uri.parse(uri));
-      print("++++2+++");
       final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
-      print("++++3++++");
       final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
-      print("++++4+++");
 
       polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 6, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
@@ -126,9 +131,6 @@ class HomeCubit extends Cubit<HomeState> {
           polyline: polyline
       ));
     }catch(e){
-      print("++++++++");
-      print(e.toString());
-      print("++++++++");
     if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Vendor Not Found !", type: ContentType.failure, color: CustomColors.RED_LIGHT);
     }
   }
@@ -136,13 +138,17 @@ class HomeCubit extends Cubit<HomeState> {
   // - - - - - - - - - - - - - - - - - - SHOW MY CURRENT LOCATION - - - - - - - - - - - - - - - - - -  //
   void onGetMyLocation({ required BuildContext context }) async{
     try{
+
+      // CHECK CONNECTION INTERNET
+      final hasConnection = await Network.hasConnection(connectivity);
+      if(!hasConnection && context.mounted){
+        CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+        return;
+      }
+
       final currentState = state as HomeMainState;
       emit(HomeLoadingState());
       final currentPosition = await Geolocator.getCurrentPosition();
-      print("++++++++");
-      print(currentPosition.longitude);
-      print(currentPosition.latitude);
-      print("++++++++");
       await Future.delayed(const Duration(milliseconds: 300));
       emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude),zoom: 18.0 )));
     }catch(_){
@@ -187,6 +193,14 @@ class HomeCubit extends Cubit<HomeState> {
 
   // - - - - - - - - - - - - - - - - - -  MAP SETTINGS  - - - - - - - - - - - - - - - - - -  //
   void onMapSettings({ required BuildContext context}) async{
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
     final currentState = state as HomeMainState;
     await showDialog(
         context: context,
@@ -281,6 +295,10 @@ class HomeCubit extends Cubit<HomeState> {
         position: LatLng(lat, lng),
         icon: customIcon,
         onTap: () async{
+
+          // CHECK CONNECTION INTERNET
+          final hasConnection = await Network.hasConnection(connectivity);
+          if(!hasConnection) return;
 
           final currentState = state as HomeMainState;
 

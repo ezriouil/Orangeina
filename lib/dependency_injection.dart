@@ -9,19 +9,6 @@ import 'package:berkania/domain/repositories/report_repository.dart';
 import 'package:berkania/domain/repositories/review_repository.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/domain/repositories/vendor_repository.dart';
-import 'package:berkania/presentation/auth/forget_password/forget_password_cubit.dart';
-import 'package:berkania/presentation/auth/login/login_cubit.dart';
-import 'package:berkania/presentation/auth/register/register_cubit.dart';
-import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
-import 'package:berkania/presentation/home/home_cubit.dart';
-import 'package:berkania/presentation/index/index_cubit.dart';
-import 'package:berkania/presentation/notification/notification_cubit.dart';
-import 'package:berkania/presentation/on_boarding/on_boarding_cubit.dart';
-import 'package:berkania/presentation/settings/settings_cubit.dart';
-import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
-import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
-import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
-import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_it/get_it.dart';
@@ -66,6 +53,7 @@ class DependencyInjection{
     // getIt.registerFactory<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));
     // getIt.registerFactory<VendorOrdersCubit>( () => VendorOrdersCubit(storage: getIt(), vendorRepository: getIt()));
     // getIt.registerFactory<BeVendorCubit>( () => BeVendorCubit(notificationRepository: getIt(), vendorRepository: getIt(), userRepository: getIt(), storage: getIt()));
+
   }
 
 }

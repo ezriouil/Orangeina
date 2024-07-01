@@ -12,9 +12,11 @@ import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
 import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
 import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
 import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
+import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:berkania/utils/theme/theme_app.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -42,9 +44,12 @@ void main() async {
   DependencyInjection.setup();
 
   // - - - - - - - - - - - - - - - - - - INIT LOCAL STORAGE - - - - - - - - - - - - - - - - - -  //
-  await GetStorage.init();
   String? initLocation;
+  await GetStorage.init();
   final GetStorage storage = DependencyInjection.getIt<GetStorage>();
+  final Connectivity connectivity = DependencyInjection.getIt<Connectivity>();
+  final hasConnectionNetwork = await Network.hasConnection(connectivity);
+  if(!hasConnectionNetwork)  await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
   initLocation = await LocalStorage.read(key: "INIT_LOCATION", storage: storage);
 
   // - - - - - - - - - - - - - - - - - - HIDE THE TOP STATUS BAR AND SYSTEM BOTTOM BAR - - - - - - - - - - - - - - - - - -  //
@@ -118,11 +123,11 @@ class _IndexState extends State<App> {
           BlocProvider(create: (_) => RegisterCubit(storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), authRepository: DependencyInjection.getIt())),
           BlocProvider(create: (_) => LoginCubit(authRepository: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
           BlocProvider(create: (_) => ForgetPasswordCubit(authRepository: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
-          BlocProvider(create: (_) => IndexCubit()),
-          BlocProvider(create: (_) => HomeCubit(vendorRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt())),
-          BlocProvider(create: (_) => WishlistCubit(storage: DependencyInjection.getIt(), wishListRepository: DependencyInjection.getIt())),
-          BlocProvider(create: (_) => NotificationCubit(notificationRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt())),
-          BlocProvider(create: (_) => SettingsCubit(storage: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), authRepository: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => IndexCubit(connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => HomeCubit(vendorRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => WishlistCubit(storage: DependencyInjection.getIt(), wishListRepository: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => NotificationCubit(notificationRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => SettingsCubit(connectivity: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), authRepository: DependencyInjection.getIt())),
           BlocProvider(create: (_) => VendorDetailsCubit(userRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), reviewRepository: DependencyInjection.getIt(), wishListRepository: DependencyInjection.getIt(), reportRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt())),
           BlocProvider(create: (_) => VendorNewOrderCubit(connectivity: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), notificationRepository: DependencyInjection.getIt())),
           BlocProvider(create: (_) => VendorOrdersCubit(storage: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt())),
