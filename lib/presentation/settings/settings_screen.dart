@@ -88,7 +88,7 @@ class SettingsScreen extends CustomState {
                           title: CustomLocale.SETTINGS_UPDATE_FULL_NAME_TITLE.getString(context),
                           subTitle: CustomLocale.SETTINGS_UPDATE_FULL_NAME_SUB_TITLE.getString(context),
                           icon: Iconsax.user,
-                          trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: () { context.read<SettingsCubit>().onUpdateFullName(context: context) ; },),
+                          trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: () { context.read<SettingsCubit>().onUpdateFullName(context: context); },),
 
                       // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                       const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),

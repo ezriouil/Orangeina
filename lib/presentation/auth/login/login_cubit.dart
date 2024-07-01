@@ -1,5 +1,14 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/repositories/auth_repository.dart';
+import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
+import 'package:berkania/presentation/home/home_cubit.dart';
+import 'package:berkania/presentation/index/index_cubit.dart';
+import 'package:berkania/presentation/notification/notification_cubit.dart';
+import 'package:berkania/presentation/settings/settings_cubit.dart';
+import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
+import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
+import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
+import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
@@ -87,6 +96,15 @@ class LoginCubit extends Cubit<LoginState> {
       // NAVIGATE TO HOME SCREEN
       currentState = state as LoginMainState;
       emit(currentState);
+      context.read<HomeCubit>().init();
+      context.read<WishlistCubit>().init();
+      context.read<NotificationCubit>().init();
+      context.read<SettingsCubit>().init();
+      context.read<VendorDetailsCubit>().init();
+      context.read<IndexCubit>().init();
+      context.read<VendorNewOrderCubit>().init();
+      context.read<VendorOrdersCubit>().init();
+      context.read<BeVendorCubit>().init();
       callBack.call();
 
     }catch(e){
@@ -139,7 +157,18 @@ class LoginCubit extends Cubit<LoginState> {
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
 
       // NAVIGATE TO HOME SCREEN
-      emit((state as LoginMainState));
+      emit(state as LoginMainState);
+
+      context.read<HomeCubit>().init();
+      context.read<WishlistCubit>().init();
+      context.read<NotificationCubit>().init();
+      context.read<SettingsCubit>().init();
+      context.read<VendorDetailsCubit>().init();
+      context.read<IndexCubit>().init();
+      context.read<VendorNewOrderCubit>().init();
+      context.read<VendorOrdersCubit>().init();
+      context.read<BeVendorCubit>().init();
+
       callBack.call();
 
     }catch(e){
@@ -260,5 +289,6 @@ class LoginCubit extends Cubit<LoginState> {
     await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: storage);
     await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
   }
+
 
 }

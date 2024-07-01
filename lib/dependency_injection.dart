@@ -9,6 +9,19 @@ import 'package:berkania/domain/repositories/report_repository.dart';
 import 'package:berkania/domain/repositories/review_repository.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/domain/repositories/vendor_repository.dart';
+import 'package:berkania/presentation/auth/forget_password/forget_password_cubit.dart';
+import 'package:berkania/presentation/auth/login/login_cubit.dart';
+import 'package:berkania/presentation/auth/register/register_cubit.dart';
+import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
+import 'package:berkania/presentation/home/home_cubit.dart';
+import 'package:berkania/presentation/index/index_cubit.dart';
+import 'package:berkania/presentation/notification/notification_cubit.dart';
+import 'package:berkania/presentation/on_boarding/on_boarding_cubit.dart';
+import 'package:berkania/presentation/settings/settings_cubit.dart';
+import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
+import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
+import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
+import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_it/get_it.dart';
@@ -23,14 +36,13 @@ class DependencyInjection{
 
   static final getIt = GetIt.instance;
 
-  static void setup(){
-
-    // - - - - - - - - - - - - - - - - - - UTILS - - - - - - - - - - - - - - - - - -  //
+  static void setupUtils(){
     getIt.registerLazySingleton<GetStorage>( () => GetStorage());
     getIt.registerLazySingleton<FlutterLocalization>( () => FlutterLocalization.instance);
     getIt.registerLazySingleton<Connectivity>( () => Connectivity());
+  }
 
-    // - - - - - - - - - - - - - - - - - - REPOSITORIES - - - - - - - - - - - - - - - - - -  //
+  static void setupRepository(){
     getIt.registerLazySingleton<AuthRepository>( () => AuthRepositoryImpl());
     getIt.registerLazySingleton<UserRepository>( () => UserRepositoryImpl());
     getIt.registerLazySingleton<VendorRepository>( () => VendorRepositoryImpl());
@@ -38,22 +50,20 @@ class DependencyInjection{
     getIt.registerLazySingleton<NotificationRepository>( () => NotificationRepositoryImpl());
     getIt.registerLazySingleton<ReviewRepository>( () => ReviewRepositoryImpl());
     getIt.registerLazySingleton<ReportRepository>( () => ReportRepositoryImpl());
-
-    // - - - - - - - - - - - - - - - - - - CUBITS - - - - - - - - - - - - - - - - - -  //
-    // getIt.registerFactory<OnBoardingCubit>( () =>OnBoardingCubit(storage: getIt()));
-    // getIt.registerFactory<RegisterCubit>( () =>RegisterCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
-    // getIt.registerFactory<LoginCubit>( () => LoginCubit(authRepository: getIt(), userRepository: getIt(), storage: getIt(), connectivity: getIt()));
-    // getIt.registerFactory<ForgetPasswordCubit>( () => ForgetPasswordCubit(authRepository: getIt(), connectivity: getIt()));
-    // getIt.registerFactory<IndexCubit>( () => IndexCubit());
-    // getIt.registerFactory<HomeCubit>( () => HomeCubit(vendorRepository: getIt(), storage: getIt()));
-    // getIt.registerFactory<WishlistCubit>( () => WishlistCubit(storage: getIt(), wishListRepository: getIt()));
-    // getIt.registerFactory<NotificationCubit>( () => NotificationCubit(notificationRepository: getIt(), storage: getIt()));
-    // getIt.registerFactory<SettingsCubit>( () => SettingsCubit(storage: getIt(), vendorRepository: getIt(), userRepository: getIt(), authRepository: getIt()));
-    // getIt.registerFactory<VendorDetailsCubit>( () => VendorDetailsCubit(vendorRepository: getIt(), reviewRepository: getIt(), storage: getIt(), userRepository: getIt(), reportRepository: getIt(), wishListRepository: getIt()));
-    // getIt.registerFactory<VendorNewOrderCubit>( () => VendorNewOrderCubit(vendorRepository: getIt(), connectivity: getIt(), storage: getIt()));
-    // getIt.registerFactory<VendorOrdersCubit>( () => VendorOrdersCubit(storage: getIt(), vendorRepository: getIt()));
-    // getIt.registerFactory<BeVendorCubit>( () => BeVendorCubit(notificationRepository: getIt(), vendorRepository: getIt(), userRepository: getIt(), storage: getIt()));
-
   }
+
+  static OnBoardingCubit onBoardingCubit = OnBoardingCubit(storage: DependencyInjection.getIt<GetStorage>());
+  static RegisterCubit registerCubit = RegisterCubit(authRepository: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt());
+  static LoginCubit loginCubit = LoginCubit(authRepository: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt());
+  static ForgetPasswordCubit forgetPasswordCubit = ForgetPasswordCubit(authRepository: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt());
+  static IndexCubit indexCubit = IndexCubit(connectivity: DependencyInjection.getIt());
+  static HomeCubit homeCubit = HomeCubit(vendorRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt());
+  static WishlistCubit wishlistCubit = WishlistCubit(storage: DependencyInjection.getIt(), wishListRepository: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt());
+  static NotificationCubit notificationCubit = NotificationCubit(notificationRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt());
+  static SettingsCubit settingsCubit = SettingsCubit(storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), authRepository: DependencyInjection.getIt());
+  static VendorDetailsCubit vendorDetailsCubit = VendorDetailsCubit(userRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), reviewRepository: DependencyInjection.getIt(), wishListRepository: DependencyInjection.getIt(), reportRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt());
+  static VendorNewOrderCubit vendorNewOrderCubit = VendorNewOrderCubit(storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), notificationRepository: DependencyInjection.getIt());
+  static VendorOrdersCubit vendorOrdersCubit = VendorOrdersCubit(storage: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt());
+  static BeVendorCubit beVendorCubit = BeVendorCubit(notificationRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt());
 
 }

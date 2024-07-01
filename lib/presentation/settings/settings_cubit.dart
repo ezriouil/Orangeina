@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
 import 'package:berkania/domain/repositories/auth_repository.dart';
@@ -8,13 +6,10 @@ import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
 import 'package:berkania/utils/constants/custom_txt_strings.dart';
-import 'package:berkania/utils/device/device_utility.dart';
 import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:geolocator/geolocator.dart';
@@ -53,20 +48,23 @@ class SettingsCubit extends Cubit<SettingsState> {
   final VendorRepository vendorRepository;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  SettingsCubit({ required this.storage, required this.connectivity, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsMainState()) { init(); }
+  SettingsCubit({ required this.storage, required this.connectivity, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsLoadingState()) { init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async {
 
-    final currentState = state as SettingsMainState;
-
-    emit(currentState.copyWith(
+    emit(SettingsMainState(
       arabicLang: false,
       englishLang: false,
       frenchLang: false,
       vendorOnlineOffline: false,
       updateImageProfilePath: "",
+      firstNameHint: "",
+      lastNameHint: "",
+      phoneHint: "",
     ));
+
+    final currentState = state as SettingsMainState;
 
     await Future.delayed(const Duration(milliseconds: 200));
 
@@ -89,10 +87,12 @@ class SettingsCubit extends Cubit<SettingsState> {
       updateImageProfilePath: _user?.avatar ?? _vendor?.avatar,
       isVendor: isVendor,
       vendorOnlineOffline: _vendor?.isOnline ?? false,
+      firstNameHint: _user == null ? _vendor?.firstName : _user?.lastName,
+      lastNameHint: _user == null ? _vendor?.lastName : _user?.lastName,
+      phoneHint: _user == null ? _vendor?.phoneNumber : _user?.phoneNumber,
     ));
 
   }
-
 
   // - - - - - - - - - - - - - - - - - - ON UPDATE IMAGE PROFILE - - - - - - - - - - - - - - - - - -  //
   void onUpdateImageProfile({required BuildContext context}) async {
@@ -187,16 +187,10 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
 
     final GlobalKey<FormState> formState = GlobalKey<FormState>();
-    final firstNameController =  TextEditingController();
-    final lastNameController =  TextEditingController();
 
-    if(_user != null){
-      firstNameController.text = _user?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
-      lastNameController.text = _user?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
-    }else{
-      firstNameController.text = _vendor?.firstName ?? CustomLocale.REGISTER_FIRST_NAME.getString(context.mounted ? context : context);
-      lastNameController.text = _vendor?.lastName ?? CustomLocale.REGISTER_LAST_NAME.getString(context.mounted ? context : context);
-    }
+    final currentState = state as SettingsMainState;
+    final TextEditingController firstName = TextEditingController(text: currentState.firstNameHint);
+    final TextEditingController lastName = TextEditingController(text: currentState.lastNameHint);
 
     await showDialog(
         context: context.mounted ? context : context,
@@ -211,19 +205,20 @@ class SettingsCubit extends Cubit<SettingsState> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+
                         // - - - - - - - - - - - - - - - - - - FIRST NAME - - - - - - - - - - - - - - - - - -  //
                         CustomTextField(
                             leadingIcon: Iconsax.user,
-                            hint: firstNameController.text,
+                            hint: firstName.text,
                             validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_FIRST_NAME_VALIDATOR.getString(context), value),
-                            controller: firstNameController),
+                            controller: firstName),
 
                         // - - - - - - - - - - - - - - - - - - LAST NAME - - - - - - - - - - - - - - - - - -  //
                         CustomTextField(
                             leadingIcon: Iconsax.user,
-                            hint: lastNameController.text,
+                            hint: lastName.text,
                             validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_LAST_NAME_VALIDATOR.getString(context), value),
-                            controller: lastNameController),
+                            controller: lastName),
 
                         // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
                         CustomElevatedButton(
@@ -240,43 +235,30 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                                 final isUserExist = await userRepository.existUser(userId: uid!);
                                 if (isUserExist) {
-                                  await userRepository.updateUserFullName(userId: uid!, newFirstName: firstNameController.text, newLastName: lastNameController.text);
-                                  await LocalStorage.upsert(
-                                      key: "FIRST_NAME",
-                                      value: firstNameController.text,
-                                      storage: storage);
-                                  await LocalStorage.upsert(
-                                      key: "LAST_NAME",
-                                      value: lastNameController.text,
-                                      storage: storage);
-                                  if(!context.mounted) return;
+                                  await userRepository.updateUserFullName(userId: uid!, newFirstName: firstName.text, newLastName: lastName.text);
                                   context.pop();
-                                  CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
+                                  emit(currentState.copyWith(firstNameHint: firstName.text, lastNameHint: lastName.text));
+                                  CustomSnackBar.show(context: context.mounted ? context : context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
                                   return;
                                 }
 
                                 final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                                 if (isVendorExist) {
-                                  await vendorRepository.updateVendorFullName(
-                                      vendorId: uid!,
-                                      newFirstName: firstNameController.text,
-                                      newLastName: lastNameController.text);
-                                  await LocalStorage.upsert(key: "FIRST_NAME", value: firstNameController.text, storage: storage);
-                                  await LocalStorage.upsert(key: "LAST_NAME", value: lastNameController.text, storage: storage);
+                                  await vendorRepository.updateVendorFullName(vendorId: uid!, newFirstName: firstName.text, newLastName: lastName.text);
+                                  init();
                                   if(!context.mounted) return;
                                   context.pop();
+                                  emit(currentState.copyWith(firstNameHint: firstName.text, lastNameHint: lastName.text));
                                   CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
                                   return;
                                 }
                                 context.mounted ? context.pop(): null;
 
-                              } catch (e) {
-                                context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              } catch (_) {
+                                context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Cannot update your fullName.Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                               }
                             },
-                            child: Text(
-                                CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context),
-                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
+                            child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
 
                       ],
                     ),
@@ -294,14 +276,10 @@ class SettingsCubit extends Cubit<SettingsState> {
       return;
     }
 
-    final TextEditingController phone = TextEditingController();
     final GlobalKey<FormState> formState = GlobalKey<FormState>();
 
-    if(_user != null){
-      phone.text = _user?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
-    }else{
-      phone.text = _vendor?.phoneNumber ?? CustomLocale.SETTINGS_PHONE.getString(context.mounted ? context : context);
-    }
+    final currentState = state as SettingsMainState;
+    final TextEditingController phone = TextEditingController(text: currentState.phoneHint);
 
     await showDialog(
         context: context.mounted ? context : context,
@@ -333,8 +311,6 @@ class SettingsCubit extends Cubit<SettingsState> {
                           spaceBetweenSelectorAndTextField: 0,
                         ),
 
-
-
                         // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
                         CustomElevatedButton(
                             onClick: () async {
@@ -350,9 +326,9 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 final isUserExist = await userRepository.existUser(userId: uid!);
                                 if (isUserExist) {
                                   await userRepository.updateUserPhone(userId: uid!, newPhone: phone.text);
-                                  await LocalStorage.upsert(key: "PHONE", value: phone.text, storage: storage);
                                   if(!context.mounted) return;
                                   context.mounted ? context.pop() : null;
+                                  emit(currentState.copyWith(phoneHint: phone.text));
                                   CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
                                   return;
                                 }
@@ -360,16 +336,16 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                                 if (isVendorExist) {
                                   await vendorRepository.updateVendorPhone(vendorId: uid!, newPhone: phone.text);
-                                  await LocalStorage.upsert(key: "PHONE", value: phone.text, storage: storage);
                                   context.mounted ? context.pop() : null;
                                   if(!context.mounted) return;
+                                  emit(currentState.copyWith(phoneHint: phone.text));
                                   context.pop();
                                   CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
                                   return;
                                 }
                                 context.mounted ? context.pop() : null;
                               } catch (e) {
-                                context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Cannot update your phone.Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                               }
                             },
                             child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
@@ -630,12 +606,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                       onClick: () async{
                         await authRepository.signOut();
                         await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
-                        if(DeviceUtility.isAndroid()) { SystemNavigator.pop(); }
-                        else {
-                          context.pop();
-                          await Future.delayed(const Duration(milliseconds: 300));
-                          exit(0);
-                        }
+                        context.pushReplacementNamed(CustomRouter.LOGIN);
                       }),
                   CustomElevatedButton(
                       onClick: context.pop,
@@ -647,4 +618,5 @@ class SettingsCubit extends Cubit<SettingsState> {
           );
         });
   }
+
 }

@@ -6,7 +6,7 @@ sealed class SettingsState {}
 final class SettingsMainState extends SettingsState {
 
   final bool? arabicLang, frenchLang, englishLang, isVendor, vendorOnlineOffline;
-  final String? updateImageProfilePath;
+  final String? updateImageProfilePath, firstNameHint, lastNameHint, phoneHint;
 
   SettingsMainState(
       {
@@ -15,7 +15,11 @@ final class SettingsMainState extends SettingsState {
       this.englishLang,
       this.isVendor = false,
       this.vendorOnlineOffline,
-      this.updateImageProfilePath});
+      this.updateImageProfilePath,
+      this.firstNameHint,
+      this.lastNameHint,
+      this.phoneHint,
+      });
 
   SettingsMainState copyWith(
           {
@@ -24,7 +28,11 @@ final class SettingsMainState extends SettingsState {
           bool? englishLang,
           bool? isVendor,
           bool? vendorOnlineOffline,
-          String? updateImageProfilePath}) =>
+          String? updateImageProfilePath,
+          String? firstNameHint,
+          String? lastNameHint,
+          String? phoneHint,
+          }) =>
 
       SettingsMainState(
         arabicLang: arabicLang ?? this.arabicLang,
@@ -32,9 +40,11 @@ final class SettingsMainState extends SettingsState {
         englishLang: englishLang ?? this.englishLang,
         isVendor: isVendor ?? this.isVendor,
         vendorOnlineOffline: vendorOnlineOffline ?? this.vendorOnlineOffline,
-        updateImageProfilePath: updateImageProfilePath ?? this.updateImageProfilePath
+        updateImageProfilePath: updateImageProfilePath ?? this.updateImageProfilePath,
+        firstNameHint: firstNameHint ?? this.firstNameHint,
+        lastNameHint: lastNameHint ?? this.lastNameHint,
+        phoneHint: phoneHint ?? this.phoneHint,
       );
-
 }
 
 final class SettingsLoadingState extends SettingsState {}
