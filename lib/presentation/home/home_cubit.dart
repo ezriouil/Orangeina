@@ -13,6 +13,7 @@ import 'package:berkania/utils/helpers/network.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -308,31 +309,32 @@ class HomeCubit extends Cubit<HomeState> {
             final String start = '${currentState.myCurrentLocation!.target.longitude},${currentState.myCurrentLocation!.target.latitude}';
             final String end = '$lng,$lat';
             final String uri = '${CustomTextStrings.POLYLINE_BASE_URI}?api_key=$apiKey&start=$start&end=$end';
-            final response = await http.get(Uri.parse(uri));
-            final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
-            final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
-            polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 6, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
+            try{
+              final response = await http.get(Uri.parse(uri));
+              final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
+              final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
+              polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 6, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
-            // CALCULATE DISTANCE
-            const double p = 0.017453292519943295;
-            final double a = 0.5 - cos((lat - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos(lat * p) * (1 - cos((lng - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
-            final double distance = ((12742 * asin(sqrt(a))));
-
-            // ADD WINDOW INFO
-            currentState.customInfoWindowController!.addInfoWindow!(
-              CustomMarkerWindow(
-                  id: id,
-                  firstName: firstName,
-                  lastName: lastName,
-                  avatar: avatar,
-                  rating: rating,
-                  distance: distance),
-              LatLng(lat, lng),
-            );
-
-            emit(currentState.copyWith(polyline: polyline));
-
-        });
+              // CALCULATE DISTANCE
+              const double p = 0.017453292519943295;
+              final double a = 0.5 - cos((lat - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos(lat * p) * (1 - cos((lng - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
+              final double distance = ((12742 * asin(sqrt(a))));
+              // ADD WINDOW INFO
+              currentState.customInfoWindowController!.addInfoWindow!(
+                CustomMarkerWindow(
+                    id: id,
+                    firstName: firstName,
+                    lastName: lastName,
+                    avatar: avatar,
+                    rating: rating,
+                    distance: distance),
+                LatLng(lat, lng),
+              );
+              emit(currentState.copyWith(polyline: polyline));
+            }
+            catch(_){ FirebaseCrashlytics.instance.log("Error Adding Polyline"); }
+        }
+        );
   }
   Future<Uint8List> _getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);

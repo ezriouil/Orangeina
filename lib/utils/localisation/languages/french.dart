@@ -102,6 +102,8 @@ class French{
     CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE : "Vous pouvez nous contacter pour vous aider.",
     CustomLocale.SETTINGS_ABOUT_TITLE : "À propos nous",
     CustomLocale.SETTINGS_ABOUT_SUB_TITLE : "Informations sur la candidature.",
+    CustomLocale.SETTINGS_SIGN_OUT_TITLE : "Déconnexion",
+    CustomLocale.SETTINGS_SIGN_OUT_SUB_TITLE : "Vous allez quitter l'application.",
     CustomLocale.SETTINGS_APP_VERSION_TITLE : "version 1.0.0",
     CustomLocale.SETTINGS_PHONE : "Téléphone",
     CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "Mettre à jour",

@@ -105,6 +105,8 @@ class Arabic{
     CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE : "يمكنك الاتصال بنا لمساعدتك.",
     CustomLocale.SETTINGS_ABOUT_TITLE : "عنا",
     CustomLocale.SETTINGS_ABOUT_SUB_TITLE : "معلومات التطبيق.",
+    CustomLocale.SETTINGS_SIGN_OUT_TITLE : "تسجيل الخروج",
+    CustomLocale.SETTINGS_SIGN_OUT_SUB_TITLE : "ستخرج من التطبيق.",
     CustomLocale.SETTINGS_APP_VERSION_TITLE : "الإصدار 1.0.0",
     CustomLocale.SETTINGS_PHONE : "الهاتف",
     CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "تحديث",

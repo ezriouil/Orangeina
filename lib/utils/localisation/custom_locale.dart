@@ -102,6 +102,8 @@ mixin CustomLocale{
   static const String SETTINGS_HELP_AND_SUPPOR_SUB_TITLE = "Settings Help And Support Sub Title";
   static const String SETTINGS_ABOUT_TITLE = "Settings About Title";
   static const String SETTINGS_ABOUT_SUB_TITLE = "Settings About Sub Title";
+  static const String SETTINGS_SIGN_OUT_TITLE = "Settings Sign Out Title";
+  static const String SETTINGS_SIGN_OUT_SUB_TITLE = "Settings Sign Out Sub Title";
   static const String SETTINGS_APP_VERSION_TITLE = "Settings App Version Title";
   static const String SETTINGS_PHONE = "Settings Phone";
   static const String SETTINGS_BUTTON_UPDATE_TITLE = "Settings Button Update Title";

@@ -58,13 +58,21 @@ class SettingsCubit extends Cubit<SettingsState> {
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async {
 
-    emit(SettingsMainState(
+    final currentState = state as SettingsMainState;
+
+    emit(currentState.copyWith(
       arabicLang: false,
       englishLang: false,
       frenchLang: false,
       vendorOnlineOffline: false,
       updateImageProfilePath: "",
     ));
+
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    emit(SettingsLoadingState());
+
+    await Future.delayed(const Duration(milliseconds: 200));
 
     uid = await LocalStorage.read(key: "UID", storage: storage);
     lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.EN;
@@ -73,7 +81,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     final bool isVendor = await vendorRepository.existVendor(vendorId: uid!);
     if(isVendor) { _vendor = await vendorRepository.getVendorById(vendorId: uid!); }
     else { _user = await userRepository.getUserInfo(id: uid!); }
-    emit((state as SettingsMainState).copyWith(
+
+    emit(currentState.copyWith(
       frenchLang: lang == CustomLocale.FR ? true : false,
       arabicLang: lang == CustomLocale.AR ? true : false,
       englishLang: lang == CustomLocale.EN ? true : false,

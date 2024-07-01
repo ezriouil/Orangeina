@@ -159,6 +159,13 @@ class LoginCubit extends Cubit<LoginState> {
   // - - - - - - - - - - - - - - - - - - SHOW DIALOG LANGUAGES - - - - - - - - - - - - - - - - - -  //
   onUpdateLanguage({ required BuildContext context, required Function callBack }) async{
 
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
     final LoginMainState currentState = state as LoginMainState;
     String langSelected = "";
 
@@ -252,13 +259,6 @@ class LoginCubit extends Cubit<LoginState> {
     if(langSelected == "") return;
     await LocalStorage.upsert(key: "LANGUAGE", value: langSelected, storage: storage);
     await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
-  }
-
-  // - - - - - - - - - - - - - - - - - - TRY AGAIN BUTTON IN ERROR STATE - - - - - - - - - - - - - - - - - -  //
-  void onTryAgain() async{
-    emit(LoginLoadingState());
-    await Future.delayed(const Duration(milliseconds: 1000));
-    init();
   }
 
 }

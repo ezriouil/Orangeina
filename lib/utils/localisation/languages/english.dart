@@ -106,6 +106,8 @@ class English {
   CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE : "You can contact us to help you.",
   CustomLocale.SETTINGS_ABOUT_TITLE : "About us",
   CustomLocale.SETTINGS_ABOUT_SUB_TITLE : "Information about application.",
+  CustomLocale.SETTINGS_SIGN_OUT_TITLE : "Sign Out",
+  CustomLocale.SETTINGS_SIGN_OUT_SUB_TITLE : "You are going to out from the application.",
   CustomLocale.SETTINGS_APP_VERSION_TITLE : "version 1.0.0",
   CustomLocale.SETTINGS_PHONE : "Phone",
   CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE : "Update",
