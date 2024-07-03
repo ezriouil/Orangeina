@@ -77,14 +77,20 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     if(uid == null) return;
     final bool isVendor = await vendorRepository.existVendor(vendorId: uid!);
-    if(isVendor) { _vendor = await vendorRepository.getVendorById(vendorId: uid!); }
-    else { _user = await userRepository.getUserInfo(id: uid!); }
+    if(isVendor) {
+      _user = null;
+      _vendor = await vendorRepository.getVendorById(vendorId: uid!);
+    }
+    else {
+      _vendor = null;
+      _user = await userRepository.getUserInfo(id: uid!);
+    }
 
     emit(currentState.copyWith(
       frenchLang: lang == CustomLocale.FR ? true : false,
       arabicLang: lang == CustomLocale.AR ? true : false,
       englishLang: lang == CustomLocale.EN ? true : false,
-      updateImageProfilePath: _user?.avatar ?? _vendor?.avatar,
+      updateImageProfilePath: _user == null ? _vendor?.avatar : _user?.avatar ,
       isVendor: isVendor,
       vendorOnlineOffline: _vendor?.isOnline ?? false,
       firstNameHint: _user == null ? _vendor?.firstName : _user?.lastName,

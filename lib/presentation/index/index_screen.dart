@@ -54,16 +54,18 @@ class IndexScreen extends CustomState {
           },
           bottomNavigationBar: switch (state) {
             IndexMainState() => NavigationBar(
-              height: 70.0,
+              height: 66.0,
               elevation: 0.0,
               animationDuration: const Duration(seconds: 3),
+              backgroundColor: primaryColor(context).withOpacity(isDark(context) ? 0.4 : 0.08),
+              indicatorColor: primaryColor(context).withOpacity(0.4),
               selectedIndex: state.currentPageIndex!,
               onDestinationSelected: (int value){ context.read<IndexCubit>().onUpdateCurrentIndex(value, context); },
               destinations: [
-                NavigationDestination(icon: Icon(state.currentPageIndex == 0 ? Iconsax.map_15 : Iconsax.map), label: CustomLocale.INDEX_EXPLORE_TITLE.getString(context)),
-                NavigationDestination(icon: Icon(state.currentPageIndex == 1 ? Iconsax.heart5 : Iconsax.heart), label: CustomLocale.INDEX_WISHLIST_TITLE.getString(context)),
-                NavigationDestination(icon: Icon(state.currentPageIndex == 2 ? Iconsax.notification5 : Iconsax.notification), label: CustomLocale.INDEX_NOTIFICATION_TITLE.getString(context)),
-                NavigationDestination(icon: Icon(state.currentPageIndex == 3 ? Iconsax.setting1: Iconsax.setting), label: CustomLocale.INDEX_SETTINGS_TITLE.getString(context))
+                NavigationDestination(icon: Icon(state.currentPageIndex == 0 ? Iconsax.map_15 : Iconsax.map, color: darkLightColor(context)), label: CustomLocale.INDEX_EXPLORE_TITLE.getString(context)),
+                NavigationDestination(icon: Icon(state.currentPageIndex == 1 ? Iconsax.heart5 : Iconsax.heart, color: darkLightColor(context)), label: CustomLocale.INDEX_WISHLIST_TITLE.getString(context)),
+                NavigationDestination(icon: Icon(state.currentPageIndex == 2 ? Iconsax.notification5 : Iconsax.notification, color: darkLightColor(context)), label: CustomLocale.INDEX_NOTIFICATION_TITLE.getString(context)),
+                NavigationDestination(icon: Icon(state.currentPageIndex == 3 ? Iconsax.setting1: Iconsax.setting, color: darkLightColor(context)), label: CustomLocale.INDEX_SETTINGS_TITLE.getString(context))
               ],
             ),
             IndexPermissionState() => null

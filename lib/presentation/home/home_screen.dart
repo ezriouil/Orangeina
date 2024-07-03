@@ -2,6 +2,7 @@ import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/home/widgets/custom_vendor.dart';
 import 'package:berkania/presentation/widgets/custom_error_screen.dart';
+import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:firebase_pagination/firebase_pagination.dart';
@@ -104,20 +105,23 @@ class HomeScreen extends CustomState {
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
                           FloatingActionButton(
                             heroTag: "hero1",
+                            backgroundColor: primaryColor(context),
                             onPressed: (){ context.read<HomeCubit>().onMapSettings(context: context); },
-                            child: Icon(Iconsax.setting, size: 20.0, color: darkLightColor(context)),
+                            child: const Icon(Iconsax.setting, size: 20.0, color: CustomColors.WHITE),
                           ),
                           const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapRefreshEnabled!)  FloatingActionButton(
-                                heroTag: "hero3",
+                                heroTag: "hero2",
+                                backgroundColor: primaryColor(context),
                                 onPressed: context.read<HomeCubit>().onRefreshVendors,
-                                child: Icon(Iconsax.refresh, size: 20.0, color: darkLightColor(context)),
+                                child: const Icon(Iconsax.refresh, size: 20.0, color: CustomColors.WHITE),
                           ),
                           if(state.mapRefreshEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapMyLocationEnabled!) FloatingActionButton(
-                              heroTag: "hero4",
+                              heroTag: "hero2",
+                              backgroundColor: primaryColor(context),
                               onPressed: (){context.read<HomeCubit>().onGetMyLocation(context: context);},
-                              child: Icon(Iconsax.gps, color: darkLightColor(context))
+                              child: const Icon(Iconsax.gps, color: CustomColors.WHITE)
                           ),
                         ],
                       ),

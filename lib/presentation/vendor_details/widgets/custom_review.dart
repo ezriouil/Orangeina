@@ -49,9 +49,9 @@ class CustomReview extends CustomState {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // - - - - - - - - - - - - - - - - - -  FULL NAME - - - - - - - - - - - - - - - - - -  //
-                        Text(review.fullName ?? "", style: Theme.of(context).textTheme.bodyMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text(review.fullName ?? "No Name", style: Theme.of(context).textTheme.bodyMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
                         // - - - - - - - - - - - - - - - - - -  CREATE AT - - - - - - - - - - - - - - - - - -  //
-                        Text(review.createAt ?? "01/01/2025", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10.0), maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text(review.createAt ?? "No Date", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10.0), maxLines: 1, overflow: TextOverflow.ellipsis),
                       ],
                     ),
                     Row(

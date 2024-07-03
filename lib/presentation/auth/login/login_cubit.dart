@@ -84,10 +84,16 @@ class LoginCubit extends Cubit<LoginState> {
           password: currentState.passwordController!.text.trim()
       );
 
-      if(userCredential.user == null){
+      // CHECK THE USER HIS INFO ALREADY EXIST OR NOT
+      final bool result = await userRepository.existUser(userId: userCredential.user!.uid);
+      if(userCredential.user == null || !result){
         CustomSnackBar.show(context: context, title: "Email Or Password Invalid", subTitle: "Verify you email and password.", type: ContentType.warning);
         return;
       }
+
+      // CLEAR EMAIL + PASSWORD TEXT FIELDS
+      currentState.emailController?.clear();
+      currentState.passwordController?.clear();
 
       // SAVE EMAIL + PASSWORD INTO LOCAL STORAGE
       await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
@@ -148,16 +154,12 @@ class LoginCubit extends Cubit<LoginState> {
             createAt: DateTime.now().toString()
         );
         await userRepository.saveUserInfo(userEntity: userEntity);
-
-        // SAVE EMAIL + PASSWORD INTO LOCAL
-        await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
-
       }
       await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
 
       // NAVIGATE TO HOME SCREEN
-      emit(state as LoginMainState);
+      emit(currentState);
 
       context.read<HomeCubit>().init();
       context.read<WishlistCubit>().init();

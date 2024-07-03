@@ -30,7 +30,7 @@ class CustomSettingTile extends CustomState {
       overlayColor: MaterialStateProperty.all(CustomColors.TRANSPARENT),
       child: Row(
         children: [
-          Icon(icon, size:iconSize, color: grayColor(context)),
+          Icon(icon, size:iconSize, color: primaryColor(context)),
           const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS),
           Expanded(
             flex: 10,

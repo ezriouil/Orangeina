@@ -81,8 +81,8 @@ class RegisterCubit extends Cubit<RegisterState> {
         CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
         return;
       }
-
       // SAVE USER DATA
+      final date = DateTime.now();
       final UserEntity userEntity = UserEntity(
         id: userCredential.user?.uid,
         firstName: currentState.firstNameController?.text,
@@ -90,7 +90,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         avatar: CustomImageStrings.DEFAULT_IMAGE_PROFILE,
         email: currentState.emailController?.text,
         phoneNumber: "",
-        createAt: DateTime.now().toString()
+        createAt: "${date.year}/${date.month}/${date.day} ${date.hour}:${date.minute}:${date.second} ",
       );
       await userRepository.saveUserInfo(userEntity: userEntity);
 
@@ -105,7 +105,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       currentState.confirmPasswordController!.clear();
 
       // NAVIGATE TO HOME SCREEN
-      emit(state as RegisterMainState);
+      emit(currentState);
       callBack.call();
 
     }catch(e){
@@ -138,6 +138,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
 
     // CALL LOGIN METHODE
+    final currentState = state as RegisterMainState;
     final UserCredential userCredential = await authRepository.loginWithGoogle();
     try{
       if(userCredential.user == null){
@@ -159,19 +160,16 @@ class RegisterCubit extends Cubit<RegisterState> {
             createAt: DateTime.now().toString()
         );
         await userRepository.saveUserInfo(userEntity: userEntity);
-
-        // SAVE EMAIL + PASSWORD INTO LOCAL
-        await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
       }
 
       // NAVIGATE TO HOME SCREEN
-      emit(state as RegisterMainState);
+      emit(currentState);
       CustomSnackBar.show(context: context, title: "Created Successfully", subTitle: "Your Account Created successfully.", type: ContentType.warning);
       callBack.call();
 
     }catch(e){
       CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
-      emit(state as RegisterMainState);
+      emit(currentState);
     }
   }
 
