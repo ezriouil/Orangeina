@@ -174,6 +174,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                   CustomElevatedButton(
                       onClick: context.pop,
+                      backgroundColor: CustomColors.GRAY_LIGHT,
                       child: Text(CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE))),
 
                 ],
@@ -608,7 +609,6 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     await showDialog(
         context: context,
-        barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
             scrollable: true,

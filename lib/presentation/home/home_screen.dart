@@ -102,7 +102,7 @@ class HomeScreen extends CustomState {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+                          const SizedBox(height: CustomSizes.SPACE_DEFAULT),
                           FloatingActionButton(
                             heroTag: "hero1",
                             backgroundColor: primaryColor(context),
