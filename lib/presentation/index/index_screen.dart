@@ -54,7 +54,7 @@ class IndexScreen extends CustomState {
           },
           bottomNavigationBar: switch (state) {
             IndexMainState() => NavigationBar(
-              height: 66.0,
+              height: 70.0,
               elevation: 0.0,
               animationDuration: const Duration(seconds: 3),
               backgroundColor: primaryColor(context).withOpacity(isDark(context) ? 0.4 : 0.08),

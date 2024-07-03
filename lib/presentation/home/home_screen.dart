@@ -38,7 +38,7 @@ class HomeScreen extends CustomState {
                     trafficEnabled: state.mapTrafficEnabled!,
                     onTap: (latLng){
                       state.customInfoWindowController!.hideInfoWindow!();
-                      state.polyline!.clear();
+                      if(state.polyline!.isNotEmpty) state.polyline!.clear();
                       },
                     onCameraMove: context.read<HomeCubit>().onCameraMoved,
                     onMapCreated: context.read<HomeCubit>().onMapCompleted,
