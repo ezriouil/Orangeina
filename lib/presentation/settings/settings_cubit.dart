@@ -6,6 +6,7 @@ import 'package:berkania/domain/repositories/vendor_repository.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
 import 'package:berkania/presentation/widgets/custom_text_field.dart';
 import 'package:berkania/utils/constants/custom_txt_strings.dart';
+import 'package:berkania/utils/device/device_utility.dart';
 import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -73,7 +74,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     await Future.delayed(const Duration(milliseconds: 200));
 
     uid = await LocalStorage.read(key: "UID", storage: storage);
-    lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.EN;
+    lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.FR;
 
     if(uid == null) return;
     final bool isVendor = await vendorRepository.existVendor(vendorId: uid!);
@@ -285,6 +286,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     final GlobalKey<FormState> formState = GlobalKey<FormState>();
 
     final currentState = state as SettingsMainState;
+    final bool isArabic = localization.currentLocale?.languageCode == CustomLocale.AR;
     final TextEditingController phone = TextEditingController(text: currentState.phoneHint);
 
     await showDialog(
@@ -303,18 +305,26 @@ class SettingsCubit extends Cubit<SettingsState> {
                         InternationalPhoneNumberInput(
                           onInputChanged: (PhoneNumber number) {},
                           selectorConfig: const SelectorConfig(
-                            selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                            useBottomSheetSafeArea: true,
-                            showFlags: false
+                              selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                              useBottomSheetSafeArea: true,
+                              showFlags: true,
+                              trailingSpace: false
                           ),
+                          inputDecoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 24, horizontal: isArabic ? 24 : 0 ),
+                              fillColor: CustomColors.TRANSPARENT,
+                              hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
+                              prefixIcon: const Icon(Iconsax.call, color: CustomColors.GRAY_LIGHT),
+                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0), borderSide: BorderSide(color: DeviceUtility.isDark(context) ? CustomColors.WHITE : CustomColors.BLACK ))),
                           selectorTextStyle: Theme.of(context).textTheme.bodyLarge,
-                          hintText: phone.text,
+                          textFieldController:  phone,
+                          locale: isArabic ? "ar": "en",
+                          hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
                           initialValue: PhoneNumber(isoCode: "MA"),
                           formatInput: false,
-                          textFieldController: phone,
                           autoValidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) => Validator.validateMobilePhone(value, CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1.getString(context), CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2.getString(context)),
-                          spaceBetweenSelectorAndTextField: 0,
+                          spaceBetweenSelectorAndTextField: 2.0,
                         ),
 
                         // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //

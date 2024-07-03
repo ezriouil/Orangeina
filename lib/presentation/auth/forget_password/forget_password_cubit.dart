@@ -72,11 +72,4 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
     }
   }
 
-  // - - - - - - - - - - - - - - - - - - TRY AGAIN BUTTON IN ERROR STATE - - - - - - - - - - - - - - - - - -  //
-  void onTryAgain() async{
-    emit(ForgetPasswordLoadingState());
-    await Future.delayed(const Duration(milliseconds: 1000));
-    init();
-  }
-
 }

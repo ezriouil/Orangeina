@@ -56,22 +56,25 @@ class StepPersonalInfo extends CustomState {
             selectorConfig: const SelectorConfig(
                 selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                 useBottomSheetSafeArea: true,
-                showFlags: false
+                showFlags: true,
+                trailingSpace: false
             ),
-            inputDecoration:InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 24),
+            textAlign: isArabic(context) ? TextAlign.end : TextAlign.start,
+            inputDecoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 24, horizontal: isArabic(context) ? 24 : 0 ),
                 fillColor: CustomColors.TRANSPARENT,
+                hintTextDirection: isArabic(context) ? TextDirection.ltr : TextDirection.rtl,
                 hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
-                prefixIcon: Icon(Iconsax.call, color: grayColor(context)),
+                prefixIcon: isArabic(context) ? null : Icon(Iconsax.call, color: grayColor(context)),
                 enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0), borderSide: BorderSide(color: darkLightColor(context)))),
             selectorTextStyle: Theme.of(context).textTheme.bodyLarge,
             textFieldController:  phoneController!,
+            locale: isArabic(context) ? "ar": "en",
             hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
             initialValue: PhoneNumber(isoCode: "MA"),
             formatInput: false,
             autoValidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) => Validator.validateMobilePhone(value, CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1.getString(context), CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2.getString(context)),
-            spaceBetweenSelectorAndTextField: 0,
           ),
 
           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //

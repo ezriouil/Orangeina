@@ -90,10 +90,7 @@ class ForgetPasswordScreen extends CustomState {
                   ),
                 );
               }
-            case ForgetPasswordLoadingState():
-              {
-                return const CustomLoadingScreen();
-              }
+            case ForgetPasswordLoadingState():{ return const CustomLoadingScreen(); }
           }
         },
       ),
