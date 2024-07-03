@@ -227,8 +227,7 @@ class VendorDetailsScreen extends CustomState {
                                 itemBuilder: (context, index) => CustomReview(
                                     review: state.reviews![index],
                                     uid: context.read<VendorDetailsCubit>().getUid(),
-                                    onDelete: (reviewEntity) {
-                                      context.read<VendorDetailsCubit>().onDelete(state.reviews![index], context, id);})
+                                    onDelete: (reviewEntity) { context.read<VendorDetailsCubit>().onDelete(state.reviews![index], context, id);})
                             )
                           )
                         ]),

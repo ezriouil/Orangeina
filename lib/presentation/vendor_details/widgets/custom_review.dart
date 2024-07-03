@@ -28,7 +28,7 @@ class CustomReview extends CustomState {
           Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                 child: SizedBox(
                   width: 40.0,
                   height: 40.0,
@@ -49,7 +49,7 @@ class CustomReview extends CustomState {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // - - - - - - - - - - - - - - - - - -  FULL NAME - - - - - - - - - - - - - - - - - -  //
-                        Text(review.fullName ?? "", style: Theme.of(context).textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text(review.fullName ?? "", style: Theme.of(context).textTheme.bodyMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
                         // - - - - - - - - - - - - - - - - - -  CREATE AT - - - - - - - - - - - - - - - - - -  //
                         Text(review.createAt ?? "01/01/2025", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10.0), maxLines: 1, overflow: TextOverflow.ellipsis),
                       ],
@@ -84,10 +84,8 @@ class CustomReview extends CustomState {
               )
             ],
           ),
-          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-
-          // - - - - - - - - - - - - - - - - - -  REPORT BODY - - - - - - - - - - - - - - - - - -  //
-          Text(review.reviewBody ?? "No Body" , style: Theme.of(context).textTheme.bodyMedium),
+          if(review.reviewBody!.isNotEmpty) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+          if(review.reviewBody!.isNotEmpty) Text(review.reviewBody! , style: Theme.of(context).textTheme.bodyMedium),
         ],
       ),
     );

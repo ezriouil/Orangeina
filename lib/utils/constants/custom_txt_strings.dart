@@ -2,7 +2,6 @@ class CustomTextStrings {
   CustomTextStrings._();
 
   static const String APP_NAME = "Alberkania";
-  //static const String GOOGLE_API_KEY = "5b3ce3597851110001cf62482f806ff878964e05891681c4ce1a8ffb";
   static const String GOOGLE_API_KEY = "5b3ce3597851110001cf6248e252dbc06aca4460a437ccc78e7eb367";
   static const String POLYLINE_BASE_URI = "https://api.openrouteservice.org/v2/directions/driving-car";
 
@@ -16,12 +15,12 @@ class CustomTextStrings {
   static const String ONBOARDING_SKIP = "Skip";
 
   static const String ONBOARDING_TITLE_1 = "Choose You Vendor";
-  static const String ONBOARDING_SUB_TITLE_1 = "We have more then 100 Vendor. Choose your seller from the map.";
+  static const String ONBOARDING_SUB_TITLE_1 = "We have more then +99 Vendor. Choose your seller from the map.";
 
   static const String ONBOARDING_TITLE_2 = "Truck Your Vendor";
   static const String ONBOARDING_SUB_TITLE_2 = "Best trucker has been used for truck your vendor. You'll know where your vendor is at the moment.";
 
-  static const String ONBOARDING_TITLE_3 = "Fast Delivery Too";
-  static const String ONBOARDING_SUB_TITLE_3 = "Reliable and fast delivery . We delivery your product the fast way possible.";
+  static const String ONBOARDING_TITLE_3 = "Provide You Our Best Vendors";
+  static const String ONBOARDING_SUB_TITLE_3 = "Enjoy with our service. Our vendors chooses best places for you.";
 
 }

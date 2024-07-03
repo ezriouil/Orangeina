@@ -4,7 +4,9 @@ import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
+import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconsax/iconsax.dart';
@@ -77,15 +79,16 @@ class CustomVendor extends CustomState {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Icon(Iconsax.call, size: 12, color: darkLightColor(context)),
-                      Text(" +212 ${vendorEntity.phoneNumber ?? "06 00 00 00 00"}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Transform.rotate(angle: isArabic(context) ? 5 : 0,
+                      child: Icon(Iconsax.call_calling, size: 12, color: darkLightColor(context))),
+                      Text(isArabic(context) ? "  ${vendorEntity.phoneNumber ?? "بدون رقم هاتف"} 212+" : " +212 ${vendorEntity.phoneNumber ?? "No Phone"}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Icon(Iconsax.routing, size: 16, color: darkLightColor(context)),
-                      Text("  ${distance.toStringAsFixed(2)} Km" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text("  ${distance.toStringAsFixed(2)} ${CustomLocale.HOME_KM.getString(context)}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ],

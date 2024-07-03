@@ -57,13 +57,7 @@ class RegisterScreen extends CustomState {
                           const SizedBox(
                               height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
-                          Text(CustomLocale.REGISTER_TITLE.getString(context),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 0.5)),
+                          Text(CustomLocale.REGISTER_TITLE.getString(context), style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, letterSpacing: 0.5)),
 
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(height: CustomSizes.SPACE_DEFAULT),
@@ -78,11 +72,7 @@ class RegisterScreen extends CustomState {
                                         .getString(context),
                                     controller: state.firstNameController!,
                                     validator: (value) =>
-                                        Validator.validateEmptyField(
-                                            CustomLocale
-                                                .REGISTER_FIRST_NAME_VALIDATOR
-                                                .getString(context),
-                                            value)),
+                                        Validator.validateCustomField(value, CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context))),
                               ),
 
                               // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
@@ -93,16 +83,10 @@ class RegisterScreen extends CustomState {
                               Expanded(
                                 child: CustomTextField(
                                     leadingIcon: Iconsax.user,
-                                    hint: CustomLocale.REGISTER_LAST_NAME
-                                        .getString(context),
+                                    hint: CustomLocale.REGISTER_LAST_NAME.getString(context),
                                     controller: state.lastNameController!,
-                                    validator: (value) =>
-                                        Validator.validateEmptyField(
-                                            CustomLocale
-                                                .REGISTER_LAST_NAME_VALIDATOR
-                                                .getString(context),
-                                            value)),
-                              ),
+                                    validator: (value) => Validator.validateCustomField(value, CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context))),
+                              )
                             ],
                           ),
 
@@ -116,10 +100,7 @@ class RegisterScreen extends CustomState {
                               hint: CustomLocale.EMAIL.getString(context),
                               controller: state.emailController!,
                               validator: (value) =>
-                                  Validator.validateEmailField(
-                                      CustomLocale.EMAIL_VALIDATOR
-                                          .getString(context),
-                                      value),
+                                  Validator.validateEmailField(value, CustomLocale.VALIDATOR_EMAIL_ERROR1, CustomLocale.VALIDATOR_EMAIL_ERROR2),
                               textInputType: TextInputType.emailAddress),
 
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
@@ -130,25 +111,14 @@ class RegisterScreen extends CustomState {
                           CustomTextField(
                               leadingIcon: Iconsax.password_check,
                               controller: state.passwordController!,
-                              validator: (value) =>
-                                  Validator.validatePasswordField(
-                                      CustomLocale.PASSWORD_VALIDATOR
-                                          .getString(context),
-                                      value),
+                              validator: (value) => Validator.validatePasswordField(value, CustomLocale.VALIDATOR_PASSWORD_ERROR1.getString(context), CustomLocale.VALIDATOR_PASSWORD_ERROR2.getString(context), CustomLocale.VALIDATOR_PASSWORD_ERROR3.getString(context), CustomLocale.VALIDATOR_PASSWORD_ERROR4.getString(context)),
                               hint: CustomLocale.PASSWORD.getString(context),
                               textInputType: TextInputType.visiblePassword,
                               obscureText: state.obscureText!,
                               trailingIcon: InkWell(
-                                  onTap: context
-                                      .read<RegisterCubit>()
-                                      .onUpdatePasswordVisibility,
-                                  borderRadius: BorderRadius.circular(
-                                      CustomSizes.SPACE_DEFAULT),
-                                  child: Icon(
-                                      state.obscureText!
-                                          ? Iconsax.eye_slash
-                                          : Iconsax.eye,
-                                      color: darkLightColor(context)))),
+                                  onTap: context.read<RegisterCubit>().onUpdatePasswordVisibility,
+                                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                  child: Icon(state.obscureText! ? Iconsax.eye_slash : Iconsax.eye, color: darkLightColor(context)))),
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //
                           const SizedBox(
                               height: CustomSizes.SPACE_BETWEEN_ITEMS / 4),
@@ -157,12 +127,7 @@ class RegisterScreen extends CustomState {
                           CustomTextField(
                             leadingIcon: Iconsax.password_check,
                             controller: state.confirmPasswordController!,
-                            validator: (value) =>
-                                Validator.validatePasswordField(
-                                    CustomLocale
-                                        .REGISTER_CONFIRM_PASSWORD_VALIDATOR
-                                        .getString(context),
-                                    value),
+                            validator: (value) => Validator.validatePasswordField(value, CustomLocale.VALIDATOR_PASSWORD_ERROR1.getString(context), CustomLocale.VALIDATOR_PASSWORD_ERROR2.getString(context), CustomLocale.VALIDATOR_PASSWORD_ERROR3.getString(context), CustomLocale.VALIDATOR_PASSWORD_ERROR4.getString(context)),
                             hint: CustomLocale.REGISTER_CONFIRM_PASSWORD
                                 .getString(context),
                             textInputType: TextInputType.visiblePassword,

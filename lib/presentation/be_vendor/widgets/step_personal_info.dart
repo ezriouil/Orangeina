@@ -37,7 +37,7 @@ class StepPersonalInfo extends CustomState {
             leadingIcon: Iconsax.card,
             controller: cinController!,
             hint: CustomLocale.BE_VENDOR_CIN.getString(context),
-            validator: (value) => Validator.validateEmptyField("Cin Required", value),
+            validator: (value) => Validator.validateCustomField(value, CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context)),
             textInputType: TextInputType.emailAddress,
           ),
 
@@ -46,7 +46,7 @@ class StepPersonalInfo extends CustomState {
             leadingIcon: Iconsax.cake,
             controller: ageController!,
             hint: CustomLocale.BE_VENDOR_BIRTHDAY.getString(context),
-            validator: (value) => Validator.validateAge(value),
+            validator: (value) => Validator.validateAge(value, CustomLocale.VALIDATOR_AGE_ERROR1.getString(context), CustomLocale.VALIDATOR_AGE_ERROR2.getString(context), CustomLocale.VALIDATOR_AGE_ERROR3.getString(context), CustomLocale.VALIDATOR_AGE_ERROR4.getString(context)),
             textInputType: TextInputType.phone,
           ),
 
@@ -63,16 +63,14 @@ class StepPersonalInfo extends CustomState {
                 fillColor: CustomColors.TRANSPARENT,
                 hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
                 prefixIcon: Icon(Iconsax.call, color: grayColor(context)),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide(color: darkLightColor(context)))),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0), borderSide: BorderSide(color: darkLightColor(context)))),
             selectorTextStyle: Theme.of(context).textTheme.bodyLarge,
             textFieldController:  phoneController!,
             hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
             initialValue: PhoneNumber(isoCode: "MA"),
             formatInput: false,
             autoValidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) => Validator.validateMobilePhone(value),
+            validator: (value) => Validator.validateMobilePhone(value, CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1.getString(context), CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2.getString(context)),
             spaceBetweenSelectorAndTextField: 0,
           ),
 

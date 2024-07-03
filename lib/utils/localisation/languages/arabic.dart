@@ -75,6 +75,7 @@ class Arabic{
     CustomLocale.HOME_ENABLE_MAP_REFRESH_SUB_TITLE : "تحديث البائعين تلقائيا",
     CustomLocale.HOME_ENABLE_MAP_VENDORS_TITLE : "البائعون",
     CustomLocale.HOME_ENABLE_MAP_VENDORS_SUB_TITLE : "يمكنك إظهار وإخفاء البائعين على الخريطة",
+    CustomLocale.HOME_KM : "كيلومتر",
 
     // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.SETTINGS_PROFILE_TITLE : "الحساب",
@@ -212,6 +213,7 @@ class Arabic{
     CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "لم يتم العثور على أية رغبات !",
 
     // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.FAQ_TITLE : "التعليمات",
     CustomLocale.Q1 : "أين يمكنني العثور على التطبيق",
     CustomLocale.R1 : "Google play\nApp store\nHuawei store\n",
     CustomLocale.Q2 : "ما هي العروض الجديدة؟",
@@ -222,5 +224,21 @@ class Arabic{
     CustomLocale.R4 : "انتقل إلى صفحة الإشعارات وستجد جميع الإشعارات",
     CustomLocale.Q5 : "المزيد من الأسئلة",
     CustomLocale.R5 : "اتصل بنا",
+
+    // - - - - - - - - - - - - - - - - - - VALIDATOR - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1 : "لا ينبغي أن تكون فارغة",
+    CustomLocale.VALIDATOR_EMAIL_ERROR1 : "لا ينبغي أن تكون فارغة",
+    CustomLocale.VALIDATOR_EMAIL_ERROR2 : "يجب أن يحتوي البريد الإلكتروني على @",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR1 : "يجب أن كلمة السر لا تكون فارغة",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR2 : "كلمة المرور قصيرة جدًا",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR3 : "كلمة المرور يجب أن تحتوي على أحرف وأرقام",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR4 : "كلمة المرور طويلة جدًا",
+    CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1 : "يجب ألا يكون الهاتف فارغًا",
+    CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2 : "رقم الهاتف غير صحيح",
+    CustomLocale.VALIDATOR_AGE_ERROR1 : "لا ينبغي أن يكون السن فارغا",
+    CustomLocale.VALIDATOR_AGE_ERROR2 : "السن غير صالح",
+    CustomLocale.VALIDATOR_AGE_ERROR3 : "سن تحت 18 سنة غير صالح",
+    CustomLocale.VALIDATOR_AGE_ERROR4 : "سن فوق 82 سنة غير صالح",
+
   };
 }

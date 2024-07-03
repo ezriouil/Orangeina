@@ -72,6 +72,7 @@ class French{
     CustomLocale.HOME_ENABLE_MAP_REFRESH_SUB_TITLE : "Actualiser automatiquement les Vendeurs",
     CustomLocale.HOME_ENABLE_MAP_VENDORS_TITLE : "Fournisseurs",
     CustomLocale.HOME_ENABLE_MAP_VENDORS_SUB_TITLE : "Vous pouvez afficher et masquer les fournisseurs sur la carte",
+    CustomLocale.HOME_KM : "Km",
 
     // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.SETTINGS_PROFILE_TITLE : "Profil",
@@ -208,6 +209,7 @@ class French{
     CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "Aucune Souhait Trouvée !",
 
     // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.FAQ_TITLE : "FAQ",
     CustomLocale.Q1 : "Où puis-je trouver l'application",
     CustomLocale.R1 : "Google play\nApp store\nHuawei store\n",
     CustomLocale.Q2 : "Quelles sont les nouvelles offres ?",
@@ -218,6 +220,21 @@ class French{
     CustomLocale.R4 : "Allez sur la page Notifications, vous trouverez toutes les notifications\n",
     CustomLocale.Q5 : "Plus de questions",
     CustomLocale.R5 : "Contactez-nous\n",
+
+    // - - - - - - - - - - - - - - - - - - VALIDATOR - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1 : "Ne devrait pas être vide",
+    CustomLocale.VALIDATOR_EMAIL_ERROR1 : "L'e-mail ne doit pas être vide",
+    CustomLocale.VALIDATOR_EMAIL_ERROR2 : "L'e-mail doit contenir @",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR1 : "Ne doit pas être vide",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR2 : "Mot de passe trop court",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR3 : "Doit contenir caractères / chiffres",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR4 : "Mot de passe trop long",
+    CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1 : "Ne doit pas être vide",
+    CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2 : "Téléphone invalide",
+    CustomLocale.VALIDATOR_AGE_ERROR1 : "Ne doit pas être vide",
+    CustomLocale.VALIDATOR_AGE_ERROR2 : "Âge invalide",
+    CustomLocale.VALIDATOR_AGE_ERROR3 : "Vous avez moins de 18 ans",
+    CustomLocale.VALIDATOR_AGE_ERROR4 : "Tu as plus de 82 ans",
 
   };
 }

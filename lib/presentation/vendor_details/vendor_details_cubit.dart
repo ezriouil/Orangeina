@@ -162,6 +162,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
         newRate = reviewsSum / getAllReviews.length;
       }
 
+
       await Future.delayed(const Duration(milliseconds: 500));
       emit(currentState.copyWith(reviewsLoading: false));
       vendorRepository.updateRating(newRate: newRate, vendorId: argumentId);
@@ -394,7 +395,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                           hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context),
                           controller: currentState.feedbackController!,
                           leadingIcon: Iconsax.bookmark,
-                          validator: (value) => Validator.validateEmptyField("Report required", value)),
+                          validator: (value) => Validator.validateCustomField(value, CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context))),
 
                       // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
                       Row(

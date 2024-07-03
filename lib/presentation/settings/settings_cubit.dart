@@ -210,14 +210,14 @@ class SettingsCubit extends Cubit<SettingsState> {
                         CustomTextField(
                             leadingIcon: Iconsax.user,
                             hint: firstName.text,
-                            validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_FIRST_NAME_VALIDATOR.getString(context), value),
+                            validator: (value) => Validator.validateCustomField(value, CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context)),
                             controller: firstName),
 
                         // - - - - - - - - - - - - - - - - - - LAST NAME - - - - - - - - - - - - - - - - - -  //
                         CustomTextField(
                             leadingIcon: Iconsax.user,
                             hint: lastName.text,
-                            validator: (value) => Validator.validateEmptyField(CustomLocale.REGISTER_LAST_NAME_VALIDATOR.getString(context), value),
+                            validator: (value) => Validator.validateCustomField(CustomLocale.REGISTER_LAST_NAME_VALIDATOR.getString(context), CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context)),
                             controller: lastName),
 
                         // - - - - - - - - - - - - - - - - - - BUTTON UPDATE - - - - - - - - - - - - - - - - - -  //
@@ -307,7 +307,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                           formatInput: false,
                           textFieldController: phone,
                           autoValidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) => Validator.validateMobilePhone(value),
+                          validator: (value) => Validator.validateMobilePhone(value, CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1.getString(context), CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2.getString(context)),
                           spaceBetweenSelectorAndTextField: 0,
                         ),
 
@@ -602,7 +602,7 @@ class SettingsCubit extends Cubit<SettingsState> {
               child: Column(
                 children: [
                   CustomElevatedButton(
-                      child: const Text("Sign Out"),
+                      child: Text(CustomLocale.SETTINGS_SIGN_OUT_TITLE.getString(context)),
                       onClick: () async{
                         await authRepository.signOut();
                         await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
@@ -611,7 +611,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                   CustomElevatedButton(
                       onClick: context.pop,
                       backgroundColor: CustomColors.GRAY_LIGHT,
-                      child: const Text("Close")),
+                      child: Text(CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE.getString(context))),
                 ],
               ),
             ),

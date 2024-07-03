@@ -61,7 +61,7 @@ class LoginScreen extends CustomState {
                           CustomTextField(
                               leadingIcon: Iconsax.direct_right,
                               controller: state.emailController!,
-                              validator: (value) => Validator.validateEmailField(CustomLocale.EMAIL_VALIDATOR.getString(context), value),
+                              validator: (value) => Validator.validateEmailField(value, CustomLocale.VALIDATOR_EMAIL_ERROR1.getString(context), CustomLocale.VALIDATOR_EMAIL_ERROR2.getString(context)),
                               hint: CustomLocale.EMAIL.getString(context),
                               textInputType: TextInputType.emailAddress),
 
@@ -72,7 +72,7 @@ class LoginScreen extends CustomState {
                           CustomTextField(
                               leadingIcon: Iconsax.password_check,
                               controller: state.passwordController!,
-                              validator: (value) => Validator.validatePasswordField(CustomLocale.PASSWORD_VALIDATOR.getString(context), value),
+                              validator: (value) => Validator.validatePasswordField(value, CustomLocale.VALIDATOR_PASSWORD_ERROR1.getString(context), CustomLocale.VALIDATOR_PASSWORD_ERROR2.getString(context), CustomLocale.VALIDATOR_PASSWORD_ERROR3.getString(context), CustomLocale.VALIDATOR_PASSWORD_ERROR4.getString(context)),
                               hint: CustomLocale.PASSWORD.getString(context),
                               textInputType: TextInputType.visiblePassword,
                               obscureText: state.obscureText!  ,

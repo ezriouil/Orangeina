@@ -32,13 +32,14 @@ void main() async {
   DependencyInjection.setupRepository();
 
   // - - - - - - - - - - - - - - - - - - INIT LOCAL STORAGE - - - - - - - - - - - - - - - - - -  //
-  String? initLocation;
+  String? initLocation, initLanguage;
   await GetStorage.init();
   final GetStorage storage = DependencyInjection.getIt<GetStorage>();
   final Connectivity connectivity = DependencyInjection.getIt<Connectivity>();
   final hasConnectionNetwork = await Network.hasConnection(connectivity);
   if(!hasConnectionNetwork)  await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
   initLocation = await LocalStorage.read(key: "INIT_LOCATION", storage: storage);
+  initLanguage = await LocalStorage.read(key: "LANGUAGE", storage: storage);
 
   // - - - - - - - - - - - - - - - - - - HIDE THE TOP STATUS BAR AND SYSTEM BOTTOM BAR - - - - - - - - - - - - - - - - - -  //
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
@@ -54,14 +55,14 @@ void main() async {
   FlutterNativeSplash.remove();
 
   // - - - - - - - - - - - - - - - - - - RUN APP - - - - - - - - - - - - - - - - - -  //
-  runApp(App(initLocation: initLocation));
+  runApp(App(initLocation: initLocation, initLanguage: initLanguage));
 
 }
 
 class App extends StatefulWidget {
 
-  final String? initLocation;
-  const App({super.key, this.initLocation});
+  final String? initLocation, initLanguage;
+  const App({super.key, this.initLocation, this.initLanguage});
 
   @override
   State<App> createState() => Application();
@@ -70,17 +71,19 @@ class App extends StatefulWidget {
 class Application extends State<App> {
 
   final FlutterLocalization localization = DependencyInjection.getIt<FlutterLocalization>();
-  String? initLocation;
+  String? initLocation, initLanguage;
   @override
   void initState() {
     initLocation = widget.initLocation;
+    initLanguage = widget.initLanguage;
     initLocalization();
     super.initState();
   }
 
   // - - - - - - - - - - - - - - - - - - INIT LOCALISATION - - - - - - - - - - - - - - - - - -  //
   initLocalization() async{
-    await localization.init(mapLocales: CustomLocale.LOCALS, initLanguageCode: CustomLocale.EN);
+    await localization.init(mapLocales: CustomLocale.LOCALS, initLanguageCode: initLanguage ?? CustomLocale.FR);
+    localization.translate(initLanguage ?? CustomLocale.FR);
     final GetStorage storage = DependencyInjection.getIt<GetStorage>();
     localization.onTranslatedLanguage = (Locale? locale) async{
       initLocation = await LocalStorage.read(key: "INIT_LOCATION", storage: storage);
@@ -115,5 +118,4 @@ class Application extends State<App> {
             localizationsDelegates: localization.localizationsDelegates,
             routerConfig: CustomRouter.router(initialLocation: initLocation)));
   }
-
 }

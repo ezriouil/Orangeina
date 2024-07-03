@@ -237,7 +237,7 @@ class BeVendorScreen extends CustomState {
                                       leadingIcon: Iconsax.bookmark,
                                       controller: state.carAssuranceController!,
                                       hint: CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_TITLE.getString(context),
-                                      validator: (value) => Validator.validateEmptyField("Car Assurance Number Required", value),
+                                      validator: (value) => Validator.validateCustomField(value, CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context)),
                                       textInputType: TextInputType.number,
                                     ),
 
@@ -246,7 +246,7 @@ class BeVendorScreen extends CustomState {
                                         leadingIcon: Iconsax.bookmark,
                                         controller: state.carRegistrationController!,
                                         hint: CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_TITLE.getString(context),
-                                        validator: (value) => Validator.validateEmptyField("Car Registration Number Required", value),
+                                        validator: (value) => Validator.validateCustomField(value, CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context)),
                                         textInputType: TextInputType.number),
                                   ],
                                 ),

@@ -71,7 +71,7 @@ class ForgetPasswordScreen extends CustomState {
                               leadingIcon: Iconsax.direct_right,
                               hint: CustomLocale.EMAIL.getString(context),
                               controller: state.emailController!,
-                              validator: (value) => Validator.validateEmailField("Email Required", value),
+                              validator: (value) => Validator.validateEmailField(value, CustomLocale.VALIDATOR_EMAIL_ERROR1.getString(context),CustomLocale.VALIDATOR_EMAIL_ERROR2.getString(context)),
                               textInputType: TextInputType.emailAddress),
 
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //

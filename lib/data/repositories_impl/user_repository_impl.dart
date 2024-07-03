@@ -40,7 +40,7 @@ class UserRepositoryImpl extends UserRepository {
     await Remote.updatePhone(collection: "USERS", doc: userId, newPhone: newPhone);
   }
 
-  // - - - - - - - - - - - - - - - - - - OVERRID ESAVE USER IMAGE - - - - - - - - - - - - - - - - - -  //
+  // - - - - - - - - - - - - - - - - - - OVERRIDE SAVE USER IMAGE - - - - - - - - - - - - - - - - - -  //
   @override
   Future<String> saveUserImage({required String imgName, required String imgPath}) async =>
       await Remote.saveImage(path: "USERS", imgName: imgName, imgPath: imgPath);

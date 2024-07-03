@@ -72,6 +72,7 @@ mixin CustomLocale{
   static const String HOME_ENABLE_MAP_REFRESH_SUB_TITLE = "Home Enable Map Refresh Sub Title";
   static const String HOME_ENABLE_MAP_VENDORS_TITLE = "Home Enable Map Vendors Title";
   static const String HOME_ENABLE_MAP_VENDORS_SUB_TITLE = "Home Enable Map Vendors Sub Title";
+  static const String HOME_KM = "Home Km";
 
   // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String SETTINGS_PROFILE_TITLE = "Settings Profile Title";
@@ -208,6 +209,7 @@ mixin CustomLocale{
   static const String VENDOR_DETAILS_REPORT_REASON_5 = "Vendor Details Report Reason 5";
 
   // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
+  static const String FAQ_TITLE = "FAQ Title";
   static const String Q1 = "Q1";
   static const String R1 = "R1";
   static const String Q2 = "Q2";
@@ -218,6 +220,21 @@ mixin CustomLocale{
   static const String R4 = "R4";
   static const String Q5 = "Q5";
   static const String R5 = "R5";
+
+  // - - - - - - - - - - - - - - - - - - VALIDATOR - - - - - - - - - - - - - - - - - -  //
+  static const String VALIDATOR_CUSTOM_FIELD_ERROR1 = "Validator custom field error 1";
+  static const String VALIDATOR_EMAIL_ERROR1 = "Validator Email error 1";
+  static const String VALIDATOR_EMAIL_ERROR2 = "Validator Email error 2";
+  static const String VALIDATOR_PASSWORD_ERROR1 = "Validator Password error 1";
+  static const String VALIDATOR_PASSWORD_ERROR2 = "Validator Password error 2";
+  static const String VALIDATOR_PASSWORD_ERROR3 = "Validator Password error 3";
+  static const String VALIDATOR_PASSWORD_ERROR4 = "Validator Password error 4";
+  static const String VALIDATOR_MOBILE_NUMBER_ERROR1 = "Validator Mobile Number error 1";
+  static const String VALIDATOR_MOBILE_NUMBER_ERROR2 = "Validator Mobile Number error 2";
+  static const String VALIDATOR_AGE_ERROR1 = "Validator Age error 1";
+  static const String VALIDATOR_AGE_ERROR2 = "Validator Age error 2";
+  static const String VALIDATOR_AGE_ERROR3 = "Validator Age error 3";
+  static const String VALIDATOR_AGE_ERROR4 = "Validator Age error 4";
 
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
   static const String EMAIL = "Email";

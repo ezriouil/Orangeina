@@ -76,6 +76,7 @@ class English {
   CustomLocale.HOME_ENABLE_MAP_REFRESH_SUB_TITLE : "Refresh vendors automatically",
   CustomLocale.HOME_ENABLE_MAP_VENDORS_TITLE : "Vendors",
   CustomLocale.HOME_ENABLE_MAP_VENDORS_SUB_TITLE : "You can show and hide vendors on map",
+  CustomLocale.HOME_KM : "Km",
 
   // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
   CustomLocale.SETTINGS_PROFILE_TITLE : "Profile",
@@ -213,6 +214,7 @@ class English {
   CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "No WishLists Found !",
 
     // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.FAQ_TITLE : "FAQ",
     CustomLocale.Q1 : "Where can i find the application",
     CustomLocale.R1 : "Google play\nApp store\nHuawei store\n",
     CustomLocale.Q2 : "What are the new offers have?",
@@ -224,5 +226,19 @@ class English {
     CustomLocale.Q5 : "More questions",
     CustomLocale.R5 : "Contact us\n",
 
+    // - - - - - - - - - - - - - - - - - - VALIDATOR - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1 : "Should not be empty",
+    CustomLocale.VALIDATOR_EMAIL_ERROR1 : "Email should not be empty",
+    CustomLocale.VALIDATOR_EMAIL_ERROR2 : "Email should be contain @",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR1 : "Password should not be empty",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR2 : "Password too short",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR3 : "Password Should contain chars and num",
+    CustomLocale.VALIDATOR_PASSWORD_ERROR4 : "Password too long",
+    CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1 : "Phone should not be empty",
+    CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2 : "Invalid Phone number",
+    CustomLocale.VALIDATOR_AGE_ERROR1 : "Age should not be empty",
+    CustomLocale.VALIDATOR_AGE_ERROR2 : "Invalid Age",
+    CustomLocale.VALIDATOR_AGE_ERROR3 : "You are under 18 y",
+    CustomLocale.VALIDATOR_AGE_ERROR4 : "You are more 82 y",
   };
 }
