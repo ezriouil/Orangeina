@@ -47,7 +47,7 @@ class LoginCubit extends Cubit<LoginState> {
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async {
 
-    final String lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.EN;
+    final String lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.FR;
 
     emit(LoginMainState(
         emailController: TextEditingController(),
