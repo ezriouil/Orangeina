@@ -83,12 +83,17 @@ class Application extends State<App> {
   // - - - - - - - - - - - - - - - - - - INIT LOCALISATION - - - - - - - - - - - - - - - - - -  //
   initLocalization() async{
     await localization.init(mapLocales: CustomLocale.LOCALS, initLanguageCode: initLanguage ?? CustomLocale.FR);
-    localization.translate(initLanguage ?? CustomLocale.FR);
     final GetStorage storage = DependencyInjection.getIt<GetStorage>();
+    print("++++++");
+    print(initLanguage);
+    print("++++++");
     localization.onTranslatedLanguage = (_) async{
       initLocation = await LocalStorage.read(key: "INIT_LOCATION", storage: storage);
       setState(() {});
     };
+    setState(() {
+      localization.translate(initLanguage ?? CustomLocale.FR);
+    });
   }
 
   @override
