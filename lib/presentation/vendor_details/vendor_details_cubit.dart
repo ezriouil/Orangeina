@@ -15,6 +15,7 @@ import 'package:berkania/utils/constants/custom_sizes.dart';
 import 'package:berkania/utils/extensions/validator.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
+import 'package:berkania/utils/router/custom_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,10 +54,10 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       required this.wishListRepository,
       required this.reportRepository,
       required this.storage})
-      : super(VendorDetailsLoadingState()) { init(); }
+      : super(VendorDetailsLoadingState());
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
-  init() async{
+  void init({ required BuildContext context }) async{
     emit(VendorDetailsMainState(
       mapController:  Completer<GoogleMapController>(),
       vendor: VendorEntity(),
@@ -71,6 +72,11 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       reportFormState: GlobalKey<FormState>()
     ));
     uid = await LocalStorage.read(key: "UID", storage: storage);
+    if(uid == null) {
+      await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
+      context.pushReplacementNamed(CustomRouter.LOGIN);
+      return;
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - CHECK IF MAP IS SETUP IT - - - - - - - - - - - - - - - - - -  //

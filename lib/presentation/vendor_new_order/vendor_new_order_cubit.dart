@@ -30,7 +30,8 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{
-    emit(VendorNewOrderMainState(
+    final currentState = state as VendorNewOrderMainState;
+    emit(currentState.copyWith(
       counter: 00,
       date: DateTime.now(),
       dateTimeLocalization: CustomLocale.EN,
@@ -38,8 +39,8 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
       total: 00.0,
     ));
     final double getCurrentPrice = await vendorRepository.getProductCurrentPrice();
-    final String? lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.EN;
-    emit((state as VendorNewOrderMainState).copyWith(priceKg: getCurrentPrice, dateTimeLocalization: lang));
+    final String? lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.FR;
+    emit(currentState.copyWith(priceKg: getCurrentPrice, dateTimeLocalization: lang));
   }
 
   // - - - - - - - - - - - - - - - - - - INCREMENT COUNTER - - - - - - - - - - - - - - - - - -  //
@@ -71,7 +72,12 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
 
     try{
 
-      final String uid = await LocalStorage.read(key: "UID", storage: storage);
+      final String? uid = await LocalStorage.read(key: "UID", storage: storage);
+      if(uid == null) {
+        await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
+        context.pushReplacementNamed(CustomRouter.LOGIN);
+        return;
+      }
       final currentDateTime = DateTime.now();
 
       // CHECK CONNECTION INTERNET

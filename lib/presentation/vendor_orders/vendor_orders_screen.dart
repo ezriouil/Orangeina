@@ -17,6 +17,7 @@ class VendorOrdersScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
+    context.read<VendorOrdersCubit>().init(context: context);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -26,7 +27,7 @@ class VendorOrdersScreen extends CustomState {
         ),
         title: Text(CustomLocale.ORDERS_TITLE.getString(context), style: Theme.of(context).textTheme.titleMedium),
         actions: [InkWell(
-          onTap: context.read<VendorOrdersCubit>().onRefresh,
+          onTap: (){ context.read<VendorOrdersCubit>().onRefresh(context: context); },
           borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
           child: Padding(
             padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),

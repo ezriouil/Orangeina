@@ -10,6 +10,7 @@ import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/constants/custom_txt_strings.dart';
 import 'package:berkania/utils/helpers/network.dart';
+import 'package:berkania/utils/router/custom_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
@@ -42,14 +43,32 @@ class HomeCubit extends Cubit<HomeState> {
   String? uid;
 
   // - - - - - - - - - - - - - - - - - - CONTRACTURE - - - - - - - - - - - - - - - - - -  //
-  HomeCubit({ required this.vendorRepository, required this.storage, required this.connectivity }) : super(HomeLoadingState()){ init(); }
+  HomeCubit({ required this.vendorRepository, required this.storage, required this.connectivity }) : super(
+      HomeMainState(
+        mapController:  Completer<GoogleMapController>(),
+        cameraCurrentLocation:  null,
+        mapMyLocationEnabled: true,
+        mapRefreshEnabled: false,
+        mapTrafficEnabled: false,
+        mapSatelliteEnabled: false,
+        customInfoWindowController: CustomInfoWindowController(),
+        myCurrentLocation: const CameraPosition(target: LatLng(CustomTextStrings.INITAIL_LAT,CustomTextStrings.INITAIL_LNG), zoom: 6.0),
+        vendors: const [],
+        markers: const {},
+        polyline: const {},
+      )
+  );
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
-  void init() async{
+  void init( { required BuildContext context } ) async{
+
+    final currentState = state as HomeMainState;
+
+    /// EMIT LOADING STATE
+    emit(HomeLoadingState());
 
     /// GET ALL VENDORS
     final vendors = await vendorRepository.getAllVendors();
-
 
     /// CHECK PERMISSION IS GRANTED OR NOT TO GET CURRENT LOCATION
     final Position? currentPosition;
@@ -59,26 +78,22 @@ class HomeCubit extends Cubit<HomeState> {
     else { currentPosition =  await Geolocator.getCurrentPosition(); }
 
     /// EMIT STATE
-    emit(HomeMainState(
-        mapController:  Completer<GoogleMapController>(),
-        cameraCurrentLocation:  null,
-        mapMyLocationEnabled: true,
-        mapRefreshEnabled: false,
-        mapTrafficEnabled: false,
-        mapSatelliteEnabled: false,
-        customInfoWindowController: CustomInfoWindowController(),
+    emit(currentState.copyWith(
       myCurrentLocation: CameraPosition(
           target: LatLng(
               currentPosition?.latitude ?? CustomTextStrings.INITAIL_LAT,
               currentPosition?.longitude ?? CustomTextStrings.INITAIL_LNG),
           zoom: 6.0),
       vendors:  vendors,
-        markers: const {},
-        polyline: const {},
-
     ));
 
-    uid = await LocalStorage.read(key: "UID", storage: storage) ?? "";
+    uid = await LocalStorage.read(key: "UID", storage: storage);
+
+    if(uid == null) {
+      await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
+      context.pushReplacementNamed(CustomRouter.LOGIN);
+      return;
+    }
 
     /// PERIODIC TIMER TO REFRESH VENDORS ON MAP
     await onRefreshVendors();
@@ -159,14 +174,13 @@ class HomeCubit extends Cubit<HomeState> {
 
   // - - - - - - - - - - - - - - - - - - CAMERA MOVED - - - - - - - - - - - - - - - - - -  //
   void onCameraMoved(CameraPosition newPosition){
-    final currentState = (state as HomeMainState);
+    final currentState = state as HomeMainState;
     currentState.customInfoWindowController!.onCameraMove!();
     emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: newPosition.target, zoom: newPosition.zoom)));
   }
 
   // - - - - - - - - - - - - - - - - - -  UPDATE VENDORS LIST  - - - - - - - - - - - - - - - - - -  //
   Future<void> onRefreshVendors() async {
-
     final currentState = state as HomeMainState;
     final getVendors = await vendorRepository.getAllVendors();
     final markers = <Marker>{};
@@ -332,7 +346,11 @@ class HomeCubit extends Cubit<HomeState> {
               );
               emit(currentState.copyWith(polyline: polyline));
             }
-            catch(_){ FirebaseCrashlytics.instance.log("Error Adding Polyline"); }
+            catch(e){
+              print("+++++++");
+              print(e.toString());
+              print("+++++++");
+              FirebaseCrashlytics.instance.log("Error Adding Polyline"); }
         }
         );
   }

@@ -4,12 +4,14 @@ import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
+import 'package:berkania/utils/router/custom_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -32,10 +34,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   final GetStorage storage;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  BeVendorCubit({ required this.notificationRepository, required this.vendorRepository, required this.userRepository, required this.storage }) : super(BeVendorMainState()){ init(); }
-
-  // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
-  void init() async{
+  BeVendorCubit({ required this.notificationRepository, required this.vendorRepository, required this.userRepository, required this.storage }) : super(BeVendorMainState()){
     emit(BeVendorMainState(
         scrollPhysics: const ScrollPhysics(),
         currentStep: 0,
@@ -51,13 +50,21 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         ageController: TextEditingController(),
         carAssuranceController: TextEditingController(),
         carRegistrationController: TextEditingController(),
-      userEntity: UserEntity(),
-      personalInfoFormState: GlobalKey<FormState>(),
-      carInfoFormState: GlobalKey<FormState>()
+        userEntity: UserEntity(),
+        personalInfoFormState: GlobalKey<FormState>(),
+        carInfoFormState: GlobalKey<FormState>()
     ));
+  }
 
+  // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
+  void init({ required BuildContext context }) async{
     final currentState = state as BeVendorMainState;
     uid = await LocalStorage.read(key: "UID", storage: storage);
+    if(uid == null) {
+      await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
+      context.pushReplacementNamed(CustomRouter.LOGIN);
+      return;
+    }
     final getUserInfo = await userRepository.getUserInfo(id: uid!);
     if(getUserInfo == null) return;
     emit(currentState.copyWith(userEntity: getUserInfo));

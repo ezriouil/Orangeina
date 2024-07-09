@@ -20,6 +20,7 @@ class WishlistScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
+    context.read<WishlistCubit>().init(context: context);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -49,7 +50,7 @@ class WishlistScreen extends CustomState {
                         },
                       ));
             case WishlistLoadingState(): return const CustomLoadingScreen();
-            case WishlistErrorState(): return CustomErrorScreen(onClick: context.read<WishlistCubit>().init);
+            case WishlistErrorState(): return CustomErrorScreen(onClick: (){ context.read<WishlistCubit>().init(context: context); });
             case WishListEmptyState(): return CustomEmptyScreen(text: CustomLocale.WISHLIST_EMPTY_LIST_TITLE.getString(context));
           }
         },

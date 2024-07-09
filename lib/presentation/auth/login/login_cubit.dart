@@ -102,15 +102,15 @@ class LoginCubit extends Cubit<LoginState> {
       // NAVIGATE TO HOME SCREEN
       currentState = state as LoginMainState;
       emit(currentState);
-      context.read<HomeCubit>().init();
-      context.read<WishlistCubit>().init();
-      context.read<NotificationCubit>().init();
-      context.read<SettingsCubit>().init();
-      context.read<VendorDetailsCubit>().init();
+      context.read<HomeCubit>().init(context: context);
+      context.read<WishlistCubit>().init(context: context);
+      context.read<NotificationCubit>().init(context: context);
+      context.read<SettingsCubit>().init(context: context);
+      context.read<VendorDetailsCubit>().init(context: context);
       context.read<IndexCubit>().init();
       context.read<VendorNewOrderCubit>().init();
-      context.read<VendorOrdersCubit>().init();
-      context.read<BeVendorCubit>().init();
+      context.read<VendorOrdersCubit>().init(context: context);
+      context.read<BeVendorCubit>().init(context: context);
       callBack.call();
 
     }catch(e){
@@ -160,17 +160,15 @@ class LoginCubit extends Cubit<LoginState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
-
-      context.read<HomeCubit>().init();
-      context.read<WishlistCubit>().init();
-      context.read<NotificationCubit>().init();
-      context.read<SettingsCubit>().init();
-      context.read<VendorDetailsCubit>().init();
+      context.read<HomeCubit>().init(context: context);
+      context.read<WishlistCubit>().init(context: context);
+      context.read<NotificationCubit>().init(context: context);
+      context.read<SettingsCubit>().init(context: context);
+      context.read<VendorDetailsCubit>().init(context: context);
       context.read<IndexCubit>().init();
       context.read<VendorNewOrderCubit>().init();
-      context.read<VendorOrdersCubit>().init();
-      context.read<BeVendorCubit>().init();
-
+      context.read<VendorOrdersCubit>().init(context: context);
+      context.read<BeVendorCubit>().init(context: context);
       callBack.call();
 
     }catch(e){

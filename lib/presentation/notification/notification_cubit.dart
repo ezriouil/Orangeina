@@ -7,6 +7,7 @@ import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_storage/get_storage.dart';
@@ -27,11 +28,16 @@ class NotificationCubit extends Cubit<NotificationState> {
   final GetStorage storage;
   final Connectivity connectivity;
   String? uid;
-  NotificationCubit({ required this.notificationRepository, required this.storage, required this.connectivity}) : super(NotificationLoadingState()){  init();  }
+  NotificationCubit({ required this.notificationRepository, required this.storage, required this.connectivity}) : super(NotificationLoadingState());
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
-  init() async{
+  init({ required BuildContext context }) async{
      uid = await LocalStorage.read(key: "UID", storage: storage);
+     if(uid == null) {
+       await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
+       context.pushReplacementNamed(CustomRouter.LOGIN);
+       return;
+     }
     await getNotifications();
   }
 

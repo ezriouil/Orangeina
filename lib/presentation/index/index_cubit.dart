@@ -20,10 +20,8 @@ class IndexCubit extends Cubit<IndexState> {
   IndexCubit({  required this.connectivity}) : super(IndexMainState()){ init(); }
 
   init() async{
-
     final hasPermission = await onRequestPermission();
     if(!hasPermission) emit(IndexPermissionState());
-    
   }
 
   // - - - - - - - - - - - - - - - - - -  UPDATE CURRENT INDEX - - - - - - - - - - - - - - - - - -  //

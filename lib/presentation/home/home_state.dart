@@ -52,9 +52,4 @@ final class HomeMainState extends HomeState {
 
 final class HomeLoadingState extends HomeState {}
 
-final class HomeErrorState extends HomeState {
-  final String message;
-  HomeErrorState({required this.message});
-}
-
 

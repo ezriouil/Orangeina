@@ -10,6 +10,7 @@ import 'package:berkania/utils/device/device_utility.dart';
 import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -49,11 +50,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   final VendorRepository vendorRepository;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  SettingsCubit({ required this.storage, required this.connectivity, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsLoadingState()) { init(); }
-
-  // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
-  void init() async {
-
+  SettingsCubit({ required this.storage, required this.connectivity, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsLoadingState()) {
     emit(SettingsMainState(
       arabicLang: false,
       englishLang: false,
@@ -64,6 +61,10 @@ class SettingsCubit extends Cubit<SettingsState> {
       lastNameHint: "",
       phoneHint: "",
     ));
+  }
+
+  // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
+  void init({ required BuildContext context }) async {
 
     final currentState = state as SettingsMainState;
 
@@ -76,7 +77,12 @@ class SettingsCubit extends Cubit<SettingsState> {
     uid = await LocalStorage.read(key: "UID", storage: storage);
     lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.FR;
 
-    if(uid == null) return;
+    if(uid == null) {
+      await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
+      context.pushReplacementNamed(CustomRouter.LOGIN);
+      return;
+    }
+
     final bool isVendor = await vendorRepository.existVendor(vendorId: uid!);
     if(isVendor) {
       _user = null;
@@ -253,7 +259,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                                 if (isVendorExist) {
                                   await vendorRepository.updateVendorFullName(vendorId: uid!, newFirstName: firstName.text, newLastName: lastName.text);
-                                  init();
+                                  init(context: context.mounted ? context : context );
                                   if(!context.mounted) return;
                                   context.pop();
                                   emit(currentState.copyWith(firstNameHint: firstName.text, lastNameHint: lastName.text));

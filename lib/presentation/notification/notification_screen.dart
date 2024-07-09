@@ -19,6 +19,7 @@ class NotificationScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
+    context.read<NotificationCubit>().init(context: context);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(onTap: (){ context.read<IndexCubit>().onUpdateCurrentIndex(0, context); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Icon(isArabic(context) ? Iconsax.arrow_right_3 : Iconsax.arrow_left_2, color: darkLightColor(context))),
@@ -47,7 +48,7 @@ class NotificationScreen extends CustomState {
              );
 
             case NotificationLoadingState(): return const CustomLoadingScreen();
-            case NotificationErrorState(): return CustomErrorScreen(onClick: context.read<NotificationCubit>().init);
+            case NotificationErrorState(): return CustomErrorScreen(onClick: (){ context.read<NotificationCubit>().init(context: context); });
             case NotificationEmptyState(): return CustomEmptyScreen(text: CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE.getString(context));
           }
         },

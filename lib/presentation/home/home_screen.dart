@@ -1,7 +1,6 @@
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/home/widgets/custom_vendor.dart';
-import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:custom_info_window/custom_info_window.dart';
@@ -19,6 +18,7 @@ class HomeScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
+    context.read<HomeCubit>().init(context: context);
     return Scaffold(
       body: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
@@ -37,8 +37,10 @@ class HomeScreen extends CustomState {
                     myLocationEnabled: state.mapMyLocationEnabled!,
                     trafficEnabled: state.mapTrafficEnabled!,
                     onTap: (latLng){
-                      state.customInfoWindowController!.hideInfoWindow!();
-                      if(state.polyline!.isNotEmpty) state.polyline!.clear();
+                      if(state.polyline!.isNotEmpty){
+                        state.customInfoWindowController?.hideInfoWindow!();
+                        state.polyline!.clear();
+                      }
                       },
                     onCameraMove: context.read<HomeCubit>().onCameraMoved,
                     onMapCreated: context.read<HomeCubit>().onMapCompleted,
@@ -139,7 +141,6 @@ class HomeScreen extends CustomState {
               );
             }
             case HomeLoadingState(): return const CustomLoadingScreen();
-            case HomeErrorState(): return CustomErrorScreen(onClick: context.read<HomeCubit>().init);
           }
         },
       ),

@@ -63,7 +63,7 @@ class StepPersonalInfo extends CustomState {
             inputDecoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 24, horizontal: isArabic(context) ? 24 : 0 ),
                 fillColor: CustomColors.TRANSPARENT,
-                hintTextDirection: isArabic(context) ? TextDirection.ltr : TextDirection.rtl,
+                hintTextDirection:TextDirection.ltr,
                 hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
                 prefixIcon: isArabic(context) ? null : Icon(Iconsax.call, color: grayColor(context)),
                 enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0), borderSide: BorderSide(color: darkLightColor(context)))),

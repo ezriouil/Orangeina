@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/wishList_entity.dart';
 import 'package:berkania/utils/helpers/network.dart';
+import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,11 +24,16 @@ class WishlistCubit extends Cubit<WishlistState> {
   final GetStorage storage;
   final Connectivity connectivity;
   String? uid;
-  WishlistCubit({ required this.storage, required this.wishListRepository, required this.connectivity}) : super(WishlistLoadingState()){  init();  }
+  WishlistCubit({ required this.storage, required this.wishListRepository, required this.connectivity}) : super(WishlistLoadingState());
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
-  init() async{
+  init({ required BuildContext context }) async{
     uid = await LocalStorage.read(key: "UID", storage: storage);
+    if(uid == null) {
+      await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
+      context.pushReplacementNamed(CustomRouter.LOGIN);
+      return;
+    }
     await getWishLists();
   }
 

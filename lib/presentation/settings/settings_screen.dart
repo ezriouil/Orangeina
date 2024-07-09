@@ -19,12 +19,13 @@ class SettingsScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
+    context.read<SettingsCubit>().init(context: context);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(onTap: (){ context.read<IndexCubit>().onUpdateCurrentIndex(0, context); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS / 2), child: Icon(isArabic(context) ? Iconsax.arrow_right_3 : Iconsax.arrow_left_2, color: darkLightColor(context))),
         title: Text(CustomLocale.SETTINGS_PROFILE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
         actions: [InkWell(
-          onTap: context.read<SettingsCubit>().init,
+          onTap: (){ context.read<SettingsCubit>().init(context: context); },
           borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
           child: Padding(
             padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),
