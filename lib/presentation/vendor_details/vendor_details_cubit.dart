@@ -336,123 +336,120 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
   // - - - - - - - - - - - - - - - - - - ALERT REPORT - - - - - - - - - - - - - - - - - -  //
   void onReport({required BuildContext context, required Function callBack}) async {
-
+    FadeTransition(opacity: opacity)
+    final currentState = state as VendorDetailsMainState;
     await showDialog(
         context: context,
-        builder: (BuildContext context) {
-          return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
-            builder: (context, state) {
-              final VendorDetailsMainState currentState =
-                  state as VendorDetailsMainState;
-              return AlertDialog(
-                content: SizedBox(
-                  width: double.infinity,
-                  height: 350,
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: currentState.reportFormState,
-                      child: Column(
-                        children: [
+        builder: (BuildContext context) => AlertDialog(
+              content: SizedBox(
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: currentState.reportFormState,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+              // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
+              Text(
+                CustomLocale.VENDOR_DETAILS_REPORT_TITLE.getString(context),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6),
+              ),
 
-                      // - - - - - - - - - - - - - - - - - -  TITLE - - - - - - - - - - - - - - - - - -  //
-                      Text(
-                          CustomLocale.VENDOR_DETAILS_REPORT_TITLE.getString(context),
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: 0.6),
-                      ),
+              // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+              // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
+              Text(CustomLocale.VENDOR_DETAILS_REPORT_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
 
-                      // - - - - - - - - - - - - - - - - - -  SUB TITLE 1 - - - - - - - - - - - - - - - - - -  //
-                      Text(CustomLocale.VENDOR_DETAILS_REPORT_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+              // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+              BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
+                builder: (context, state) {
+                  return DropdownButton<String>(
+                      isExpanded: true,
+                      borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      items:[
+                        DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                        DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_2.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_2.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                        DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_3.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_3.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                        DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                        DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
+                      ],
+                      onChanged: (String? value) { emit(state.copyWith(reportReason: value)); },
+                      icon: const Icon(Iconsax.danger, size: 22.0),
+                      value: (state as VendorDetailsMainState).reportReason == "" ? CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context) : state.reportReason );
+                },
+              ),
 
-                      DropdownButton<String>(
-                          isExpanded: true,
-                          borderRadius: BorderRadius.circular(CustomSizes.SPACE_BETWEEN_ITEMS),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          items:[
-                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
-                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_2.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_2.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
-                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_3.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_3.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
-                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_4.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
-                            DropdownMenuItem(value: CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), child: Text(CustomLocale.VENDOR_DETAILS_REPORT_REASON_5.getString(context), overflow: TextOverflow.ellipsis, maxLines: 1)),
-                          ],
-                          onChanged: (String? value) { emit(currentState.copyWith(reportReason: value)); },
-                          icon: const Icon(Iconsax.arrow_bottom),
-                          value: currentState.reportReason == "" ? CustomLocale.VENDOR_DETAILS_REPORT_REASON_1.getString(context) : currentState.reportReason ),
+              // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+              // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
+              Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
 
-                      // - - - - - - - - - - - - - - - - - -  SUB TITLE 2 - - - - - - - - - - - - - - - - - -  //
-                      Text(CustomLocale.VENDOR_DETAILS_FEEDBACK_TEXT_FILED_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall),
+              // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+              const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
 
-                      // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+              // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
+              CustomTextField(
+                  hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context),
+                  controller: currentState.feedbackController!,
+                  leadingIcon: Iconsax.bookmark,
+                  validator: (value) => Validator.validateCustomField(value, CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context))),
 
-                      // - - - - - - - - - - - - - - - - - -  TEXT FILED- - - - - - - - - - - - - - - - - -  //
-                      CustomTextField(
-                          hint: CustomLocale.VENDOR_DETAILS_FEEDBACK_HINT_TITLE.getString(context),
-                          controller: currentState.feedbackController!,
-                          leadingIcon: Iconsax.bookmark,
-                          validator: (value) => Validator.validateCustomField(value, CustomLocale.VALIDATOR_CUSTOM_FIELD_ERROR1.getString(context))),
+              // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
+              Row(
+                children: [
 
-                      // - - - - - - - - - - - - - - - - - -  BUTTONS- - - - - - - - - - - - - - - - - -  //
-                      Row(
-                        children: [
+                  // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
+                  Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
 
-                          // - - - - - - - - - - - - - - - - - -  CANCEL - - - - - - - - - - - - - - - - - -  //
-                          Expanded(child: CustomElevatedButton(onClick: context.pop, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL.getString(context)))),
+                  // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
+                  const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
 
-                          // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                          const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS  / 2),
+                  // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
+                  Expanded(child: CustomElevatedButton(onClick: () async{
 
-                          // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
-                          Expanded(child: CustomElevatedButton(onClick: () async{
+                    // CHECK THE FORM
+                    if(!currentState.reportFormState!.currentState!.validate()) return;
 
-                            // CHECK THE FORM
-                            if(!currentState.reportFormState!.currentState!.validate()) return;
+                    if(uid == null) return;
 
-                            if(uid == null) return;
+                    final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
 
-                            final UserEntity? userEntity = await userRepository.getUserInfo(id: uid!);
+                    if(userEntity == null) return;
 
-                            if(userEntity == null) return;
+                    final date = DateTime.now();
+                    final ReportEntity report = ReportEntity(
+                        vendorId: uid,
+                        fullName: "${userEntity.firstName} ${userEntity.lastName}",
+                        reportType: currentState.reportReason,
+                        reportBody: currentState.feedbackController!.text.trim(),
+                        avatar: userEntity.avatar,
+                        rating: currentState.feedback!,
+                        createAt: "${date.day}/${date.month}/${date.year}"
+                    );
+                    await reportRepository.insert(reportEntity: report);
 
-                            final date = DateTime.now();
-                            final ReportEntity report = ReportEntity(
-                                vendorId: uid,
-                                fullName: "${userEntity.firstName} ${userEntity.lastName}",
-                                reportType: currentState.reportReason,
-                                reportBody: currentState.feedbackController!.text.trim(),
-                                avatar: userEntity.avatar,
-                                rating: currentState.feedback!,
-                                createAt: "${date.day}/${date.month}/${date.year}"
-                            );
-                            await reportRepository.insert(reportEntity: report);
+                    currentState.feedbackController!.clear();
 
-                            currentState.feedbackController!.clear();
+                    callBack.call();
 
-                            callBack.call();
-
-                          }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        });
+                  }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    ),
+    )
+    );
   }
 
   // - - - - - - - - - - - - - - - - - - UID - - - - - - - - - - - - - - - - - -  //
