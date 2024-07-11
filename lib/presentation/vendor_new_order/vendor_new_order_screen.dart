@@ -1,6 +1,5 @@
 import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
 import 'package:berkania/presentation/widgets/custom_elevated_button.dart';
-import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
@@ -144,7 +143,6 @@ class VendorNewOrderScreen extends CustomState {
                 );
               }
             case VendorNewOrderLoadingState(): return const CustomLoadingScreen();
-            case VendorNewOrderErrorState(): return CustomErrorScreen(onClick: (){});
               // TODO: Handle this case.
           }
         },

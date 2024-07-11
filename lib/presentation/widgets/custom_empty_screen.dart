@@ -1,11 +1,8 @@
-import 'package:berkania/utils/constants/custom_sizes.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../utils/constants/custom_animations_strings.dart';
-import '../../utils/localisation/custom_locale.dart';
 
 class CustomEmptyScreen extends CustomState {
   final String text;

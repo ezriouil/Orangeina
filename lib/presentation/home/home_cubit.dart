@@ -15,6 +15,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,9 +65,6 @@ class HomeCubit extends Cubit<HomeState> {
 
     final currentState = state as HomeMainState;
 
-    /// EMIT LOADING STATE
-    emit(HomeLoadingState());
-
     /// GET ALL VENDORS
     final vendors = await vendorRepository.getAllVendors();
 
@@ -96,8 +94,8 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     /// PERIODIC TIMER TO REFRESH VENDORS ON MAP
-    await onRefreshVendors();
-    Timer.periodic(const Duration(minutes: 1), (time) async{ await onRefreshVendors(); });
+    await onRefreshVendors(context: context);
+    Timer.periodic(const Duration(minutes: 1), (time) async{ await onRefreshVendors(context: context); });
 
   }
 
@@ -146,8 +144,8 @@ class HomeCubit extends Cubit<HomeState> {
           cameraCurrentLocation: CameraPosition(target: LatLng((lat as double), (lng as double)),zoom: 14.0 ),
           polyline: polyline
       ));
-    }catch(e){
-    if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Vendor Not Found !", type: ContentType.failure, color: CustomColors.RED_LIGHT);
+    }catch(_){
+    CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.HOME_ERROR_GET_VENDOR_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
     }
   }
 
@@ -168,7 +166,7 @@ class HomeCubit extends Cubit<HomeState> {
       await Future.delayed(const Duration(milliseconds: 300));
       emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude),zoom: 18.0 )));
     }catch(_){
-      if(context.mounted) CustomSnackBar.show(context: context, title: "Try Again", subTitle: "Cannot Get You Current Location !", type: ContentType.failure, color: CustomColors.RED_LIGHT);
+      if(context.mounted) CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.HOME_ERROR_GET_CURRENT_LOCATION_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
     }
   }
 
@@ -180,7 +178,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // - - - - - - - - - - - - - - - - - -  UPDATE VENDORS LIST  - - - - - - - - - - - - - - - - - -  //
-  Future<void> onRefreshVendors() async {
+  Future<void> onRefreshVendors({ required BuildContext context }) async {
     final currentState = state as HomeMainState;
     final getVendors = await vendorRepository.getAllVendors();
     final markers = <Marker>{};
@@ -191,6 +189,7 @@ class HomeCubit extends Cubit<HomeState> {
       if(vendor.id! == uid) continue;
       vendors.add(vendor);
       markers.add(await customMarker(
+        context: context,
           lat: vendor.shopLat! as double,
           lng: vendor.shopLng! as double,
           avatar: vendor.shopThumbnail!,
@@ -303,7 +302,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // - - - - - - - - - - - - - - - - - - MARKER - - - - - - - - - - - - - - - - - -  //
-  Future<Marker> customMarker({required double lat, required double lng, required String avatar, required String id, required String firstName, required String lastName, required num rating, required double distance}) async{
+  Future<Marker> customMarker({required BuildContext context, required double lat, required double lng, required String avatar, required String id, required String firstName, required String lastName, required num rating, required double distance}) async{
     final customIcon = BitmapDescriptor.fromBytes(await _getBytesFromAsset(CustomImageStrings.MARKER_SELLER, 120));
     return Marker(
         markerId: MarkerId("$lat $lng"),
@@ -347,9 +346,7 @@ class HomeCubit extends Cubit<HomeState> {
               emit(currentState.copyWith(polyline: polyline));
             }
             catch(e){
-              print("+++++++");
-              print(e.toString());
-              print("+++++++");
+              CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.HOME_ERROR_GET_VENDOR_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
               FirebaseCrashlytics.instance.log("Error Adding Polyline"); }
         }
         );
@@ -360,5 +357,4 @@ class HomeCubit extends Cubit<HomeState> {
     ui.FrameInfo fi = await codec.getNextFrame();
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
   }
-
 }

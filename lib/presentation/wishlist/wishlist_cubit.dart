@@ -65,7 +65,7 @@ class WishlistCubit extends Cubit<WishlistState> {
       }
       emit(WishlistMainState(wishLists: wishLists));
     }catch(e){
-      emit(WishlistErrorState());
+      emit(WishListEmptyState());
     }
   }
 
@@ -97,15 +97,13 @@ class WishlistCubit extends Cubit<WishlistState> {
                       backgroundColor: CustomColors.GRAY_LIGHT,
                         onClick: context.pop,
                         child: Text(CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE.getString(context.mounted ? context : context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE))),
-
                   ],
                 ),
               ),
             );
           });
-
-    }catch(e){
-      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+    } catch (_) {
+      context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.WISHLIST_ERROR_CANNOT_DELETE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
   }
 }

@@ -74,6 +74,9 @@ dependencies:
   # DATE TIME
   date_picker_timeline: ^1.2.5
 
+  # ANIMATION
+  widget_and_text_animator: ^1.1.5
+
   # RATING
   flutter_rating_bar: ^4.0.1
 

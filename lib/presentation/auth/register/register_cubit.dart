@@ -78,7 +78,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
 
       if(userCredential.user == null){
-        CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
+        CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
         return;
       }
       // SAVE USER DATA
@@ -106,11 +106,12 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
+      CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.REGISTER_SUCCESS_SUB_TITLE.getString(context), type: ContentType.warning);
       callBack.call();
 
     }catch(e){
       emit(currentState);
-      CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
+      CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
     }
   }
 
@@ -142,7 +143,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     final UserCredential userCredential = await authRepository.loginWithGoogle();
     try{
       if(userCredential.user == null){
-        CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
+        CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
         return;
       }
 
@@ -164,20 +165,12 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
-      CustomSnackBar.show(context: context, title: "Created Successfully", subTitle: "Your Account Created successfully.", type: ContentType.warning);
+      CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.REGISTER_SUCCESS_SUB_TITLE.getString(context), type: ContentType.warning);
       callBack.call();
 
     }catch(e){
-      CustomSnackBar.show(context: context, title: "Error Email", subTitle: "Cannot register with this email.", type: ContentType.warning);
+      CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
       emit(currentState);
     }
   }
-
-  // - - - - - - - - - - - - - - - - - - TRY AGAIN BUTTON IN ERROR STATE - - - - - - - - - - - - - - - - - -  //
-  void onTryAgain() async{
-    emit(RegisterLoadingState());
-    await Future.delayed(const Duration(milliseconds: 1000));
-    init();
-  }
-
 }

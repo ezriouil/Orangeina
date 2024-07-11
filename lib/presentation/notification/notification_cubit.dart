@@ -112,7 +112,7 @@ class NotificationCubit extends Cubit<NotificationState> {
       if(!notification.isRead!) await getNotifications();
 
     }catch(e){
-      emit(NotificationErrorState(message: e.toString()));
+      emit(NotificationEmptyState());
     }
   }
 
@@ -154,7 +154,7 @@ class NotificationCubit extends Cubit<NotificationState> {
           });
 
     }catch(e){
-      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+      context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.NOTIFICATION_ERROR_DELETE_NOTIFICATION_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
   }
 
@@ -174,7 +174,7 @@ class NotificationCubit extends Cubit<NotificationState> {
       }
       emit(NotificationMainState(notifications: notifications));
     }catch(e){
-      emit(NotificationErrorState(message: e.toString()));
+      emit(NotificationEmptyState());
     }
   }
 }

@@ -2,7 +2,6 @@ import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
 import 'package:berkania/presentation/notification/widgets/custom_notification.dart';
 import 'package:berkania/presentation/widgets/custom_empty_screen.dart';
-import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +47,6 @@ class NotificationScreen extends CustomState {
              );
 
             case NotificationLoadingState(): return const CustomLoadingScreen();
-            case NotificationErrorState(): return CustomErrorScreen(onClick: (){ context.read<NotificationCubit>().init(context: context); });
             case NotificationEmptyState(): return CustomEmptyScreen(text: CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE.getString(context));
           }
         },

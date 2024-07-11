@@ -10,7 +10,6 @@ import 'package:berkania/utils/device/device_utility.dart';
 import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -150,7 +149,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                           final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
                           if (img == null && context.mounted) {
-                            CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Please Select Image For Your Profile", type: ContentType.warning);
+                            CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_IMAGE_PROFILE_SELECTED_SUB_TITLE.getString(context), type: ContentType.warning);
                             return;
                           }
 
@@ -159,6 +158,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                             final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
                             await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
+                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                             return;
                           }
 
@@ -168,13 +168,15 @@ class SettingsCubit extends Cubit<SettingsState> {
                             final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
                             await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));
+                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                             return;
                           }
 
                           context.mounted ? context.pop() : null;
+                          context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
 
                         } catch (_) {
-                          context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time.", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                          context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                         }
                       }),
 
@@ -252,7 +254,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                                   await userRepository.updateUserFullName(userId: uid!, newFirstName: firstName.text, newLastName: lastName.text);
                                   context.pop();
                                   emit(currentState.copyWith(firstNameHint: firstName.text, lastNameHint: lastName.text));
-                                  CustomSnackBar.show(context: context.mounted ? context : context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
+                                  CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_FULL_NAME_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
                                   return;
                                 }
 
@@ -263,13 +265,14 @@ class SettingsCubit extends Cubit<SettingsState> {
                                   if(!context.mounted) return;
                                   context.pop();
                                   emit(currentState.copyWith(firstNameHint: firstName.text, lastNameHint: lastName.text));
-                                  CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "First Name and Last Name Updated", type: ContentType.success);
+                                  CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_FULL_NAME_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
                                   return;
                                 }
                                 context.mounted ? context.pop(): null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
 
                               } catch (_) {
-                                context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Cannot update your fullName.Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                               }
                             },
                             child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
@@ -325,7 +328,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0), borderSide: BorderSide(color: DeviceUtility.isDark(context) ? CustomColors.WHITE : CustomColors.BLACK ))),
                           selectorTextStyle: Theme.of(context).textTheme.bodyLarge,
                           textFieldController:  phone,
-                          locale: isArabic ? "ar": "en",
+                          locale: isArabic ? "ar": "fr",
                           hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
                           initialValue: PhoneNumber(isoCode: "MA"),
                           formatInput: false,
@@ -352,7 +355,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                                   if(!context.mounted) return;
                                   context.mounted ? context.pop() : null;
                                   emit(currentState.copyWith(phoneHint: phone.text));
-                                  CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
+                                  CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
                                   return;
                                 }
 
@@ -363,12 +366,14 @@ class SettingsCubit extends Cubit<SettingsState> {
                                   if(!context.mounted) return;
                                   emit(currentState.copyWith(phoneHint: phone.text));
                                   context.pop();
-                                  CustomSnackBar.show(context: context, title: "Updated Successfully", subTitle: "Your Phone Is Updated", type: ContentType.success);
+                                  CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
                                   return;
                                 }
                                 context.mounted ? context.pop() : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+
                               } catch (e) {
-                                context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Cannot update your phone.Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
                               }
                             },
                             child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
@@ -399,18 +404,18 @@ class SettingsCubit extends Cubit<SettingsState> {
         final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
         final permission = await Geolocator.checkPermission();
         if(!isLocationServiceEnabled || permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
-          // SNACK BAR
+          openAppSettings();
           return;
         }
         final Position currentPosition = await Geolocator.getCurrentPosition();
         await vendorRepository.online(vendorId: uid!, lat: currentPosition.latitude, lng: currentPosition.longitude);
-        await LocalStorage.upsert(key: "VENDOR_ONLINE_OFFLINE", value: value, storage: storage);
+        context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
       }else{
         await vendorRepository.offline(vendorId: uid!);
-        await LocalStorage.upsert(key: "VENDOR_ONLINE_OFFLINE", value: value, storage: storage);
+        context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
       }
       emit(currentState.copyWith(vendorOnlineOffline: value));
-    }catch(_) {}
+    }catch(_) { context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_VENDOR_STATUS_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null; }
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR => ON NAVIGATE TO NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //

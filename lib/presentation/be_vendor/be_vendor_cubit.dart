@@ -2,13 +2,14 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
-import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
+import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
@@ -72,9 +73,10 @@ class BeVendorCubit extends Cubit<BeVendorState> {
 
   // - - - - - - - - - - - - - - - - - - NEXT STEP - - - - - - - - - - - - - - - - - -  //
   void continued({ required BuildContext context }) async{
-    try{
 
-      final BeVendorMainState currentState = state as BeVendorMainState;
+    final BeVendorMainState currentState = state as BeVendorMainState;
+
+    try{
 
       // CHECK THE FORM
       if(!currentState.personalInfoFormState!.currentState!.validate()) return;
@@ -83,7 +85,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       if((state as BeVendorMainState).currentStep == 1){
         if(!currentState.carInfoFormState!.currentState!.validate()) return;
         if(currentState.shopThumbnail == "") {
-          CustomSnackBar.show(context: context, title: "No Image Selected", subTitle: "Try Again", type: ContentType.warning);
+          CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CAR_THUMBNAIL_TITLE.getString(context) , type: ContentType.warning);
           return;
         }
         emit(currentState.copyWith(currentStep: 2));
@@ -91,19 +93,19 @@ class BeVendorCubit extends Cubit<BeVendorState> {
 
       if((state as BeVendorMainState).currentStep == 2){
         if(currentState.cinFrontImage == "") {
-          CustomSnackBar.show(context: context, title: "Please Select Cin Image", subTitle: "Try Again", type: ContentType.warning);
+          CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CIN_FRONT_THUMBNAIL_TITLE .getString(context) , type: ContentType.warning);
           return;
         }
         if(currentState.cinBackImage == "") {
-          CustomSnackBar.show(context: context, title: "Please Select Cin Image", subTitle: "Try Again", type: ContentType.warning);
+          CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CIN_BACK_THUMBNAIL_TITLE .getString(context) , type: ContentType.warning);
           return;
         }
         if(currentState.carAssuranceImage == "") {
-          CustomSnackBar.show(context: context, title: "Please Select Car Assurance Image", subTitle: "Try Again", type: ContentType.warning);
+          CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_THUMBNAIL_TITLE .getString(context) , type: ContentType.warning);
           return;
         }
         if(currentState.carRegistrationImage == "") {
-          CustomSnackBar.show(context: context, title: "Please Select Car Assurance Image", subTitle: "Try Again", type: ContentType.warning);
+          CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_THUMBNAIL_TITLE .getString(context) , type: ContentType.warning);
           return;
         }
       }
@@ -164,7 +166,8 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       emit(currentState.copyWith(currentStep: updateCurrentStep));
 
     }catch(_){
-      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+      emit(currentState);
+      CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_ERROR_SUB_TITLE.getString(context) , type: ContentType.warning);
     }
   }
 
@@ -227,7 +230,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
      }
      final BeVendorMainState currentState = state as BeVendorMainState;
      emit(currentState.copyWith(shopThumbnail: img.path));
-   }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
+   }catch(_){ CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CAR_THUMBNAIL_TITLE .getString(context) , type: ContentType.warning); }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK FRONT IMAGE OF CIN FROM GALLERY- - - - - - - - - - - - - - - - - -  //
@@ -239,7 +242,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       }
       final BeVendorMainState currentState = state as BeVendorMainState;
       emit(currentState.copyWith(cinFrontImage: img.path));
-    }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
+    }catch(_){ CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CIN_FRONT_THUMBNAIL_TITLE .getString(context) , type: ContentType.warning); }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE BACK OF CIN FROM GALLERY- - - - - - - - - - - - - - - - - -  //
@@ -251,7 +254,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       }
       final BeVendorMainState currentState = state as BeVendorMainState;
       emit(currentState.copyWith(cinBackImage: img.path));
-    }catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
+    }catch(_){ CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CIN_BACK_THUMBNAIL_TITLE .getString(context) , type: ContentType.warning); }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF CAR REGISTRATION FROM GALLERY- - - - - - - - - - - - - - - - - -  //
@@ -264,7 +267,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       final BeVendorMainState currentState = state as BeVendorMainState;
       emit(currentState.copyWith(carRegistrationImage: img.path));
     }
-    catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
+    catch(_){ CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CAR_REGISTRATION_NUMBER_THUMBNAIL_TITLE .getString(context) , type: ContentType.warning); }
   }
 
   // - - - - - - - - - - - - - - - - - - PICK IMAGE OF CAR ASSURANCE FROM GALLERY- - - - - - - - - - - - - - - - - -  //
@@ -277,7 +280,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       final BeVendorMainState currentState = state as BeVendorMainState;
       emit(currentState.copyWith(carAssuranceImage: img.path));
     }
-  catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;  }
+  catch(_){ CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.BE_VENDOR_CAR_ASSURANCE_NUMBER_THUMBNAIL_TITLE .getString(context) , type: ContentType.warning); }
   }
 
 }

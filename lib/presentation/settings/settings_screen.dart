@@ -1,7 +1,6 @@
 import 'package:berkania/presentation/index/index_cubit.dart';
 import 'package:berkania/presentation/settings/settings_cubit.dart';
 import 'package:berkania/presentation/settings/widgets/custom_settings_tile.dart';
-import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
 import 'package:berkania/utils/state/custom_state.dart';
@@ -224,7 +223,6 @@ class SettingsScreen extends CustomState {
                 ),
               );
             case SettingsLoadingState(): return const CustomLoadingScreen();
-            case SettingsErrorState(): return CustomErrorScreen(onClick: (){});
           }
         },
       ),

@@ -50,7 +50,7 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
 
       if(!isExist1 && !isExist2){
         emit(currentState);
-        CustomSnackBar.show(context: context, title: "Email Not Found", subTitle: "Please Try Another Email", type: ContentType.warning);
+        CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.FORGOT_PASSOWRD_ERROR_SUB_TITLE.getString(context), type: ContentType.warning);
         return;
       }
 
@@ -62,13 +62,13 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
-      CustomSnackBar.show(context: context, title: "Please Check Your Email", subTitle: "We Sent The Link To Reset Your Password", type: ContentType.warning);
+      CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.FORGOT_PASSOWRD_SUCCESS_SUB_TITLE.getString(context), type: ContentType.warning);
       callBack.call();
 
     }catch(e){
       // EMIT ERROR STATE
       emit(currentState);
-      CustomSnackBar.show(context: context, title: "Server Error", subTitle: "Please Try Again", type: ContentType.warning);
+      CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.FORGOT_PASSOWRD_ERROR_SUB_TITLE.getString(context), type: ContentType.warning);
     }
   }
 

@@ -212,8 +212,7 @@ class RegisterScreen extends CustomState {
                           // - - - - - - - - - - - - - - - - - - BUTTON REGISTER - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
                             onClick: () {
-                              context.read<RegisterCubit>().onCreateNewAccount(
-                                  context: context, callBack: context.pop);
+                              context.read<RegisterCubit>().onCreateNewAccount(context: context, callBack: context.pop);
                             },
                             width: getWidth(context),
                             withDefaultPadding: false,

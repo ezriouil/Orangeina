@@ -13,6 +13,4 @@ final class WishlistMainState extends WishlistState {
 
 final class WishlistLoadingState extends WishlistState {}
 
-final class WishlistErrorState extends WishlistState {}
-
 final class WishListEmptyState extends WishlistState {}

@@ -2,11 +2,13 @@ import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/presentation/home/home_cubit.dart';
 import 'package:berkania/presentation/home/widgets/custom_vendor.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
+import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/state/custom_state.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -58,7 +60,7 @@ class HomeScreen extends CustomState {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Iconsax.danger, size: 18.0, color: darkDarkLightLightColor(context)),
-                          Text("  No Vendors Found", style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: darkDarkLightLightColor(context))),
+                          Text(CustomLocale.HOME_ERROR_VENDORS_NOT_FOUND.getString(context), style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: darkDarkLightLightColor(context))),
                         ],
                       )
                   )) :
@@ -79,7 +81,7 @@ class HomeScreen extends CustomState {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Iconsax.danger, size: 18.0, color: darkDarkLightLightColor(context)),
-                              Text("  No Vendors Found", style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: darkDarkLightLightColor(context))),
+                              Text(CustomLocale.HOME_ERROR_VENDORS_NOT_FOUND.getString(context), style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: darkDarkLightLightColor(context))),
                             ],
                           )
                       ),
@@ -115,7 +117,7 @@ class HomeScreen extends CustomState {
                           if(state.mapRefreshEnabled!)  FloatingActionButton(
                                 heroTag: "hero2",
                                 backgroundColor: primaryColor(context),
-                                onPressed: context.read<HomeCubit>().onRefreshVendors,
+                            onPressed: (){ context.read<HomeCubit>().onRefreshVendors(context: context); },
                                 child: const Icon(Iconsax.refresh, size: 20.0, color: CustomColors.WHITE),
                           ),
                           if(state.mapRefreshEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),

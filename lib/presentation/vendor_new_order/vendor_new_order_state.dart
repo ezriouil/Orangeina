@@ -21,5 +21,3 @@ final class VendorNewOrderMainState extends VendorNewOrderState {
 }
 
 final class VendorNewOrderLoadingState extends VendorNewOrderState {}
-
-final class VendorNewOrderErrorState extends VendorNewOrderState {}

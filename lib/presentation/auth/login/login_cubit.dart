@@ -87,7 +87,7 @@ class LoginCubit extends Cubit<LoginState> {
       // CHECK THE USER HIS INFO ALREADY EXIST OR NOT
       final bool result = await userRepository.existUser(userId: userCredential.user!.uid);
       if(userCredential.user == null || !result){
-        CustomSnackBar.show(context: context, title: "Email Or Password Invalid", subTitle: "Verify you email and password.", type: ContentType.warning);
+        CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
         return;
       }
 
@@ -115,7 +115,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     }catch(e){
       // EMIT ERROR STATE
-      CustomSnackBar.show(context: context, title: "Email Or Password Invalid", subTitle: "Verify you email and password.", type: ContentType.warning);
+      CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
       emit(currentState);
     }
   }
@@ -136,7 +136,7 @@ class LoginCubit extends Cubit<LoginState> {
     final UserCredential userCredential = await authRepository.loginWithGoogle();
     try{
       if(userCredential.user == null){
-        CustomSnackBar.show(context: context, title: "Email Or Password Invalid", subTitle: "Verify you email and password.", type: ContentType.warning);
+        CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.LOGIN_ERROR_EMAI_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
         return;
       }
 
@@ -173,7 +173,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     }catch(e){
       // EMIT ERROR STATE
-      CustomSnackBar.show(context: context, title: "Cannot login with this email", subTitle: "Try again", type: ContentType.warning);
+      CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.LOGIN_ERROR_EMAI_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
       emit(currentState);
     }
   }

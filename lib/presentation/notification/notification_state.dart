@@ -13,9 +13,4 @@ final class NotificationMainState extends NotificationState {
 
 final class NotificationLoadingState extends NotificationState {}
 
-final class NotificationErrorState extends NotificationState {
-  final String message;
-  NotificationErrorState({required this.message});
-}
-
 final class NotificationEmptyState extends NotificationState {}

@@ -13,11 +13,13 @@ class French{
     CustomLocale.OR: "Ou",
     CustomLocale.LOADING_TITLE: "Attendez-Vous...",
     CustomLocale.LOADING_SUB_TITLE: "Cela peut prendre quelques secondes, veuillez patienter.",
-    CustomLocale.ERROR_TITLE: "",
-    CustomLocale.ERROR_SUB_TITLE: "",
     CustomLocale.ERROR_BUTTON_TITLE: "Essayer à nouveau",
     CustomLocale.NETWORK_TITLE: "Pas de connexion réseau",
     CustomLocale.NETWORK_SUB_TITLE: "Assurez-Vous Que Votre Appareil Est Connecté Au Réseau",
+
+    // - - - - - - - - - - - - - - - - - - ALERT MESSAGES - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.ERROR_TITLE: "Oh claquement!",
+    CustomLocale.SUCCESS_TITLE: "Effectué avec succès",
 
     // - - - - - - - - - - - - - - - - - - LOGIN SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.LOGIN_TITLE: "Bienvenu encore,",
@@ -27,6 +29,9 @@ class French{
     CustomLocale.LOGIN_CREATE_NEW_ACCOUNT: "Créer un nouveau compte",
     CustomLocale.LOGIN_LOGIN_WITH_GOOGLE: "Connectez-vous avec Google",
     CustomLocale.LOGIN_CHANGE_THE_LANGUAGE: "Changer la langue (fr)",
+
+    CustomLocale.LOGIN_ERROR_EMAI_INVALID_SUB_TITLE: "Impossible de se connecter avec cet email.",
+    CustomLocale.LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE: "Votre compte a été créé avec succès.",
 
     // - - - - - - - - - - - - - - - - - - REGISTER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.REGISTER_TITLE: "Créer votre compte",
@@ -43,12 +48,17 @@ class French{
     CustomLocale.REGISTER_CHECK_BOX_SUB_TITLE_ERROR: "Vous Devez Cocher La Case Pour Continuer",
     CustomLocale.REGISTER_PASSWORD_NOT_MATCHED_SUB_TITLE_ERROR: "Les Mots De Passe Doivent Être Les Mêmes",
 
+    CustomLocale.REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE: "Impossible de s'inscrire avec cet email.",
+    CustomLocale.REGISTER_SUCCESS_SUB_TITLE: "Your Account Created successfully.",
+
     // - - - - - - - - - - - - - - - - - - FORGET PASSWORD SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FORGET_PASSOWRD_TITLE: "Mot de passe oublié",
     CustomLocale.FORGET_PASSOWRD_SUB_TITLE: "Ne vous inquiétez pas, parfois les gens peuvent oublier de le faire, entrez votre adresse e-mail et nous vous enverrons un lien de réinitialisation du mot de passe.",
     CustomLocale.FORGET_PASSOWRD_SEND: "Envoyer",
     CustomLocale.FORGET_PASSOWRD_EMAIL_TITLE_INVALID: "Email Invalide",
     CustomLocale.FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID: "E-mail Doit Comporter Au Moins 6 Caractères Et @",
+    CustomLocale.FORGOT_PASSOWRD_ERROR_SUB_TITLE: "Une erreur s'est produite, Email non trouvé.",
+    CustomLocale.FORGOT_PASSOWRD_SUCCESS_SUB_TITLE: "Nous avons envoyé le lien pour réinitialiser votre mot de passe.",
 
     // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
     CustomLocale.INDEX_EXPLORE_TITLE: "Explorer",
@@ -73,6 +83,10 @@ class French{
     CustomLocale.HOME_ENABLE_MAP_VENDORS_TITLE : "Fournisseurs",
     CustomLocale.HOME_ENABLE_MAP_VENDORS_SUB_TITLE : "Vous pouvez afficher et masquer les fournisseurs sur la carte",
     CustomLocale.HOME_KM : "Km",
+
+    CustomLocale.HOME_ERROR_GET_VENDOR_SUB_TITLE : "Fournisseur introuvable !",
+    CustomLocale.HOME_ERROR_VENDORS_NOT_FOUND : "   Fournisseurs introuvable !",
+    CustomLocale.HOME_ERROR_GET_CURRENT_LOCATION_SUB_TITLE : "Impossible d'obtenir votre position actuelle!",
 
     // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.SETTINGS_PROFILE_TITLE : "Profil",
@@ -111,6 +125,16 @@ class French{
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "Galerie",
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "Rejeter",
 
+    CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY : "Profil d'image mis à jour avec succès.",
+    CustomLocale.SETTINGS_ERROR_IMAGE_PROFILE_SELECTED_SUB_TITLE : "Aucune image sélectionnée.",
+    CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE : "Impossible de mettre à jour votre profil d'image.",
+    CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE : "Numéro de téléphone mis à jour avec succès.",
+    CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE : "Impossible de mettre à jour votre numéro de téléphone.",
+    CustomLocale.SETTINGS_FULL_NAME_UPDATED_SUCCESSFULLY_SUB_TITLE : "Votre nom mis à jour avec succès.",
+    CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE : "Impossible de mettre à jour votre nom.",
+    CustomLocale.SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE : "Votre statut mis à jour avec succès.",
+    CustomLocale.SETTINGS_ERROR_UPDATE_VENDOR_STATUS_SUB_TITLE : "Impossible de mettre à jour votre statut.",
+
     // - - - - - - - - - - - - - - - - - - VENDOR NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.NEW_ORDER_TITLE: "Nouvel ordre",
     CustomLocale.NEW_ORDER_SUB_TITLE: "Remplissez la quantité de KG que vous souhaitez et n'oubliez pas de fixer la date à laquelle vous recevrez votre commande.",
@@ -133,12 +157,19 @@ class French{
     CustomLocale.ORDERS_STATUS_TITLE : "Statut",
     CustomLocale.ORDERS_EMPTY_LIST_TITLE : "Aucune Commande Trouvée !",
 
+    CustomLocale.ORDERS_EMPTY_COUNTER_SUB_TITLE: "Veuillez indiquer la quantité en kilogrammes que vous souhaitez !",
+    CustomLocale.ORDERS_CANNOT_ORDER_SUB_TITLE: "Désolé, il est impossible de commander en ce moment !",
+    CustomLocale.ORDERS_ORDER_SUCCESS_SUB_TITLE: "Merci pour votre commande, nous vous informerons dans la section des notifications.",
+
+
     // - - - - - - - - - - - - - - - - - - NOTIFICATIONS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.NOTIFICATIONS_TITLE : "Notifications",
     CustomLocale.NOTIFICATION_TITLE : "Notification",
     CustomLocale.NOTIFICATION_DIALOG_DELETE_TITLE : "Supprimer",
     CustomLocale.NOTIFICATION_DIALOG_DISMISS_TITLE : "Rejeter",
     CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE : "Aucune Notification Trouvée !",
+
+    CustomLocale.NOTIFICATION_ERROR_DELETE_NOTIFICATION_SUB_TITLE : "Impossible de supprimer cette notification !",
 
     // - - - - - - - - - - - - - - - - - - BE SELLER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.BE_VENDOR_TITLE : "Devenez Vendeur",
@@ -176,6 +207,8 @@ class French{
     CustomLocale.BE_VENDOR_SUCCESS_STATE_SUB_TITLE: "Vous avez déjà soumis une candidature pour devenir vendeur pour notre équipe, veuillez patienter.",
     CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE: "Ok",
 
+    CustomLocale.BE_VENDOR_ERROR_SUB_TITLE: "Impossible de vous envoyer une demande, veuillez réessayer",
+
     // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.VENDOR_DETAILS_TITLE : "Détails Du Vendeur",
     CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_FEEDBACK : "Avis",
@@ -207,6 +240,8 @@ class French{
     CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE : "Supprimer",
     CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "Rejeter",
     CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "Aucune Souhait Trouvée !",
+
+    CustomLocale.WISHLIST_ERROR_CANNOT_DELETE_SUB_TITLE: "Vous ne pouvez pas supprimer cette liste de souhaits pour le moment !",
 
     // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FAQ_TITLE : "FAQ",

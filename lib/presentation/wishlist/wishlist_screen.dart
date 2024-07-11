@@ -1,5 +1,4 @@
 import 'package:berkania/presentation/widgets/custom_empty_screen.dart';
-import 'package:berkania/presentation/widgets/custom_error_screen.dart';
 import 'package:berkania/presentation/widgets/custom_loading_screen.dart';
 import 'package:berkania/presentation/wishlist/widgets/custom_wishlist.dart';
 import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
@@ -50,7 +49,6 @@ class WishlistScreen extends CustomState {
                         },
                       ));
             case WishlistLoadingState(): return const CustomLoadingScreen();
-            case WishlistErrorState(): return CustomErrorScreen(onClick: (){ context.read<WishlistCubit>().init(context: context); });
             case WishListEmptyState(): return CustomEmptyScreen(text: CustomLocale.WISHLIST_EMPTY_LIST_TITLE.getString(context));
           }
         },

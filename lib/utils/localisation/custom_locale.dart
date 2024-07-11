@@ -24,6 +24,9 @@ mixin CustomLocale{
   static const String LOGIN_LOGIN_WITH_GOOGLE = "Log in with Google";
   static const String LOGIN_CHANGE_THE_LANGUAGE = "Change the language (en)";
 
+  static const String LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE = "login error email pass invalid sub title";
+  static const String LOGIN_ERROR_EMAI_INVALID_SUB_TITLE = "login error email invalid sub title";
+
   // - - - - - - - - - - - - - - - - - - REGISTER SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String REGISTER_TITLE = "Let's create your account";
   static const String REGISTER_FIRST_NAME = "First Name";
@@ -42,6 +45,9 @@ mixin CustomLocale{
   static const String REGISTER_CHECK_BOX_SUB_TITLE_ERROR = "register check box sub title error";
   static const String REGISTER_PASSWORD_NOT_MATCHED_SUB_TITLE_ERROR = "register password not matched sub title error";
 
+  static const String REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE = "register error email invalid sub title";
+  static const String REGISTER_SUCCESS_SUB_TITLE = "register success sub title";
+
   // - - - - - - - - - - - - - - - - - - FORGET PASSWORD SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String FORGET_PASSOWRD_TITLE = "Forget password";
   static const String FORGET_PASSOWRD_SUB_TITLE = "Don't worry sometimes people can forget too, entre your email and we will send you a password reset link.";
@@ -49,6 +55,8 @@ mixin CustomLocale{
   static const String FORGET_PASSOWRD_EMAIL_TITLE_INVALID = "Email invalid title";
   static const String FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID = "Email invalid sub title";
   static const String FORGET_PASSOWRD_SEND = "Send";
+  static const String FORGOT_PASSOWRD_ERROR_SUB_TITLE = "error forgot password sub title";
+  static const String FORGOT_PASSOWRD_SUCCESS_SUB_TITLE = "sub forgot password success";
 
   // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
   static const String INDEX_EXPLORE_TITLE = "Index Explore Title";
@@ -73,6 +81,10 @@ mixin CustomLocale{
   static const String HOME_ENABLE_MAP_VENDORS_TITLE = "Home Enable Map Vendors Title";
   static const String HOME_ENABLE_MAP_VENDORS_SUB_TITLE = "Home Enable Map Vendors Sub Title";
   static const String HOME_KM = "Home Km";
+
+  static const String HOME_ERROR_GET_VENDOR_SUB_TITLE = "Home Error Get Vendor Sub Title";
+  static const String HOME_ERROR_VENDORS_NOT_FOUND = "Home Error Vendors Not Found";
+  static const String HOME_ERROR_GET_CURRENT_LOCATION_SUB_TITLE = "Home Error Get Current Location Sub Title";
 
   // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String SETTINGS_PROFILE_TITLE = "Settings Profile Title";
@@ -111,6 +123,18 @@ mixin CustomLocale{
   static const String SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE = "Settings Update Image Button Gallery Title";
   static const String SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE = "Settings Update Image Button Dismiss Title";
 
+  static const String SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY = "Settings Error Image Profile Updated Successfully";
+  static const String SETTINGS_ERROR_IMAGE_PROFILE_SELECTED_SUB_TITLE = "Settings Error Image Profile Selected Sub Title";
+  static const String SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE = "Settings Error Update Image Profile Sub Title";
+  static const String SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE = "Settings Error Image Profile Updated Successfully Sub Title";
+  static const String SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE = "Settings Error Update Phone Sub Title";
+  static const String SETTINGS_FULL_NAME_UPDATED_SUCCESSFULLY_SUB_TITLE = "Settings Error Full Name Updated Successfully Sub Title";
+  static const String SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE = "Settings Error Update Full Name Sub Title";
+  static const String SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE = "Settings Error Vendor Status Updated Successfully Sub Title";
+  static const String SETTINGS_ERROR_UPDATE_VENDOR_STATUS_SUB_TITLE = "Settings Error Update Vendor Status Sub Title";
+
+
+
   // - - - - - - - - - - - - - - - - - - VENDOR NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String NEW_ORDER_TITLE = "New Order Title";
   static const String NEW_ORDER_SUB_TITLE = "New Order Sub Title";
@@ -133,6 +157,10 @@ mixin CustomLocale{
   static const String ORDERS_STATUS_TITLE = "Orders Status Title";
   static const String ORDERS_EMPTY_LIST_TITLE = "Orders Empty List Title";
 
+  static const String ORDERS_EMPTY_COUNTER_SUB_TITLE = "Orders Empty Counter Sub Title";
+  static const String ORDERS_CANNOT_ORDER_SUB_TITLE = "Orders Cannot Order Sub Title";
+  static const String ORDERS_ORDER_SUCCESS_SUB_TITLE = "Orders Order Success Sub Title";
+
   // - - - - - - - - - - - - - - - - - - NOTIFICATIONS SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String NOTIFICATIONS_TITLE = "Notifications Title";
   static const String NOTIFICATION_TITLE = "Notification Title";
@@ -140,11 +168,15 @@ mixin CustomLocale{
   static const String NOTIFICATION_DIALOG_DISMISS_TITLE = "Notification Dialog Dismiss Title";
   static const String NOTIFICATION_EMPTY_LIST_TITLE = "Notification Empty List Title";
 
+  static const String NOTIFICATION_ERROR_DELETE_NOTIFICATION_SUB_TITLE = "Notification Error Delete Notification";
+
   // - - - - - - - - - - - - - - - - - - WISHLISTS SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String WISHLISTS_TITLE = "WishLists Title";
   static const String WSIHLIST_DIALOG_DELETE_TITLE = "Wishlist Dialog Delete Title";
   static const String WSIHLIST_DIALOG_DISMISS_TITLE = "Wishlist Dialog Dismiss Title";
   static const String WISHLIST_EMPTY_LIST_TITLE = "WishList Empty List Title";
+
+  static const String WISHLIST_ERROR_CANNOT_DELETE_SUB_TITLE = "WishList Error Cannot Delete";
 
   // - - - - - - - - - - - - - - - - - - BE VENDOR SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String BE_VENDOR_TITLE = "Be Vendor Title";
@@ -181,6 +213,8 @@ mixin CustomLocale{
   static const String BE_VENDOR_SUCCESS_STATE_TITLE = "Be Vendor Success State Title";
   static const String BE_VENDOR_SUCCESS_STATE_SUB_TITLE = "Be Vendor Success State Sub Title";
   static const String BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE = "Be Vendor Success State Button Title";
+
+  static const String BE_VENDOR_ERROR_SUB_TITLE = "Be Vendor Error Sub Title";
 
   // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String VENDOR_DETAILS_TITLE = "Vendor Details Title";
@@ -236,6 +270,10 @@ mixin CustomLocale{
   static const String VALIDATOR_AGE_ERROR3 = "Validator Age error 3";
   static const String VALIDATOR_AGE_ERROR4 = "Validator Age error 4";
 
+  // - - - - - - - - - - - - - - - - - - ALERT MESSAGES - - - - - - - - - - - - - - - - - -  //
+  static const String ERROR_TITLE = "error title";
+  static const String SUCCESS_TITLE = "title success";
+
   // - - - - - - - - - - - - - - - - - - REUSABLE  - - - - - - - - - - - - - - - - - -  //
   static const String EMAIL = "Email";
   static const String PASSWORD = "Password";
@@ -244,10 +282,7 @@ mixin CustomLocale{
   static const String OR = "Or";
   static const String LOADING_TITLE = "loading_title";
   static const String LOADING_SUB_TITLE = "loading_sub_title";
-  static const String ERROR_TITLE = "error_title";
-  static const String ERROR_SUB_TITLE = "error_sub_title";
   static const String ERROR_BUTTON_TITLE = "error_button_title";
   static const String NETWORK_TITLE = "title notwork";
   static const String NETWORK_SUB_TITLE = "sub title notwork";
-
 }

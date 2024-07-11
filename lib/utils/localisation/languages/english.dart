@@ -12,12 +12,14 @@ class English {
     CustomLocale.PASSWORD_VALIDATOR: "Password is required",
     CustomLocale.OR: "Or",
     CustomLocale.LOADING_TITLE: "Please wait...",
-    CustomLocale.LOADING_SUB_TITLE: "Itmay take a few seconds, hold-On.",
-    CustomLocale.ERROR_TITLE: "",
-    CustomLocale.ERROR_SUB_TITLE: "",
+    CustomLocale.LOADING_SUB_TITLE: "It may take a few seconds, hold-On.",
     CustomLocale.ERROR_BUTTON_TITLE: "Try again",
     CustomLocale.NETWORK_TITLE: "No Network Connection",
     CustomLocale.NETWORK_SUB_TITLE: "Make Sure Your Device Is Connected To The Network",
+
+    // - - - - - - - - - - - - - - - - - - ALERT MESSAGES - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.ERROR_TITLE: "Oh snap!",
+    CustomLocale.SUCCESS_TITLE: "Done successfully",
 
     // - - - - - - - - - - - - - - - - - - LOGIN SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.LOGIN_TITLE: "Welcome back,",
@@ -27,6 +29,9 @@ class English {
     CustomLocale.LOGIN_CREATE_NEW_ACCOUNT: "Create new account",
     CustomLocale.LOGIN_LOGIN_WITH_GOOGLE: "Log in with Google",
     CustomLocale.LOGIN_CHANGE_THE_LANGUAGE: "Change the language (en)",
+
+    CustomLocale.LOGIN_ERROR_EMAI_INVALID_SUB_TITLE: "Cannot login with this email.",
+    CustomLocale.LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE: "Email Or Password Invalid.",
 
     // - - - - - - - - - - - - - - - - - - REGISTER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.REGISTER_TITLE: "Let's create your account",
@@ -46,12 +51,18 @@ class English {
     CustomLocale.REGISTER_CHECK_BOX_SUB_TITLE_ERROR: "You Have Must Check The Box To Continue",
     CustomLocale.REGISTER_PASSWORD_NOT_MATCHED_SUB_TITLE_ERROR: "The Passwords Must Be The Same",
 
+    CustomLocale.REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE: "Cannot register with this email.",
+    CustomLocale.REGISTER_SUCCESS_SUB_TITLE: "Your Account Created successfully.",
+
     // - - - - - - - - - - - - - - - - - - FORGET PASSWORD SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FORGET_PASSOWRD_TITLE: "Forget password",
     CustomLocale.FORGET_PASSOWRD_SUB_TITLE: "Don't worry sometimes people can forget to, enter your email and we will send you a password reset link.",
     CustomLocale.FORGET_PASSOWRD_SEND: "Send",
     CustomLocale.FORGET_PASSOWRD_EMAIL_TITLE_INVALID: "Invalid Email",
     CustomLocale.FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID: "Email Must Be At Least 6 Characters And @",
+
+    CustomLocale.FORGOT_PASSOWRD_ERROR_SUB_TITLE: "An error has occurred, Email Not Found.",
+    CustomLocale.FORGOT_PASSOWRD_SUCCESS_SUB_TITLE: "We Sent The Link To Reset Your Password.",
 
     // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
     CustomLocale.INDEX_EXPLORE_TITLE: "Explore",
@@ -77,6 +88,10 @@ class English {
   CustomLocale.HOME_ENABLE_MAP_VENDORS_TITLE : "Vendors",
   CustomLocale.HOME_ENABLE_MAP_VENDORS_SUB_TITLE : "You can show and hide vendors on map",
   CustomLocale.HOME_KM : "Km",
+
+  CustomLocale.HOME_ERROR_GET_VENDOR_SUB_TITLE : "Vendor not found !",
+    CustomLocale.HOME_ERROR_VENDORS_NOT_FOUND : "   Vendors not found !",
+  CustomLocale.HOME_ERROR_GET_CURRENT_LOCATION_SUB_TITLE : "Cannot Get You Current Location !",
 
   // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
   CustomLocale.SETTINGS_PROFILE_TITLE : "Profile",
@@ -115,6 +130,15 @@ class English {
   CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "Gallery",
   CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "Dismiss",
 
+  CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY : "Image profile updated successfully.",
+  CustomLocale.SETTINGS_ERROR_IMAGE_PROFILE_SELECTED_SUB_TITLE : "No image selected.",
+  CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE : "Cannot update your image profile.",
+  CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE : "Phone number updated successfully.",
+  CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE : "Cannot update your phone number.",
+  CustomLocale.SETTINGS_FULL_NAME_UPDATED_SUCCESSFULLY_SUB_TITLE : "FullName updated successfully.",
+  CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE : "Cannot update your fullName number.",
+  CustomLocale.SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE : "Phone status updated successfully.",
+  CustomLocale.SETTINGS_ERROR_UPDATE_VENDOR_STATUS_SUB_TITLE : "Cannot update your updated status.",
 
     // - - - - - - - - - - - - - - - - - - VENDOR NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.NEW_ORDER_TITLE: "New Order",
@@ -138,12 +162,17 @@ class English {
   CustomLocale.ORDERS_STATUS_TITLE : "Status",
   CustomLocale.ORDERS_EMPTY_LIST_TITLE : "No Orders Found !",
 
+  CustomLocale.ORDERS_EMPTY_COUNTER_SUB_TITLE : "Please fill how many kG you want '!",
+  CustomLocale.ORDERS_CANNOT_ORDER_SUB_TITLE : "Sorry cannot order right now !",
+  CustomLocale.ORDERS_ORDER_SUCCESS_SUB_TITLE : "Thank You From Your Order We Will Inform You In Notification Section",
+
   // - - - - - - - - - - - - - - - - - - NOTIFICATIONS SCREEN - - - - - - - - - - - - - - - - - -  //
   CustomLocale.NOTIFICATIONS_TITLE : "Notifications",
   CustomLocale.NOTIFICATION_TITLE : "Notification",
   CustomLocale.NOTIFICATION_DIALOG_DELETE_TITLE : "Delete",
   CustomLocale.NOTIFICATION_DIALOG_DISMISS_TITLE : "Dismiss",
   CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE : "No Notification Found !",
+  CustomLocale.NOTIFICATION_ERROR_DELETE_NOTIFICATION_SUB_TITLE : "Cannot delete this notification !",
 
   // - - - - - - - - - - - - - - - - - - BE SELLER SCREEN - - - - - - - - - - - - - - - - - -  //
   CustomLocale.BE_VENDOR_STEP_1_TITLE : "Personal Information",
@@ -181,6 +210,8 @@ class English {
     CustomLocale.BE_VENDOR_SUCCESS_STATE_SUB_TITLE: "Vous avez déjà soumis une candidature pour devenir vendeur pour notre équipe, veuillez patienter.",
     CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE: "Ok",
 
+    CustomLocale.BE_VENDOR_ERROR_SUB_TITLE: "Cannot send you demand, please try again",
+
     // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
   CustomLocale.VENDOR_DETAILS_TITLE : "Vendor Details",
   CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_FEEDBACK : "Feedback",
@@ -212,6 +243,8 @@ class English {
   CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE : "Delete",
   CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "Dismiss",
   CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "No WishLists Found !",
+
+  CustomLocale.WISHLIST_ERROR_CANNOT_DELETE_SUB_TITLE : "You cannot delete this wishlist right now !",
 
     // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FAQ_TITLE : "FAQ",

@@ -13,11 +13,13 @@ class Arabic{
     CustomLocale.OR: "أو",
     CustomLocale.LOADING_TITLE: "انتظر من فضلك...",
     CustomLocale.LOADING_SUB_TITLE: "ربما يستغرق الأمر بضع ثواني، يرجى الانتظار.",
-    CustomLocale.ERROR_TITLE: "",
-    CustomLocale.ERROR_SUB_TITLE: "",
     CustomLocale.ERROR_BUTTON_TITLE: "حاول ثانية",
     CustomLocale.NETWORK_TITLE: "لا يوجد اتصال بالشبكة",
     CustomLocale.NETWORK_SUB_TITLE: "تأكد من أن جهازك متصل بالشبكة",
+
+    // - - - - - - - - - - - - - - - - - - ALERT MESSAGES - - - - - - - - - - - - - - - - - -  //
+    CustomLocale.ERROR_TITLE: "يا للمفاجئة !",
+    CustomLocale.SUCCESS_TITLE: "تم بنجاح",
 
     // - - - - - - - - - - - - - - - - - - LOGIN SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.LOGIN_TITLE: "مرحبًا بعودتك،",
@@ -27,6 +29,9 @@ class Arabic{
     CustomLocale.LOGIN_CREATE_NEW_ACCOUNT: "انشاء حساب جديد",
     CustomLocale.LOGIN_LOGIN_WITH_GOOGLE: "تسجيل الدخول عبر جوجل",
     CustomLocale.LOGIN_CHANGE_THE_LANGUAGE: "تغيير اللغة (ar)",
+
+    CustomLocale.LOGIN_ERROR_EMAI_INVALID_SUB_TITLE: "لا يمكن تسجيل الدخول بهذا البريد الإلكتروني.",
+    CustomLocale.LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE: "البريد الإلكتروني أو كلمة المرور غير صالحة.",
 
     // - - - - - - - - - - - - - - - - - - REGISTER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.REGISTER_TITLE: "لنقم بإنشاء حسابك",
@@ -46,12 +51,17 @@ class Arabic{
     CustomLocale.REGISTER_CHECK_BOX_SUB_TITLE_ERROR: "يجب عليك  تفقد الخانة للمتابعة",
     CustomLocale.REGISTER_PASSWORD_NOT_MATCHED_SUB_TITLE_ERROR: "يجب أن تكون كلمات المرور هي نفسها",
 
+    CustomLocale.REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE: "لا يمكن التسجيل بهذا البريد الإلكتروني.",
+    CustomLocale.REGISTER_SUCCESS_SUB_TITLE: "تم إنشاء حسابك بنجاح.",
+
     // - - - - - - - - - - - - - - - - - - FORGET PASSWORD SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FORGET_PASSOWRD_TITLE: "نسيت كلمة المرور",
     CustomLocale.FORGET_PASSOWRD_SUB_TITLE: "لا تقلق في بعض الأحيان قد ينسى الأشخاص إدخال بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.",
     CustomLocale.FORGET_PASSOWRD_SEND: "ارسل",
     CustomLocale.FORGET_PASSOWRD_EMAIL_TITLE_INVALID: "بريد إلكتروني خاطئ",
     CustomLocale.FORGET_PASSOWRD_EMAIL_SUB_TITLE_INVALID: "يجب أن يتكون البريد الإلكتروني من 6 أحرف على الأقل و@",
+    CustomLocale.FORGOT_PASSOWRD_ERROR_SUB_TITLE: "لقد حدث خطأ،البريد الإلكتروني غير موجود.",
+    CustomLocale.FORGOT_PASSOWRD_SUCCESS_SUB_TITLE: "لقد أرسلنا الرابط لإعادة تعيين كلمة المرور الخاصة بك.",
 
     // - - - - - - - - - - - - - - - - - - INDEX - - - - - - - - - - - - - - - - - -  //
     CustomLocale.INDEX_EXPLORE_TITLE: "الرئيسي",
@@ -76,6 +86,10 @@ class Arabic{
     CustomLocale.HOME_ENABLE_MAP_VENDORS_TITLE : "البائعون",
     CustomLocale.HOME_ENABLE_MAP_VENDORS_SUB_TITLE : "يمكنك إظهار وإخفاء البائعين على الخريطة",
     CustomLocale.HOME_KM : "كيلومتر",
+
+    CustomLocale.HOME_ERROR_GET_VENDOR_SUB_TITLE : "لم يتم العثور على البائع !",
+    CustomLocale.HOME_ERROR_VENDORS_NOT_FOUND : "   لم يتم العثور على  اي بائع !",
+    CustomLocale.HOME_ERROR_GET_CURRENT_LOCATION_SUB_TITLE : "لا يمكن الحصول على موقعك الحالي!",
 
     // - - - - - - - - - - - - - - - - - - SETTINGS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.SETTINGS_PROFILE_TITLE : "الحساب",
@@ -114,6 +128,16 @@ class Arabic{
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_GALLERY_TITLE : "الصور",
     CustomLocale.SETTINGS_UPDATE_IMAGE_BUTTON_DISMISS_TITLE : "عودة",
 
+    CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY : "تم تحديث صورة ملف التعريف  بنجاح.",
+    CustomLocale.SETTINGS_ERROR_IMAGE_PROFILE_SELECTED_SUB_TITLE : "لم يتم تحديد أي صورة.",
+    CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE : "لا يمكن تحديث صورة ملف التعريف الخاص بك.",
+    CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE : "تم تحديث رقم الهاتف بنجاح.",
+    CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE : "لا يمكن تحديث رقم هاتفك.",
+    CustomLocale.SETTINGS_FULL_NAME_UPDATED_SUCCESSFULLY_SUB_TITLE : "تم تحديث رقم هاتفك بنجاح.",
+    CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE : "لا يمكن تحديث رقم إسمك.",
+    CustomLocale.SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE : "تم تحديث رقم حالتك بنجاح.",
+    CustomLocale.SETTINGS_ERROR_UPDATE_VENDOR_STATUS_SUB_TITLE : "لا يمكن تحديث رقم حالتك.",
+
 
     // - - - - - - - - - - - - - - - - - - VENDOR NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.NEW_ORDER_TITLE: "طلب جديد",
@@ -138,12 +162,19 @@ class Arabic{
     CustomLocale.ORDERS_STATUS_TITLE : "الحالة",
     CustomLocale.ORDERS_EMPTY_LIST_TITLE : "لم يتم العثور على أية طلبات !",
 
+    CustomLocale.ORDERS_EMPTY_COUNTER_SUB_TITLE: "يرجى إدخال كمية الكيلوغرامات التي تريدها !",
+    CustomLocale.ORDERS_CANNOT_ORDER_SUB_TITLE: "عذرًا، لا يمكن الطلب الآن !",
+    CustomLocale.ORDERS_ORDER_SUCCESS_SUB_TITLE: "شكرًا لطلبك، سنقوم بإعلامك في قسم الإشعارات.",
+
+
     // - - - - - - - - - - - - - - - - - - NOTIFICATIONS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.NOTIFICATIONS_TITLE : "الإشعارات",
     CustomLocale.NOTIFICATION_TITLE : "إشعار",
     CustomLocale.NOTIFICATION_DIALOG_DELETE_TITLE : "مسح",
     CustomLocale.NOTIFICATION_DIALOG_DISMISS_TITLE : "عودة",
     CustomLocale.NOTIFICATION_EMPTY_LIST_TITLE : "لم يتم العثور على أية إشعارات !",
+
+    CustomLocale.NOTIFICATION_ERROR_DELETE_NOTIFICATION_SUB_TITLE : "لا يمكن حذف هذا الإشعار!",
 
     // - - - - - - - - - - - - - - - - - - BE SELLER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.BE_VENDOR_CIN : "رقم البطاقة الوطنية",
@@ -180,6 +211,8 @@ class Arabic{
     CustomLocale.BE_VENDOR_SUCCESS_STATE_SUB_TITLE: "لقد قمت بالفعل بإرسال طلب لتصبح بائعا لفريقنا، يرجى الانتظار.",
     CustomLocale.BE_VENDOR_SUCCESS_STATE_BUTTON_TITLE: "حسنا",
 
+    CustomLocale.BE_VENDOR_ERROR_SUB_TITLE: "لا يمكن إرسال الطلب إليك، يرجى المحاولة مرة أخرى",
+
     // - - - - - - - - - - - - - - - - - - VENDOR DETAILS SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.VENDOR_DETAILS_TITLE : "تفاصيل البائع",
     CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_FEEDBACK : "تقيم",
@@ -211,6 +244,9 @@ class Arabic{
     CustomLocale.WSIHLIST_DIALOG_DELETE_TITLE : "مسح",
     CustomLocale.WSIHLIST_DIALOG_DISMISS_TITLE : "عودة",
     CustomLocale.WISHLIST_EMPTY_LIST_TITLE : "لم يتم العثور على أية رغبات !",
+
+    CustomLocale.WISHLIST_ERROR_CANNOT_DELETE_SUB_TITLE: "لا يمكنك  حذف  اية رغبات  في الوقت الحالي !",
+
 
     // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FAQ_TITLE : "التعليمات",

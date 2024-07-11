@@ -89,7 +89,7 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
 
       // VALIDATION
       if(currentState.counter! < 1 && context.mounted){
-        CustomSnackBar.show(context: context, title: "Empty Field", subTitle: "Please Insert How Many KG DO You Want.", type: ContentType.failure, color: CustomColors.RED_LIGHT);
+        CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.ORDERS_EMPTY_COUNTER_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
         return;
       }
 
@@ -121,12 +121,12 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
       emit(currentState);
       context.pushReplacementNamed(CustomRouter.VENDOR_ORDERS);
       await Future.delayed(const Duration(milliseconds: 300));
-      CustomSnackBar.show(context: context, title: "Order Successfully", subTitle: "Thank You From Your Order We Will Inform You In Notification Section", type: ContentType.success);
+      CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.ORDERS_ORDER_SUCCESS_SUB_TITLE.getString(context), type: ContentType.success);
 
 
     }catch(_){
       emit(currentState);
-      context.mounted ? CustomSnackBar.show(context: context, title: "Error 404", subTitle: "Try Next Time", type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+      context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.ORDERS_CANNOT_ORDER_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
   }
 
