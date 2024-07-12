@@ -207,6 +207,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   void onGiveFeedback({required BuildContext context, required Function callBack, required String argumentId }) async {
 
     VendorDetailsMainState currentState = state as VendorDetailsMainState;
+    double feedback = 3.0;
 
     await showDialog(
         context: context,
@@ -245,7 +246,10 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                         allowHalfRating: true,
                         itemPadding: EdgeInsets.zero,
                         itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
-                        onRatingUpdate: (double value) { emit(currentState.copyWith(feedback: value));  },
+                        onRatingUpdate: (double value) {
+                          feedback = value;
+                          emit((state as VendorDetailsMainState).copyWith(feedback: value));
+                          },
                       ),
                     ),
 
@@ -280,7 +284,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                         // - - - - - - - - - - - - - - - - - -  SUBMIT - - - - - - - - - - - - - - - - - -  //
                         Expanded(child: CustomElevatedButton(onClick: () async{
 
-                          currentState = state as VendorDetailsMainState;
+                          //currentState = state as VendorDetailsMainState;
 
                           try{
 
@@ -303,13 +307,14 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                                 fullName: "${userEntity.firstName} ${userEntity.lastName}",
                                 reviewBody: currentState.feedbackController!.text.trim(),
                                 avatar: userEntity.avatar,
-                                rating: currentState.feedback!,
+                                rating: feedback,
                                 createAt: "${date.day}/${date.month}/${date.year}"
                             );
 
                             for(ReviewEntity review in currentState.reviews!){
                               if(review.viewerId == uid) { await reviewRepository.delete(docId: review.id!); }
                             }
+
                             await reviewRepository.insert(reviewEntity: review);
 
                             currentState.feedbackController!.clear();
@@ -317,14 +322,9 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
                             callBack.call();
 
-                          }catch(_){
-
-                            emit(currentState);
-
-                          }
+                          }catch(e){ emit(currentState); }
 
                         }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
-
                       ],
                     )
                   ],
@@ -440,7 +440,6 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                                   reportType: currentState.reportReason,
                                   reportBody: currentState.feedbackController!.text.trim(),
                                   avatar: userEntity.avatar,
-                                  rating: currentState.feedback!,
                                   createAt: "${date.day}/${date.month}/${date.year}"
                               );
                               await reportRepository.insert(reportEntity: report);

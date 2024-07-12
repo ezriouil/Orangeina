@@ -1,7 +1,6 @@
 class ReportEntity {
 
   // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
-  late num rating;
   late final String? id,
       vendorId,
       fullName,
@@ -18,7 +17,6 @@ class ReportEntity {
       this.reportType = "",
       this.reportBody = "",
       this.avatar = "",
-      this.rating = 0,
       this.createAt = ""});
 
   // - - - - - - - - - - - - - - - - - - TO JSON - - - - - - - - - - - - - - - - - -  //
@@ -29,7 +27,6 @@ class ReportEntity {
         'reportType': reportType,
         'reportBody': reportBody,
         'avatar': avatar,
-        'rating': rating,
         'createAt': createAt
       };
 
@@ -42,7 +39,6 @@ class ReportEntity {
         reportType: json['reportType'] as String,
         reportBody: json['reportBody'] as String,
         avatar: json['avatar'] as String,
-        rating: json['rating'] as num,
         createAt: json['createAt'] as String);
   }
 }

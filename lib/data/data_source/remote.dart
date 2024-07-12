@@ -321,7 +321,6 @@ class Remote{
       'reportType': reportDto.reportType,
       'reportBody': reportDto.reportBody,
       'avatar': reportDto.avatar,
-      'rating': reportDto.rating,
       'createAt': reportDto.createAt
     });
   }

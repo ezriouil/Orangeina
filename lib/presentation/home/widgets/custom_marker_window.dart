@@ -1,7 +1,9 @@
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/constants/custom_sizes.dart';
+import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
@@ -78,7 +80,7 @@ class CustomMarkerWindow extends CustomState {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Icon(Iconsax.arrow_up, size: 15, color: darkDarkLightLightColor(context)),
-                      Text("${distance.toStringAsFixed(2)} Km", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkDarkLightLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text("${distance.toStringAsFixed(2)} ${CustomLocale.HOME_KM.getString(context)}", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkDarkLightLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ],

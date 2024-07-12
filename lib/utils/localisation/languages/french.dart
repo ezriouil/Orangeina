@@ -31,7 +31,7 @@ class French{
     CustomLocale.LOGIN_CHANGE_THE_LANGUAGE: "Changer la langue (fr)",
 
     CustomLocale.LOGIN_ERROR_EMAI_INVALID_SUB_TITLE: "Impossible de se connecter avec cet email.",
-    CustomLocale.LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE: "Votre compte a été créé avec succès.",
+    CustomLocale.LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE: "E-mail ou mot de passe invalide.",
 
     // - - - - - - - - - - - - - - - - - - REGISTER SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.REGISTER_TITLE: "Créer votre compte",
@@ -49,7 +49,7 @@ class French{
     CustomLocale.REGISTER_PASSWORD_NOT_MATCHED_SUB_TITLE_ERROR: "Les Mots De Passe Doivent Être Les Mêmes",
 
     CustomLocale.REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE: "Impossible de s'inscrire avec cet email.",
-    CustomLocale.REGISTER_SUCCESS_SUB_TITLE: "Your Account Created successfully.",
+    CustomLocale.REGISTER_SUCCESS_SUB_TITLE: "Votre compte a été créé avec succès.",
 
     // - - - - - - - - - - - - - - - - - - FORGET PASSWORD SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FORGET_PASSOWRD_TITLE: "Mot de passe oublié",
