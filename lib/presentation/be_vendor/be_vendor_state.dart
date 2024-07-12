@@ -51,8 +51,8 @@ final class BeVendorMainState extends BeVendorState {
           GlobalKey<FormState>? carInfoFormState,
           }) =>
       BeVendorMainState(
-          scrollPhysics: scrollPhysics ?? this.scrollPhysics,
-          currentStep: currentStep ?? this.currentStep,
+        scrollPhysics: scrollPhysics ?? this.scrollPhysics,
+        currentStep: currentStep ?? this.currentStep,
         gender: gender ?? this.gender,
         carType: carType ?? this.carType,
         shopThumbnail: shopThumbnail ?? this.shopThumbnail,

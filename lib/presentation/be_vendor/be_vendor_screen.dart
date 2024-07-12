@@ -27,17 +27,12 @@ class BeVendorScreen extends CustomState {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-            onTap: () {
-              context.pop();
-            },
+            onTap: context.pop,
             borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
             child: Builder(builder: (context) {
-              return Icon(
-                  isArabic(context)
-                      ? Iconsax.arrow_right_3
-                      : Iconsax.arrow_left_24,
-                  color: darkLightColor(context));
-            })),
+              return Icon(isArabic(context) ? Iconsax.arrow_right_3 : Iconsax.arrow_left_24, color: darkLightColor(context));
+            })
+        ),
         title: Text(CustomLocale.BE_VENDOR_TITLE.getString(context), style: Theme.of(context).textTheme.titleMedium)
       ),
       body: BlocBuilder<BeVendorCubit, BeVendorState>(
@@ -49,7 +44,6 @@ class BeVendorScreen extends CustomState {
                     physics: state.scrollPhysics!,
                     currentStep: state.currentStep!,
                     connectorColor: MaterialStateProperty.all(primaryColor(context)),
-                    //onStepTapped: context.read<BeVendorCubit>().onStepTapped,
                     onStepTapped: null,
                     onStepContinue: (){ context.read<BeVendorCubit>().continued(context: context); },
                     onStepCancel: context.read<BeVendorCubit>().cancel,
@@ -189,18 +183,24 @@ class BeVendorScreen extends CustomState {
                                         child: SizedBox(
                                           width: getWidth(context),
                                           height: 180.0,
-                                          child: Image.file(File(state.shopThumbnail!),
+                                          child: state.shopThumbnail! == "" ?
+                                          Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                  border: Border.all(color: darkLightColor(context))),
+                                              child: Icon(Iconsax.car, size: 30.0, color: grayColor(context))) :
+                                          Image.file(File(state.shopThumbnail!),
                                               height: getHeight(context),
                                               width: getWidth(context),
                                               fit: BoxFit.cover,
-                                          errorBuilder: (context, url, error) =>
-                                              Container(
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-                                                      border: Border.all(color: darkLightColor(context))),
-                                                  child: Icon(Iconsax.car, size: 30.0, color: grayColor(context)))),
+                                              errorBuilder: (context, url, error) =>
+                                                  Container(
+                                                      alignment: Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                          border: Border.all(color: darkLightColor(context))),
+                                                      child: Icon(Iconsax.car, size: 30.0, color: grayColor(context)))),
                                     ),
                                       ),
                                       Positioned(
@@ -288,7 +288,14 @@ class BeVendorScreen extends CustomState {
                                         child: SizedBox(
                                           width: getWidth(context),
                                           height: 180,
-                                          child: Image.file(File(state.cinFrontImage!),
+                                          child:state.cinFrontImage == ""
+                                              ? Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                  border: Border.all(color: darkLightColor(context))),
+                                              child: Icon(Iconsax.card, size: 30.0, color: grayColor(context)))
+                                              : Image.file(File(state.cinFrontImage!),
                                               height: getHeight(context),
                                               width: getWidth(context),
                                               fit: BoxFit.cover,
@@ -339,7 +346,14 @@ class BeVendorScreen extends CustomState {
                                         child: SizedBox(
                                           width: getWidth(context),
                                           height: 180,
-                                          child: Image.file(File(state.cinBackImage!),
+                                          child: state.cinBackImage == ""
+                                              ? Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                  border: Border.all(color: darkLightColor(context))),
+                                              child: Icon(Iconsax.card, size: 30.0, color: grayColor(context)))
+                                              : Image.file(File(state.cinBackImage!),
                                               height: getHeight(context),
                                               width: getWidth(context),
                                               fit: BoxFit.cover,
@@ -390,7 +404,15 @@ class BeVendorScreen extends CustomState {
                                         child: SizedBox(
                                           width: getWidth(context),
                                           height: 180,
-                                          child: Image.file(File(state.carAssuranceImage!),
+                                          child:
+                                          state.carAssuranceImage == ""
+                                              ? Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                  border: Border.all(color: darkLightColor(context))),
+                                              child: Icon(Iconsax.bookmark, size: 30.0, color: grayColor(context)))
+                                              : Image.file(File(state.carAssuranceImage!),
                                               height: getHeight(context),
                                               width: getWidth(context),
                                               fit: BoxFit.cover,
@@ -441,7 +463,15 @@ class BeVendorScreen extends CustomState {
                                         child: SizedBox(
                                           width: getWidth(context),
                                           height: 180,
-                                          child: Image.file(File(state.carRegistrationImage!),
+                                          child:
+                                          state.carRegistrationImage == ""
+                                              ? Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
+                                                  border: Border.all(color: darkLightColor(context))),
+                                              child: Icon(Iconsax.archive_book, size: 30.0, color: grayColor(context)))
+                                              : Image.file(File(state.carRegistrationImage!),
                                               height: getHeight(context),
                                               width: getWidth(context),
                                               fit: BoxFit.cover,

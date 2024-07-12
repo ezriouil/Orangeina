@@ -49,18 +49,16 @@ class SettingsCubit extends Cubit<SettingsState> {
   final VendorRepository vendorRepository;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  SettingsCubit({ required this.storage, required this.connectivity, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsLoadingState()) {
-    emit(SettingsMainState(
-      arabicLang: false,
-      englishLang: false,
-      frenchLang: false,
-      vendorOnlineOffline: false,
-      updateImageProfilePath: "",
-      firstNameHint: "",
-      lastNameHint: "",
-      phoneHint: "",
-    ));
-  }
+  SettingsCubit({ required this.storage, required this.connectivity, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsMainState(
+    arabicLang: false,
+    englishLang: false,
+    frenchLang: false,
+    vendorOnlineOffline: false,
+    updateImageProfilePath: "",
+    firstNameHint: "",
+    lastNameHint: "",
+    phoneHint: "",
+  ));
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init({ required BuildContext context }) async {
@@ -69,7 +67,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     await Future.delayed(const Duration(milliseconds: 200));
 
-    emit(SettingsLoadingState());
+    //emit(SettingsLoadingState());
 
     await Future.delayed(const Duration(milliseconds: 200));
 
