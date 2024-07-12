@@ -67,7 +67,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     await Future.delayed(const Duration(milliseconds: 200));
 
-    //emit(SettingsLoadingState());
+    emit(SettingsLoadingState());
 
     await Future.delayed(const Duration(milliseconds: 200));
 
@@ -97,7 +97,7 @@ class SettingsCubit extends Cubit<SettingsState> {
       updateImageProfilePath: _user == null ? _vendor?.avatar : _user?.avatar ,
       isVendor: isVendor,
       vendorOnlineOffline: _vendor?.isOnline ?? false,
-      firstNameHint: _user == null ? _vendor?.firstName : _user?.lastName,
+      firstNameHint: _user == null ? _vendor?.firstName : _user?.firstName,
       lastNameHint: _user == null ? _vendor?.lastName : _user?.lastName,
       phoneHint: _user == null ? _vendor?.phoneNumber : _user?.phoneNumber,
     ));
@@ -205,6 +205,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     final currentState = state as SettingsMainState;
     final TextEditingController firstName = TextEditingController(text: currentState.firstNameHint);
     final TextEditingController lastName = TextEditingController(text: currentState.lastNameHint);
+
+    print(currentState.firstNameHint);
 
     await showDialog(
         context: context.mounted ? context : context,

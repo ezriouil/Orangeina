@@ -65,37 +65,45 @@ class HomeCubit extends Cubit<HomeState> {
 
     final currentState = state as HomeMainState;
 
-    /// GET ALL VENDORS
-    final vendors = await vendorRepository.getAllVendors();
+    try{
+      /// GET ALL VENDORS + CLEAR POLY LIEN
+      //currentState.polyline!.clear();
+      //emit(currentState.copyWith(cameraCurrentLocation: const CameraPosition(target: LatLng(CustomTextStrings.INITAIL_LAT,CustomTextStrings.INITAIL_LNG), zoom: 6.0)));
+      final vendors = await vendorRepository.getAllVendors();
 
-    /// CHECK PERMISSION IS GRANTED OR NOT TO GET CURRENT LOCATION
-    final Position? currentPosition;
-    final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    final permission = await Geolocator.checkPermission();
-    if (!isLocationServiceEnabled || permission == LocationPermission.denied || permission == LocationPermission.deniedForever) { currentPosition = null; }
-    else { currentPosition =  await Geolocator.getCurrentPosition(); }
+      /// CHECK PERMISSION IS GRANTED OR NOT TO GET CURRENT LOCATION
+      final Position? currentPosition;
+      final isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+      final permission = await Geolocator.checkPermission();
+      if (!isLocationServiceEnabled || permission == LocationPermission.denied || permission == LocationPermission.deniedForever) { currentPosition = null; }
+      else { currentPosition =  await Geolocator.getCurrentPosition(); }
 
-    /// EMIT STATE
-    emit(currentState.copyWith(
-      myCurrentLocation: CameraPosition(
-          target: LatLng(
-              currentPosition?.latitude ?? CustomTextStrings.INITAIL_LAT,
-              currentPosition?.longitude ?? CustomTextStrings.INITAIL_LNG),
-          zoom: 6.0),
-      vendors:  vendors,
-    ));
+      /// EMIT STATE
+      emit(currentState.copyWith(
+        myCurrentLocation: CameraPosition(
+            target: LatLng(
+                currentPosition?.latitude ?? CustomTextStrings.INITAIL_LAT,
+                currentPosition?.longitude ?? CustomTextStrings.INITAIL_LNG),
+            zoom: 6.0),
+        vendors:  vendors,
+      ));
 
-    uid = await LocalStorage.read(key: "UID", storage: storage);
+      uid = await LocalStorage.read(key: "UID", storage: storage);
 
-    if(uid == null) {
-      await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
-      context.pushReplacementNamed(CustomRouter.LOGIN);
-      return;
+      if(uid == null) {
+        await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
+        context.pushReplacementNamed(CustomRouter.LOGIN);
+        return;
+      }
+
+      /// PERIODIC TIMER TO REFRESH VENDORS ON MAP
+      await onRefreshVendors(context: context);
+      Timer.periodic(const Duration(minutes: 1), (time) async{ await onRefreshVendors(context: context); });
+    }catch(e){
+      print("++++++");
+      print(e.toString());
+      print("++++++");
     }
-
-    /// PERIODIC TIMER TO REFRESH VENDORS ON MAP
-    await onRefreshVendors(context: context);
-    Timer.periodic(const Duration(minutes: 1), (time) async{ await onRefreshVendors(context: context); });
 
   }
 
@@ -135,7 +143,7 @@ class HomeCubit extends Cubit<HomeState> {
       final List<dynamic> listOfPoints = jsonDecode(response.body)['features'][0]['geometry']['coordinates'];
       final points = listOfPoints.map((p) => LatLng(p[1].toDouble(), p[0].toDouble())).toList();
 
-      polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 6, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
+      polyline.add(Polyline(polylineId: const PolylineId("polylineId"), points: points, width: 8, color: CustomColors.PRIMARY_LIGHT, startCap: Cap.roundCap, endCap: Cap.roundCap));
 
       emit(HomeLoadingState());
       await Future.delayed(const Duration(milliseconds: 300));
@@ -332,6 +340,8 @@ class HomeCubit extends Cubit<HomeState> {
               const double p = 0.017453292519943295;
               final double a = 0.5 - cos((lat - currentState.myCurrentLocation!.target.latitude) * p) / 2 + cos(currentState.myCurrentLocation!.target.latitude * p) * cos(lat * p) * (1 - cos((lng - currentState.myCurrentLocation!.target.longitude) * p)) / 2;
               final double distance = ((12742 * asin(sqrt(a))));
+
+
               // ADD WINDOW INFO
               currentState.customInfoWindowController!.addInfoWindow!(
                 CustomMarkerWindow(
@@ -356,5 +366,22 @@ class HomeCubit extends Cubit<HomeState> {
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  }
+
+  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const R = 6371; // Radius of the Earth in kilometers
+    final dLat = _degToRad(lat2 - lat1);
+    final dLon = _degToRad(lon2 - lon1);
+
+    final a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(_degToRad(lat1)) * cos(_degToRad(lat2)) *
+            sin(dLon / 2) * sin(dLon / 2);
+    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    return R * c; // Distance in kilometers
+  }
+
+  double _degToRad(double deg) {
+    return deg * (pi / 180);
   }
 }

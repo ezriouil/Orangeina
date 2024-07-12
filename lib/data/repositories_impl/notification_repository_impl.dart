@@ -18,7 +18,12 @@ class NotificationRepositoryImpl extends NotificationRepository {
         notificationsEntity.add(notificationDto.toNotificationEntity());
       }
     }
-
+    notificationsEntity.sort((a,b) {
+      if(!b.isRead!) {
+        return 1;
+      }
+      return -1;
+    });
     return notificationsEntity;
   }
 

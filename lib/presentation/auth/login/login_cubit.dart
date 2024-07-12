@@ -78,6 +78,8 @@ class LoginCubit extends Cubit<LoginState> {
         return;
       }
 
+      emit(LoginLoadingState());
+
       // CALL LOGIN METHODE
       final UserCredential userCredential = await authRepository.login(
           email: currentState.emailController!.text.trim(),
@@ -87,6 +89,7 @@ class LoginCubit extends Cubit<LoginState> {
       // CHECK THE USER HIS INFO ALREADY EXIST OR NOT
       final bool result = await userRepository.existUser(userId: userCredential.user!.uid);
       if(userCredential.user == null || !result){
+        emit(currentState);
         CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
         return;
       }
@@ -100,21 +103,12 @@ class LoginCubit extends Cubit<LoginState> {
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
 
       // NAVIGATE TO HOME SCREEN
-      currentState = state as LoginMainState;
       emit(currentState);
-      context.read<HomeCubit>().init(context: context);
-      context.read<WishlistCubit>().init(context: context);
-      context.read<NotificationCubit>().init(context: context);
-      context.read<SettingsCubit>().init(context: context);
-      context.read<VendorDetailsCubit>().init(context: context);
-      context.read<IndexCubit>().init();
-      context.read<VendorNewOrderCubit>().init();
-      context.read<VendorOrdersCubit>().init(context: context);
-      context.read<BeVendorCubit>().init(context: context);
       callBack.call();
 
     }catch(e){
       // EMIT ERROR STATE
+      emit(currentState);
       CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.LOGIN_ERROR_EMAIL_PASS_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
       emit(currentState);
     }
@@ -160,15 +154,6 @@ class LoginCubit extends Cubit<LoginState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
-      context.read<HomeCubit>().init(context: context);
-      context.read<WishlistCubit>().init(context: context);
-      context.read<NotificationCubit>().init(context: context);
-      context.read<SettingsCubit>().init(context: context);
-      context.read<VendorDetailsCubit>().init(context: context);
-      context.read<IndexCubit>().init();
-      context.read<VendorNewOrderCubit>().init();
-      context.read<VendorOrdersCubit>().init(context: context);
-      context.read<BeVendorCubit>().init(context: context);
       callBack.call();
 
     }catch(e){

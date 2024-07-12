@@ -17,6 +17,7 @@ class VendorNewOrderScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
+    context.read<VendorNewOrderCubit>().init();
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(

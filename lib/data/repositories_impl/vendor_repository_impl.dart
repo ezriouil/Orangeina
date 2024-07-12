@@ -79,6 +79,12 @@ class VendorRepositoryImpl extends VendorRepository {
       }
     }
 
+    ordersEntity.sort((a,b) {
+      if(b.status! == "PENDING") {
+        return 1;
+      }
+      return -1;
+    });
     return ordersEntity;
   }
 

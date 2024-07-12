@@ -25,7 +25,7 @@ class VendorOrdersCubit extends Cubit<VendorOrdersState> {
   void onRefresh({ required BuildContext context })async{
     emit(VendorOrdersLoadingState());
     await Future.delayed(const Duration(milliseconds: 500));
-    await getAllOrders(context: context);
+    await getAllOrders(context: context.mounted ? context : context);
   }
 
   // - - - - - - - - - - - - - - - - - - GET / REFRESH ORDERS - - - - - - - - - - - - - - - - - -  //

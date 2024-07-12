@@ -26,12 +26,11 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
   final Connectivity connectivity;
   final GetStorage storage;
 
-  VendorNewOrderCubit({ required this.storage,  required this.connectivity, required this.vendorRepository, required this.notificationRepository }) : super(VendorNewOrderMainState()){ init(); }
+  VendorNewOrderCubit({ required this.storage,  required this.connectivity, required this.vendorRepository, required this.notificationRepository }) : super(VendorNewOrderLoadingState());
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{
-    final currentState = state as VendorNewOrderMainState;
-    emit(currentState.copyWith(
+    emit(VendorNewOrderMainState(
       counter: 00,
       date: DateTime.now(),
       dateTimeLocalization: CustomLocale.EN,
@@ -40,6 +39,7 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
     ));
     final double getCurrentPrice = await vendorRepository.getProductCurrentPrice();
     final String? lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.FR;
+    final currentState = state as VendorNewOrderMainState;
     emit(currentState.copyWith(priceKg: getCurrentPrice, dateTimeLocalization: lang));
   }
 
