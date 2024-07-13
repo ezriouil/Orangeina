@@ -46,7 +46,7 @@ class VendorRepositoryImpl extends VendorRepository {
   // - - - - - - - - - - - - - - - - - - OVERRIDE UPDATE AVATAR - - - - - - - - - - - - - - - - - -  //
   @override
   Future<void> updateVendorAvatar({required String vendorId, required String newAvatar}) async{
-    await Remote.updateAvatar(collection: "VENDOR", doc: vendorId, newAvatar: newAvatar);
+    await Remote.updateAvatar(collection: "VENDORS", doc: vendorId, newAvatar: newAvatar);
   }
 
   @override
@@ -111,5 +111,8 @@ class VendorRepositoryImpl extends VendorRepository {
   Future<void> updateRating({required num newRate, required String vendorId}) async {
     Remote.updateVendorRating(vendorId: vendorId, averageRating: newRate);
   }
+
+  @override
+  Future<bool> isProcessingVendorInfo({required String uid}) async => await Remote.isProcessingVendorInfo(uid: uid);
 
 }

@@ -23,8 +23,9 @@ class WishlistCubit extends Cubit<WishlistState> {
   final WishListRepository wishListRepository;
   final GetStorage storage;
   final Connectivity connectivity;
+  final BuildContext context;
   String? uid;
-  WishlistCubit({ required this.storage, required this.wishListRepository, required this.connectivity}) : super(WishlistLoadingState());
+  WishlistCubit({ required this.context, required this.storage, required this.wishListRepository, required this.connectivity}) : super(WishlistLoadingState()){ init(context: context); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init({ required BuildContext context }) async{

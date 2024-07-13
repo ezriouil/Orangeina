@@ -23,8 +23,9 @@ class RegisterCubit extends Cubit<RegisterState> {
   final UserRepository userRepository;
   final GetStorage storage;
   final Connectivity connectivity;
+  final BuildContext context;
 
-  RegisterCubit({required this.authRepository, required this.userRepository, required this.storage, required this.connectivity}) : super(RegisterLoadingState()){ init(); }
+  RegisterCubit({required this.context, required this.authRepository, required this.userRepository, required this.storage, required this.connectivity}) : super(RegisterLoadingState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async {

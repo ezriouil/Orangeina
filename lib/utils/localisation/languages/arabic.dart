@@ -251,7 +251,7 @@ class Arabic{
     // - - - - - - - - - - - - - - - - - - FAQ SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.FAQ_TITLE : "التعليمات",
     CustomLocale.Q1 : "أين يمكنني العثور على التطبيق",
-    CustomLocale.R1 : "Google play\nApp store\nHuawei store\n",
+    CustomLocale.R1 : "جميع المتاجر لتحميل التطبيقات  Google Play أو App Store",
     CustomLocale.Q2 : "ما هي العروض الجديدة؟",
     CustomLocale.R2 : "انتقل إلى الصفحة الرئيسية وتحقق من الخيار الشائع، ثم ستجد جميع العروض المتوفرة لدينا لك",
     CustomLocale.Q3 : "كيف يمكنني أن أكون بائعًا؟",

@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -15,8 +16,9 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
 
   final AuthRepository authRepository;
   final Connectivity connectivity;
+  final BuildContext context;
 
-  ForgetPasswordCubit({required this.authRepository, required this.connectivity}) : super(ForgetPasswordMainState()){ init(); }
+  ForgetPasswordCubit({required this.context,required this.authRepository, required this.connectivity}) : super(ForgetPasswordMainState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init(){

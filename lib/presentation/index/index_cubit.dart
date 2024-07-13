@@ -17,7 +17,8 @@ part 'index_state.dart';
 class IndexCubit extends Cubit<IndexState> {
 
   final Connectivity connectivity;
-  IndexCubit({  required this.connectivity}) : super(IndexMainState()){ init(); }
+  final BuildContext context;
+  IndexCubit({ required this.context, required this.connectivity }) : super(IndexMainState()){ init(); }
 
   init() async{
     final hasPermission = await onRequestPermission();

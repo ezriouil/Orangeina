@@ -7,6 +7,9 @@ abstract class VendorRepository {
   // - - - - - - - - - - - - - - - - - - INSERT NEW VENDOR  - - - - - - - - - - - - - - - - - -  //
   Future<void> insertNewVendor({ required VendorEntity vendorEntity });
 
+  // - - - - - - - - - - - - - - - - - - IS VENDOR ACCEPTED OR NOT  - - - - - - - - - - - - - - - - - -  //
+  Future<bool> isProcessingVendorInfo({ required String uid });
+
   // - - - - - - - - - - - - - - - - - - GET ALL VENDORS DATA FROM FIRESTORE - - - - - - - - - - - - - - - - - -  //
   Future<List<VendorEntity>> getAllVendors();
 

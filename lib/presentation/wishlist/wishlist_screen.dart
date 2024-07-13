@@ -19,7 +19,6 @@ class WishlistScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
-    context.read<WishlistCubit>().init(context: context);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(

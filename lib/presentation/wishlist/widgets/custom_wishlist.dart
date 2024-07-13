@@ -56,7 +56,7 @@ class CustomWishList extends CustomState {
                   ]),
                   Row(children: [
                     Icon(Iconsax.call, size: 14.0, color: darkLightColor(context)),
-                    Expanded(child: Text("  +212 ${wishListEntity.phoneNumber}", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0))),
+                    Expanded(child: Text(isArabic(context) ? "  ${wishListEntity.phoneNumber ?? "بدون رقم هاتف"} 212+" : " +212 ${wishListEntity.phoneNumber ?? "No Phone"}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0))),
                   ]),
                   Row(children: [
                     Icon(Iconsax.timer_1, size: 14.0, color: darkLightColor(context)),

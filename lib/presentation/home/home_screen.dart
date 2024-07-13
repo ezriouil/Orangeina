@@ -20,7 +20,6 @@ class HomeScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
-    context.read<HomeCubit>().init(context: context);
     return Scaffold(
       body: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {

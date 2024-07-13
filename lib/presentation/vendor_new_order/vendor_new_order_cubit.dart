@@ -25,8 +25,9 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
   final NotificationRepository notificationRepository;
   final Connectivity connectivity;
   final GetStorage storage;
+  final BuildContext context;
 
-  VendorNewOrderCubit({ required this.storage,  required this.connectivity, required this.vendorRepository, required this.notificationRepository }) : super(VendorNewOrderLoadingState());
+  VendorNewOrderCubit({ required this.context,  required this.storage,  required this.connectivity, required this.vendorRepository, required this.notificationRepository }) : super(VendorNewOrderLoadingState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init() async{

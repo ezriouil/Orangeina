@@ -18,6 +18,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:geolocator/geolocator.dart';
@@ -42,9 +43,10 @@ class HomeCubit extends Cubit<HomeState> {
   final GetStorage storage;
   final Connectivity connectivity;
   String? uid;
+  final BuildContext context;
 
   // - - - - - - - - - - - - - - - - - - CONTRACTURE - - - - - - - - - - - - - - - - - -  //
-  HomeCubit({ required this.vendorRepository, required this.storage, required this.connectivity }) : super(
+  HomeCubit({ required this.context, required this.vendorRepository, required this.storage, required this.connectivity }) : super(
       HomeMainState(
         mapController:  Completer<GoogleMapController>(),
         cameraCurrentLocation:  null,
@@ -58,10 +60,10 @@ class HomeCubit extends Cubit<HomeState> {
         markers: const {},
         polyline: const {},
       )
-  );
+  ){ init(context: context); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
-  void init( { required BuildContext context } ) async{
+  void init({ required BuildContext context }) async{
 
     final currentState = state as HomeMainState;
 

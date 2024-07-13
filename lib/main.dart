@@ -1,4 +1,17 @@
 import 'package:berkania/dependency_injection.dart';
+import 'package:berkania/presentation/auth/forget_password/forget_password_cubit.dart';
+import 'package:berkania/presentation/auth/login/login_cubit.dart';
+import 'package:berkania/presentation/auth/register/register_cubit.dart';
+import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
+import 'package:berkania/presentation/home/home_cubit.dart';
+import 'package:berkania/presentation/index/index_cubit.dart';
+import 'package:berkania/presentation/notification/notification_cubit.dart';
+import 'package:berkania/presentation/on_boarding/on_boarding_cubit.dart';
+import 'package:berkania/presentation/settings/settings_cubit.dart';
+import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
+import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
+import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
+import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/router/custom_router.dart';
@@ -97,19 +110,19 @@ class Application extends State<App> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => DependencyInjection.onBoardingCubit),
-          BlocProvider(create: (_) => DependencyInjection.registerCubit),
-          BlocProvider(create: (_) => DependencyInjection.loginCubit),
-          BlocProvider(create: (_) => DependencyInjection.forgetPasswordCubit),
-          BlocProvider(create: (_) => DependencyInjection.indexCubit),
-          BlocProvider(create: (_) => DependencyInjection.homeCubit),
-          BlocProvider(create: (_) => DependencyInjection.wishlistCubit),
-          BlocProvider(create: (_) => DependencyInjection.notificationCubit),
-          BlocProvider(create: (_) => DependencyInjection.settingsCubit),
-          BlocProvider(create: (_) => DependencyInjection.vendorDetailsCubit),
-          BlocProvider(create: (_) => DependencyInjection.vendorNewOrderCubit),
-          BlocProvider(create: (_) => DependencyInjection.vendorOrdersCubit),
-          BlocProvider(create: (_) => DependencyInjection.beVendorCubit),
+          BlocProvider(create: (_) => OnBoardingCubit(storage: DependencyInjection.getIt<GetStorage>())),
+          BlocProvider(create: (_) => RegisterCubit(context: context, authRepository: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => LoginCubit(context: context, authRepository: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => ForgetPasswordCubit(context: context, authRepository: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => IndexCubit(context: context, connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => HomeCubit(context: context, vendorRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => WishlistCubit(context: context, storage: DependencyInjection.getIt(), wishListRepository: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => NotificationCubit(context: context, notificationRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => SettingsCubit(context: context, storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), authRepository: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => VendorDetailsCubit(context: context, userRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), reviewRepository: DependencyInjection.getIt(), wishListRepository: DependencyInjection.getIt(), reportRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => VendorNewOrderCubit(context: context, storage: DependencyInjection.getIt(), connectivity: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), notificationRepository: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => VendorOrdersCubit(context: context, storage: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt())),
+          BlocProvider(create: (_) => BeVendorCubit(context: context, notificationRepository: DependencyInjection.getIt(), vendorRepository: DependencyInjection.getIt(), userRepository: DependencyInjection.getIt(), storage: DependencyInjection.getIt())),
         ],
         child: MaterialApp.router(
             themeMode: ThemeMode.system,

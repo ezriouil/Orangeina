@@ -45,17 +45,19 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   final WishListRepository wishListRepository;
   final ReportRepository reportRepository;
   final GetStorage storage;
+  final BuildContext context;
   String? uid;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
   VendorDetailsCubit(
-      {required this.userRepository,
+      {required this.context,
+      required this.userRepository,
       required this.vendorRepository,
       required this.reviewRepository,
       required this.wishListRepository,
       required this.reportRepository,
       required this.storage})
-      : super(VendorDetailsLoadingState());
+      : super(VendorDetailsLoadingState()){ init(context: context); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init({ required BuildContext context }) async{

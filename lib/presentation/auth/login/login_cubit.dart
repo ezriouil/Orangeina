@@ -36,9 +36,11 @@ class LoginCubit extends Cubit<LoginState> {
   final UserRepository userRepository;
   final GetStorage storage;
   final Connectivity connectivity;
+  final BuildContext context;
 
   LoginCubit(
-      {required this.authRepository,
+      {required this.context,
+      required this.authRepository,
       required this.userRepository,
       required this.storage,
       required this.connectivity})
@@ -104,6 +106,15 @@ class LoginCubit extends Cubit<LoginState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
+      context.read<BeVendorCubit>().init();
+      context.read<HomeCubit>().init(context: context);
+      context.read<IndexCubit>().init();
+      context.read<NotificationCubit>().init(context: context);
+      context.read<SettingsCubit>().init(context: context);
+      context.read<VendorDetailsCubit>().init(context: context);
+      context.read<VendorNewOrderCubit>().init();
+      context.read<VendorOrdersCubit>().init(context: context);
+      context.read<WishlistCubit>().init(context: context);
       callBack.call();
 
     }catch(e){
@@ -154,6 +165,15 @@ class LoginCubit extends Cubit<LoginState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
+      context.read<BeVendorCubit>().init();
+      context.read<HomeCubit>().init(context: context);
+      context.read<IndexCubit>().init();
+      context.read<NotificationCubit>().init(context: context);
+      context.read<SettingsCubit>().init(context: context);
+      context.read<VendorDetailsCubit>().init(context: context);
+      context.read<VendorNewOrderCubit>().init();
+      context.read<VendorOrdersCubit>().init(context: context);
+      context.read<WishlistCubit>().init(context: context);
       callBack.call();
 
     }catch(e){

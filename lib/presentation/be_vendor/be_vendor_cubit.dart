@@ -29,13 +29,14 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   final ImagePicker _imagePicker = ImagePicker();
   String? uid;
 
+  final BuildContext context;
   final VendorRepository vendorRepository;
   final NotificationRepository notificationRepository;
   final UserRepository userRepository;
   final GetStorage storage;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  BeVendorCubit({ required this.notificationRepository, required this.vendorRepository, required this.userRepository, required this.storage }) : super(
+  BeVendorCubit({ required this.context,required this.notificationRepository, required this.vendorRepository, required this.userRepository, required this.storage }) : super(
       BeVendorMainState(
         scrollPhysics: const ScrollPhysics(),
         currentStep: 0,
@@ -54,15 +55,21 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         personalInfoFormState: GlobalKey<FormState>(),
         carInfoFormState: GlobalKey<FormState>(),
       )
-  );
+  ){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
-  void init({ required BuildContext context }) async{
+  void init() async{
+
     final currentState = state as BeVendorMainState;
     uid = await LocalStorage.read(key: "UID", storage: storage);
     if(uid == null) {
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
       context.pushReplacementNamed(CustomRouter.LOGIN);
+      return;
+    }
+    final bool inProcess = await vendorRepository.isProcessingVendorInfo(uid: uid!);
+    if(inProcess){
+      emit(BeVendorSuccessState());
       return;
     }
     final getUserInfo = await userRepository.getUserInfo(id: uid!);
@@ -176,8 +183,8 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         final NotificationEntity notificationEntity = NotificationEntity(
           userId: uid,
           type: "INFORMATION",
-          title: "Demand Be Seller",
-          body: "Thank you for you interesting to be one of our sellers, We will hande your data then we will inform you in the next 48h.",
+          title: "Postuler Pour Un Emploi",
+          body: "Merci de votre intérêt à faire partie de nos vendeurs, nous traiterons vos données puis nous vous informerons dans les prochaines 48h.",
           createAt: "${dateTime.day}/${dateTime.month}/${dateTime.year}",
         );
         await notificationRepository.sendNotification(notificationEntity: notificationEntity);

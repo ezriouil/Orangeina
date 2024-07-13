@@ -23,7 +23,6 @@ class BeVendorScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
-    context.read<BeVendorCubit>().init(context: context);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(

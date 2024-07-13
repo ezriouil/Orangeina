@@ -47,9 +47,10 @@ class SettingsCubit extends Cubit<SettingsState> {
   final UserRepository userRepository;
   final AuthRepository authRepository;
   final VendorRepository vendorRepository;
+  final BuildContext context;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  SettingsCubit({ required this.storage, required this.connectivity, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsMainState(
+  SettingsCubit({ required this.context, required this.storage, required this.connectivity, required this.userRepository, required this.vendorRepository, required this.authRepository }) : super(SettingsMainState(
     arabicLang: false,
     englishLang: false,
     frenchLang: false,
@@ -58,7 +59,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     firstNameHint: "",
     lastNameHint: "",
     phoneHint: "",
-  ));
+  )){init(context: context);}
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init({ required BuildContext context }) async {
@@ -162,7 +163,8 @@ class SettingsCubit extends Cubit<SettingsState> {
 
                           final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                           if (isVendorExist) {
-                            await vendorRepository.deleteVendorImage(imgName: uid!);
+                            try{ await vendorRepository.deleteVendorImage(imgName: uid!); }
+                            catch(_){}
                             final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
                             await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
                             emit(currentState.copyWith(updateImageProfilePath: newImageLink));

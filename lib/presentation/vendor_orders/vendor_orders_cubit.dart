@@ -16,7 +16,9 @@ class VendorOrdersCubit extends Cubit<VendorOrdersState> {
 
   final VendorRepository vendorRepository;
   final GetStorage storage;
-  VendorOrdersCubit({ required this.storage, required this.vendorRepository }) : super(VendorOrdersLoadingState());
+  final BuildContext context;
+
+  VendorOrdersCubit({ required this.context, required this.storage, required this.vendorRepository }) : super(VendorOrdersLoadingState()){ init(context: context); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init({ required BuildContext context }) async{ await getAllOrders(context: context); }

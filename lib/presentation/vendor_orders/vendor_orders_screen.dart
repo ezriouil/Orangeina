@@ -17,13 +17,16 @@ class VendorOrdersScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
-    context.read<VendorOrdersCubit>().init(context: context);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
           onTap: context.pop,
           borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
-          child: Icon( Iconsax.arrow_left_24, color: darkLightColor(context)),
+          child: Builder(
+              builder: (context) {
+                return Icon( isArabic(context) ? Iconsax.arrow_right_3 : Iconsax.arrow_left_24, color: darkLightColor(context));
+              }
+          ),
         ),
         title: Text(CustomLocale.ORDERS_TITLE.getString(context), style: Theme.of(context).textTheme.titleMedium),
         actions: [InkWell(

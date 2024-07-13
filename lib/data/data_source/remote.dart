@@ -156,7 +156,6 @@ class Remote{
   static Future<VendorDto?> getVendorById({ required String vendorId }) async{
     final vendor = await _firebaseFirestore.collection("VENDORS").doc(vendorId).get();
     if(!vendor.exists) return null;
-    //if(vendor.data()!['visible'] == false) return null;
     return VendorDto.fromJson(vendor.data()!);
   }
 
@@ -177,6 +176,14 @@ class Remote{
   // - - - - - - - - - - - - - - - - - - NEW VENDOR - - - - - - - - - - - - - - - - - -  //
   static Future<void> newVendor({required VendorDto vendorDto}) async{
     _firebaseFirestore.collection("VENDORS").doc(vendorDto.id).set(vendorDto.toJson());
+  }
+
+  // - - - - - - - - - - - - - - - - - - CHECK VENDOR IS ACCEPTED OR NOT - - - - - - - - - - - - - - - - - -  //
+  static Future<bool> isProcessingVendorInfo({required String uid}) async{
+    final DocumentSnapshot<Map<String, dynamic>> vendorData = await _firebaseFirestore.collection("VENDORS").doc(uid).get();
+    if(!vendorData.exists) return false;
+    if(vendorData.data()!["visible"] == false) return true;
+    return false;
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR MAKE NEW ORDER - - - - - - - - - - - - - - - - - -  //

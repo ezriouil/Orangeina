@@ -14,7 +14,7 @@ class FAQScreen extends CustomState {
   Widget run(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("FAQ"),
+        title: Text(CustomLocale.FAQ_TITLE.getString(context)),
         leading: InkWell(
             onTap: () {
               context.pop();

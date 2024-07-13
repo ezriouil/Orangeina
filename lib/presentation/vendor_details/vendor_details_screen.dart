@@ -23,7 +23,6 @@ class VendorDetailsScreen extends CustomState {
 
   @override
   Widget run(BuildContext context) {
-    context.read<VendorDetailsCubit>().init(context: context);
     String idCheckVendor = "";
     return BlocBuilder<VendorDetailsCubit, VendorDetailsState>(
 

@@ -28,7 +28,9 @@ class NotificationCubit extends Cubit<NotificationState> {
   final GetStorage storage;
   final Connectivity connectivity;
   String? uid;
-  NotificationCubit({ required this.notificationRepository, required this.storage, required this.connectivity}) : super(NotificationLoadingState());
+  final BuildContext context;
+
+  NotificationCubit({ required this.context, required this.notificationRepository, required this.storage, required this.connectivity}) : super(NotificationLoadingState()){ init(context: context); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   init({ required BuildContext context }) async{
