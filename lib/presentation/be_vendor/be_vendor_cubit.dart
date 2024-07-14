@@ -2,6 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
+import 'package:berkania/presentation/notification/notification_cubit.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/router/custom_router.dart';
@@ -14,6 +15,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../domain/entities/user_entity.dart';
@@ -54,6 +56,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         carRegistrationController: TextEditingController(),
         personalInfoFormState: GlobalKey<FormState>(),
         carInfoFormState: GlobalKey<FormState>(),
+        phoneNumber: PhoneNumber(),
       )
   ){ init(); }
 
@@ -75,6 +78,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
     final getUserInfo = await userRepository.getUserInfo(id: uid!);
     emit(currentState.copyWith(userEntity: getUserInfo));
 
+  }
+
+  dynamic onInputChanged(PhoneNumber phoneNumber){
+    final currentState = state as BeVendorMainState;
+    emit(currentState.copyWith(phoneNumber: phoneNumber));
   }
 
   bool validateFirstStep(){
@@ -159,6 +167,8 @@ class BeVendorCubit extends Cubit<BeVendorState> {
           avatar: currentState.userEntity?.avatar,
           email: currentState.userEntity?.email,
           phoneNumber: currentState.phoneController!.text.trim(),
+          dialCode: currentState.phoneNumber!.dialCode ?? "+212",
+          isoCode: currentState.phoneNumber!.isoCode ?? "MA",
           gender: currentState.gender,
           shopThumbnail: shopThumbnailUri,
           carAssurance: currentState.carAssuranceController?.text.trim(),
@@ -189,6 +199,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         );
         await notificationRepository.sendNotification(notificationEntity: notificationEntity);
         emit(BeVendorSuccessState());
+        context.read<NotificationCubit>().init(context: context);
         return;
       }
       final updateCurrentStep = currentState.currentStep! + 1;

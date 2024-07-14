@@ -45,7 +45,7 @@ class CustomVendor extends CustomState {
                 child: SizedBox(
                   width: getWidth(context),
                   height: getHeight(context),
-                  child: Image.network(vendorEntity.avatar ?? CustomImageStrings.DEFAULT_IMAGE_PROFILE,
+                  child: Image.network(vendorEntity.shopThumbnail ?? CustomImageStrings.DEFAULT_IMAGE_PROFILE,
                       height: getHeight(context),
                       width: getWidth(context),
                       fit: BoxFit.cover,
@@ -74,14 +74,14 @@ class CustomVendor extends CustomState {
                     itemSize: 12.0,
                     itemPadding: EdgeInsets.zero,
                     itemBuilder: (context, _) => const Icon(Iconsax.star5, color: CustomColors.PRIMARY_LIGHT),
-                    onRatingUpdate: (double value) {  },
+                    onRatingUpdate: (double value) {},
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Transform.rotate(angle: isArabic(context) ? 5 : 0,
                       child: Icon(Iconsax.call_calling, size: 12, color: darkLightColor(context))),
-                      Text(isArabic(context) ? "  ${vendorEntity.phoneNumber ?? "بدون رقم هاتف"} 212+" : " +212 ${vendorEntity.phoneNumber ?? "No Phone"}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text(isArabic(context) ? "  ${vendorEntity.phoneNumber} ${vendorEntity.dialCode?.replaceFirst("+", "")}+" : "  ${vendorEntity.dialCode} ${vendorEntity.phoneNumber}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0, color: darkLightColor(context)), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],
                   ),
                   Row(

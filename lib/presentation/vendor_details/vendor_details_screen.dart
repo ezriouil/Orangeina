@@ -16,6 +16,7 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/custom_sizes.dart';
+import '../wishlist/wishlist_cubit.dart';
 
 class VendorDetailsScreen extends CustomState {
   final String id;
@@ -51,7 +52,9 @@ class VendorDetailsScreen extends CustomState {
               title: Text(CustomLocale.VENDOR_DETAILS_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge),
               actions: [
                 InkWell(
-                  onTap: context.read<VendorDetailsCubit>().upsertVendorWishList,
+                  onTap: (){
+                    context.read<VendorDetailsCubit>().upsertVendorWishList(callBack: (){ context.read<WishlistCubit>().init(context: context); });
+                  },
                   borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT),
                   child: Padding(
                     padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),

@@ -59,6 +59,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     firstNameHint: "",
     lastNameHint: "",
     phoneHint: "",
+    dialCodeHint: "",
+    isoCodeHint: "",
   )){init(context: context);}
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
@@ -101,6 +103,8 @@ class SettingsCubit extends Cubit<SettingsState> {
       firstNameHint: _user == null ? _vendor?.firstName : _user?.firstName,
       lastNameHint: _user == null ? _vendor?.lastName : _user?.lastName,
       phoneHint: _user == null ? _vendor?.phoneNumber : _user?.phoneNumber,
+      dialCodeHint: _user == null ? _vendor?.dialCode : _user?.dialCode,
+      isoCodeHint: _user == null ? _vendor?.isoCode : _user?.isoCode,
     ));
 
   }
@@ -153,6 +157,16 @@ class SettingsCubit extends Cubit<SettingsState> {
                           }
 
                           final isUserExist = await userRepository.existUser(userId: uid!);
+                          final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
+                          if (isUserExist && isVendorExist) {
+                            final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
+                            await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
+                            await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
+                            emit(currentState.copyWith(updateImageProfilePath: newImageLink));
+                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                            return;
+                          }
+
                           if (isUserExist) {
                             final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
                             await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
@@ -161,7 +175,6 @@ class SettingsCubit extends Cubit<SettingsState> {
                             return;
                           }
 
-                          final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                           if (isVendorExist) {
                             try{ await vendorRepository.deleteVendorImage(imgName: uid!); }
                             catch(_){}
@@ -208,8 +221,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     final TextEditingController firstName = TextEditingController(text: currentState.firstNameHint);
     final TextEditingController lastName = TextEditingController(text: currentState.lastNameHint);
 
-    print(currentState.firstNameHint);
-
     await showDialog(
         context: context.mounted ? context : context,
         builder: (BuildContext context) {
@@ -252,6 +263,16 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 }
 
                                 final isUserExist = await userRepository.existUser(userId: uid!);
+                                final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
+                                if (isUserExist && isVendorExist) {
+                                  await userRepository.updateUserFullName(userId: uid!, newFirstName: firstName.text, newLastName: lastName.text);
+                                  await vendorRepository.updateVendorFullName(vendorId: uid!, newFirstName: firstName.text, newLastName: lastName.text);
+                                  context.pop();
+                                  emit(currentState.copyWith(firstNameHint: firstName.text, lastNameHint: lastName.text));
+                                  CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_FULL_NAME_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
+                                  return;
+                                }
+
                                 if (isUserExist) {
                                   await userRepository.updateUserFullName(userId: uid!, newFirstName: firstName.text, newLastName: lastName.text);
                                   context.pop();
@@ -260,11 +281,8 @@ class SettingsCubit extends Cubit<SettingsState> {
                                   return;
                                 }
 
-                                final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                                 if (isVendorExist) {
                                   await vendorRepository.updateVendorFullName(vendorId: uid!, newFirstName: firstName.text, newLastName: lastName.text);
-                                  init(context: context.mounted ? context : context );
-                                  if(!context.mounted) return;
                                   context.pop();
                                   emit(currentState.copyWith(firstNameHint: firstName.text, lastNameHint: lastName.text));
                                   CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_FULL_NAME_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
@@ -301,6 +319,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     final bool isArabic = localization.currentLocale?.languageCode == CustomLocale.AR;
     final TextEditingController phone = TextEditingController(text: currentState.phoneHint);
 
+    PhoneNumber phoneNumber = PhoneNumber(isoCode: currentState.isoCodeHint, dialCode: currentState.dialCodeHint, phoneNumber: currentState.phoneHint);
+
     await showDialog(
         context: context.mounted ? context : context,
         builder: (BuildContext context) {
@@ -315,7 +335,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                       children: [
 
                         InternationalPhoneNumberInput(
-                          onInputChanged: (PhoneNumber number) {},
+                          onInputChanged: (PhoneNumber number) {phoneNumber = number;},
                           selectorConfig: const SelectorConfig(
                               selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                               useBottomSheetSafeArea: true,
@@ -332,7 +352,7 @@ class SettingsCubit extends Cubit<SettingsState> {
                           textFieldController:  phone,
                           locale: isArabic ? "ar": "fr",
                           hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
-                          initialValue: PhoneNumber(isoCode: "MA"),
+                          initialValue: phoneNumber,
                           formatInput: false,
                           autoValidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) => Validator.validateMobilePhone(value, CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1.getString(context), CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2.getString(context)),
@@ -352,27 +372,36 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 }
 
                                 final isUserExist = await userRepository.existUser(userId: uid!);
-                                if (isUserExist) {
-                                  await userRepository.updateUserPhone(userId: uid!, newPhone: phone.text);
-                                  if(!context.mounted) return;
-                                  context.mounted ? context.pop() : null;
-                                  emit(currentState.copyWith(phoneHint: phone.text));
+                                final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
+
+                                if (isUserExist && isVendorExist) {
+                                  await userRepository.updateUserPhone(userId: uid!, newPhone: phone.text, dialCode: phoneNumber.dialCode ?? "+212", isoCode: phoneNumber.isoCode ?? "MA");
+                                  await vendorRepository.updateVendorPhone(vendorId: uid!, newPhone: phone.text, dialCode: phoneNumber.dialCode ?? "+212", isoCode: phoneNumber.isoCode ?? "MA");
+                                  context.pop();
+                                  emit(currentState.copyWith(phoneHint: phone.text, dialCodeHint: phoneNumber.dialCode ?? "+212", isoCodeHint: phoneNumber.isoCode ?? "MA" ));
                                   CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
                                   return;
                                 }
 
-                                final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
-                                if (isVendorExist) {
-                                  await vendorRepository.updateVendorPhone(vendorId: uid!, newPhone: phone.text);
-                                  context.mounted ? context.pop() : null;
+                                if (isUserExist) {
+                                  await userRepository.updateUserPhone(userId: uid!, newPhone: phone.text, dialCode: phoneNumber.dialCode ?? "+212", isoCode: phoneNumber.isoCode ?? "MA");
                                   if(!context.mounted) return;
-                                  emit(currentState.copyWith(phoneHint: phone.text));
-                                  context.pop();
+                                  context.mounted ? context.pop() : null;
+                                  emit(currentState.copyWith(phoneHint: phone.text, dialCodeHint: phoneNumber.dialCode ?? "+212", isoCodeHint: phoneNumber.isoCode ?? "MA" ));
                                   CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
                                   return;
                                 }
-                                context.mounted ? context.pop() : null;
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+
+                                if (isVendorExist) {
+                                  await vendorRepository.updateVendorPhone(vendorId: uid!, newPhone: phone.text, dialCode: phoneNumber.dialCode ?? "+212", isoCode: phoneNumber.isoCode ?? "MA");
+                                  context.pop();
+                                  emit(currentState.copyWith(phoneHint: phone.text, dialCodeHint: phoneNumber.dialCode ?? "+212", isoCodeHint: phoneNumber.isoCode ?? "MA" ));
+                                  CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
+                                  return;
+                                }
+
+                                context.pop();
+                                CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
 
                               } catch (e) {
                                 context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;

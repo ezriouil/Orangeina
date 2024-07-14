@@ -106,9 +106,9 @@ class LoginCubit extends Cubit<LoginState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
-      context.read<BeVendorCubit>().init();
-      context.read<HomeCubit>().init(context: context);
       context.read<IndexCubit>().init();
+      context.read<HomeCubit>().init(context: context);
+      context.read<BeVendorCubit>().init();
       context.read<NotificationCubit>().init(context: context);
       context.read<SettingsCubit>().init(context: context);
       context.read<VendorDetailsCubit>().init(context: context);
@@ -165,9 +165,9 @@ class LoginCubit extends Cubit<LoginState> {
 
       // NAVIGATE TO HOME SCREEN
       emit(currentState);
-      context.read<BeVendorCubit>().init();
-      context.read<HomeCubit>().init(context: context);
       context.read<IndexCubit>().init();
+      context.read<HomeCubit>().init(context: context);
+      context.read<BeVendorCubit>().init();
       context.read<NotificationCubit>().init(context: context);
       context.read<SettingsCubit>().init(context: context);
       context.read<VendorDetailsCubit>().init(context: context);

@@ -2,6 +2,8 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/domain/entities/order_entity.dart';
 import 'package:berkania/domain/repositories/notification_repository.dart';
+import 'package:berkania/presentation/notification/notification_cubit.dart';
+import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
 import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -120,6 +122,8 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
 
       // CALL BACK
       emit(currentState);
+      context.read<NotificationCubit>().init(context: context);
+      context.read<VendorOrdersCubit>().init(context: context);
       context.pushReplacementNamed(CustomRouter.VENDOR_ORDERS);
       await Future.delayed(const Duration(milliseconds: 300));
       CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.ORDERS_ORDER_SUCCESS_SUB_TITLE.getString(context), type: ContentType.success);

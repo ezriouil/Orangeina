@@ -36,8 +36,8 @@ class UserRepositoryImpl extends UserRepository {
 
   // - - - - - - - - - - - - - - - - - - OVERRIDE UPDATE USER PHONE - - - - - - - - - - - - - - - - - -  //
   @override
-  Future<void> updateUserPhone({required String userId, required String newPhone}) async{
-    await Remote.updatePhone(collection: "USERS", doc: userId, newPhone: newPhone);
+  Future<void> updateUserPhone({required String userId, required String newPhone, required String dialCode, required isoCode}) async{
+    await Remote.updatePhone(collection: "USERS", doc: userId, newPhone: newPhone, dialCode: dialCode, isoCode: isoCode);
   }
 
   // - - - - - - - - - - - - - - - - - - OVERRIDE SAVE USER IMAGE - - - - - - - - - - - - - - - - - -  //

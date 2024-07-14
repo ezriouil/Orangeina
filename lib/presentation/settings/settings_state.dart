@@ -6,7 +6,7 @@ sealed class SettingsState {}
 final class SettingsMainState extends SettingsState {
 
   final bool? arabicLang, frenchLang, englishLang, isVendor, vendorOnlineOffline;
-  final String? updateImageProfilePath, firstNameHint, lastNameHint, phoneHint;
+  final String? updateImageProfilePath, firstNameHint, lastNameHint, phoneHint, dialCodeHint, isoCodeHint;
 
   SettingsMainState(
       {
@@ -19,6 +19,8 @@ final class SettingsMainState extends SettingsState {
       this.firstNameHint,
       this.lastNameHint,
       this.phoneHint,
+      this.dialCodeHint,
+      this.isoCodeHint,
       });
 
   SettingsMainState copyWith(
@@ -32,6 +34,8 @@ final class SettingsMainState extends SettingsState {
           String? firstNameHint,
           String? lastNameHint,
           String? phoneHint,
+          String? dialCodeHint,
+          String? isoCodeHint,
           }) =>
 
       SettingsMainState(
@@ -44,6 +48,8 @@ final class SettingsMainState extends SettingsState {
         firstNameHint: firstNameHint ?? this.firstNameHint,
         lastNameHint: lastNameHint ?? this.lastNameHint,
         phoneHint: phoneHint ?? this.phoneHint,
+        dialCodeHint: dialCodeHint ?? this.dialCodeHint,
+        isoCodeHint: isoCodeHint ?? this.isoCodeHint,
       );
 }
 

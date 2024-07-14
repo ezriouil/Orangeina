@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../utils/constants/custom_sizes.dart';
 import '../../utils/extensions/validator.dart';
@@ -61,7 +62,10 @@ class BeVendorScreen extends CustomState {
                               phoneController: state.phoneController,
                               ageController: state.ageController,
                               gender: state.gender,
-                              onChangeGender: context.read<BeVendorCubit>().onChangeGender)),
+                              onChangeGender: context.read<BeVendorCubit>().onChangeGender,
+                            onInputChanged: context.read<BeVendorCubit>().onInputChanged,
+                            phoneNumber: state.phoneNumber!,
+                          )),
                       Step(
                           title: Text(CustomLocale.BE_VENDOR_STEP_2_TITLE.getString(context)),
                           content: Column(

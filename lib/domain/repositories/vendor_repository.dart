@@ -35,7 +35,7 @@ abstract class VendorRepository {
   Future<void> updateVendorFullName({required String vendorId, required String newFirstName, required String newLastName});
 
   // - - - - - - - - - - - - - - - - - - UPDATE VENDOR PHONE - - - - - - - - - - - - - - - - - -  //
-  Future<void> updateVendorPhone({required String vendorId, required String newPhone});
+  Future<void> updateVendorPhone({required String vendorId, required String newPhone, required String dialCode, required String isoCode});
 
   // - - - - - - - - - - - - - - - - - - SAVE VENDOR IMAGE - - - - - - - - - - - - - - - - - -  //
   Future<String> saveVendorImage({required String imgName, required String imgPath});

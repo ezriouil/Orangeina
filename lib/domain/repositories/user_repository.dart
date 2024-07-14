@@ -24,7 +24,7 @@ abstract class UserRepository {
   //Future<void> updateUserPassword({required String userId, required String newPassword});
 
   // - - - - - - - - - - - - - - - - - - UPDATE USER PHONE - - - - - - - - - - - - - - - - - -  //
-  Future<void> updateUserPhone({required String userId, required String newPhone});
+  Future<void> updateUserPhone({required String userId, required String newPhone, required String dialCode, required String isoCode});
 
   // - - - - - - - - - - - - - - - - - - SAVE USER IMAGE - - - - - - - - - - - - - - - - - -  //
   Future<String> saveUserImage({required String imgName, required String imgPath});

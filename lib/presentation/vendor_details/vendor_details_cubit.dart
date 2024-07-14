@@ -108,7 +108,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
   }
 
   // - - - - - - - - - - - - - - - - - - ( INSERT / REMOVE ) WISHLISTS - - - - - - - - - - - - - - - - - -  //
-  void upsertVendorWishList() async{
+  void upsertVendorWishList({ required Function callBack }) async{
     final currentState = state as VendorDetailsMainState;
     final date = DateTime.now();
     String resultWishListId = "";
@@ -118,9 +118,9 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       final WishListEntity wishListEntity = WishListEntity(
         userId: uid!,
         vendorId: currentState.vendor?.id,
-        avatar: currentState.vendor?.avatar,
+        avatar: currentState.vendor?.shopThumbnail,
         fullName: "${currentState.vendor?.firstName} ${currentState.vendor?.lastName}",
-          phoneNumber: currentState.vendor?.phoneNumber,
+          phoneNumber: "${currentState.vendor?.dialCode} ${currentState.vendor?.phoneNumber}",
         createAt: "${date.year}/${date.month}/${date.day}"
       );
       final result = await wishListRepository.insertWishList(wishListEntity: wishListEntity);
@@ -130,8 +130,8 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
       await wishListRepository.deleteWishListById(id: currentState.wishListId!);
       resultWishListId = "";
     }
-
     emit(currentState.copyWith(wishListId: resultWishListId));
+    callBack.call();
   }
 
   // - - - - - - - - - - - - - - - - - - GET ALL REVIEWS - - - - - - - - - - - - - - - - - -  //

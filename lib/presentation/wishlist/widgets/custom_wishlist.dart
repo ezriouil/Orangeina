@@ -51,16 +51,16 @@ class CustomWishList extends CustomState {
                   Row(
                   children: [
                     Icon(Iconsax.user, size: 14.0, color: darkLightColor(context)),
-                    Expanded(child: Text("  ${wishListEntity.fullName}", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                    Expanded(child: Text("  ${wishListEntity.fullName}", style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12.0), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     InkWell(onTap: (){ onDelete(wishListEntity.id ?? ""); }, borderRadius: BorderRadius.circular(CustomSizes.SPACE_DEFAULT), child: Icon(Iconsax.close_circle, size: 20.0, color: darkLightColor(context))),
                   ]),
                   Row(children: [
                     Icon(Iconsax.call, size: 14.0, color: darkLightColor(context)),
-                    Expanded(child: Text(isArabic(context) ? "  ${wishListEntity.phoneNumber ?? "بدون رقم هاتف"} 212+" : " +212 ${wishListEntity.phoneNumber ?? "No Phone"}" , style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0))),
+                    Expanded(child: Text(wishListEntity.phoneNumber.toString(),  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12.0))),
                   ]),
                   Row(children: [
                     Icon(Iconsax.timer_1, size: 14.0, color: darkLightColor(context)),
-                    Expanded(child: Text("  ${wishListEntity.createAt}", style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0))),
+                    Expanded(child: Text("  ${wishListEntity.createAt}", style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12.0))),
                   ]),
                 ],
               ),

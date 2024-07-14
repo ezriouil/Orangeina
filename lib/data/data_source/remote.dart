@@ -72,8 +72,8 @@ class Remote{
   }
 
   // - - - - - - - - - - - - - - - - - - UPDATE PHONE - - - - - - - - - - - - - - - - - -  //
-  static Future<void> updatePhone({required String collection, required String doc, required String newPhone}) async{
-    await _firebaseFirestore.collection(collection).doc(doc).update({'phoneNumber' : newPhone});
+  static Future<void> updatePhone({required String collection, required String doc, required String newPhone, required String dialCode, required String isoCode}) async{
+    await _firebaseFirestore.collection(collection).doc(doc).update({'phoneNumber' : newPhone, 'dialCode' : dialCode, 'isoCode' : isoCode});
   }
 
   // - - - - - - - - - - - - - - - - - - UPDATE FULL NAME - - - - - - - - - - - - - - - - - -  //
@@ -331,5 +331,4 @@ class Remote{
       'createAt': reportDto.createAt
     });
   }
-
 }

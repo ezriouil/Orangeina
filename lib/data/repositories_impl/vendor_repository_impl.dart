@@ -39,8 +39,8 @@ class VendorRepositoryImpl extends VendorRepository {
   }
 
   @override
-  Future<void> updateVendorPhone({required String vendorId, required String newPhone}) async{
-    await Remote.updatePhone(collection: "VENDORS", doc: vendorId, newPhone: newPhone);
+  Future<void> updateVendorPhone({required String vendorId, required String newPhone, required String dialCode, required String isoCode}) async{
+    await Remote.updatePhone(collection: "VENDORS", doc: vendorId, newPhone: newPhone, dialCode: dialCode, isoCode: isoCode);
   }
 
   // - - - - - - - - - - - - - - - - - - OVERRIDE UPDATE AVATAR - - - - - - - - - - - - - - - - - -  //

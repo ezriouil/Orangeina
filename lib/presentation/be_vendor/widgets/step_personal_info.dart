@@ -12,11 +12,13 @@ import '../../widgets/custom_text_field.dart';
 
 class StepPersonalInfo extends CustomState {
   final TextEditingController? cinController, phoneController, ageController;
+  final Function(PhoneNumber phoneNumber) onInputChanged;
+  final PhoneNumber phoneNumber;
   final GlobalKey<FormState> formState;
   final String? gender;
   final void Function(String? value) onChangeGender;
 
-  const StepPersonalInfo({super.key, required this.formState, this.cinController, this.phoneController, this.ageController, this.gender, required this.onChangeGender, });
+  const StepPersonalInfo({super.key, required this.formState, this.cinController, this.phoneController, this.ageController, this.gender, required this.onChangeGender, required this.onInputChanged , required this.phoneNumber });
 
   @override
   Widget run(BuildContext context) {
@@ -52,7 +54,7 @@ class StepPersonalInfo extends CustomState {
 
           // - - - - - - - - - - - - - - - - - - CALL - - - - - - - - - - - - - - - - - -  //
           InternationalPhoneNumberInput(
-            onInputChanged: (PhoneNumber number) {},
+            onInputChanged: onInputChanged,
             selectorConfig: const SelectorConfig(
                 selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                 useBottomSheetSafeArea: true,
@@ -71,7 +73,7 @@ class StepPersonalInfo extends CustomState {
             textFieldController:  phoneController!,
             locale: isArabic(context) ? "ar": "fr",
             hintText: CustomLocale.BE_VENDOR_PHONE.getString(context),
-            initialValue: PhoneNumber(isoCode: "MA"),
+            initialValue: phoneNumber,
             formatInput: false,
             autoValidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) => Validator.validateMobilePhone(value, CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1.getString(context), CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2.getString(context)),

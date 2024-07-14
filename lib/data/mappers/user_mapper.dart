@@ -10,6 +10,8 @@ extension UserEntityMapper on UserEntity {
     avatar: avatar,
     email: email,
     phoneNumber: phoneNumber,
+      dialCode: dialCode,
+      isoCode: isoCode,
     createAt: createAt
   );
 }
@@ -22,6 +24,8 @@ extension UserDtoMapper on UserDto {
       avatar: avatar,
       email: email,
       phoneNumber: phoneNumber,
+      dialCode: dialCode,
+      isoCode: isoCode,
       createAt: createAt
   );
 }
