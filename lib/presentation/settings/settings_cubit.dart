@@ -145,27 +145,21 @@ class SettingsCubit extends Cubit<SettingsState> {
                           if (androidInfo.version.sdkInt >= 33) {
 
                             bool? grantedPhotos;
-                            bool? grantedStorage;
 
                             if(photosPermission.isGranted){ grantedPhotos = true; }
-                            if(storagePermission.isGranted){ grantedStorage = true; }
                             if(photosPermission.isDenied){
                               final isOk = await Permission.photos.request();
                               if(isOk.isGranted) { grantedPhotos = true; }
                               else { grantedPhotos = false; }
                             }
-                            if(storagePermission.isDenied){
-                              final isOk =  await Permission.storage.request();
-                              if(isOk.isGranted) { grantedStorage = true; }
-                              else { grantedStorage = false; }
-                              return ;
-                            }
-                            if(photosPermission.isPermanentlyDenied || storagePermission.isPermanentlyDenied){
+                            if(photosPermission.isPermanentlyDenied){
                               Geolocator.openAppSettings();
                               return ;
                             }
 
-                            if(!grantedStorage! || !grantedPhotos! ) return;
+
+
+                            if(!grantedPhotos! ) return;
 
                             final currentState = state as SettingsMainState;
 
