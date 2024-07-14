@@ -10,6 +10,7 @@ import 'package:berkania/utils/device/device_utility.dart';
 import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -135,58 +136,141 @@ class SettingsCubit extends Cubit<SettingsState> {
                         try {
                           context.pop();
 
-                          final status = await Permission.storage.status;
+                          final storagePermission = await Permission.storage.status;
+                          final photosPermission =  await Permission.photos.status;
 
-                          if(status.isDenied){
-                            await Permission.storage.request();
-                            return ;
+                          DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                          AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+                          if (androidInfo.version.sdkInt >= 33) {
+
+                            bool? grantedPhotos;
+                            bool? grantedStorage;
+
+                            if(photosPermission.isGranted){ grantedPhotos = true; }
+                            if(storagePermission.isGranted){ grantedStorage = true; }
+                            if(photosPermission.isDenied){
+                              final isOk = await Permission.photos.request();
+                              if(isOk.isGranted) { grantedPhotos = true; }
+                              else { grantedPhotos = false; }
+                            }
+                            if(storagePermission.isDenied){
+                              final isOk =  await Permission.storage.request();
+                              if(isOk.isGranted) { grantedStorage = true; }
+                              else { grantedStorage = false; }
+                              return ;
+                            }
+                            if(photosPermission.isPermanentlyDenied || storagePermission.isPermanentlyDenied){
+                              Geolocator.openAppSettings();
+                              return ;
+                            }
+
+                            if(!grantedStorage! || !grantedPhotos! ) return;
+
+                            final currentState = state as SettingsMainState;
+
+                            final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+                            if (img == null && context.mounted) {
+                              CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_IMAGE_PROFILE_SELECTED_SUB_TITLE.getString(context), type: ContentType.warning);
+                              return;
+                            }
+
+                            final isUserExist = await userRepository.existUser(userId: uid!);
+                            final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
+                            if (isUserExist && isVendorExist) {
+                              final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
+                              await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
+                              await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
+                              emit(currentState.copyWith(updateImageProfilePath: newImageLink));
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              return;
+                            }
+
+                            if (isUserExist) {
+                              final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
+                              await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
+                              emit(currentState.copyWith(updateImageProfilePath: newImageLink));
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              return;
+                            }
+
+                            if (isVendorExist) {
+                              try{ await vendorRepository.deleteVendorImage(imgName: uid!); }
+                              catch(_){}
+                              final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
+                              await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
+                              emit(currentState.copyWith(updateImageProfilePath: newImageLink));
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              return;
+                            }
+
+                            context.mounted ? context.pop() : null;
+                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+
+
                           }
-                          if(status.isPermanentlyDenied){
-                            Geolocator.openAppSettings();
-                            return ;
+                          else {
+
+                            bool? grantedStorage;
+
+                            if(storagePermission.isGranted){
+                              grantedStorage = true;
+                            }
+                            if(storagePermission.isDenied){
+                              final isOk =  await Permission.storage.request();
+                              if(isOk.isGranted) { grantedStorage = true; }
+                              else { grantedStorage = false; }
+                              return ;
+                            }
+                            if(storagePermission.isPermanentlyDenied){
+                              Geolocator.openAppSettings();
+                              return ;
+                            }
+                            if(!grantedStorage!) return;
+
+                            final currentState = state as SettingsMainState;
+
+                            final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+                            if (img == null && context.mounted) {
+                              CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_IMAGE_PROFILE_SELECTED_SUB_TITLE.getString(context), type: ContentType.warning);
+                              return;
+                            }
+
+                            final isUserExist = await userRepository.existUser(userId: uid!);
+                            final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
+                            if (isUserExist && isVendorExist) {
+                              final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
+                              await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
+                              await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
+                              emit(currentState.copyWith(updateImageProfilePath: newImageLink));
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              return;
+                            }
+
+                            if (isUserExist) {
+                              final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
+                              await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
+                              emit(currentState.copyWith(updateImageProfilePath: newImageLink));
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              return;
+                            }
+
+                            if (isVendorExist) {
+                              try{ await vendorRepository.deleteVendorImage(imgName: uid!); }
+                              catch(_){}
+                              final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
+                              await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
+                              emit(currentState.copyWith(updateImageProfilePath: newImageLink));
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              return;
+                            }
+
+                            context.mounted ? context.pop() : null;
+                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+
+
                           }
 
-                          if(uid == null) return;
-
-                          final currentState = state as SettingsMainState;
-
-                          final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
-                          if (img == null && context.mounted) {
-                            CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_IMAGE_PROFILE_SELECTED_SUB_TITLE.getString(context), type: ContentType.warning);
-                            return;
-                          }
-
-                          final isUserExist = await userRepository.existUser(userId: uid!);
-                          final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
-                          if (isUserExist && isVendorExist) {
-                            final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
-                            await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
-                            await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
-                            emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-                            return;
-                          }
-
-                          if (isUserExist) {
-                            final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
-                            await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
-                            emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-                            return;
-                          }
-
-                          if (isVendorExist) {
-                            try{ await vendorRepository.deleteVendorImage(imgName: uid!); }
-                            catch(_){}
-                            final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
-                            await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
-                            emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-                            return;
-                          }
-
-                          context.mounted ? context.pop() : null;
-                          context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
 
                         } catch (_) {
                           context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
@@ -613,8 +697,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
   }
 
-  // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO HELP AND SUPPORT - - - - - - - - - - - - - - - - - -  //
-  void onNavigateToHelpAndSupport({ required BuildContext context }) async{
+  // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO AccountPrivacy - - - - - - - - - - - - - - - - - -  //
+  void onNavigateToAccountPrivacy({ required BuildContext context }) async{
 
     // CHECK CONNECTION INTERNET
     final hasConnection = await Network.hasConnection(connectivity);

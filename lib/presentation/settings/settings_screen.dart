@@ -177,26 +177,26 @@ class SettingsScreen extends CustomState {
                         title: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_TITLE.getString(context),
                         subTitle: CustomLocale.SETTINGS_PRIVACY_AND_SECURITY_SUB_TITLE.getString(context),
                           icon: Iconsax.lock,
-                          trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: (){ context.read<SettingsCubit>().onNavigateToHelpAndSupport(context: context); }),
+                          trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: (){ context.read<SettingsCubit>().onNavigateToAccountPrivacy(context: context); }),
 
                       // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
                       const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
                       // - - - - - - - - - - - - - - - - - - HELP AND SUPPORT - - - - - - - - - - - - - - - - - -  //
-                      CustomSettingTile(
-                        title: CustomLocale.SETTINGS_HELP_AND_SUPPOR_TITLE.getString(context),
-                        subTitle: CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE.getString(context),
-                          icon: Iconsax.headphone5,
-                          trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: (){ context.read<SettingsCubit>().onNavigateToHelpAndSupport(context: context); }),
+                      // CustomSettingTile(
+                      //   title: CustomLocale.SETTINGS_HELP_AND_SUPPOR_TITLE.getString(context),
+                      //   subTitle: CustomLocale.SETTINGS_HELP_AND_SUPPOR_SUB_TITLE.getString(context),
+                      //     icon: Iconsax.headphone5,
+                      //     trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: (){ context.read<SettingsCubit>().onNavigateToHelpAndSupport(context: context); }),
 
                       // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //
-                      const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
+                      //const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS),
 
                       // - - - - - - - - - - - - - - - - - - ABOUT - - - - - - - - - - - - - - - - - -  //
                       CustomSettingTile(
                         title: CustomLocale.SETTINGS_ABOUT_TITLE.getString(context),
                         subTitle: CustomLocale.SETTINGS_ABOUT_SUB_TITLE.getString(context),
-                          icon: Iconsax.info_circle,
+                          icon: Iconsax.information,
                           trailing: Icon(isArabic(context) ? Iconsax.arrow_left_24: Iconsax.arrow_right_3, color: darkLightColor(context)), onClick: (){ context.read<SettingsCubit>().onNavigateToAbout(context: context); }),
 
                       // - - - - - - - - - - - - - - - - - -  SPACER - - - - - - - - - - - - - - - - - -  //

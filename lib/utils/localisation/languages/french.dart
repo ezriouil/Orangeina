@@ -227,6 +227,11 @@ class French{
     CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL : "Annuler",
     CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT : "Valide",
 
+    CustomLocale.VENDOR_DETAILS_CAN_NOT_DELETE_SUB_TITLE : "Désolé, impossible de supprimer ce commentaire pour le moment..!",
+    CustomLocale.VENDOR_DETAILS_DELETED_SUCCESS_SUB_TITLE : "Votre commentaire a été supprimé",
+    CustomLocale.VENDOR_DETAILS_REPORTED_SUCCESS_SUB_TITLE : "Votre rapport a été envoyé, merci",
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_DELETE : "Supprimer",
+
     CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST : "Aucune Avis Trouvée !",
 
     CustomLocale.VENDOR_DETAILS_REPORT_REASON_1 : "Mauvaise qualité / goût",

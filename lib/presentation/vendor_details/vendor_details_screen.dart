@@ -162,7 +162,7 @@ class VendorDetailsScreen extends CustomState {
                               context.read<VendorDetailsCubit>().onReport(
                                   context: context,
                                   callBack: () {
-                                    context.pop(); //SNACK BAR
+                                    context.pop();
                                   });
                             },
                             child: Row(

@@ -229,7 +229,12 @@ class English {
 
   CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL : "Cancel",
   CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT : "Submit",
-  
+
+  CustomLocale.VENDOR_DETAILS_CAN_NOT_DELETE_SUB_TITLE : "Sorry cannot delete this comment right now..!",
+  CustomLocale.VENDOR_DETAILS_DELETED_SUCCESS_SUB_TITLE : "Your comment is deleted",
+  CustomLocale.VENDOR_DETAILS_REPORTED_SUCCESS_SUB_TITLE : "Your report sent, Thank you",
+  CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_DELETE : "Delete",
+
   CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST : "No Reviews Found !",
 
   CustomLocale.VENDOR_DETAILS_REPORT_REASON_1 : "Bad quality and taste",

@@ -6,6 +6,7 @@ import 'package:berkania/presentation/notification/notification_cubit.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/router/custom_router.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -263,21 +264,68 @@ class BeVendorCubit extends Cubit<BeVendorState> {
     final BeVendorMainState currentState = state as BeVendorMainState;
    try{
 
-     final status = await Permission.storage.status;
-     if(status.isDenied){
-       await Permission.storage.request();
-       return ;
-     }
-     if(status.isPermanentlyDenied){
-       Geolocator.openAppSettings();
-       return ;
-     }
+     final storagePermission = await Permission.storage.status;
+     final photosPermission =  await Permission.photos.status;
 
-     final img = await _imagePicker.pickImage(source: ImageSource.gallery);
-     if(img == null) return;
+     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
-     await Future.delayed(const Duration(milliseconds: 300));
-     emit(currentState.copyWith(shopThumbnail: img.path));
+     if (androidInfo.version.sdkInt >= 33) {
+
+       bool? grantedPhotos;
+       bool? grantedStorage;
+
+       if(photosPermission.isGranted){ grantedPhotos = true; }
+       if(storagePermission.isGranted){ grantedStorage = true; }
+       if(photosPermission.isDenied){
+         final isOk = await Permission.photos.request();
+         if(isOk.isGranted) { grantedPhotos = true; }
+         else { grantedPhotos = false; }
+       }
+       if(storagePermission.isDenied){
+         final isOk =  await Permission.storage.request();
+         if(isOk.isGranted) { grantedStorage = true; }
+         else { grantedStorage = false; }
+         return ;
+       }
+       if(photosPermission.isPermanentlyDenied || storagePermission.isPermanentlyDenied){
+         Geolocator.openAppSettings();
+         return ;
+       }
+
+       if(!grantedStorage! || !grantedPhotos! ) return;
+
+       final img = await _imagePicker.pickImage(source: ImageSource.gallery);
+       if(img == null) return;
+       await Future.delayed(const Duration(milliseconds: 300));
+       emit(currentState.copyWith(shopThumbnail: img.path));
+
+     }
+     else {
+
+       bool? grantedStorage;
+
+       if(storagePermission.isGranted){
+         grantedStorage = true;
+       }
+       if(storagePermission.isDenied){
+         final isOk =  await Permission.storage.request();
+         if(isOk.isGranted) { grantedStorage = true; }
+         else { grantedStorage = false; }
+         return ;
+       }
+       if(storagePermission.isPermanentlyDenied){
+         Geolocator.openAppSettings();
+         return ;
+       }
+       if(!grantedStorage!) return;
+
+       final img = await _imagePicker.pickImage(source: ImageSource.gallery);
+       if(img == null) return;
+       await Future.delayed(const Duration(milliseconds: 300));
+       emit(currentState.copyWith(shopThumbnail: img.path));
+
+     }
 
    }catch(_){
      emit(currentState);
@@ -303,7 +351,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   void onPickCinBackImage({ required BuildContext context }) async{
     final BeVendorMainState currentState = state as BeVendorMainState;
     try{
-      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+      final img = await _imagePicker.pickImage(source: ImageSource.gallery);
       if(img == null) return;
 
       await Future.delayed(const Duration(milliseconds: 300));
@@ -318,7 +366,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   void onPickRegistrationCarImage({ required BuildContext context }) async{
     final BeVendorMainState currentState = state as BeVendorMainState;
     try{
-      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+      final img = await _imagePicker.pickImage(source: ImageSource.gallery);
       if(img == null) return;
 
       await Future.delayed(const Duration(milliseconds: 300));
@@ -334,7 +382,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   void onPickAssuranceCarImage({ required BuildContext context }) async{
     final BeVendorMainState currentState = state as BeVendorMainState;
     try{
-      final img = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+      final img = await _imagePicker.pickImage(source: ImageSource.gallery);
       if(img == null) return;
 
       await Future.delayed(const Duration(milliseconds: 300));

@@ -241,7 +241,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
                     Center(
                       child: RatingBar.builder(
                         itemCount: 5,
-                        initialRating:  currentState.feedback!,
+                        initialRating:  feedback,
                         maxRating: 5,
                         minRating: 1,
                         direction: Axis.horizontal,
@@ -448,6 +448,7 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
 
                               currentState.feedbackController!.clear();
 
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.VENDOR_DETAILS_REPORTED_SUCCESS_SUB_TITLE.getString(context), type: ContentType.success) : null;
                               callBack.call();
 
                               }, height: 78, withDefaultPadding: false, child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT.getString(context)))),
@@ -479,19 +480,21 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
               child: Column(
                 children: [
                   CustomElevatedButton(
-                      child: const Text("Delete"),
+                      child: Text(CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_DELETE.getString(context)),
                       onClick: () async{
                         context.pop();
-                        try{ await reviewRepository.delete(docId: review.id!); }
-                        catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: "Cannot deleted", subTitle: "Sorry we cannot delete this comment..", type: ContentType.success) : null; }
-                        refreshReviews(argumentId: argumentId, context: context);
-                        context.mounted ? CustomSnackBar.show(context: context, title: "Review Deleted", subTitle: "Your review is delete successfully!", type: ContentType.success) : null;
+                        try{
+                          await reviewRepository.delete(docId: review.id!);
+                          refreshReviews(argumentId: argumentId, context: context);
+                        }
+                        catch(_){ context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.VENDOR_DETAILS_CAN_NOT_DELETE_SUB_TITLE.getString(context), type: ContentType.success) : null; }
+
                       }
                       ),
                   CustomElevatedButton(
                       onClick: context.pop,
                       backgroundColor: CustomColors.GRAY_LIGHT,
-                      child: const Text("Close")),
+                      child: Text(CustomLocale.BE_VENDOR_BUTTON_BACK_TITLE.getString(context))),
                 ],
               ),
             ),

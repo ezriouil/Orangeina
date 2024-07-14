@@ -231,6 +231,12 @@ class Arabic{
     CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_CANCEL : "رجوع",
     CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_SUBMIT : "إرسال",
 
+    CustomLocale.VENDOR_DETAILS_CAN_NOT_DELETE_SUB_TITLE: "عذرًا، لا يمكن حذف هذا التعليق الآن..!",
+    CustomLocale.VENDOR_DETAILS_DELETED_SUCCESS_SUB_TITLE: "تم حذف  تعليقك",
+    CustomLocale.VENDOR_DETAILS_REPORTED_SUCCESS_SUB_TITLE: "تم إرسال تقريرك، شكرًا لك",
+    CustomLocale.VENDOR_DETAILS_TITLE_BUTTON_DELETE: "حذف",
+
+
     CustomLocale.VENDOR_DETAILS_REVIEWS_EMPTY_LIST : "لم يتم العثور على أية ارآء !",
 
     CustomLocale.VENDOR_DETAILS_REPORT_REASON_1 : "نوعية / طعم سيئ",

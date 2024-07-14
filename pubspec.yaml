@@ -50,6 +50,9 @@ dependencies:
   # NAVIGATION BETWEEN SCREENS
   go_router: ^14.1.0
 
+  # DEVICE INFO
+  device_info_plus: ^8.0.0
+
   # LOCAL STORAGE
   get_storage: ^2.1.1
 

@@ -234,6 +234,11 @@ mixin CustomLocale{
   static const String VENDOR_DETAILS_TITLE_BUTTON_CANCEL = "Vendor Details Title Button Cancel";
   static const String VENDOR_DETAILS_TITLE_BUTTON_SUBMIT = "Vendor Details Title Button Submit";
 
+  static const String VENDOR_DETAILS_CAN_NOT_DELETE_SUB_TITLE = "Vendor Details Can Not Delete Sub Title";
+  static const String VENDOR_DETAILS_DELETED_SUCCESS_SUB_TITLE = "Vendor Details Deleted Success Sub Title";
+  static const String VENDOR_DETAILS_REPORTED_SUCCESS_SUB_TITLE = "Vendor Details Reported Success Sub Title";
+  static const String VENDOR_DETAILS_TITLE_BUTTON_DELETE = "Vendor Details Title Button Delete";
+
   static const String VENDOR_DETAILS_REVIEWS_EMPTY_LIST = "Vendor Details Reviews Empty List";
 
   static const String VENDOR_DETAILS_REPORT_REASON_1 = "Vendor Details Report Reason 1";
