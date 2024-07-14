@@ -67,10 +67,15 @@ class HomeCubit extends Cubit<HomeState> {
 
     final currentState = state as HomeMainState;
 
+    emit(HomeLoadingState());
+
     try{
       /// GET ALL VENDORS + CLEAR POLY LIEN
-      //currentState.polyline!.clear();
-      //emit(currentState.copyWith(cameraCurrentLocation: const CameraPosition(target: LatLng(CustomTextStrings.INITAIL_LAT,CustomTextStrings.INITAIL_LNG), zoom: 6.0)));
+      if(currentState.polyline!.isNotEmpty) {
+        currentState.polyline!.clear();
+        emit(currentState.copyWith(cameraCurrentLocation: const CameraPosition(target: LatLng(CustomTextStrings.INITAIL_LAT,CustomTextStrings.INITAIL_LNG), zoom: 6.0)));
+      }
+
       final vendors = await vendorRepository.getAllVendors();
 
       /// CHECK PERMISSION IS GRANTED OR NOT TO GET CURRENT LOCATION
@@ -100,12 +105,9 @@ class HomeCubit extends Cubit<HomeState> {
 
       /// PERIODIC TIMER TO REFRESH VENDORS ON MAP
       await onRefreshVendors(context: context);
-      Timer.periodic(const Duration(minutes: 1), (time) async{ await onRefreshVendors(context: context); });
-    }catch(e){
-      print("++++++");
-      print(e.toString());
-      print("++++++");
-    }
+      Timer.periodic(const Duration(minutes: 1), (time) async{
+        await onRefreshVendors(context: context); });
+    }catch(_){ emit(currentState); }
 
   }
 

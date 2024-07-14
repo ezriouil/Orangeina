@@ -35,7 +35,7 @@ class Validator {
      if (value!.isEmpty) { return validAgeError1; }
      else if (!regExp.hasMatch(value)) { return validAgeError2; }
      else if (int.parse(value) < 18) { return validAgeError3; }
-     else if (int.parse(value) > 70) { return validAgeError4; }
+     else if (int.parse(value) > 82) { return validAgeError4; }
      return null;
   }
 }

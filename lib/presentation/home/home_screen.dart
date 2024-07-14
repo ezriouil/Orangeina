@@ -67,7 +67,7 @@ class HomeScreen extends CustomState {
                     width: getWidth(context),
                     height: state.vendors!.isEmpty ? 40 : 100,
                     child: FirestorePagination(
-                      limit: 1,
+                      limit: state.vendors!.length >= 2 ? 2 : 1,
                       scrollDirection: Axis.horizontal,
                       viewType: ViewType.list,
                       bottomLoader: Center(child: CircularProgressIndicator(color: primaryColor(context))),
@@ -121,7 +121,7 @@ class HomeScreen extends CustomState {
                           ),
                           if(state.mapRefreshEnabled!) const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                           if(state.mapMyLocationEnabled!) FloatingActionButton(
-                              heroTag: "hero2",
+                              heroTag: "hero3",
                               backgroundColor: primaryColor(context),
                               onPressed: (){context.read<HomeCubit>().onGetMyLocation(context: context);},
                               child: const Icon(Iconsax.gps, color: CustomColors.WHITE)

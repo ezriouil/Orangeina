@@ -38,32 +38,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
   final GetStorage storage;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR - - - - - - - - - - - - - - - - - -  //
-  BeVendorCubit({ required this.context,required this.notificationRepository, required this.vendorRepository, required this.userRepository, required this.storage }) : super(
-      BeVendorMainState(
-        scrollPhysics: const ScrollPhysics(),
-        currentStep: 0,
-        gender: "Man",
-        carType: "Car",
-        shopThumbnail: "",
-        cinFrontImage: "",
-        cinBackImage: "",
-        carAssuranceImage: "",
-        carRegistrationImage: "",
-        cinController: TextEditingController(),
-        phoneController: TextEditingController(),
-        ageController: TextEditingController(),
-        carAssuranceController: TextEditingController(),
-        carRegistrationController: TextEditingController(),
-        personalInfoFormState: GlobalKey<FormState>(),
-        carInfoFormState: GlobalKey<FormState>(),
-        phoneNumber: PhoneNumber(),
-      )
-  ){ init(); }
+  BeVendorCubit({ required this.context,required this.notificationRepository, required this.vendorRepository, required this.userRepository, required this.storage }) : super(BeVendorLoadingState()){ init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
   void init() async{
 
-    final currentState = state as BeVendorMainState;
     uid = await LocalStorage.read(key: "UID", storage: storage);
     if(uid == null) {
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "LOGIN", storage: storage);
@@ -71,12 +50,35 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       return;
     }
     final bool inProcess = await vendorRepository.isProcessingVendorInfo(uid: uid!);
+
+    print("+++++");
+    print(inProcess);
+    print("+++++");
     if(inProcess){
       emit(BeVendorSuccessState());
       return;
     }
     final getUserInfo = await userRepository.getUserInfo(id: uid!);
-    emit(currentState.copyWith(userEntity: getUserInfo));
+    emit(BeVendorMainState(
+      scrollPhysics: const ScrollPhysics(),
+      currentStep: 0,
+      gender: "Man",
+      carType: "Car",
+      shopThumbnail: "",
+      cinFrontImage: "",
+      cinBackImage: "",
+      carAssuranceImage: "",
+      carRegistrationImage: "",
+      cinController: TextEditingController(),
+      phoneController: TextEditingController(),
+      ageController: TextEditingController(),
+      carAssuranceController: TextEditingController(),
+      carRegistrationController: TextEditingController(),
+      personalInfoFormState: GlobalKey<FormState>(),
+      carInfoFormState: GlobalKey<FormState>(),
+      phoneNumber: PhoneNumber(),
+      userEntity: getUserInfo
+    ));
 
   }
 
