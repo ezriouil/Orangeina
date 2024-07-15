@@ -56,6 +56,7 @@ void main() async {
 
   // - - - - - - - - - - - - - - - - - - HIDE THE TOP STATUS BAR AND SYSTEM BOTTOM BAR - - - - - - - - - - - - - - - - - -  //
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   // - - - - - - - - - - - - - - - - - - SETUP FIREBASE CRASHLYTICS - - - - - - - - - - - - - - - - - -  //
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;

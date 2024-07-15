@@ -63,9 +63,9 @@ class VendorNewOrderScreen extends CustomState {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            FloatingActionButton(heroTag: "1", onPressed: context.read<VendorNewOrderCubit>().decrement, backgroundColor: primaryColor(context), child: const Icon(Iconsax.minus, color: CustomColors.WHITE)),
+                            FloatingActionButton(heroTag: "5", onPressed: context.read<VendorNewOrderCubit>().decrement, backgroundColor: primaryColor(context), child: const Icon(Iconsax.minus, color: CustomColors.WHITE)),
                             Text(state.counter! < 10 ? "0${state.counter}" : state.counter.toString(), style: Theme.of(context).textTheme.headlineMedium),
-                            FloatingActionButton(heroTag: "2", onPressed: context.read<VendorNewOrderCubit>().increment, backgroundColor: primaryColor(context), child: const Icon(Iconsax.add, color: CustomColors.WHITE)),
+                            FloatingActionButton(heroTag: "6", onPressed: context.read<VendorNewOrderCubit>().increment, backgroundColor: primaryColor(context), child: const Icon(Iconsax.add, color: CustomColors.WHITE)),
                           ],
                         ),
                       ),
@@ -77,6 +77,7 @@ class VendorNewOrderScreen extends CustomState {
                       DatePicker(
                         DateTime.now(),
                         height: 100,
+                        width: 70,
                         initialSelectedDate: DateTime.now(),
                         selectionColor: primaryColor(context),
                         selectedTextColor: Colors.white,
@@ -147,7 +148,6 @@ class VendorNewOrderScreen extends CustomState {
                 );
               }
             case VendorNewOrderLoadingState(): return const CustomLoadingScreen();
-              // TODO: Handle this case.
           }
         },
       ),
