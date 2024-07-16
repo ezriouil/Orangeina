@@ -2,7 +2,6 @@ import 'package:berkania/utils/state/custom_state.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/custom_sizes.dart';
 
 class CustomOnboardingPage extends CustomState {
@@ -16,30 +15,25 @@ class CustomOnboardingPage extends CustomState {
 
   @override
   Widget run(BuildContext context) {
-    return Container(
-      color: isDark(context) ? CustomColors.BLACK : CustomColors.WHITE,
-      width: getWidth(context),
-      height: getHeight(context),
-      child: Padding(
-        padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            LottieBuilder.asset(
-              animation,
-              width: getWidth(context) * 0.8,
-              height: getHeight(context) * 0.5,
-              repeat: true,
-            ),
-            Text(title,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge),
-            const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-            Text(subTitle,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodySmall),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(CustomSizes.SPACE_BETWEEN_ITEMS),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          LottieBuilder.asset(
+            animation,
+            width: getWidth(context) * 0.8,
+            height: getHeight(context) * 0.5,
+            repeat: true,
+          ),
+          Text(title,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge),
+          const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+          Text(subTitle,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodySmall),
+        ],
       ),
     );
   }
