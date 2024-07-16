@@ -402,13 +402,6 @@ class SettingsCubit extends Cubit<SettingsState> {
                                   return;
                                 }
 
-                                if (isVendorExist) {
-                                  await vendorRepository.updateVendorFullName(vendorId: uid!, newFirstName: firstName.text, newLastName: lastName.text);
-                                  context.pop();
-                                  emit(currentState.copyWith(firstNameHint: firstName.text, lastNameHint: lastName.text));
-                                  CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_FULL_NAME_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
-                                  return;
-                                }
                                 context.mounted ? context.pop(): null;
                                 context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE.getString(context), type: ContentType.failure) : null;
 
@@ -440,7 +433,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     final bool isArabic = localization.currentLocale?.languageCode == CustomLocale.AR;
     final TextEditingController phone = TextEditingController(text: currentState.phoneHint);
 
-    PhoneNumber phoneNumber = PhoneNumber(isoCode: currentState.isoCodeHint, dialCode: currentState.dialCodeHint, phoneNumber: currentState.phoneHint);
+    PhoneNumber phoneNumber = PhoneNumber(isoCode: currentState.isoCodeHint == "" ? "MA" : currentState.isoCodeHint, dialCode: currentState.dialCodeHint == "" ? "+212" : currentState.dialCodeHint, phoneNumber: currentState.phoneHint);
 
     await showDialog(
         context: context.mounted ? context : context,
@@ -508,14 +501,6 @@ class SettingsCubit extends Cubit<SettingsState> {
                                   await userRepository.updateUserPhone(userId: uid!, newPhone: phone.text, dialCode: phoneNumber.dialCode ?? "+212", isoCode: phoneNumber.isoCode ?? "MA");
                                   if(!context.mounted) return;
                                   context.mounted ? context.pop() : null;
-                                  emit(currentState.copyWith(phoneHint: phone.text, dialCodeHint: phoneNumber.dialCode ?? "+212", isoCodeHint: phoneNumber.isoCode ?? "MA" ));
-                                  CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
-                                  return;
-                                }
-
-                                if (isVendorExist) {
-                                  await vendorRepository.updateVendorPhone(vendorId: uid!, newPhone: phone.text, dialCode: phoneNumber.dialCode ?? "+212", isoCode: phoneNumber.isoCode ?? "MA");
-                                  context.pop();
                                   emit(currentState.copyWith(phoneHint: phone.text, dialCodeHint: phoneNumber.dialCode ?? "+212", isoCodeHint: phoneNumber.isoCode ?? "MA" ));
                                   CustomSnackBar.show(context: context.mounted ? context : context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_PHONE_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.success);
                                   return;

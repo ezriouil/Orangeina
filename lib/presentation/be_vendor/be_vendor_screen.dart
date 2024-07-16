@@ -104,7 +104,7 @@ class BeVendorScreen extends CustomState {
                                             ),
                                           )),
                                       Radio(
-                                          value: "Car",
+                                          value: "Voituer",
                                           groupValue: state.carType,
                                           onChanged: context.read<BeVendorCubit>().onChangeCarType,
                                           visualDensity: const VisualDensity(vertical: -2, horizontal: 0),
@@ -154,7 +154,7 @@ class BeVendorScreen extends CustomState {
                                             ),
                                           )),
                                       Radio(
-                                          value: "Pick Up",
+                                          value: "Pick Op",
                                           groupValue: state.carType,
                                           onChanged: context.read<BeVendorCubit>().onChangeCarType,
                                           visualDensity: const VisualDensity(vertical: -2, horizontal: 0),

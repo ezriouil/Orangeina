@@ -62,8 +62,8 @@ class BeVendorCubit extends Cubit<BeVendorState> {
     emit(BeVendorMainState(
       scrollPhysics: const ScrollPhysics(),
       currentStep: 0,
-      gender: "Man",
-      carType: "Car",
+      gender: "Homme",
+      carType: "Voituer",
       shopThumbnail: "",
       cinFrontImage: "",
       cinBackImage: "",

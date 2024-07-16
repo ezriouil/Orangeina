@@ -90,14 +90,14 @@ class StepPersonalInfo extends CustomState {
               const Spacer(),
               Row(
                 children: [
-                  Radio(value: "Man", groupValue: gender, onChanged: onChangeGender, visualDensity: const VisualDensity(vertical: 0, horizontal: -2), activeColor: primaryColor(context)),
+                  Radio(value: "Homme", groupValue: gender, onChanged: onChangeGender, visualDensity: const VisualDensity(vertical: 0, horizontal: -2), activeColor: primaryColor(context)),
                   Text(CustomLocale.BE_VENDOR_GENDER_MAN_TITLE.getString(context), style: Theme.of(context).textTheme.bodyMedium)
                 ],
               ),
               const SizedBox(width: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
               Row(
                 children: [
-                  Radio(value: "Woman", groupValue: gender, onChanged: onChangeGender, visualDensity: const VisualDensity(vertical: 0, horizontal: -2), activeColor: primaryColor(context)),
+                  Radio(value: "Femme", groupValue: gender, onChanged: onChangeGender, visualDensity: const VisualDensity(vertical: 0, horizontal: -2), activeColor: primaryColor(context)),
                   Text(CustomLocale.BE_VENDOR_GENDER_WOMAN_TITLE.getString(context), style: Theme.of(context).textTheme.bodyMedium)
                 ],
               )
