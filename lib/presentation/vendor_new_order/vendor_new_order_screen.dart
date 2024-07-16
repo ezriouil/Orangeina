@@ -85,7 +85,7 @@ class VendorNewOrderScreen extends CustomState {
                         monthTextStyle: Theme.of(context).textTheme.bodyMedium!,
                         dayTextStyle: Theme.of(context).textTheme.bodyMedium!,
                         daysCount: 60,
-                        locale: state.dateTimeLocalization ?? "EN",
+                        locale: isArabic(context) ? "AR" : "FR",
                         onDateChange: context.read<VendorNewOrderCubit>().onPickDate,
                       ),
 

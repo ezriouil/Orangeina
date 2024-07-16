@@ -28,6 +28,9 @@ abstract class VendorRepository {
   // - - - - - - - - - - - - - - - - - - UPDATE VENDOR AVATAR - - - - - - - - - - - - - - - - - -  //
   Future<void> updateVendorAvatar({required String vendorId, required String newAvatar});
 
+  // - - - - - - - - - - - - - - - - - - UPDATE VENDOR SHOP THUMBNAIL - - - - - - - - - - - - - - - - - -  //
+  Future<void> updateVendorShopThumbnail({required String vendorId, required String newShopThumbnail});
+
   // - - - - - - - - - - - - - - - - - - GET VENDOR INFO - - - - - - - - - - - - - - - - - -  //
   Future<VendorEntity?> getVendorById({required String vendorId});
 
@@ -39,6 +42,9 @@ abstract class VendorRepository {
 
   // - - - - - - - - - - - - - - - - - - SAVE VENDOR IMAGE - - - - - - - - - - - - - - - - - -  //
   Future<String> saveVendorImage({required String imgName, required String imgPath});
+
+  // - - - - - - - - - - - - - - - - - - SAVE VENDOR SHOP THUMBNAIL - - - - - - - - - - - - - - - - - -  //
+  Future<String> saveVendorShopThumbnail({required String imgName, required String imgPath});
 
   // - - - - - - - - - - - - - - - - - - SAVE VENDOR IMAGE - - - - - - - - - - - - - - - - - -  //
   Future<String> saveVendorPaperImages({required String imgName, required String imgPath});

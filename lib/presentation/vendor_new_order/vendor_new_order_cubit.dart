@@ -114,8 +114,8 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
       final NotificationEntity notificationEntity = NotificationEntity(
         userId: uid,
         type: "ORDER_STATUS",
-        title: "New Order",
-        body: "We are processing you order for ${currentState.counter} KG we will inform you soon!",
+        title: "Nouvel ordre",
+        body: "Nous traitons votre commande pour ${currentState.counter} KG nous vous informerons bientôt!",
         createAt: "${dateTime.day}/${dateTime.month}/${dateTime.year}",
       );
       await notificationRepository.sendNotification(notificationEntity: notificationEntity);

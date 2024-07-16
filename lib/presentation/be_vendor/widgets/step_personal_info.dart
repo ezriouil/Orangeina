@@ -12,7 +12,7 @@ import '../../widgets/custom_text_field.dart';
 
 class StepPersonalInfo extends CustomState {
   final TextEditingController? cinController, phoneController, ageController;
-  final Function(PhoneNumber phoneNumber) onInputChanged;
+  final void Function(PhoneNumber phoneNumber)? onInputChanged;
   final PhoneNumber phoneNumber;
   final GlobalKey<FormState> formState;
   final String? gender;
@@ -77,6 +77,7 @@ class StepPersonalInfo extends CustomState {
             formatInput: false,
             autoValidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) => Validator.validateMobilePhone(value, CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR1.getString(context), CustomLocale.VALIDATOR_MOBILE_NUMBER_ERROR2.getString(context)),
+            spaceBetweenSelectorAndTextField: 2.0,
           ),
 
           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //

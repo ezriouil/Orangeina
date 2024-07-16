@@ -100,7 +100,7 @@ class RegisterScreen extends CustomState {
                               hint: CustomLocale.EMAIL.getString(context),
                               controller: state.emailController!,
                               validator: (value) =>
-                                  Validator.validateEmailField(value, CustomLocale.VALIDATOR_EMAIL_ERROR1, CustomLocale.VALIDATOR_EMAIL_ERROR2),
+                                  Validator.validateEmailField(value, CustomLocale.VALIDATOR_EMAIL_ERROR1.getString(context), CustomLocale.VALIDATOR_EMAIL_ERROR2.getString(context)),
                               textInputType: TextInputType.emailAddress),
 
                           // - - - - - - - - - - - - - - - - - - SPACER - - - - - - - - - - - - - - - - - -  //

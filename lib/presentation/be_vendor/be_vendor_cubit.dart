@@ -3,6 +3,7 @@ import 'package:berkania/domain/entities/notification_entity.dart';
 import 'package:berkania/domain/entities/vendor_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
+import 'package:berkania/utils/device/device_utility.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
 import 'package:berkania/utils/router/custom_router.dart';
@@ -30,6 +31,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
 
   // - - - - - - - - - - - - - - - - - - STATES - - - - - - - - - - - - - - - - - -  //
   final ImagePicker _imagePicker = ImagePicker();
+  static PhoneNumber phoneNumber = PhoneNumber(isoCode: "MA", dialCode: "+212");
   String? uid;
 
   final BuildContext context;
@@ -52,9 +54,6 @@ class BeVendorCubit extends Cubit<BeVendorState> {
     }
     final bool inProcess = await vendorRepository.isProcessingVendorInfo(uid: uid!);
 
-    print("+++++");
-    print(inProcess);
-    print("+++++");
     if(inProcess){
       emit(BeVendorSuccessState());
       return;
@@ -76,17 +75,13 @@ class BeVendorCubit extends Cubit<BeVendorState> {
       carAssuranceController: TextEditingController(),
       carRegistrationController: TextEditingController(),
       personalInfoFormState: GlobalKey<FormState>(),
-      carInfoFormState: GlobalKey<FormState>(),
-      phoneNumber: PhoneNumber(),
+        carInfoFormState: GlobalKey<FormState>(),
       userEntity: getUserInfo
     ));
 
   }
 
-  dynamic onInputChanged(PhoneNumber phoneNumber){
-    final currentState = state as BeVendorMainState;
-    emit(currentState.copyWith(phoneNumber: phoneNumber));
-  }
+   void onInputChanged(PhoneNumber innerPhoneNumber){ phoneNumber = innerPhoneNumber; }
 
   bool validateFirstStep(){
     final BeVendorMainState currentState = state as BeVendorMainState;
@@ -159,7 +154,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         await vendorRepository.saveVendorPaperImages(imgName: "${uid}_car_registration_image", imgPath: currentState.carRegistrationImage!)
       ];
 
-      final String shopThumbnailUri = await vendorRepository.saveVendorPaperImages(imgName: "${uid}_shop_thumbnail", imgPath: currentState.shopThumbnail!);
+      final String shopThumbnailUri = await vendorRepository.saveVendorImage(imgName: "${uid}_shop_thumbnail", imgPath: currentState.shopThumbnail!);
 
       // ADD NEW VENDOR
       final VendorEntity vendorEntity = VendorEntity(
@@ -167,11 +162,11 @@ class BeVendorCubit extends Cubit<BeVendorState> {
           firstName: currentState.userEntity?.firstName,
           lastName: currentState.userEntity?.lastName,
           cin: currentState.cinController?.text.trim(),
-          avatar: currentState.userEntity?.avatar,
+          avatar: shopThumbnailUri,
           email: currentState.userEntity?.email,
           phoneNumber: currentState.phoneController!.text.trim(),
-          dialCode: currentState.phoneNumber!.dialCode ?? "+212",
-          isoCode: currentState.phoneNumber!.isoCode ?? "MA",
+          dialCode: phoneNumber.dialCode ?? "+212",
+          isoCode: phoneNumber.isoCode ?? "MA",
           gender: currentState.gender,
           shopThumbnail: shopThumbnailUri,
           carAssurance: currentState.carAssuranceController?.text.trim(),
@@ -264,37 +259,64 @@ class BeVendorCubit extends Cubit<BeVendorState> {
     final BeVendorMainState currentState = state as BeVendorMainState;
    try{
 
-     final storagePermission = await Permission.storage.status;
-     final photosPermission =  await Permission.photos.status;
+     if(DeviceUtility.isAndroid()){
+       final storagePermission = await Permission.storage.status;
+       final photosPermission =  await Permission.photos.status;
 
-     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
-     if (androidInfo.version.sdkInt >= 33) {
+       if (androidInfo.version.sdkInt >= 33) {
 
-       bool? grantedPhotos;
+         bool? grantedPhotos;
 
-       if(photosPermission.isGranted){ grantedPhotos = true; }
-       if(photosPermission.isDenied){
-         final isOk = await Permission.photos.request();
-         if(isOk.isGranted) { grantedPhotos = true; }
-         else { grantedPhotos = false; }
+         if(photosPermission.isGranted){ grantedPhotos = true; }
+         if(photosPermission.isDenied){
+           final isOk = await Permission.photos.request();
+           if(isOk.isGranted) { grantedPhotos = true; }
+           else { grantedPhotos = false; }
+         }
+         if(photosPermission.isPermanentlyDenied || storagePermission.isPermanentlyDenied){
+           Geolocator.openAppSettings();
+           return ;
+         }
+
+         if(!grantedPhotos! ) return;
+
+         final img = await _imagePicker.pickImage(source: ImageSource.gallery);
+         if(img == null) return;
+         await Future.delayed(const Duration(milliseconds: 300));
+         emit(currentState.copyWith(shopThumbnail: img.path));
+
        }
-       if(photosPermission.isPermanentlyDenied || storagePermission.isPermanentlyDenied){
-         Geolocator.openAppSettings();
-         return ;
+       else {
+
+         bool? grantedStorage;
+
+         if(storagePermission.isGranted){
+           grantedStorage = true;
+         }
+         if(storagePermission.isDenied){
+           final isOk =  await Permission.storage.request();
+           if(isOk.isGranted) { grantedStorage = true; }
+           else { grantedStorage = false; }
+           return ;
+         }
+         if(storagePermission.isPermanentlyDenied){
+           Geolocator.openAppSettings();
+           return ;
+         }
+         if(!grantedStorage!) return;
+
+         final img = await _imagePicker.pickImage(source: ImageSource.gallery);
+         if(img == null) return;
+         await Future.delayed(const Duration(milliseconds: 300));
+         emit(currentState.copyWith(shopThumbnail: img.path));
+
        }
-
-       if(!grantedPhotos! ) return;
-
-       final img = await _imagePicker.pickImage(source: ImageSource.gallery);
-       if(img == null) return;
-       await Future.delayed(const Duration(milliseconds: 300));
-       emit(currentState.copyWith(shopThumbnail: img.path));
-
      }
-     else {
-
+     if(DeviceUtility.isIos()){
+       final storagePermission = await Permission.storage.status;
        bool? grantedStorage;
 
        if(storagePermission.isGranted){
@@ -316,7 +338,6 @@ class BeVendorCubit extends Cubit<BeVendorState> {
        if(img == null) return;
        await Future.delayed(const Duration(milliseconds: 300));
        emit(currentState.copyWith(shopThumbnail: img.path));
-
      }
 
    }catch(_){

@@ -10,7 +10,6 @@ final class BeVendorMainState extends BeVendorState {
   final TextEditingController? cinController, phoneController, ageController, carAssuranceController, carRegistrationController;
   final UserEntity? userEntity;
   final GlobalKey<FormState>? personalInfoFormState, carInfoFormState;
-  final PhoneNumber? phoneNumber;
 
   BeVendorMainState(
       {this.scrollPhysics,
@@ -30,7 +29,6 @@ final class BeVendorMainState extends BeVendorState {
       this.userEntity,
       this.personalInfoFormState,
       this.carInfoFormState,
-      this.phoneNumber,
       });
 
   BeVendorMainState copyWith(
@@ -51,7 +49,6 @@ final class BeVendorMainState extends BeVendorState {
           UserEntity? userEntity,
           GlobalKey<FormState>? personalInfoFormState,
           GlobalKey<FormState>? carInfoFormState,
-            PhoneNumber? phoneNumber,
           }) =>
       BeVendorMainState(
         scrollPhysics: scrollPhysics ?? this.scrollPhysics,
@@ -71,7 +68,6 @@ final class BeVendorMainState extends BeVendorState {
         userEntity: userEntity ?? this.userEntity,
         personalInfoFormState: personalInfoFormState ?? this.personalInfoFormState,
         carInfoFormState: carInfoFormState ?? this.carInfoFormState,
-        phoneNumber: phoneNumber ?? this.phoneNumber,
   );
 
 }

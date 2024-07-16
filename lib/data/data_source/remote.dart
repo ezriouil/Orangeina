@@ -86,6 +86,11 @@ class Remote{
     await _firebaseFirestore.collection(collection).doc(doc).update({'avatar' : newAvatar});
   }
 
+  // - - - - - - - - - - - - - - - - - - UPDATE SHOP THUMBNAIL - - - - - - - - - - - - - - - - - -  //
+  static Future<void> updateShopThumbnail({required String collection,required String doc, required String newShopThumbnail}) async{
+    await _firebaseFirestore.collection(collection).doc(doc).update({'shopThumbnail' : newShopThumbnail});
+  }
+
   // - - - - - - - - - - - - - - - - - - SAVE IMAGE - - - - - - - - - - - - - - - - - -  //
   static Future<String> saveImage({required String path, required String imgName, required String imgPath}) async{
     final saveImg =  await _firebaseStorage.ref(path).child(imgName).putFile(File(imgPath));
@@ -229,6 +234,7 @@ class Remote{
       'avatar': wishListDto.avatar,
       'fullName': wishListDto.fullName,
       'phoneNumber': wishListDto.phoneNumber,
+      'dialCode': wishListDto.dialCode,
       'createAt': wishListDto.createAt
     });
     return newDoc.id;

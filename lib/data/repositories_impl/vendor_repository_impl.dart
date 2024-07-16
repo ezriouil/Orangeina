@@ -43,15 +43,23 @@ class VendorRepositoryImpl extends VendorRepository {
     await Remote.updatePhone(collection: "VENDORS", doc: vendorId, newPhone: newPhone, dialCode: dialCode, isoCode: isoCode);
   }
 
-  // - - - - - - - - - - - - - - - - - - OVERRIDE UPDATE AVATAR - - - - - - - - - - - - - - - - - -  //
   @override
   Future<void> updateVendorAvatar({required String vendorId, required String newAvatar}) async{
     await Remote.updateAvatar(collection: "VENDORS", doc: vendorId, newAvatar: newAvatar);
   }
 
   @override
+  Future<void> updateVendorShopThumbnail({required String vendorId, required String newShopThumbnail}) async{
+    await Remote.updateShopThumbnail(collection: "VENDORS", doc: vendorId, newShopThumbnail: newShopThumbnail);
+  }
+
+  @override
   Future<String> saveVendorImage({required String imgName, required String imgPath})  async =>
       await Remote.saveImage(path: "VENDORS", imgName: imgName, imgPath: imgPath);
+
+  @override
+  Future<String> saveVendorShopThumbnail({required String imgName, required String imgPath})  async =>
+      await Remote.saveImage(path: "VENDORS_PAPER", imgName: imgName, imgPath: imgPath);
 
   @override
   Future<void> deleteVendorImage({required String imgName}) async{

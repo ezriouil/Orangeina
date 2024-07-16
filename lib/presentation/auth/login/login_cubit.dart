@@ -47,7 +47,7 @@ class LoginCubit extends Cubit<LoginState> {
       : super(LoginLoadingState()) { init(); }
 
   // - - - - - - - - - - - - - - - - - - INIT - - - - - - - - - - - - - - - - - -  //
-  init() async {
+  void init() async {
 
     final String lang = await LocalStorage.read(key: "LANGUAGE", storage: storage) ?? CustomLocale.FR;
 

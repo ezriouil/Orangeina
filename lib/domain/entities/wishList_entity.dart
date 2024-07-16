@@ -7,6 +7,7 @@ class WishListEntity {
       avatar,
       fullName,
       phoneNumber,
+      dialCode,
       createAt;
 
   // - - - - - - - - - - - - - - - - - - CONSTRUCTOR- - - - - - - - - - - - - - - - - -  //
@@ -17,6 +18,7 @@ class WishListEntity {
       this.avatar = "",
       this.fullName = "",
       this.phoneNumber = "",
+      this.dialCode = "",
       this.createAt = ""});
 
   // - - - - - - - - - - - - - - - - - - TO JSON - - - - - - - - - - - - - - - - - -  //
@@ -27,6 +29,7 @@ class WishListEntity {
         'avatar': avatar,
         'fullName': fullName,
         'phone': phoneNumber,
+        'dialCode': dialCode,
         'createAt': createAt
       };
 
@@ -39,6 +42,7 @@ class WishListEntity {
         avatar: json['avatar'] as String,
         fullName: json['fullName'] as String,
         phoneNumber: json['phoneNumber'] as String,
+        dialCode: json['dialCode'] as String,
         createAt: json['createAt'] as String);
   }
 }

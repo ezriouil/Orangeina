@@ -120,7 +120,8 @@ class VendorDetailsCubit extends Cubit<VendorDetailsState> {
         vendorId: currentState.vendor?.id,
         avatar: currentState.vendor?.shopThumbnail,
         fullName: "${currentState.vendor?.firstName} ${currentState.vendor?.lastName}",
-          phoneNumber: "${currentState.vendor?.dialCode} ${currentState.vendor?.phoneNumber}",
+          phoneNumber: currentState.vendor?.phoneNumber,
+          dialCode: currentState.vendor?.dialCode,
         createAt: "${date.year}/${date.month}/${date.day}"
       );
       final result = await wishListRepository.insertWishList(wishListEntity: wishListEntity);
