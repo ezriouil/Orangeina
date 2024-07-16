@@ -1,8 +1,18 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:berkania/domain/entities/user_entity.dart';
 import 'package:berkania/domain/repositories/user_repository.dart';
+import 'package:berkania/presentation/be_vendor/be_vendor_cubit.dart';
+import 'package:berkania/presentation/home/home_cubit.dart';
+import 'package:berkania/presentation/index/index_cubit.dart';
+import 'package:berkania/presentation/notification/notification_cubit.dart';
+import 'package:berkania/presentation/settings/settings_cubit.dart';
+import 'package:berkania/presentation/vendor_details/vendor_details_cubit.dart';
+import 'package:berkania/presentation/vendor_new_order/vendor_new_order_cubit.dart';
+import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
 import 'package:berkania/presentation/widgets/custom_snackbars.dart';
+import 'package:berkania/presentation/wishlist/wishlist_cubit.dart';
 import 'package:berkania/utils/constants/custom_image_strings.dart';
+import 'package:berkania/utils/constants/custom_txt_strings.dart';
 import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/local/storage/local_storage.dart';
 import 'package:berkania/utils/localisation/custom_locale.dart';
@@ -12,6 +22,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../domain/repositories/auth_repository.dart';
 
@@ -129,6 +140,19 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(updateState);
   }
 
+  // - - - - - - - - - - - - - - - - - - ON NAVIGATE TO TERMS OF USE - - - - - - - - - - - - - - - - - -  //
+  void onNavigateToTermsOfUse({ required BuildContext context }) async{
+
+    // CHECK CONNECTION INTERNET
+    final hasConnection = await Network.hasConnection(connectivity);
+    if(!hasConnection && context.mounted){
+      CustomSnackBar.show(context: context, title: CustomLocale.NETWORK_TITLE.getString(context), subTitle: CustomLocale.NETWORK_SUB_TITLE.getString(context), type: ContentType.warning);
+      return;
+    }
+
+    await launchUrl(Uri.parse(CustomTextStrings.TERMS_LINK), mode: LaunchMode.inAppWebView);
+  }
+
   // - - - - - - - - - - - - - - - - - - CREATE ACCOUNT WITH GOOGLE - - - - - - - - - - - - - - - - - -  //
   void onCreateNewAccountWithGoogle({ required BuildContext context, required Function callBack }) async{
 
@@ -140,7 +164,6 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
 
     // CALL LOGIN METHODE
-    final currentState = state as RegisterMainState;
     final UserCredential userCredential = await authRepository.loginWithGoogle();
     try{
       if(userCredential.user == null){
@@ -164,14 +187,26 @@ class RegisterCubit extends Cubit<RegisterState> {
         await userRepository.saveUserInfo(userEntity: userEntity);
       }
 
+      await LocalStorage.upsert(key: "UID", value: userCredential.user?.uid, storage: storage);
+      await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
+
       // NAVIGATE TO HOME SCREEN
-      emit(currentState);
-      CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.REGISTER_SUCCESS_SUB_TITLE.getString(context), type: ContentType.warning);
+      context.read<IndexCubit>().init();
+      context.read<HomeCubit>().init(context: context);
+      context.read<HomeCubit>().getAllVendors();
+      context.read<BeVendorCubit>().init();
+      context.read<NotificationCubit>().init(context: context);
+      context.read<SettingsCubit>().init(context: context);
+      context.read<VendorDetailsCubit>().init(context: context);
+      context.read<VendorNewOrderCubit>().init();
+      context.read<VendorOrdersCubit>().init(context: context);
+      context.read<WishlistCubit>().init(context: context);
+
+      // NAVIGATE TO HOME SCREEN
       callBack.call();
 
-    }catch(e){
+    }catch(_){
       CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.REGISTER_ERROR_EMAIL_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
-      emit(currentState);
     }
   }
 }

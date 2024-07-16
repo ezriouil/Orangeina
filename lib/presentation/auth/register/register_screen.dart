@@ -184,7 +184,7 @@ class RegisterScreen extends CustomState {
                                               ?.copyWith(
                                                   color: primaryColor(context)),
                                           recognizer: TapGestureRecognizer()
-                                            ..onTap = () {}),
+                                            ..onTap = (){ context.read<RegisterCubit>().onNavigateToTermsOfUse(context: context); }),
                                       TextSpan(
                                           text: ' &',
                                           style: Theme.of(context)
@@ -199,7 +199,7 @@ class RegisterScreen extends CustomState {
                                               ?.copyWith(
                                                   color: primaryColor(context)),
                                           recognizer: TapGestureRecognizer()
-                                            ..onTap = () {})
+                                            ..onTap = (){ context.read<RegisterCubit>().onNavigateToTermsOfUse(context: context); })
                                     ]),
                               ),
                             ),
@@ -251,13 +251,9 @@ class RegisterScreen extends CustomState {
                           // - - - - - - - - - - - - - - - - - - BUTTON GOOGLE - - - - - - - - - - - - - - - - - -  //
                           CustomElevatedButton(
                               onClick: () {
-                                context
-                                    .read<RegisterCubit>()
-                                    .onCreateNewAccountWithGoogle(
+                                context.read<RegisterCubit>().onCreateNewAccountWithGoogle(
                                         context: context,
-                                        callBack: () {
-                                          context.pushReplacement(
-                                              CustomRouter.INDEX);
+                                        callBack: () {context.pushReplacement(CustomRouter.INDEX);
                                         });
                               },
                               height: 74,

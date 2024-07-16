@@ -129,8 +129,6 @@ class LoginCubit extends Cubit<LoginState> {
   // - - - - - - - - - - - - - - - - - - LOGIN WITH GOOGLE - - - - - - - - - - - - - - - - - -  //
   void loginWithGoogle({ required BuildContext context, required Function callBack }) async{
 
-    final currentState = state as LoginMainState;
-
     // CHECK CONNECTION INTERNET
     final hasConnection = await Network.hasConnection(connectivity);
     if(!hasConnection && context.mounted){
@@ -165,7 +163,6 @@ class LoginCubit extends Cubit<LoginState> {
       await LocalStorage.upsert(key: "INIT_LOCATION", value: "INDEX", storage: storage);
 
       // NAVIGATE TO HOME SCREEN
-      emit(currentState);
       context.read<IndexCubit>().init();
       context.read<HomeCubit>().init(context: context);
       context.read<HomeCubit>().getAllVendors();
@@ -181,7 +178,6 @@ class LoginCubit extends Cubit<LoginState> {
     }catch(e){
       // EMIT ERROR STATE
       CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.LOGIN_ERROR_EMAI_INVALID_SUB_TITLE.getString(context), type: ContentType.warning);
-      emit(currentState);
     }
   }
 

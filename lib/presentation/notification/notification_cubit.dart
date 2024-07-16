@@ -5,9 +5,7 @@ import 'package:berkania/utils/constants/custom_sizes.dart';
 import 'package:berkania/utils/helpers/network.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get_storage/get_storage.dart';
@@ -113,7 +111,7 @@ class NotificationCubit extends Cubit<NotificationState> {
 
       if(!notification.isRead!) await getNotifications();
 
-    }catch(e){
+    }catch(_){
       emit(NotificationEmptyState());
     }
   }
@@ -155,7 +153,7 @@ class NotificationCubit extends Cubit<NotificationState> {
             );
           });
 
-    }catch(e){
+    }catch(_){
       context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.NOTIFICATION_ERROR_DELETE_NOTIFICATION_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
     }
   }
