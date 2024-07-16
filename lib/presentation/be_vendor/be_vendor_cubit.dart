@@ -154,7 +154,7 @@ class BeVendorCubit extends Cubit<BeVendorState> {
         await vendorRepository.saveVendorPaperImages(imgName: "${uid}_car_registration_image", imgPath: currentState.carRegistrationImage!)
       ];
 
-      final String shopThumbnailUri = await vendorRepository.saveVendorImage(imgName: "${uid}_shop_thumbnail", imgPath: currentState.shopThumbnail!);
+      final String shopThumbnailUri = await vendorRepository.saveVendorShopThumbnail(imgName: uid!, imgPath: currentState.shopThumbnail!);
 
       // ADD NEW VENDOR
       final VendorEntity vendorEntity = VendorEntity(

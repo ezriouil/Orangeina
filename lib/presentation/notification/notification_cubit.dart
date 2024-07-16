@@ -154,7 +154,7 @@ class NotificationCubit extends Cubit<NotificationState> {
           });
 
     }catch(_){
-      context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.NOTIFICATION_ERROR_DELETE_NOTIFICATION_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+      context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.NOTIFICATION_ERROR_DELETE_NOTIFICATION_SUB_TITLE.getString(context), type: ContentType.failure) : null;
     }
   }
 

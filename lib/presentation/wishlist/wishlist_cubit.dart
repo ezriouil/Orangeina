@@ -104,7 +104,7 @@ class WishlistCubit extends Cubit<WishlistState> {
             );
           });
     } catch (_) {
-      context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.WISHLIST_ERROR_CANNOT_DELETE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+      context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.WISHLIST_ERROR_CANNOT_DELETE_SUB_TITLE.getString(context), type: ContentType.failure) : null;
     }
   }
 }

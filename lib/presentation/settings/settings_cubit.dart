@@ -123,7 +123,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     await showDialog(
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext innerContext) {
           return AlertDialog(
             content: SizedBox(
               width: double.infinity,
@@ -173,10 +173,10 @@ class SettingsCubit extends Cubit<SettingsState> {
                               final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                               if (isUserExist && isVendorExist) {
                                 final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
-                                await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
-                                await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
+                                if(_vendor!.visible!) await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
+                                if(_vendor!.visible!) await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
                                 emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure) : null;
                                 return;
                               }
 
@@ -184,24 +184,23 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
                                 await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
                                 emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure) : null;
                                 return;
                               }
 
                               if (isVendorExist) {
                                 try{ await vendorRepository.deleteVendorImage(imgName: uid!); }
                                 catch(_){}
-                                final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
-                                final String shopThumbnailUri = await vendorRepository.saveVendorImage(imgName: "${uid}_shop_thumbnail", imgPath: img.path);
-                                await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
-                                await vendorRepository.updateVendorShopThumbnail(vendorId: uid!, newShopThumbnail: shopThumbnailUri);
-                                emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                final String shopThumbnailUri = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
+                                if(_vendor!.visible!) await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: shopThumbnailUri);
+                                if(_vendor!.visible!) await vendorRepository.updateVendorShopThumbnail(vendorId: uid!, newShopThumbnail: shopThumbnailUri);
+                                emit(currentState.copyWith(updateImageProfilePath: shopThumbnailUri));
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure) : null;
                                 return;
                               }
 
                               context.mounted ? context.pop() : null;
-                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure) : null;
 
 
                             }
@@ -235,12 +234,11 @@ class SettingsCubit extends Cubit<SettingsState> {
                               final isUserExist = await userRepository.existUser(userId: uid!);
                               final isVendorExist = await vendorRepository.existVendor(vendorId: uid!);
                               if (isUserExist && isVendorExist) {
-                                final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
-                                final String shopThumbnailUri = await vendorRepository.saveVendorShopThumbnail(imgName: "${uid}_shop_thumbnail", imgPath: img.path);
-                                await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
-                                await vendorRepository.updateVendorShopThumbnail(vendorId: uid!, newShopThumbnail: shopThumbnailUri);
-                                emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                  final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
+                                  await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
+                                  await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
+                                  await vendorRepository.updateVendorShopThumbnail(vendorId: uid!, newShopThumbnail: newImageLink);
+                                  emit(currentState.copyWith(updateImageProfilePath: newImageLink));
                                 return;
                               }
 
@@ -248,24 +246,12 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
                                 await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
                                 emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-                                return;
-                              }
-
-                              if (isVendorExist) {
-                                try{ await vendorRepository.deleteVendorImage(imgName: uid!); }
-                                catch(_){}
-                                final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
-                                final String shopThumbnailUri = await vendorRepository.saveVendorShopThumbnail(imgName: "${uid}_shop_thumbnail", imgPath: img.path);
-                                await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
-                                await vendorRepository.updateVendorShopThumbnail(vendorId: uid!, newShopThumbnail: shopThumbnailUri);
-                                emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure) : null;
                                 return;
                               }
 
                               context.mounted ? context.pop() : null;
-                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure) : null;
 
 
                             }
@@ -303,11 +289,10 @@ class SettingsCubit extends Cubit<SettingsState> {
                             if (isUserExist && isVendorExist) {
                               final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
                               await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
-                              final String shopThumbnailUri = await vendorRepository.saveVendorShopThumbnail(imgName: "${uid}_shop_thumbnail", imgPath: img.path);
                               await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
-                              await vendorRepository.updateVendorShopThumbnail(vendorId: uid!, newShopThumbnail: shopThumbnailUri);
+                              await vendorRepository.updateVendorShopThumbnail(vendorId: uid!, newShopThumbnail: newImageLink);
                               emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure) : null;
                               return;
                             }
 
@@ -315,32 +300,17 @@ class SettingsCubit extends Cubit<SettingsState> {
                               final String newImageLink = await userRepository.updateUserImage(userId: uid!, newImage: img!.path);
                               await userRepository.updateUserAvatar(userId: uid!, newAvatar: newImageLink);
                               emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
-                              return;
-                            }
-
-                            if (isVendorExist) {
-                              try{ await vendorRepository.deleteVendorImage(imgName: uid!); }
-                              catch(_){}
-                              final String newImageLink = await vendorRepository.saveVendorImage(imgName: uid!, imgPath: img!.path);
-                              final String shopThumbnailUri = await vendorRepository.saveVendorShopThumbnail(imgName: "${uid}_shop_thumbnail", imgPath: img.path);
-                              await vendorRepository.updateVendorAvatar(vendorId: uid!, newAvatar: newImageLink);
-                              await vendorRepository.updateVendorShopThumbnail(vendorId: uid!, newShopThumbnail: shopThumbnailUri);
-                              emit(currentState.copyWith(updateImageProfilePath: newImageLink));
-                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                              context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_IMAGE_PROFILE_UPDATED_SUCCESSFULLY.getString(context), type: ContentType.failure) : null;
                               return;
                             }
 
                             context.mounted ? context.pop() : null;
-                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                            context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure) : null;
 
                           }
 
-
-
-
                         } catch (_) {
-                          context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                          context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_IMAGE_PROFILE_SUB_TITLE.getString(context), type: ContentType.failure) : null;
                         }
                       }),
 
@@ -440,10 +410,10 @@ class SettingsCubit extends Cubit<SettingsState> {
                                   return;
                                 }
                                 context.mounted ? context.pop(): null;
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE.getString(context), type: ContentType.failure) : null;
 
                               } catch (_) {
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_FULL_NAME_SUB_TITLE.getString(context), type: ContentType.failure) : null;
                               }
                             },
                             child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
@@ -552,10 +522,10 @@ class SettingsCubit extends Cubit<SettingsState> {
                                 }
 
                                 context.pop();
-                                CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
+                                CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE.getString(context), type: ContentType.failure);
 
                               } catch (e) {
-                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+                                context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_PHONE_SUB_TITLE.getString(context), type: ContentType.failure) : null;
                               }
                             },
                             child: Text(CustomLocale.SETTINGS_BUTTON_UPDATE_TITLE.getString(context), style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CustomColors.WHITE)))
@@ -591,13 +561,13 @@ class SettingsCubit extends Cubit<SettingsState> {
         }
         final Position currentPosition = await Geolocator.getCurrentPosition();
         await vendorRepository.online(vendorId: uid!, lat: currentPosition.latitude, lng: currentPosition.longitude);
-        context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+        context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.failure,) : null;
       }else{
         await vendorRepository.offline(vendorId: uid!);
-        context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+        context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.SUCCESS_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_VENDOR_STATUS_UPDATED_SUCCESSFULLY_SUB_TITLE.getString(context), type: ContentType.failure) : null;
       }
       emit(currentState.copyWith(vendorOnlineOffline: value));
-    }catch(_) { context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_VENDOR_STATUS_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null; }
+    }catch(_) { context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.SETTINGS_ERROR_UPDATE_VENDOR_STATUS_SUB_TITLE.getString(context), type: ContentType.failure) : null; }
   }
 
   // - - - - - - - - - - - - - - - - - - VENDOR => ON NAVIGATE TO NEW ORDER SCREEN - - - - - - - - - - - - - - - - - -  //

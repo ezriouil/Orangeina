@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CustomSnackBar {
   CustomSnackBar._();
 
-  static void show({required BuildContext context,required String title,required String subTitle,required ContentType type, Color? color}){
+  static void show({required BuildContext context,required String title,required String subTitle,required ContentType type}){
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
@@ -15,7 +15,7 @@ class CustomSnackBar {
             behavior: SnackBarBehavior.floating,
             backgroundColor: Colors.transparent,
             content: AwesomeSnackbarContent(
-              color: color ?? CustomColors.YELLOW_DARK,
+              color: CustomColors.YELLOW_DARK,
               title: title,
               message: subTitle,
               contentType: type,

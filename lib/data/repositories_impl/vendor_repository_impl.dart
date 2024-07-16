@@ -55,15 +55,15 @@ class VendorRepositoryImpl extends VendorRepository {
 
   @override
   Future<String> saveVendorImage({required String imgName, required String imgPath})  async =>
-      await Remote.saveImage(path: "VENDORS", imgName: imgName, imgPath: imgPath);
-
-  @override
-  Future<String> saveVendorShopThumbnail({required String imgName, required String imgPath})  async =>
       await Remote.saveImage(path: "VENDORS_PAPER", imgName: imgName, imgPath: imgPath);
 
   @override
+  Future<String> saveVendorShopThumbnail({required String imgName, required String imgPath})  async =>
+      await Remote.saveImage(path: "USERS", imgName: imgName, imgPath: imgPath);
+
+  @override
   Future<void> deleteVendorImage({required String imgName}) async{
-    await Remote.deleteUserImage(path: "VENDORS", imgName: imgName);
+    await Remote.deleteUserImage(path: "VENDORS_PAPER", imgName: imgName);
   }
 
   @override

@@ -4,7 +4,6 @@ import 'package:berkania/domain/entities/order_entity.dart';
 import 'package:berkania/domain/repositories/notification_repository.dart';
 import 'package:berkania/presentation/notification/notification_cubit.dart';
 import 'package:berkania/presentation/vendor_orders/vendor_orders_cubit.dart';
-import 'package:berkania/utils/constants/custom_colors.dart';
 import 'package:berkania/utils/router/custom_router.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
@@ -92,7 +91,7 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
 
       // VALIDATION
       if(currentState.counter! < 1 && context.mounted){
-        CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.ORDERS_EMPTY_COUNTER_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
+        CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.ORDERS_EMPTY_COUNTER_SUB_TITLE.getString(context), type: ContentType.failure);
         return;
       }
 
@@ -131,7 +130,7 @@ class VendorNewOrderCubit extends Cubit<VendorNewOrderState> {
 
     }catch(_){
       emit(currentState);
-      context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.ORDERS_CANNOT_ORDER_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT) : null;
+      context.mounted ? CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.ORDERS_CANNOT_ORDER_SUB_TITLE.getString(context), type: ContentType.failure) : null;
     }
   }
 

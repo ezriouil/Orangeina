@@ -157,7 +157,7 @@ class HomeCubit extends Cubit<HomeState> {
           polyline: polyline
       ));
     }catch(_){
-    CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.HOME_ERROR_GET_VENDOR_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
+    CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.HOME_ERROR_GET_VENDOR_SUB_TITLE.getString(context), type: ContentType.failure);
     }
   }
 
@@ -178,7 +178,7 @@ class HomeCubit extends Cubit<HomeState> {
       await Future.delayed(const Duration(milliseconds: 300));
       emit(currentState.copyWith(cameraCurrentLocation: CameraPosition(target: LatLng(currentPosition.latitude, currentPosition.longitude),zoom: 18.0 )));
     }catch(_){
-      if(context.mounted) CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.HOME_ERROR_GET_CURRENT_LOCATION_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
+      if(context.mounted) CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.HOME_ERROR_GET_CURRENT_LOCATION_SUB_TITLE.getString(context), type: ContentType.failure);
     }
   }
 
@@ -360,7 +360,7 @@ class HomeCubit extends Cubit<HomeState> {
               emit(currentState.copyWith(polyline: polyline));
             }
             catch(e){
-              CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.HOME_ERROR_GET_VENDOR_SUB_TITLE.getString(context), type: ContentType.failure, color: CustomColors.RED_LIGHT);
+              CustomSnackBar.show(context: context, title: CustomLocale.ERROR_TITLE.getString(context), subTitle: CustomLocale.HOME_ERROR_GET_VENDOR_SUB_TITLE.getString(context), type: ContentType.failure);
               FirebaseCrashlytics.instance.log("Error Adding Polyline"); }
         }
         );
