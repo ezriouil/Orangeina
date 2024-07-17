@@ -72,7 +72,8 @@ class English {
 
     // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.HOME_PERMISSION_TITLE: "Permission needed",
-    CustomLocale.HOME_PERMISSION_SUB_TITLE: "To serve you best user experience we need permission from location services",
+    CustomLocale.HOME_LOCATION_PERMISSION_SUB_TITLE: "To serve you best user experience we need permission from location services",
+    CustomLocale.HOME_PHOTOS_PERMISSION_SUB_TITLE: "To serve you best user experience we need permission from storage services",
     CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "Enable",
 
   CustomLocale.HOME_SHOW_MY_LOCATION_TITLE : "My Location",

@@ -71,7 +71,8 @@ class Arabic{
 
     // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.HOME_PERMISSION_TITLE: "الإذن مطلوب",
-    CustomLocale.HOME_PERMISSION_SUB_TITLE: "لتزويدك بأفضل تجربة مستخدم، نحتاج إلى إذن من خدمات الموقع",
+    CustomLocale.HOME_LOCATION_PERMISSION_SUB_TITLE: "لتزويدك بأفضل تجربة مستخدم، نحتاج إلى إذن من خدمات الموقع",
+    CustomLocale.HOME_PHOTOS_PERMISSION_SUB_TITLE: "لتزويدك بأفضل تجربة مستخدم، نحتاج إلى إذن من خدمات الصور",
     CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "سماح",
     CustomLocale.HOME_SHOW_MY_LOCATION_TITLE : "عرض موقعي",
     CustomLocale.HOME_SHOW_MY_LOCATION_SUB_TITLE : "أظهر موقعك على الخريطة",

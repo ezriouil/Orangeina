@@ -14,4 +14,5 @@ sealed class IndexState {}
   }
 }
 
-final class IndexPermissionState extends IndexState {}
+final class IndexLocationPermissionState extends IndexState {}
+final class IndexPhotosPermissionState extends IndexState {}

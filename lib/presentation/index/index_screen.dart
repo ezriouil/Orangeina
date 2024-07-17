@@ -21,7 +21,7 @@ class IndexScreen extends CustomState {
         return Scaffold(
           body: switch (state) {
             IndexMainState() => context.read<IndexCubit>().screens()[state.currentPageIndex!],
-            IndexPermissionState() => SingleChildScrollView(
+            IndexLocationPermissionState() => SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
                   child: SizedBox(
@@ -36,12 +36,43 @@ class IndexScreen extends CustomState {
                           height: 100.0,
                           repeat: true,
                         ),
-                        const SizedBox(height: CustomSizes.SPACE_DEFAULT),
+                        const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
                         Text(CustomLocale.HOME_PERMISSION_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
                         const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
-                        Text(CustomLocale.HOME_PERMISSION_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.center),
+                        Text(CustomLocale.HOME_LOCATION_PERMISSION_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0), textAlign: TextAlign.center),
                         const SizedBox(height: CustomSizes.SPACE_DEFAULT),
-                        CustomElevatedButton(onClick: context.read<IndexCubit>().onRequestPermission,
+                        CustomElevatedButton(onClick: context.read<IndexCubit>().onRequestLocationPermission,
+                            width: getWidth(context) / 2,
+                            height: 70.0,
+                            backgroundColor: darkLightColor(context),
+                            child: Text(CustomLocale.HOME_PERMISSION_BUTTON_ENABLE.getString(context), style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: darkDarkLightLightColor(context), letterSpacing: 1)))
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            IndexPhotosPermissionState() => SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: CustomSizes.SPACE_BETWEEN_ITEMS),
+                  child: SizedBox(
+                    height: getHeight(context),
+                    width: getWidth(context),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LottieBuilder.asset(
+                          CustomAnimationStrings.GALLERY_ANIMATION,
+                          width: 150.0,
+                          height: 150.0,
+                          fit: BoxFit.cover,
+                          repeat: true,
+                        ),
+                        const SizedBox(height: CustomSizes.SPACE_BETWEEN_SECTIONS),
+                        Text(CustomLocale.HOME_PERMISSION_TITLE.getString(context), style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
+                        const SizedBox(height: CustomSizes.SPACE_BETWEEN_ITEMS / 2),
+                        Text(CustomLocale.HOME_PHOTOS_PERMISSION_SUB_TITLE.getString(context), style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12.0), textAlign: TextAlign.center),
+                        const SizedBox(height: CustomSizes.SPACE_DEFAULT),
+                        CustomElevatedButton(onClick: context.read<IndexCubit>().onRequestPhotosPermission,
                             width: getWidth(context) / 2,
                             height: 70.0,
                             backgroundColor: darkLightColor(context),
@@ -68,7 +99,8 @@ class IndexScreen extends CustomState {
                 NavigationDestination(icon: Icon(state.currentPageIndex == 3 ? Iconsax.setting1: Iconsax.setting, color: darkLightColor(context)), label: CustomLocale.INDEX_SETTINGS_TITLE.getString(context))
               ],
             ),
-            IndexPermissionState() => null
+            IndexLocationPermissionState() => null,
+            IndexPhotosPermissionState() => null,
           },
         );
       },

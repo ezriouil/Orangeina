@@ -66,7 +66,8 @@ mixin CustomLocale{
 
   // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
   static const String HOME_PERMISSION_TITLE = "Home Permission Title";
-  static const String HOME_PERMISSION_SUB_TITLE = "Home Permission Sub Title";
+  static const String HOME_LOCATION_PERMISSION_SUB_TITLE = "Home Permission Sub Title";
+  static const String HOME_PHOTOS_PERMISSION_SUB_TITLE = "Home Photos Sub Title";
   static const String HOME_PERMISSION_BUTTON_ENABLE = "Home Permission Button Enable";
   static const String HOME_SHOW_MY_LOCATION_TITLE = "Home Show My Location Title";
   static const String HOME_SHOW_MY_LOCATION_SUB_TITLE = "Home Show My Location Sub Title";

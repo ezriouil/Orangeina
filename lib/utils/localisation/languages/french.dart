@@ -68,7 +68,8 @@ class French{
 
     // - - - - - - - - - - - - - - - - - - HOME SCREEN - - - - - - - - - - - - - - - - - -  //
     CustomLocale.HOME_PERMISSION_TITLE: "Autorisation Requise",
-    CustomLocale.HOME_PERMISSION_SUB_TITLE: "Pour Vous Offrir La Meilleure Expérience Utilisateur, Nous Avons Besoin De L'autorisation Des Services De Localisation",
+    CustomLocale.HOME_LOCATION_PERMISSION_SUB_TITLE: "Pour Vous Offrir La Meilleure Expérience Utilisateur, Nous Avons Besoin De L'autorisation Des Services De Localisation",
+    CustomLocale.HOME_PHOTOS_PERMISSION_SUB_TITLE: "Pour Vous Offrir La Meilleure Expérience Utilisateur, Nous Avons Besoin De L'autorisation Des Services Images",
     CustomLocale.HOME_PERMISSION_BUTTON_ENABLE: "Activer",
     CustomLocale.HOME_SHOW_MY_LOCATION_TITLE : "Ma Position",
     CustomLocale.HOME_SHOW_MY_LOCATION_SUB_TITLE : "Montrez votre position sur la carte",

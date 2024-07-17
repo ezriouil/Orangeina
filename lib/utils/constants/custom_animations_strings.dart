@@ -7,6 +7,7 @@ class CustomAnimationStrings {
   static const String PIN_LOCATION_ANIMATION_DARK = "assets/animations/pin_location_dark.json";
   static const String EMPTY_ANIMATION = "assets/animations/empty.json";
   static const String SUCCESS_ANIMATION = "assets/animations/success.json";
+  static const String GALLERY_ANIMATION = "assets/animations/gallery.json";
 
   static const String ONBOARDING_FASE_DELIVERY_SHIPPING = "assets/animations/onboarding/fast_delivery_shipping.json";
   static const String ONBOARDING_ONLINE_DELIVERY_SERVICE = "assets/animations/onboarding/online_delivery_service.json";
