@@ -1,15 +1,15 @@
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/icons/berkania_logoOLD.png
+  image: assets/icons/splash.png
   color_dark: "#121212"
-  image_dark: assets/icons/berkania_logoOLD.png
+  image_dark: assets/icons/splash.png
   fullscreen: true
 
   android_12:
     color: "#ffffff"
-    image: assets/icons/vendor_icon.png
+    image: assets/icons/splash.png
     color_dark: "#121212"
-    image_dark: assets/icons/vendor_icon.png
+    image_dark: assets/icons/splash.png
     fullscreen: true
 
   web: false

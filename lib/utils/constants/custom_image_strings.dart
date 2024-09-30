@@ -18,7 +18,7 @@ class CustomImageStrings{
   static const String SHOP_MARKER = 'assets/icons/marker_your_shop.png';
 
   //! Icons
-  static const String APP_LOGO_ICON = 'assets/icons/berkania_icon.png';
+  static const String APP_LOGO_ICON = 'assets/icons/orange_logo_login.png';
   static const String APP_LOGO_COVER = 'assets/icons/berkania_logo.png';
   static const String ICON_GOOGLE = 'assets/icons/google.png';
   static const String NO_IMAGE = 'assets/icons/noImage.png';
